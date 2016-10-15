@@ -1,0 +1,78 @@
+#+TITLE: Small Disjuncts
+#+SUBTITLE: Notas de trabajo
+#+AUTHOR: Ignacio Cordón Castillo
+#+OPTIONS: toc:t
+#+LANGUAGE: es
+#+STARTUP: latexpreview
+#+STARTUP: indent
+#+DATE:
+
+#+latex_header: \usepackage{amsmath}
+#+latex_header: \usepackage{amsthm}
+#+latex_header: \newtheorem{theorem}{Teorema}
+#+latex_header: \newtheorem{fact}{Proposición}
+#+latex_header: \newtheorem{definition}{Definición}
+#+latex_header: \setlength{\parindent}{0pt}
+#+latex_header: \setlength{\parskip}{1em}
+
+
+* Métodos basados en kernel y métodos de aprendizaje activo
+
+** Framework de aprendizaje basado en núcleo
+
+*** SVMs
+Problema de las máquinas de soporte de vectores es que tienden a clasificar los ejemplos como pertenecientes a la clase mayoritaria, para maximizar la tasa de acierto.
+
+** Sampling hibridado con métodos basados en kernel
+
+*** SDCs: SMOTE with different costs
+
+*** Over/undersampled SVMs
+
+*** SVMs con clasificación errónea asimétrica(SVMs with asymmetric misclassification)
+
+*** Granular Support Vector Machines (GSVMs)
+
+Se basan en los principios de la teoría del aprendizaje estadístico y de la teoría de computación granular.
+
+Tienen como ventajas frente a los SVMs mejor eficiencia computacional, debido al uso de paralelismo.
+
+Destacan en este grupo los **GSVM-RU**
+
+** Métodos de modificación de kernels para aprendizaje desbalanceado
+
+Se centran en modificar SVM. Hay un kernel basado a su vez en OFS y ROWLS.
+
+*** OFS: Orthogonal Forward Selection
+
+Integra ideas de LOO (*Leaving-One-Out*) y AUC (Área bajo la curva)
+
+*** ROWLS: Orthogonal Weigthed Least Squares
+
+Usado para asignar mayor peso a los ejemplos erróneos de la clase minoritaria.
+
+*** Métodos para ajustar la frontera de los SVM: BM, BPs, CBA, KBA
+
+Destaca especialmente KBA, que realiza una aproximación al problema modificando la matriz del kernel en el espacio de caracterísicas.
+
+*** Método SVM basado en Kernel difuso (TAF-SVM)
+
+Tiene como ventajas que maneja bien el *overfitting* debido a la *fuzzificación* de los datos de entrenamiento, su adaptabilidad a diferentes distribuciones
+
+*** PSVM: SVM proximal $k$-categórica (k-category proximal support vector machine)
+
+Tiene como gran ventaja su rapidez, puesto que su funcionamiento se basa en la resolución de un sistema de $k$ ecuaciones lineales.
+
+*** Modificación de Raskutti y Kowalcyzk 
+
+** Métodos de aprendizaje activo para aprendizaje desbalanceado
+
+*** Aproximación SALH
+
+La idea fundamental de este método es proporcionar un modelo genérico para la evolución de los clasificadores basados en programación genética, integrando el *subsamplimg* estocástico y una función de coste *Wilcoxon-Mann-Whitney(WMW)* modificada.
+
+* Otros métodos para aprendizaje desbalanceado
+
+** Aprendizaje de una clase (one-class learning)
+
+Estudios han ilustrado que este tipo de métodos son muy efectivos para tratar con datasets tremendamente desbalanceados y con alta dimensionalidad.
