@@ -1,0 +1,4 @@
+
+* TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
+
+* TODO Buscar una traducción adecuada a Recall

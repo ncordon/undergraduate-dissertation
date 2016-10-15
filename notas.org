@@ -71,8 +71,47 @@ Tiene como gran ventaja su rapidez, puesto que su funcionamiento se basa en la r
 
 La idea fundamental de este método es proporcionar un modelo genérico para la evolución de los clasificadores basados en programación genética, integrando el *subsamplimg* estocástico y una función de coste *Wilcoxon-Mann-Whitney(WMW)* modificada.
 
+
 * Otros métodos para aprendizaje desbalanceado
 
 ** Aprendizaje de una clase (one-class learning)
 
 Estudios han ilustrado que este tipo de métodos son muy efectivos para tratar con datasets tremendamente desbalanceados y con alta dimensionalidad.
+
+** Mahalanobi-Taguchi System (MTS)
+
+
+
+* Medida de la bondad de los métodos
+
+|   | p     | n     |
+| Y | TP    | FP    |
+| N | FN    | TN    |
+|   | $p_c$ | $n_c$ |
+
+
+Donde $p$ y $n$ representan la verdadera clase: positiva y negativa, y $Y$, $N$ la clase de la hipótesis.
+
+\[ Exactitud = \frac{TP+TN}{P_C+N_C} \hspace{3em} Ratio_{error} = 1 - Exactitud \]
+
+En general estas dos medidas resultan suficientes para expresar la bondad de los métodos. Pero en algunos casos pueden resultar engañosas, y ser muy sensibles a cambios en los datos.
+
+Por ejemplo, si un *dataset* tiene 95% de datos pertenecientes a la clase mayoritaria, y 5% a la minoritaria, si clasificáramos todos los ejemplos como de la clase mayoritaria, obtendríamos un 95% de precisión, pero no clasificaríamos bien ni un solo ejemplo de la clase minoritaria.
+
+Por convenio llamaremos a la clase mayoritaria, clase positiva; y a la clase minoritaria, clase negativa.
+
+Observamos que la exactitud tiene en cuenta tanto el total de la clase mayoritaria como minoritaria. Por tanto depende de la distribución de datos de nuestro *dataset*, y no va a ser una medida adecuada para medir la bondad de métodos de aprendizaje desbalanceado.
+
+\begin{eqnarray}
+&& Precision = \frac{TP}{TP+FP}\\
+&& Recall = \frac{TP}{TP+FN}\\
+&& F-Measure = \frac{(1+\beta)^2\cdot Recall \cdot Precision}{\beta^2\cdot Recall + Precision}
+\end{eqnarray}
+
+
+Donde $\beta$ indica un coeficiente para ajustar la importancia de la precisión frente a *Recall*:
+
+\[ G-mean = \sqrt{\frac{TP}{TP+FN} \cdot \frac{TN}{TN+FP}} \]
+
+- Precisión refleja la exactitud de los datos
+- *Recall* refleja la completitud de los datos
