@@ -1,5 +1,4 @@
 #+TITLE: Small Disjuncts
-#+SUBTITLE: Notas de trabajo
 #+AUTHOR: Ignacio Cordón Castillo
 #+OPTIONS: toc:t
 #+LANGUAGE: es
@@ -31,7 +30,25 @@ En muchas ocasiones, al realizar análisis de datos no se tiene en cuenta el des
 
 El desbalanceo puede ser intrínseco, cuando lo que da lugar al mismo es la naturaleza del espacio de muestreo, y extrínseco, en caso de que los desbalanceos se produzcan por factores externos a la naturaleza del espacio de muestreo como restricciones de almacenamiento y capacidad de muestreo.
 
-Puede asimismo hacerse una distinción de desbalanceo como desbalanceo relativo y desbalanceo debido a instancias raras (/absolute rarity/). El desbalanceo relativo es aquel en el la función de distribución de la clases se conserva al tomar varias muestras aleatorias simples, el desbalanceo debido a instancias raras no. La falta de representatividad de la distribución de clases por parte del clasificador no sólo se debe al desbalanceo de clases, sino que se puede deber a un amplio rango de factores que afectan a la complejidad de los datos (/overlapping/, falta de representatividad en los datos, /small disjuncts/, etc).
+Puede asimismo hacerse una distinción de desbalanceo como desbalanceo relativo y desbalanceo debido a instancias raras (/absolute rarity/). El desbalanceo relativo es aquel en que la función de distribución de la clases se conserva al tomar varias muestras aleatorias simples, el desbalanceo debido a instancias raras no, y éste último está estrechamente relacionado con el desbalanceo intra-clases (/within-class/) debido a la distribución en distintos /clusters/ de instancias de una misma clase en el espacio de exploración. La falta de representatividad de la distribución de clases por parte del clasificador no sólo se debe al desbalanceo de clases, sino que se puede deber a un amplio rango de factores que afectan a la complejidad de los datos (/overlapping/, falta de representatividad en los datos, /small disjuncts/, etc).
+
+El desbalanceo intra-clases se encuentra estrechamente relacionado con el problema de los /small-disjuncts/. En general, los clasificadores intentan aprender a partir de una clase creando reglas disjuntas que afecten a /clusters/ de instancias. Como consecuencia de la infrarrepresentación de instancias en el caso de clases heterogéneas (repartidas en varios /clusters/), podemos tener reglas que cubren una pequeña porción de las instancias de una clase, esto es /small-disjuncts/. Los /small-disjuncts/ no sólo afectan a la clase minoritaria, sino que pueden darse también dentro de la mayoritaria, aunque la mayor densidad de datos de esta clase hace que el efecto no sea tan agravado o sea una situación menos frecuente. El gran desafío en la identificación de los /small-disjunts/ es identificar todas las agrupaciones minoritarias de una clase, sin generar también reglas de clasificación para los datos que representan ruido. Por tanto, en problemas con alta dimensionalidad y baja densidad de muestreo, también encontramos /small-disjunts/.
+
+* Notación
+
+\[S=\{(x_{i,1}, \ldots x_{i,m}, y_i)\, i=1,\ldots m \}\]
+\[(x_{i,1}, \ldots x_{i,m})\in X\]
+\[y_i \in \{1\ldots C\}\]
+
+con $S$ muestra aleatoria de una variable, $X$ espacio de características e $Y$ conjunto de clases finito con $C\ge 2$.
+
+Notamos $S_{min}$ a los ejemplos de la clase minoritaria, $S_{maj}$ a los de la mayoritaria. Se verifica $S_{min}\cap S_{maj} = \emptyset$
+
+Llamamos $E$ al conjunto de instancias generadas mediante técnicas de /sampling/ y $E_{maj}$, $E_{min}$ a las etiquetadas como de las clases mayoritaria y minoritaria, respectivamente.
+
+* Oversampling y undersampling
+
+En el /oversampling/ seleccionamos un conjunto $E\subseteq S_{min}$ y lo adherimos a $S_{min}$. El /undersampling/ consiste en eliminar un subconjunto de $S_{maj}$
 
 * Métodos basados en kernel y métodos de aprendizaje activo
 
