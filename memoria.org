@@ -6,15 +6,32 @@
 #+STARTUP: latexpreview
 #+STARTUP: indent
 #+DATE:
+#+LATEX_HEADER: \usepackage[spanish]{babel}
+#+LATEX_HEADER: \input{titlepage}
+#+LATEX_HEADER: \usepackage{amsmath} 
+#+LATEX_HEADER: \usepackage{amsthm}
+#+LATEX_HEADER: \newtheorem*{theorem}{Teorema}
+#+LATEX_HEADER: \newtheorem*{fact}{Proposición}
+#+LATEX_HEADER: \newtheorem*{corollary}{Corolario}
+#+LATEX_HEADER: \newtheorem*{definition}{Definición}
+#+LATEX_HEADER: \setlength{\parindent}{0pt}
+#+LATEX_HEADER: \setlength{\parskip}{1em}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \newenvironment{wording}{\setlength{\parskip}{0pt}\rule{\textwidth}{0.5em}}{~\\\rule{\textwidth}{0.5em}}
+#+LATEX_HEADER: \everymath{\displaystyle}
 
-#+latex_header: \usepackage{amsmath}
-#+latex_header: \usepackage{amsthm}
-#+latex_header: \newtheorem{theorem}{Teorema}
-#+latex_header: \newtheorem{fact}{Proposición}
-#+latex_header: \newtheorem{definition}{Definición}
-#+latex_header: \setlength{\parindent}{0pt}
-#+latex_header: \setlength{\parskip}{1em}
+\break
+* Introducción
 
+El problema de la clasificación consiste en datos un conjunto de datos...
+
+Cualquier distribución desbalanceada de clases en el problema de la clasificación puede considerarse un problema de clasificación con desbalanceo, pero suele considerarse por convención que hay desbalanceo cuando hay ratios de representación de clases de 1:100, 1:1000, 1:10000. Los ratios no tienen por qué referirse únicamente a clasificación binaria, sino que pueden afectar a problemas multiclase.
+
+En muchas ocasiones, al realizar análisis de datos no se tiene en cuenta el desbalanceo existente entre clases, lo cual hace que los algoritmos no reflejen adecuadamente la distribución de clases. Esto provoca que los algoritmos, en los ejemplos en que nos interesa una ratio de predicción acertada alto en la clase minoritaria, no tengan los resultados deseado.
+
+El desbalanceo puede ser intrínseco, cuando lo que da lugar al mismo es la naturaleza del espacio de muestreo, y extrínseco, en caso de que los desbalanceos se produzcan por factores externos a la naturaleza del espacio de muestreo como restricciones de almacenamiento y capacidad de muestreo.
+
+Puede asimismo hacerse una distinción de desbalanceo como desbalanceo relativo y desbalanceo debido a instancias raras (/absolute rarity/). El desbalanceo relativo es aquel en el la función de distribución de la clases se conserva al tomar varias muestras aleatorias simples, el desbalanceo debido a instancias raras no. La falta de representatividad de la distribución de clases por parte del clasificador no sólo se debe al desbalanceo de clases, sino que se puede deber a un amplio rango de factores que afectan a la complejidad de los datos (/overlapping/, falta de representatividad en los datos, /small disjuncts/, etc).
 
 * Métodos basados en kernel y métodos de aprendizaje activo
 
