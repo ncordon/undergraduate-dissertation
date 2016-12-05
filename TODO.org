@@ -1,6 +1,7 @@
 * TODO Definir matemáticamente el problema de la clasificación 
 * TODO ¿Pueden coexistir desbalanceo intrínseco/extrínseco con desbalanceo relativo/debido a instancias raras?
 * TODO La notación del undersampling y oversampling quizás no es lo suficientemente buena
+* TODO Informed undersampling - NearMiss3. No se entiende demasiado bien
 * TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
 
 * TODO Buscar una traducción adecuada a Recall

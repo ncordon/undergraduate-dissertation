@@ -50,6 +50,68 @@ Llamamos $E$ al conjunto de instancias generadas mediante técnicas de /sampling
 
 En el /oversampling/ seleccionamos un conjunto $E\subseteq S_{min}$ y lo adherimos a $S_{min}$. El /undersampling/ consiste en eliminar un subconjunto de $S_{maj}$
 
+** /Informed undersampling/
+
+Ejemplos de esta técnica son los algoritmos:
+
+*** EasyEnsemble
+
+Método de aprendizaje no supervisado, que genera un conjunto de clasificadores tomando muestras aleatorias con remplazamiento de la clase mayoritaria, juntándolas con las instancias de la clase minoritaria originales y generando un clasificador.
+
+*** BalanceCascade
+
+Toma $E$ verificando $|E_{maj}| = |S_{min}|$, e inferimos un clasificador $H_1$ desde $N_1={E_{maj}\cup S_{min}}$. Por inducción, el clasificador $n$-ésimo lo entrenamos a partir del $(n-1)$-ésimo llamando $N_{maj}^{*}$ los ejemplos de $S_{maj}$ correctamente clasificados por $H_1$, eliminándolos de $S_{maj}$ y tomando de nuevo un $N_n={E_{maj}\cup S_{min}}$
+
+*** NearMiss-1
+
+Elimina aquellos ejemplos de la clase mayoritaria cuya distancia media a 3 vecinos más cercanos de la clase minoritaria es mínima.
+
+*** NearMiss-2
+
+Elimina aquellos ejemplos de la clase mayoritaria cuya distancia media a 3 vecinos más lejanos de la clase minoritaria es mínima.
+
+*** NearMiss-3
+
+Elimina un número dado de ejemplos de la clase mayoritaria más cercanos a cada ejemplo de la clase minoritaria.
+
+*** One-sided selection (OSS)
+
+** /Sampling/ artificial
+
+*** Synthetic minority oversampling technique(SMOTE)
+
+Genera instancias etiquetadas como minoritarias haciendo 
+
+\[y = x_i + (\widehat{x_i}-x_i)\cdot \delta\]
+
+Con $x_i\in S_{min}$, $\delta \in[0,1]$, $\widehat{x_i}$ una instancia de entre sus $K$ vecinos máx cercanos en $S_{min}$ con $K$ prefijado.
+
+
+** Adaptative Synthetic Sampling
+
+SMOTE no tiene en cuenta el vecindario de las instancias minoritarias para generar una nueva a partir de ellas. Así, una instancia aislada que bien podría representar ruido, generaría otra instancia a partir de ella, y en conjunto, si esta circunstancia es asidua, se generaría /overlapping/.
+
+*** Borderline-SMOTE
+
+Fijado $K$ etiqueta como ejemplos de la frontera aquellos $x_i\in S_{min}$ verificando que tienen más vecinos de la clase mayoritaria que de la clase minoritaria. Salvo si su número de vecinos más cercano de la clase mayoritaria es $K$ (en cuyo caso la instancia se etiqueta como ruido y se elimina a efectos de buscar el clasificador), en otro caso se generan instancias artificiales a partir de los elementos "fronterizos" mediante SMOTE.
+
+*** ADASYN
+
+Toma \(G = (|S_{maj}| - |S_{min}|)\cdot \beta \) done \(\beta\) representa el nivel de balanceo buscado después del algoritmo. Para cada $x_i$ buscar sus $K$ vecinos más cercanos, con $K$ prefijado y tomar:
+
+\[\Gamma_i = \frac{\Delta_i}{\sum_i^{|S_{min}|} \Delta_i}, \qquad i=1,\ldots, |S_{min}|\]
+
+Para dicho $x_i$ necesitamos generar $g_i = \Gamma_i \cdot G$ instancias.
+
+
+** Samplig con técnicas de limpieza
+
+Se usan los links Tomek. Dos instancias $x_i, x_j$ forman un link de Tomek si $x_i \in S_{min}, x_j \in S_{maj}$ y no existe $x_k$ verificando $min(d(x_i, x_k), d(x_j, x_k)) < d(x_i, x_j)$. Los links de Tomek representan /overlapping/ y por tanto basta eliminarlos después de haber hecho /oversampling/.
+
+*** SMOTE + ENN (Edited Nearest Neighbour)
+*** SMOTE + enlaces Tomek
+
+
 * Métodos basados en kernel y métodos de aprendizaje activo
 
 ** Framework de aprendizaje basado en núcleo
