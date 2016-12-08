@@ -20,165 +20,273 @@
 #+LATEX_HEADER: \everymath{\displaystyle}
 
 \break
-* Introducción
 
-El problema de la clasificación consiste en datos un conjunto de datos...
+* TODO
+** TODO Definir matemáticamente el problema de la clasificación 
+** TODO ¿Pueden coexistir desbalanceo intrínseco/extrínseco con desbalanceo relativo/debido a instancias raras?
+** TODO La notación del undersampling y oversampling quizás no es lo suficientemente buena
+** TODO Informed undersampling - NearMiss3. No se entiende demasiado bien
+** TODO Sampling basado en clústering: ¿el tamaño de clúster está prefijado?
+** TODO Se repite el proceso del CBO hasta que sólo se actualia la media de un clúster (?)
+** TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
+** TODO Buscar una traducción adecuada a Recall
+* Notas de trabajo
+** Introducción
 
-Cualquier distribución desbalanceada de clases en el problema de la clasificación puede considerarse un problema de clasificación con desbalanceo, pero suele considerarse por convención que hay desbalanceo cuando hay ratios de representación de clases de 1:100, 1:1000, 1:10000. Los ratios no tienen por qué referirse únicamente a clasificación binaria, sino que pueden afectar a problemas multiclase.
+El problema de la clasificación consiste en datos un conjunto de
+datos...
 
-En muchas ocasiones, al realizar análisis de datos no se tiene en cuenta el desbalanceo existente entre clases, lo cual hace que los algoritmos no reflejen adecuadamente la distribución de clases. Esto provoca que los algoritmos, en los ejemplos en que nos interesa una ratio de predicción acertada alto en la clase minoritaria, no tengan los resultados deseado.
+Cualquier distribución desbalanceada de clases en el problema de la
+clasificación puede considerarse un problema de clasificación con
+desbalanceo, pero suele considerarse por convención que hay
+desbalanceo cuando hay ratios de representación de clases de 1:100,
+1:1000, 1:10000. Los ratios no tienen por qué referirse únicamente a
+clasificación binaria, sino que pueden afectar a problemas multiclase.
 
-El desbalanceo puede ser intrínseco, cuando lo que da lugar al mismo es la naturaleza del espacio de muestreo, y extrínseco, en caso de que los desbalanceos se produzcan por factores externos a la naturaleza del espacio de muestreo como restricciones de almacenamiento y capacidad de muestreo.
+El desbalanceo puede ser intrínseco, cuando lo que da lugar al mismo
+es la naturaleza del espacio de muestreo, y extrínseco, en caso de que
+los desbalanceos se produzcan por factores externos a la naturaleza
+del espacio de muestreo como restricciones de almacenamiento y
+capacidad de muestreo.
 
-Puede asimismo hacerse una distinción de desbalanceo como desbalanceo relativo y desbalanceo debido a instancias raras (/absolute rarity/). El desbalanceo relativo es aquel en que la función de distribución de la clases se conserva al tomar varias muestras aleatorias simples, el desbalanceo debido a instancias raras no, y éste último está estrechamente relacionado con el desbalanceo intra-clases (/within-class/) debido a la distribución en distintos /clusters/ de instancias de una misma clase en el espacio de exploración. La falta de representatividad de la distribución de clases por parte del clasificador no sólo se debe al desbalanceo de clases, sino que se puede deber a un amplio rango de factores que afectan a la complejidad de los datos (/overlapping/, falta de representatividad en los datos, /small disjuncts/, etc).
+En muchas ocasiones, al realizar análisis de datos no se tiene en
+cuenta el desbalanceo existente entre clases, lo cual hace que los
+algoritmos no reflejen adecuadamente la distribución de clases. Esto
+provoca que los algoritmos, en los ejemplos en que nos interesa una
+ratio de predicción acertada alto en la clase minoritaria, no tengan
+los resultados deseado.
 
-El desbalanceo intra-clases se encuentra estrechamente relacionado con el problema de los /small-disjuncts/. En general, los clasificadores intentan aprender a partir de una clase creando reglas disjuntas que afecten a /clusters/ de instancias. Como consecuencia de la infrarrepresentación de instancias en el caso de clases heterogéneas (repartidas en varios /clusters/), podemos tener reglas que cubren una pequeña porción de las instancias de una clase, esto es /small-disjuncts/. Los /small-disjuncts/ no sólo afectan a la clase minoritaria, sino que pueden darse también dentro de la mayoritaria, aunque la mayor densidad de datos de esta clase hace que el efecto no sea tan agravado o sea una situación menos frecuente. El gran desafío en la identificación de los /small-disjunts/ es identificar todas las agrupaciones minoritarias de una clase, sin generar también reglas de clasificación para los datos que representan ruido. Por tanto, en problemas con alta dimensionalidad y baja densidad de muestreo, también encontramos /small-disjunts/.
+Puede asimismo hacerse una distinción de desbalanceo como desbalanceo
+relativo y desbalanceo debido a instancias raras (/absolute rarity/,
+pequeñas instancias del conjunto de entrenamiento agrupadas en
+regiones muy particulares del área de búsqueda). El desbalanceo
+relativo es aquel en que la función de distribución de la clases se
+conserva al tomar varias muestras aleatorias simples, el desbalanceo
+debido a instancias raras no, y éste último está estrechamente
+relacionado con el desbalanceo intra-clases (/within-class/) debido a
+la distribución en distintos /clusters/ de instancias de una misma
+clase en el espacio de exploración. La falta de representatividad de
+la distribución de clases por parte del clasificador no sólo se debe
+al desbalanceo de clases, sino que se puede deber a un amplio rango de
+factores que afectan a la complejidad de los datos (/overlapping/,
+falta de representatividad en los datos, /small disjuncts/, etc).
 
-* Notación
+El desbalanceo intra-clases se encuentra estrechamente relacionado con
+el problema de los /small-disjuncts/. En general, los clasificadores
+intentan aprender a partir de una clase creando reglas disjuntas que
+afecten a /clusters/ de instancias. Como consecuencia de la
+infrarrepresentación de instancias en el caso de clases heterogéneas
+(repartidas en varios /clusters/), podemos tener reglas que cubren una
+pequeña porción de las instancias de una clase, esto es
+/small-disjuncts/. Los /small-disjuncts/ no sólo afectan a la clase
+minoritaria, sino que pueden darse también dentro de la mayoritaria,
+aunque la mayor densidad de datos de esta clase hace que el efecto no
+sea tan agravado o sea una situación menos frecuente. El gran desafío
+en la identificación de los /small-disjunts/ es identificar todas las
+agrupaciones minoritarias de una clase, sin generar también reglas de
+clasificación para los datos que representan ruido. Por tanto, en
+problemas con alta dimensionalidad y baja densidad de muestreo,
+también encontramos /small-disjunts/.
 
-\[S=\{(x_{i,1}, \ldots x_{i,m}, y_i)\, i=1,\ldots m \}\]
-\[(x_{i,1}, \ldots x_{i,m})\in X\]
-\[y_i \in \{1\ldots C\}\]
+** Notación
 
-con $S$ muestra aleatoria de una variable, $X$ espacio de características e $Y$ conjunto de clases finito con $C\ge 2$.
+\[S=\{(x_{i,1}, \ldots x_{i,m}, y_i)\, i=1,\ldots m \}\] \[(x_{i,1},
+\ldots x_{i,m})\in X\] \[y_i \in \{1\ldots C\}\]
 
-Notamos $S_{min}$ a los ejemplos de la clase minoritaria, $S_{maj}$ a los de la mayoritaria. Se verifica $S_{min}\cap S_{maj} = \emptyset$
+con $S$ muestra aleatoria de una variable, $X$ espacio de
+características e $Y$ conjunto de clases finito con $C\ge 2$.
 
-Llamamos $E$ al conjunto de instancias generadas mediante técnicas de /sampling/ y $E_{maj}$, $E_{min}$ a las etiquetadas como de las clases mayoritaria y minoritaria, respectivamente.
+Notamos $S_{min}$ a los ejemplos de la clase minoritaria, $S_{maj}$ a
+los de la mayoritaria. Se verifica $S_{min}\cap S_{maj} = \emptyset$
 
-* Oversampling y undersampling
+Llamamos $E$ al conjunto de instancias generadas mediante técnicas de
+/sampling/ y $E_{maj}$, $E_{min}$ a las etiquetadas como de las clases
+mayoritaria y minoritaria, respectivamente.
 
-En el /oversampling/ seleccionamos un conjunto $E\subseteq S_{min}$ y lo adherimos a $S_{min}$. El /undersampling/ consiste en eliminar un subconjunto de $S_{maj}$
+** Oversampling y undersampling
 
-** /Informed undersampling/
+En el /oversampling/ seleccionamos un conjunto $E\subseteq S_{min}$ y
+lo adherimos a $S_{min}$. El /undersampling/ consiste en eliminar un
+subconjunto de $S_{maj}$
+
+*** /Informed undersampling/
 
 Ejemplos de esta técnica son los algoritmos:
 
-*** EasyEnsemble
+**** EasyEnsemble
 
-Método de aprendizaje no supervisado, que genera un conjunto de clasificadores tomando muestras aleatorias con remplazamiento de la clase mayoritaria, juntándolas con las instancias de la clase minoritaria originales y generando un clasificador.
+Método de aprendizaje no supervisado, que genera un conjunto de
+clasificadores tomando muestras aleatorias con remplazamiento de la
+clase mayoritaria, juntándolas con las instancias de la clase
+minoritaria originales y generando un clasificador.
 
-*** BalanceCascade
+**** BalanceCascade
 
-Toma $E$ verificando $|E_{maj}| = |S_{min}|$, e inferimos un clasificador $H_1$ desde $N_1={E_{maj}\cup S_{min}}$. Por inducción, el clasificador $n$-ésimo lo entrenamos a partir del $(n-1)$-ésimo llamando $N_{maj}^{*}$ los ejemplos de $S_{maj}$ correctamente clasificados por $H_1$, eliminándolos de $S_{maj}$ y tomando de nuevo un $N_n={E_{maj}\cup S_{min}}$
+Toma $E$ verificando $|E_{maj}| = |S_{min}|$, e inferimos un
+clasificador $H_1$ desde $N_1={E_{maj}\cup S_{min}}$. Por inducción,
+el clasificador $n$-ésimo lo entrenamos a partir del $(n-1)$-ésimo
+llamando $N_{maj}^{*}$ los ejemplos de $S_{maj}$ correctamente
+clasificados por $H_1$, eliminándolos de $S_{maj}$ y tomando de nuevo
+un $N_n={E_{maj}\cup S_{min}}$
 
-*** NearMiss-1
+**** NearMiss-1
 
-Elimina aquellos ejemplos de la clase mayoritaria cuya distancia media a 3 vecinos más cercanos de la clase minoritaria es mínima.
+Elimina aquellos ejemplos de la clase mayoritaria cuya distancia media
+a 3 vecinos más cercanos de la clase minoritaria es mínima.
 
-*** NearMiss-2
+**** NearMiss-2
 
-Elimina aquellos ejemplos de la clase mayoritaria cuya distancia media a 3 vecinos más lejanos de la clase minoritaria es mínima.
+Elimina aquellos ejemplos de la clase mayoritaria cuya distancia media
+a 3 vecinos más lejanos de la clase minoritaria es mínima.
 
-*** NearMiss-3
+**** NearMiss-3
 
-Elimina un número dado de ejemplos de la clase mayoritaria más cercanos a cada ejemplo de la clase minoritaria.
+Elimina un número dado de ejemplos de la clase mayoritaria más
+cercanos a cada ejemplo de la clase minoritaria.
 
-*** One-sided selection (OSS)
+**** One-sided selection (OSS)
 
-** /Sampling/ artificial
+*** /Sampling/ artificial
 
-*** Synthetic minority oversampling technique(SMOTE)
+**** Synthetic minority oversampling technique(SMOTE)
 
-Genera instancias etiquetadas como minoritarias haciendo 
+Genera instancias etiquetadas como minoritarias haciendo
 
 \[y = x_i + (\widehat{x_i}-x_i)\cdot \delta\]
 
-Con $x_i\in S_{min}$, $\delta \in[0,1]$, $\widehat{x_i}$ una instancia de entre sus $K$ vecinos máx cercanos en $S_{min}$ con $K$ prefijado.
+Con $x_i\in S_{min}$, $\delta \in[0,1]$, $\widehat{x_i}$ una instancia
+de entre sus $K$ vecinos máx cercanos en $S_{min}$ con $K$ prefijado.
+*** Adaptative Synthetic Sampling
 
+SMOTE no tiene en cuenta el vecindario de las instancias minoritarias
+para generar una nueva a partir de ellas. Así, una instancia aislada
+que bien podría representar ruido, generaría otra instancia a partir
+de ella, y en conjunto, si esta circunstancia es asidua, se generaría
+/overlapping/.
 
-** Adaptative Synthetic Sampling
+**** Borderline-SMOTE
 
-SMOTE no tiene en cuenta el vecindario de las instancias minoritarias para generar una nueva a partir de ellas. Así, una instancia aislada que bien podría representar ruido, generaría otra instancia a partir de ella, y en conjunto, si esta circunstancia es asidua, se generaría /overlapping/.
+Fijado $K$ etiqueta como ejemplos de la frontera aquellos $x_i\in
+S_{min}$ verificando que tienen más vecinos de la clase mayoritaria
+que de la clase minoritaria. Salvo si su número de vecinos más cercano
+de la clase mayoritaria es $K$ (en cuyo caso la instancia se etiqueta
+como ruido y se elimina a efectos de buscar el clasificador), en otro
+caso se generan instancias artificiales a partir de los elementos
+"fronterizos" mediante SMOTE.
 
-*** Borderline-SMOTE
+**** ADASYN
 
-Fijado $K$ etiqueta como ejemplos de la frontera aquellos $x_i\in S_{min}$ verificando que tienen más vecinos de la clase mayoritaria que de la clase minoritaria. Salvo si su número de vecinos más cercano de la clase mayoritaria es $K$ (en cuyo caso la instancia se etiqueta como ruido y se elimina a efectos de buscar el clasificador), en otro caso se generan instancias artificiales a partir de los elementos "fronterizos" mediante SMOTE.
+Toma \(G = (|S_{maj}| - |S_{min}|)\cdot \beta \) done \(\beta\)
+representa el nivel de balanceo buscado después del algoritmo. Para
+cada $x_i$ buscar sus $K$ vecinos más cercanos, con $K$ prefijado y
+tomar:
 
-*** ADASYN
+\[\Gamma_i = \frac{\Delta_i}{\sum_i^{|S_{min}|} \Delta_i}, \qquad
+i=1,\ldots, |S_{min}|\]
 
-Toma \(G = (|S_{maj}| - |S_{min}|)\cdot \beta \) done \(\beta\) representa el nivel de balanceo buscado después del algoritmo. Para cada $x_i$ buscar sus $K$ vecinos más cercanos, con $K$ prefijado y tomar:
+Para dicho $x_i$ necesitamos generar $g_i = \Gamma_i \cdot G$
+instancias.
 
-\[\Gamma_i = \frac{\Delta_i}{\sum_i^{|S_{min}|} \Delta_i}, \qquad i=1,\ldots, |S_{min}|\]
+*** Samplig con técnicas de limpieza
 
-Para dicho $x_i$ necesitamos generar $g_i = \Gamma_i \cdot G$ instancias.
+Se usan los links Tomek. Dos instancias $x_i, x_j$ forman un link de
+Tomek si $x_i \in S_{min}, x_j \in S_{maj}$ y no existe $x_k$
+verificando $min(d(x_i, x_k), d(x_j, x_k)) < d(x_i, x_j)$. Los links
+de Tomek representan /overlapping/ y por tanto basta eliminarlos
+después de haber hecho /oversampling/.
 
+**** SMOTE + ENN (Edited Nearest Neighbour)
+**** SMOTE + enlaces Tomek
 
-** Samplig con técnicas de limpieza
+*** Sampling basado en /clustering/
+**** CBO
+El algoritmo CBO (Cluster Based Oversampling) usa el algoritmo
+$K$-means con $K$ prefijado para calcular los clústers del conjunto de
+entrenamiento. Posteriormente hace /oversampling/ de los demás
+/clusters/ de forma que las dos clases queden balanceadas, y todos los
+/clusters/ de la clase mayoritaria tengan el mismo número de
+elementos, y los de la clase minoritaria también. Esto elimina el
+desbalanceo /within-class/ y el /between-class/.
 
-Se usan los links Tomek. Dos instancias $x_i, x_j$ forman un link de Tomek si $x_i \in S_{min}, x_j \in S_{maj}$ y no existe $x_k$ verificando $min(d(x_i, x_k), d(x_j, x_k)) < d(x_i, x_j)$. Los links de Tomek representan /overlapping/ y por tanto basta eliminarlos después de haber hecho /oversampling/.
+*** Sampling + Boosting
+** Métodos basados en kernel y métodos de aprendizaje activo
 
-*** SMOTE + ENN (Edited Nearest Neighbour)
-*** SMOTE + enlaces Tomek
+*** Framework de aprendizaje basado en núcleo
 
+**** SVMs
+Problema de las máquinas de soporte de vectores es que tienden a
+clasificar los ejemplos como pertenecientes a la clase mayoritaria,
+para maximizar la tasa de acierto.
 
-* Métodos basados en kernel y métodos de aprendizaje activo
+*** Sampling hibridado con métodos basados en kernel
 
-** Framework de aprendizaje basado en núcleo
+**** SDCs: SMOTE with different costs
 
-*** SVMs
-Problema de las máquinas de soporte de vectores es que tienden a clasificar los ejemplos como pertenecientes a la clase mayoritaria, para maximizar la tasa de acierto.
+**** Over/undersampled SVMs
 
-** Sampling hibridado con métodos basados en kernel
+**** SVMs con clasificación errónea asimétrica(SVMs with asymmetric misclassification)
 
-*** SDCs: SMOTE with different costs
+**** Granular Support Vector Machines (GSVMs)
 
-*** Over/undersampled SVMs
+Se basan en los principios de la teoría del aprendizaje estadístico y
+de la teoría de computación granular.
 
-*** SVMs con clasificación errónea asimétrica(SVMs with asymmetric misclassification)
-
-*** Granular Support Vector Machines (GSVMs)
-
-Se basan en los principios de la teoría del aprendizaje estadístico y de la teoría de computación granular.
-
-Tienen como ventajas frente a los SVMs mejor eficiencia computacional, debido al uso de paralelismo.
+Tienen como ventajas frente a los SVMs mejor eficiencia computacional,
+debido al uso de paralelismo.
 
 Destacan en este grupo los **GSVM-RU**
 
-** Métodos de modificación de kernels para aprendizaje desbalanceado
+*** Métodos de modificación de kernels para aprendizaje desbalanceado
 
-Se centran en modificar SVM. Hay un kernel basado a su vez en OFS y ROWLS.
+Se centran en modificar SVM. Hay un kernel basado a su vez en OFS y
+ROWLS.
 
-*** OFS: Orthogonal Forward Selection
+**** OFS: Orthogonal Forward Selection
 
 Integra ideas de LOO (*Leaving-One-Out*) y AUC (Área bajo la curva)
 
-*** ROWLS: Orthogonal Weigthed Least Squares
+**** ROWLS: Orthogonal Weigthed Least Squares
 
-Usado para asignar mayor peso a los ejemplos erróneos de la clase minoritaria.
+Usado para asignar mayor peso a los ejemplos erróneos de la clase
+minoritaria.
 
-*** Métodos para ajustar la frontera de los SVM: BM, BPs, CBA, KBA
+**** Métodos para ajustar la frontera de los SVM: BM, BPs, CBA, KBA
 
-Destaca especialmente KBA, que realiza una aproximación al problema modificando la matriz del kernel en el espacio de caracterísicas.
+Destaca especialmente KBA, que realiza una aproximación al problema
+modificando la matriz del kernel en el espacio de caracterísicas.
 
-*** Método SVM basado en Kernel difuso (TAF-SVM)
+**** Método SVM basado en Kernel difuso (TAF-SVM)
 
-Tiene como ventajas que maneja bien el *overfitting* debido a la *fuzzificación* de los datos de entrenamiento, su adaptabilidad a diferentes distribuciones
+Tiene como ventajas que maneja bien el *overfitting* debido a la
+*fuzzificación* de los datos de entrenamiento, su adaptabilidad a
+diferentes distribuciones
 
-*** PSVM: SVM proximal $k$-categórica (k-category proximal support vector machine)
+**** PSVM: SVM proximal $k$-categórica (k-category proximal support vector machine)
 
-Tiene como gran ventaja su rapidez, puesto que su funcionamiento se basa en la resolución de un sistema de $k$ ecuaciones lineales.
+Tiene como gran ventaja su rapidez, puesto que su funcionamiento se
+basa en la resolución de un sistema de $k$ ecuaciones lineales.
 
-*** Modificación de Raskutti y Kowalcyzk 
+**** Modificación de Raskutti y Kowalcyzk 
 
-** Métodos de aprendizaje activo para aprendizaje desbalanceado
+*** Métodos de aprendizaje activo para aprendizaje desbalanceado
 
-*** Aproximación SALH
+**** Aproximación SALH
 
-La idea fundamental de este método es proporcionar un modelo genérico para la evolución de los clasificadores basados en programación genética, integrando el *subsamplimg* estocástico y una función de coste *Wilcoxon-Mann-Whitney(WMW)* modificada.
+La idea fundamental de este método es proporcionar un modelo genérico
+para la evolución de los clasificadores basados en programación
+genética, integrando el *subsamplimg* estocástico y una función de
+coste *Wilcoxon-Mann-Whitney(WMW)* modificada.
 
+** Otros métodos para aprendizaje desbalanceado
 
-* Otros métodos para aprendizaje desbalanceado
+*** Aprendizaje de una clase (one-class learning)
 
-** Aprendizaje de una clase (one-class learning)
+Estudios han ilustrado que este tipo de métodos son muy efectivos para
+tratar con datasets tremendamente desbalanceados y con alta
+dimensionalidad.
 
-Estudios han ilustrado que este tipo de métodos son muy efectivos para tratar con datasets tremendamente desbalanceados y con alta dimensionalidad.
-
-** Mahalanobi-Taguchi System (MTS)
-
-
-
-* Medida de la bondad de los métodos
+*** Mahalanobi-Taguchi System (MTS)
+** Medida de la bondad de los métodos
 
 |   | p     | n     |
 | Y | TP    | FP    |
@@ -186,28 +294,42 @@ Estudios han ilustrado que este tipo de métodos son muy efectivos para tratar c
 |   | $p_c$ | $n_c$ |
 
 
-Donde $p$ y $n$ representan la verdadera clase: positiva y negativa, y $Y$, $N$ la clase de la hipótesis.
+Donde $p$ y $n$ representan la verdadera clase: positiva y negativa, y
+$Y$, $N$ la clase de la hipótesis.
 
-\[ Exactitud = \frac{TP+TN}{P_C+N_C} \hspace{3em} Ratio_{error} = 1 - Exactitud \]
+\[ Exactitud = \frac{TP+TN}{P_C+N_C} \hspace{3em} Ratio_{error} = 1 -
+Exactitud \]
 
-En general estas dos medidas resultan suficientes para expresar la bondad de los métodos. Pero en algunos casos pueden resultar engañosas, y ser muy sensibles a cambios en los datos.
+En general estas dos medidas resultan suficientes para expresar la
+bondad de los métodos. Pero en algunos casos pueden resultar
+engañosas, y ser muy sensibles a cambios en los datos.
 
-Por ejemplo, si un *dataset* tiene 95% de datos pertenecientes a la clase mayoritaria, y 5% a la minoritaria, si clasificáramos todos los ejemplos como de la clase mayoritaria, obtendríamos un 95% de precisión, pero no clasificaríamos bien ni un solo ejemplo de la clase minoritaria.
+Por ejemplo, si un *dataset* tiene 95% de datos pertenecientes a la
+clase mayoritaria, y 5% a la minoritaria, si clasificáramos todos los
+ejemplos como de la clase mayoritaria, obtendríamos un 95% de
+precisión, pero no clasificaríamos bien ni un solo ejemplo de la clase
+minoritaria.
 
-Por convenio llamaremos a la clase mayoritaria, clase positiva; y a la clase minoritaria, clase negativa.
+Por convenio llamaremos a la clase mayoritaria, clase positiva; y a la
+clase minoritaria, clase negativa.
 
-Observamos que la exactitud tiene en cuenta tanto el total de la clase mayoritaria como minoritaria. Por tanto depende de la distribución de datos de nuestro *dataset*, y no va a ser una medida adecuada para medir la bondad de métodos de aprendizaje desbalanceado.
+Observamos que la exactitud tiene en cuenta tanto el total de la clase
+mayoritaria como minoritaria. Por tanto depende de la distribución de
+datos de nuestro *dataset*, y no va a ser una medida adecuada para
+medir la bondad de métodos de aprendizaje desbalanceado.
 
 \begin{eqnarray}
-&& Precision = \frac{TP}{TP+FP}\\
-&& Recall = \frac{TP}{TP+FN}\\
-&& F-Measure = \frac{(1+\beta)^2\cdot Recall \cdot Precision}{\beta^2\cdot Recall + Precision}
-\end{eqnarray}
+&& Precision = \frac{TP}{TP+FP}\\ && Recall = \frac{TP}{TP+FN}\\ &&
+F-Measure = \frac{(1+\beta)^2\cdot Recall \cdot
+Precision}{\beta^2\cdot Recall + Precision} \end{eqnarray}
 
 
-Donde $\beta$ indica un coeficiente para ajustar la importancia de la precisión frente a *Recall*:
+Donde $\beta$ indica un coeficiente para ajustar la importancia de la
+precisión frente a *Recall*:
 
 \[ G-mean = \sqrt{\frac{TP}{TP+FN} \cdot \frac{TN}{TN+FP}} \]
 
 - Precisión refleja la exactitud de los datos
 - *Recall* refleja la completitud de los datos
+* Notas de trabajo
+* Memoria
