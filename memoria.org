@@ -9,10 +9,10 @@
 #+LATEX_HEADER: \input{titlepage}
 #+LATEX_HEADER: \usepackage{amsmath} 
 #+LATEX_HEADER: \usepackage{amsthm}
-#+LATEX_HEADER: \newtheorem*{theorem}{Teorema}
-#+LATEX_HEADER: \newtheorem*{fact}{Proposición}
-#+LATEX_HEADER: \newtheorem*{corollary}{Corolario}
-#+LATEX_HEADER: \newtheorem*{definition}{Definición}
+#+LATEX_HEADER: \newtheorem{theorem}{Teorema}
+#+LATEX_HEADER: \newtheorem{fact}{Proposición}
+#+LATEX_HEADER: \newtheorem{corollary}{Corolario}
+#+LATEX_HEADER: \newtheorem{definition}{Definición}
 #+LATEX_HEADER: \setlength{\parindent}{0pt}
 #+LATEX_HEADER: \setlength{\parskip}{1em}
 #+LATEX_HEADER: \usepackage{color}
@@ -30,7 +30,10 @@
 ** TODO Se repite el proceso del CBO hasta que sólo se actualia la media de un clúster (?)
 ** TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
 ** TODO Buscar una traducción adecuada a Recall
+
+
 * Notas de trabajo
+
 ** Introducción
 
 El problema de la clasificación consiste en datos un conjunto de
@@ -88,6 +91,7 @@ clasificación para los datos que representan ruido. Por tanto, en
 problemas con alta dimensionalidad y baja densidad de muestreo,
 también encontramos /small-disjunts/.
 
+
 ** Notación
 
 \[S=\{(x_{i,1}, \ldots x_{i,m}, y_i)\, i=1,\ldots m \}\] \[(x_{i,1},
@@ -102,6 +106,7 @@ los de la mayoritaria. Se verifica $S_{min}\cap S_{maj} = \emptyset$
 Llamamos $E$ al conjunto de instancias generadas mediante técnicas de
 /sampling/ y $E_{maj}$, $E_{min}$ a las etiquetadas como de las clases
 mayoritaria y minoritaria, respectivamente.
+
 
 ** Oversampling y undersampling
 
@@ -209,6 +214,59 @@ elementos, y los de la clase minoritaria también. Esto elimina el
 desbalanceo /within-class/ y el /between-class/.
 
 *** Sampling + Boosting
+**** SMOTEBosst 
+Combina AdaBoost.M2 + SMOTE
+**** DataBoost-IM
+Genera instancias artificiales de acuerdo al ratio dificultad de
+aprendizaje entre clases
+**** JOUS-Boost
+Aplica boosting donde a cada paso, en el /oversampling/ que hace de
+instancias minoritarias introduce /jittering/ (ruido en las
+componentes que selecciona de forma uniforme con media 0) ****
+
+
+** Cost-Sensitive
+Llamamos $C(i,j)$ al coste de clasificar una instancia de la clase $j$
+como de la clase $i$, donde $C(i,i)= 0. En el claso de clasificación
+binaria, tendríamos $i,j \in \{Min, Maj\}$ clases minoritarias y
+mayoritarias.
+
+El riesgo condicional viene dado por la fórmula $R(i|x) = \sum_j
+P(j|x)C(i,j)$ 
+
+Los métodos de esta categoría se clasifican principalmente en:
+
+*** TODO /Cost-Sensitive Dataspace Weighting/
+Se construyen sobre el teorema de translación.
+
+**** AdaC1, AdaC2, AdaC3
+Modifican AdaBoost.M1, cambiando la función de distribución de los
+datos con las iteraciones, pero introduciendo un factor de
+coste. Estos algoritmos incrementan la probabilidad de elegir al hacer
+/sampling/ los ejemplos que más clasifica incorrectamente el
+clasificador.
+
+*** TODO Metacost-Sensitive
+
+*** TODO Diseño de componentes
+Adapta el coste a los paradigmas de ciertos clasificadores.
+
+**** Árboles de decisión cost-sensitive
+En presencia de desbalanceo de clases, la poda de árboles tiende a
+eliminar las hojas describiendo el concepto minoritario. Por ello la
+poda resulta muy negativa al aplicarla sobre los árboles de decisión,
+pero el uso de árboles sin podar tampoco resuelve el problema de los
+/small disjuncts/ por ejemplo, porque se produce /overfiting/. Los
+esfuerzos se centran en mejorar el estimador probabilístico de cada
+clase en los nodos del árbol.
+
+**** Redes neuronales cost-sensitive 
+
+**** Redes bayesianas cost-sensitive
+
+**** Máquinas de soporte vectorial cost-sensitive
+
+
 ** Métodos basados en kernel y métodos de aprendizaje activo
 
 *** Framework de aprendizaje basado en núcleo
@@ -261,7 +319,7 @@ Tiene como ventajas que maneja bien el *overfitting* debido a la
 *fuzzificación* de los datos de entrenamiento, su adaptabilidad a
 diferentes distribuciones
 
-**** PSVM: SVM proximal $k$-categórica (k-category proximal support vector machine)
+**** PSVM: SVM proximal $k$ -categórica ($k$ -category proximal support vector machine)
 
 Tiene como gran ventaja su rapidez, puesto que su funcionamiento se
 basa en la resolución de un sistema de $k$ ecuaciones lineales.
@@ -277,6 +335,7 @@ para la evolución de los clasificadores basados en programación
 genética, integrando el *subsamplimg* estocástico y una función de
 coste *Wilcoxon-Mann-Whitney(WMW)* modificada.
 
+
 ** Otros métodos para aprendizaje desbalanceado
 
 *** Aprendizaje de una clase (one-class learning)
@@ -286,6 +345,8 @@ tratar con datasets tremendamente desbalanceados y con alta
 dimensionalidad.
 
 *** Mahalanobi-Taguchi System (MTS)
+
+
 ** Medida de la bondad de los métodos
 
 |   | p     | n     |
@@ -331,5 +392,6 @@ precisión frente a *Recall*:
 
 - Precisión refleja la exactitud de los datos
 - *Recall* refleja la completitud de los datos
-* Notas de trabajo
+
+
 * Memoria
