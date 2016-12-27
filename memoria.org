@@ -2,11 +2,10 @@
 #+AUTHOR: Ignacio Cordón Castillo
 #+OPTIONS: toc:t
 #+LANGUAGE: es
-#+STARTUP: latexpreview
 #+STARTUP: indent
 #+DATE:
 #+LATEX_HEADER: \usepackage[spanish]{babel}
-#+LATEX_HEADER: \input{titlepage}
+#+LATEX_HEADER: \input{/mnt/580F625C089B22E0/Universidad/5/CuatrimestreI/TFG/Repo/titlepage}
 #+LATEX_HEADER: \usepackage{amsmath} 
 #+LATEX_HEADER: \usepackage{amsthm}
 #+LATEX_HEADER: \newtheorem{theorem}{Teorema}
@@ -30,7 +29,6 @@
 ** TODO Se repite el proceso del CBO hasta que sólo se actualia la media de un clúster (?)
 ** TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
 ** TODO Buscar una traducción adecuada a Recall
-
 
 * Notas de trabajo
 
@@ -393,5 +391,20 @@ precisión frente a *Recall*:
 - Precisión refleja la exactitud de los datos
 - *Recall* refleja la completitud de los datos
 
-
 * Memoria
+** PAC learning
+*** Introducción
+Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
+
+- *Espacio de instancias*: $\mathcal{X}$. LLamamos una instancia a $x\in \mathcal{X}$
+- *Conjunto de etiquetas*: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario.
+- *Conjunto/Secuencia de entrenamiento*: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una secuencia en la que pueden repetirse tuplas. 
+- *Resultado del aprendizaje*: una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. Se usa la notación $A(S)$ para denotar la hipótesis que un algoritmo $A$ devuelve para una secuencia de entrenamiento $S$.
+- *Generación de instancias*: Asumimos la existencia de una distribuciónd de probabilidad $\mathca{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
+- *Verdadero etiquetado*: Asumimos la existencia de una función $f: \mathcal{X} \rightarrow \mathcal{Y}$ que devuelve el verdadero etiquetado de todas las instancias.
+- *Error del clasificador*: Sea $A \subset \mathcal{X}$ miembro de alguna $\sigma$ -álgebra de conjuntos de $\mathcal{X}$, $\mathcal{D}$ distribución de probabilidad sobre $\mathcal{X}$, $\mathca{D}(A)$ denota la probabilidad de que un punto de $\mathcal{X}$ esté en $A$, es decir, la probabilidad de que ocurra el hecho $A$. Basándonos en este, definimos el error del clasificador $h$ como:
+
+\[L_{D,f}(h) := \mathcal{D}(\{h(x)\neq f(x)\}) = \mathbb{P}_{x\sim \mathcal{D}} [h(x)\neq f(x)]\]
+
+Además asumimos que el algoritmo de aprendizaje no conoce ni la distribución $\mathcal{D}$ ni la función $f$.
+
