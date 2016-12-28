@@ -389,7 +389,7 @@ precisión frente a *Recall*:
 *** Introducción
 Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
 
-- *Espacio de instancias*: $\mathcal{X}$. LLamamos una instancia a $x\in \mathcal{X}$
+- *Dominio*: $\mathcal{X}$. LLamamos una instancia a $x\in \mathcal{X}$
 - *Conjunto de etiquetas*: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario.
 - *Verdadero etiquetado*: Asumimos la existencia de una función $f: \mathcal{X} \rightarrow \mathcal{Y}$ que devuelve el verdadero etiquetado de todas las instancias.
 - *Generación de instancias*: Asumimos la existencia de una distribuciónd de probabilidad $\mathca{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
@@ -438,15 +438,65 @@ Se intenta corregir el ERM corrigiendo el espacio de búsqueda, esto es, la clas
 
 Notaremos a este nuevo paradigma $ERM_{\mathcal{H}}(S)$, y lo definimos de manera que:
 
-\[ERM_{\mathcal{H}}(S) \in argmin_{h\in \mathcal{H}} L_S(h)\]
+\[ERM_{\mathcal{H}}(S) := h_S \in argmin_{h\in \mathcal{H}} L_S(h)\]
 
-Por el momento asumimos:
+***** ERM con /sesgo inductivo/ hacia una clase de funciones finita
+
+Por el momento asumiremos $\mathcal{H}$ es finito. También asumiremos la *propiedad de factibilidad* como una hipótesis.
 
 #+begin_definition
-*Hipótesis de factibilidad*
+*Propiedad de factibilidad*
 
-Existe  $\bar{h} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$
+Existe  $\bar{h} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$.
 #+end_definition
+
+La hipótesis de factibilidad implica que $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(\bar{h})=0] = 1$, y por tanto $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h_S)=0]=1$.
+
+El valor $L_{\mathcal{D},f}(h_S)$ depende del conjunto de entrenamiento $S$, y la elección del mismo está sometida al azar. Además, necesitamos definir cómo de buena será la predicción.
+
+
+#+begin_definition
+*Exactitud y confianza de una predicción*
+
+Daremos la definición para hipótesis minimizadoras del riesgo empírico.
+
+Sean un dominio $\mathcal{X}\sim \mathcal{D}$, un conjunto de etiquetas $\mathcal{Y} = \{0,1\}$, y $f: \mathcal{X}\rightarrow \mathcal{Y}$ una función de verdadero etiquetado. 
+
+Si se verifica que para unos ciertos $0 \le \epsilon, \delta \le 1$ se cumple:
+
+\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) \le \epsilon] \ge 1-\delta\]
+
+entonces llamamos $\epsilon$ a la exactitud de la predicción, y $1-\delta$ a la confianza de la predicción.
+#+end_definition
+
+
+#+begin_theorem
+*Las clases finitas de funciones son PAC learnable*
+
+Sea un dominio $\mathcal{X}$, un conjunto de etiquetas $\mathcal{Y} = \{0,1\}$ y $\mathcal{H}$ una clase de funciones finita. Sean $0 \le \epsilon, \delta \le 1$, y un natural $m\in \mathbb{N}$ verificando:
+
+\[m \ge \frac{1}{\epsilon}log\left(\frac{|\mathcal{H}|}{\delta}\right)\]
+
+Entonces para toda función de verdadero etiquetado $f: \mathcal{X}\rightarrow \mathcal{Y}$, y para toda distribución $\mathcal{X}\sim \mathcal{D}$ para la que se verifique la *propiedad de factibilidad* entonces las hipótesis que obtenemos a través del algoritmo ERM son con una confianza superior a $1-\delta$ (aproximadamente) $\epsilon$ (correctas) exactas.
+#+end_theorem
+
+Fijada una distribución $\mathcal{D}$ y una función de etiquetado $f$, se tiene:
+
+\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le  \mathbb{P}_{S\sim \mathcal{D}^m}[\exists h\in \mathcal{H} : L_S(h) = 0] \le \sum_{h\in \mathcal{H}} \mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h) = 0] \]
+
+La primera desigualdad viene dada porque dada $h_S$ se verifica, por la propiedad de factibilidad, que $L_S(h_S)=0$.
+
+Además:
+
+\begin{align*}
+\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h) = 0] = \mathbb{P}_{(x_1, \ldots x_n)\sim \mathcal{D}^m} [\forall i \quad h(x_i) \neq f(x_i)] =\\
+= \prod_{i=1}^m \mathbb{P}_{x\sim \mathcal{D}}[h(x)=f(x)] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\epsilon)^m \le e^{-\epsilon m}
+\end{align*}
+
+
+Las dos desigualdades probadas, junto a la hipótesis del enunciado, dan lugar a:
+
+\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le |\mathcal{H}|e^{-\epsilon m} \le \delta\]
 
 * Memoria
 
