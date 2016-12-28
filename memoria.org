@@ -484,7 +484,7 @@ Fijada una distribución $\mathcal{D}$ y una función de etiquetado $f$, se tien
 
 \[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le  \mathbb{P}_{S\sim \mathcal{D}^m}[\exists h\in \mathcal{H} : L_S(h) = 0] \le \sum_{h\in \mathcal{H}} \mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h) = 0] \]
 
-La primera desigualdad viene dada porque dada $h_S$ se verifica, por la propiedad de factibilidad, que $L_S(h_S)=0$.
+La primera desigualdad viene dada porque dada $h_S$ se verifica, por la propiedad de factibilidad, que $L_S(h_S)=0$. La segunda por subaditividad.
 
 Además:
 
@@ -497,6 +497,19 @@ Además:
 Las dos desigualdades probadas, junto a la hipótesis del enunciado, dan lugar a:
 
 \[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le |\mathcal{H}|e^{-\epsilon m} \le \delta\]
+
+** Ejercicios
+*** 2.2. Sea $\mathcal{H}$ clase de clasificadores binarios sobre un dominio $\mathcal{X}$. Sea $\mathcal{D}$ una distribución desconocida sobre $\mathcal{X}$. Sea $f$ una hipótesis objetivo en $\mathcal{H}$. Se fija $h\in \mathcal{H}$. Probar que: 
+
+\[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\mathbbb{D},f}(h)\]
+
+Llamamos $P=P_{x\sim \mathcal{D}}(f(x)\neq h(x))$
+
+\begin{align*}
+\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] &= \sum_{k=0}^m \frac{k}{m} \binom{m}{k} P^k(1-P)^{m-k} = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} P^k(1-P)^{m-k} =\\
+&= \sum_{k=1}^m \binom{m-1}{k-1} P^k(1-P)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} P^{k+1}(1-P)^{m-1-k} = \\
+&= P\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} P^{k}(1-P)^{m-1-k} = P(1+(1-P))^{m-1} = P
+\end{align*}
 
 * Memoria
 
