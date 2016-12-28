@@ -31,8 +31,8 @@
 ** TODO Buscar una traducción adecuada a Recall
 
 * Notas de trabajo
-
-** Introducción
+** Small Disjuncts
+*** Introducción
 
 El problema de la clasificación consiste en datos un conjunto de
 datos...
@@ -89,8 +89,7 @@ clasificación para los datos que representan ruido. Por tanto, en
 problemas con alta dimensionalidad y baja densidad de muestreo,
 también encontramos /small-disjunts/.
 
-
-** Notación
+*** Notación
 
 \[S=\{(x_{i,1}, \ldots x_{i,m}, y_i)\, i=1,\ldots m \}\] \[(x_{i,1},
 \ldots x_{i,m})\in X\] \[y_i \in \{1\ldots C\}\]
@@ -105,25 +104,24 @@ Llamamos $E$ al conjunto de instancias generadas mediante técnicas de
 /sampling/ y $E_{maj}$, $E_{min}$ a las etiquetadas como de las clases
 mayoritaria y minoritaria, respectivamente.
 
-
-** Oversampling y undersampling
+*** Oversampling y undersampling
 
 En el /oversampling/ seleccionamos un conjunto $E\subseteq S_{min}$ y
 lo adherimos a $S_{min}$. El /undersampling/ consiste en eliminar un
 subconjunto de $S_{maj}$
 
-*** /Informed undersampling/
+**** /Informed undersampling/
 
 Ejemplos de esta técnica son los algoritmos:
 
-**** EasyEnsemble
+***** EasyEnsemble
 
 Método de aprendizaje no supervisado, que genera un conjunto de
 clasificadores tomando muestras aleatorias con remplazamiento de la
 clase mayoritaria, juntándolas con las instancias de la clase
 minoritaria originales y generando un clasificador.
 
-**** BalanceCascade
+***** BalanceCascade
 
 Toma $E$ verificando $|E_{maj}| = |S_{min}|$, e inferimos un
 clasificador $H_1$ desde $N_1={E_{maj}\cup S_{min}}$. Por inducción,
@@ -132,26 +130,26 @@ llamando $N_{maj}^{*}$ los ejemplos de $S_{maj}$ correctamente
 clasificados por $H_1$, eliminándolos de $S_{maj}$ y tomando de nuevo
 un $N_n={E_{maj}\cup S_{min}}$
 
-**** NearMiss-1
+***** NearMiss-1
 
 Elimina aquellos ejemplos de la clase mayoritaria cuya distancia media
 a 3 vecinos más cercanos de la clase minoritaria es mínima.
 
-**** NearMiss-2
+***** NearMiss-2
 
 Elimina aquellos ejemplos de la clase mayoritaria cuya distancia media
 a 3 vecinos más lejanos de la clase minoritaria es mínima.
 
-**** NearMiss-3
+***** NearMiss-3
 
 Elimina un número dado de ejemplos de la clase mayoritaria más
 cercanos a cada ejemplo de la clase minoritaria.
 
-**** One-sided selection (OSS)
+***** One-sided selection (OSS)
 
-*** /Sampling/ artificial
+**** /Sampling/ artificial
 
-**** Synthetic minority oversampling technique(SMOTE)
+***** Synthetic minority oversampling technique(SMOTE)
 
 Genera instancias etiquetadas como minoritarias haciendo
 
@@ -159,7 +157,7 @@ Genera instancias etiquetadas como minoritarias haciendo
 
 Con $x_i\in S_{min}$, $\delta \in[0,1]$, $\widehat{x_i}$ una instancia
 de entre sus $K$ vecinos máx cercanos en $S_{min}$ con $K$ prefijado.
-*** Adaptative Synthetic Sampling
+**** Adaptative Synthetic Sampling
 
 SMOTE no tiene en cuenta el vecindario de las instancias minoritarias
 para generar una nueva a partir de ellas. Así, una instancia aislada
@@ -167,7 +165,7 @@ que bien podría representar ruido, generaría otra instancia a partir
 de ella, y en conjunto, si esta circunstancia es asidua, se generaría
 /overlapping/.
 
-**** Borderline-SMOTE
+***** Borderline-SMOTE
 
 Fijado $K$ etiqueta como ejemplos de la frontera aquellos $x_i\in
 S_{min}$ verificando que tienen más vecinos de la clase mayoritaria
@@ -177,7 +175,7 @@ como ruido y se elimina a efectos de buscar el clasificador), en otro
 caso se generan instancias artificiales a partir de los elementos
 "fronterizos" mediante SMOTE.
 
-**** ADASYN
+***** ADASYN
 
 Toma \(G = (|S_{maj}| - |S_{min}|)\cdot \beta \) done \(\beta\)
 representa el nivel de balanceo buscado después del algoritmo. Para
@@ -190,7 +188,7 @@ i=1,\ldots, |S_{min}|\]
 Para dicho $x_i$ necesitamos generar $g_i = \Gamma_i \cdot G$
 instancias.
 
-*** Samplig con técnicas de limpieza
+**** Samplig con técnicas de limpieza
 
 Se usan los links Tomek. Dos instancias $x_i, x_j$ forman un link de
 Tomek si $x_i \in S_{min}, x_j \in S_{maj}$ y no existe $x_k$
@@ -198,11 +196,11 @@ verificando $min(d(x_i, x_k), d(x_j, x_k)) < d(x_i, x_j)$. Los links
 de Tomek representan /overlapping/ y por tanto basta eliminarlos
 después de haber hecho /oversampling/.
 
-**** SMOTE + ENN (Edited Nearest Neighbour)
-**** SMOTE + enlaces Tomek
+***** SMOTE + ENN (Edited Nearest Neighbour)
+***** SMOTE + enlaces Tomek
 
-*** Sampling basado en /clustering/
-**** CBO
+**** Sampling basado en /clustering/
+***** CBO
 El algoritmo CBO (Cluster Based Oversampling) usa el algoritmo
 $K$-means con $K$ prefijado para calcular los clústers del conjunto de
 entrenamiento. Posteriormente hace /oversampling/ de los demás
@@ -211,19 +209,18 @@ entrenamiento. Posteriormente hace /oversampling/ de los demás
 elementos, y los de la clase minoritaria también. Esto elimina el
 desbalanceo /within-class/ y el /between-class/.
 
-*** Sampling + Boosting
-**** SMOTEBosst 
+**** Sampling + Boosting
+***** SMOTEBosst 
 Combina AdaBoost.M2 + SMOTE
-**** DataBoost-IM
+***** DataBoost-IM
 Genera instancias artificiales de acuerdo al ratio dificultad de
 aprendizaje entre clases
-**** JOUS-Boost
+***** JOUS-Boost
 Aplica boosting donde a cada paso, en el /oversampling/ que hace de
 instancias minoritarias introduce /jittering/ (ruido en las
 componentes que selecciona de forma uniforme con media 0) ****
 
-
-** Cost-Sensitive
+*** Cost-Sensitive
 Llamamos $C(i,j)$ al coste de clasificar una instancia de la clase $j$
 como de la clase $i$, donde $C(i,i)= 0. En el claso de clasificación
 binaria, tendríamos $i,j \in \{Min, Maj\}$ clases minoritarias y
@@ -234,22 +231,22 @@ P(j|x)C(i,j)$
 
 Los métodos de esta categoría se clasifican principalmente en:
 
-*** TODO /Cost-Sensitive Dataspace Weighting/
+**** TODO /Cost-Sensitive Dataspace Weighting/
 Se construyen sobre el teorema de translación.
 
-**** AdaC1, AdaC2, AdaC3
+***** AdaC1, AdaC2, AdaC3
 Modifican AdaBoost.M1, cambiando la función de distribución de los
 datos con las iteraciones, pero introduciendo un factor de
 coste. Estos algoritmos incrementan la probabilidad de elegir al hacer
 /sampling/ los ejemplos que más clasifica incorrectamente el
 clasificador.
 
-*** TODO Metacost-Sensitive
+**** TODO Metacost-Sensitive
 
-*** TODO Diseño de componentes
+**** TODO Diseño de componentes
 Adapta el coste a los paradigmas de ciertos clasificadores.
 
-**** Árboles de decisión cost-sensitive
+***** Árboles de decisión cost-sensitive
 En presencia de desbalanceo de clases, la poda de árboles tiende a
 eliminar las hojas describiendo el concepto minoritario. Por ello la
 poda resulta muy negativa al aplicarla sobre los árboles de decisión,
@@ -258,31 +255,30 @@ pero el uso de árboles sin podar tampoco resuelve el problema de los
 esfuerzos se centran en mejorar el estimador probabilístico de cada
 clase en los nodos del árbol.
 
-**** Redes neuronales cost-sensitive 
+***** Redes neuronales cost-sensitive 
 
-**** Redes bayesianas cost-sensitive
+***** Redes bayesianas cost-sensitive
 
-**** Máquinas de soporte vectorial cost-sensitive
+***** Máquinas de soporte vectorial cost-sensitive
 
+*** Métodos basados en kernel y métodos de aprendizaje activo
 
-** Métodos basados en kernel y métodos de aprendizaje activo
+**** Framework de aprendizaje basado en núcleo
 
-*** Framework de aprendizaje basado en núcleo
-
-**** SVMs
+***** SVMs
 Problema de las máquinas de soporte de vectores es que tienden a
 clasificar los ejemplos como pertenecientes a la clase mayoritaria,
 para maximizar la tasa de acierto.
 
-*** Sampling hibridado con métodos basados en kernel
+**** Sampling hibridado con métodos basados en kernel
 
-**** SDCs: SMOTE with different costs
+***** SDCs: SMOTE with different costs
 
-**** Over/undersampled SVMs
+***** Over/undersampled SVMs
 
-**** SVMs con clasificación errónea asimétrica(SVMs with asymmetric misclassification)
+***** SVMs con clasificación errónea asimétrica(SVMs with asymmetric misclassification)
 
-**** Granular Support Vector Machines (GSVMs)
+***** Granular Support Vector Machines (GSVMs)
 
 Se basan en los principios de la teoría del aprendizaje estadístico y
 de la teoría de computación granular.
@@ -292,60 +288,58 @@ debido al uso de paralelismo.
 
 Destacan en este grupo los **GSVM-RU**
 
-*** Métodos de modificación de kernels para aprendizaje desbalanceado
+**** Métodos de modificación de kernels para aprendizaje desbalanceado
 
 Se centran en modificar SVM. Hay un kernel basado a su vez en OFS y
 ROWLS.
 
-**** OFS: Orthogonal Forward Selection
+***** OFS: Orthogonal Forward Selection
 
 Integra ideas de LOO (*Leaving-One-Out*) y AUC (Área bajo la curva)
 
-**** ROWLS: Orthogonal Weigthed Least Squares
+***** ROWLS: Orthogonal Weigthed Least Squares
 
 Usado para asignar mayor peso a los ejemplos erróneos de la clase
 minoritaria.
 
-**** Métodos para ajustar la frontera de los SVM: BM, BPs, CBA, KBA
+***** Métodos para ajustar la frontera de los SVM: BM, BPs, CBA, KBA
 
 Destaca especialmente KBA, que realiza una aproximación al problema
 modificando la matriz del kernel en el espacio de caracterísicas.
 
-**** Método SVM basado en Kernel difuso (TAF-SVM)
+***** Método SVM basado en Kernel difuso (TAF-SVM)
 
 Tiene como ventajas que maneja bien el *overfitting* debido a la
 *fuzzificación* de los datos de entrenamiento, su adaptabilidad a
 diferentes distribuciones
 
-**** PSVM: SVM proximal $k$ -categórica ($k$ -category proximal support vector machine)
+***** PSVM: SVM proximal $k$ -categórica ($k$ -category proximal support vector machine)
 
 Tiene como gran ventaja su rapidez, puesto que su funcionamiento se
 basa en la resolución de un sistema de $k$ ecuaciones lineales.
 
-**** Modificación de Raskutti y Kowalcyzk 
+***** Modificación de Raskutti y Kowalcyzk 
 
-*** Métodos de aprendizaje activo para aprendizaje desbalanceado
+**** Métodos de aprendizaje activo para aprendizaje desbalanceado
 
-**** Aproximación SALH
+***** Aproximación SALH
 
 La idea fundamental de este método es proporcionar un modelo genérico
 para la evolución de los clasificadores basados en programación
 genética, integrando el *subsamplimg* estocástico y una función de
 coste *Wilcoxon-Mann-Whitney(WMW)* modificada.
 
+*** Otros métodos para aprendizaje desbalanceado
 
-** Otros métodos para aprendizaje desbalanceado
-
-*** Aprendizaje de una clase (one-class learning)
+**** Aprendizaje de una clase (one-class learning)
 
 Estudios han ilustrado que este tipo de métodos son muy efectivos para
 tratar con datasets tremendamente desbalanceados y con alta
 dimensionalidad.
 
-*** Mahalanobi-Taguchi System (MTS)
+**** Mahalanobi-Taguchi System (MTS)
 
-
-** Medida de la bondad de los métodos
+*** Medida de la bondad de los métodos
 
 |   | p     | n     |
 | Y | TP    | FP    |
@@ -391,20 +385,68 @@ precisión frente a *Recall*:
 - Precisión refleja la exactitud de los datos
 - *Recall* refleja la completitud de los datos
 
-* Memoria
 ** PAC learning
 *** Introducción
 Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
 
 - *Espacio de instancias*: $\mathcal{X}$. LLamamos una instancia a $x\in \mathcal{X}$
 - *Conjunto de etiquetas*: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario.
-- *Conjunto/Secuencia de entrenamiento*: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una secuencia en la que pueden repetirse tuplas. 
-- *Resultado del aprendizaje*: una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. Se usa la notación $A(S)$ para denotar la hipótesis que un algoritmo $A$ devuelve para una secuencia de entrenamiento $S$.
-- *Generación de instancias*: Asumimos la existencia de una distribuciónd de probabilidad $\mathca{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
 - *Verdadero etiquetado*: Asumimos la existencia de una función $f: \mathcal{X} \rightarrow \mathcal{Y}$ que devuelve el verdadero etiquetado de todas las instancias.
+- *Generación de instancias*: Asumimos la existencia de una distribuciónd de probabilidad $\mathca{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
+- *Conjunto/Secuencia de entrenamiento*: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una secuencia en la que pueden repetirse tuplas. Los ejemplos del conjunto de entrenamiento representan una m.a.s $(\mathcal{X}_1,\ldots \mathcal{X}_m)$, muestra aleatoria simple, idénticamente distribuida, donde cada $X_i$ sigue la misma distribución que $\mathcal{X}$, $X_i \sim \mathcal{D}$. Además, cada ejemplo del conjunto de entrenamiento se etiqueta según $f$. Notamos este hecho $S \sim \mathcal{D}^m$.
+- *Resultado del aprendizaje*: una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. Se usa la notación $A(S)$ para denotar la hipótesis que un algoritmo $A$ devuelve para una secuencia de entrenamiento $S$.
 - *Error del clasificador*: Sea $A \subset \mathcal{X}$ miembro de alguna $\sigma$ -álgebra de conjuntos de $\mathcal{X}$, $\mathcal{D}$ distribución de probabilidad sobre $\mathcal{X}$, $\mathca{D}(A)$ denota la probabilidad de que un punto de $\mathcal{X}$ esté en $A$, es decir, la probabilidad de que ocurra el hecho $A$. Basándonos en este, definimos el error del clasificador $h$ como:
 
 \[L_{D,f}(h) := \mathcal{D}(\{h(x)\neq f(x)\}) = \mathbb{P}_{x\sim \mathcal{D}} [h(x)\neq f(x)]\]
 
 Además asumimos que el algoritmo de aprendizaje no conoce ni la distribución $\mathcal{D}$ ni la función $f$.
+
+**** Minimización del riesgo empírico (ERM - /Empirical Risk Minimization/)
+
+#+begin_definition
+*Riesgo empírico (ER)*
+
+Definimos el riesgo empírico o error empírico como:
+
+\[L_S(h) = \frac{|i\in {1\ldots m}: h(x_i) \neq y_i|}{m}\]
+#+end_definition
+
+Podemos pensar en él como el error del clasificador sobre el conjunto de entrenamiento. El paradigma que intenta buscar una hipótesis que minimice el error empírico recibe el nombre de /Minimización de Riesgo Empírico - ERM/ y notamos $ERM(S)$ al clasificador que obtenemos basándonos en este paradigma para un determinado conjunto de entrenamiento $S$.
+
+Este error no es siempre óptimo. Pensemos en el siguiente ejemplo:
+
+Sea $\mathcal{X} = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[0,2]\subset \mathbb{R}$, y la siguiente función:
+
+\[f(x) = \left\{\begin{array}{lcl}
+1 && x\in [0,1]\\
+0 && x\in \mathbb{R}\setminus [0,1]
+\end{array}\right.\]
+
+
+$S = ((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ y el clasificador:
+
+\[h_S(x) = \left\{\begin{array}{lcl}
+y_i && \exists i\in \{1\ldots m\} : x=x_i\\
+0 && \nexists i\in \{1\ldots m\} : x=x_i
+\end{array}\right.\]
+
+Este clasificador es perfecto respecto a la minimización de riesgo empírico, pero $\mathbb{P}_{x\sim \mathcal{D}}[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el clasificador idénticamente 1. A este fenómeno lo denominamos *overfitting*.
+
+**** ERM con /sesgo inductivo/
+
+Se intenta corregir el ERM corrigiendo el espacio de búsqueda, esto es, la clase de hipótesis $\mathcal{H}$ desde la que el algoritmo puede escoger un $h: \mathcal{X}\rightarrow \mathcal{Y}$. Llamamos a esto /sesgo inductivo/ puesto que se asumirá una determinada clase de funciones $\mathcal{H}$ en función de las características del problema.
+
+Notaremos a este nuevo paradigma $ERM_{\mathcal{H}}(S)$, y lo definimos de manera que:
+
+\[ERM_{\mathcal{H}}(S) \in argmin_{h\in \mathcal{H}} L_S(h)\]
+
+Por el momento asumimos:
+
+#+begin_definition
+*Hipótesis de factibilidad*
+
+Existe  $\bar{h} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$
+#+end_definition
+
+* Memoria
 
