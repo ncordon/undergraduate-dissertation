@@ -423,7 +423,7 @@ Sea $\mathcal{X} = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[
 \end{array}\right.\]
 
 
-$S = ((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ y el clasificador:
+$S = \{(x_1,y_1), \ldots (x_m, y_m)\}$ un conjunto de entrenamiento de tamaño $m$ sin elementos repetidos y el clasificador:
 
 \[h_S(x) = \left\{\begin{array}{lcl}
 y_i && \exists i\in \{1\ldots m\} : x=x_i\\
@@ -480,28 +480,55 @@ Sea un dominio $\mathcal{X}$, un conjunto de etiquetas $\mathcal{Y} = \{0,1\}$ y
 Entonces para toda función de verdadero etiquetado $f: \mathcal{X}\rightarrow \mathcal{Y}$, y para toda distribución $\mathcal{X}\sim \mathcal{D}$ para la que se verifique la *propiedad de factibilidad* entonces las hipótesis que obtenemos a través del algoritmo ERM son con una confianza superior a $1-\delta$ (aproximadamente) $\epsilon$ (correctas) exactas.
 #+end_theorem
 
-Fijada una distribución $\mathcal{D}$ y una función de etiquetado $f$, se tiene:
+Fijada una distribución $\mathcal{D}$ y una función de etiquetado $f$, notamos:
 
-\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le  \mathbb{P}_{S\sim \mathcal{D}^m}[\exists h\in \mathcal{H} : L_S(h) = 0] \le \sum_{h\in \mathcal{H}} \mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h) = 0] \]
+\[\mathcal{H}_B = \{h\in \mathcal{H}: L_{\mathcal{D},f}(h) > \epsilon\}\]
+
+Se tiene:
+
+\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le  \mathbb{P}_{S\sim \mathcal{D}^m}[\exists h\in \mathcal{H}_B : L_S(h) = 0] \le \sum_{h\in \mathcal{H}_B} \mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h) = 0] \]
 
 La primera desigualdad viene dada porque dada $h_S$ se verifica, por la propiedad de factibilidad, que $L_S(h_S)=0$. La segunda por subaditividad.
 
-Además:
+Además, fijada $h\in \mathcal{H}_B$, como $L_{\mathcal{D},f}(h) > \epsilon$:
 
 \begin{align*}
-\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h) = 0] = \mathbb{P}_{(x_1, \ldots x_n)\sim \mathcal{D}^m} [\forall i \quad h(x_i) \neq f(x_i)] =\\
+\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h) = 0] = \mathbb{P}_{(x_1, \ldots x_n)\sim \mathcal{D}^m} [\forall i \quad h(x_i) = f(x_i)] =\\
 = \prod_{i=1}^m \mathbb{P}_{x\sim \mathcal{D}}[h(x)=f(x)] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\epsilon)^m \le e^{-\epsilon m}
 \end{align*}
 
 
-Las dos desigualdades probadas, junto a la hipótesis del enunciado, dan lugar a:
+Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $\mathcal{H}_B \le \mathcal{H}$ dan lugar a:
 
 \[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le |\mathcal{H}|e^{-\epsilon m} \le \delta\]
 
 ** Ejercicios
-*** 2.2. Sea $\mathcal{H}$ clase de clasificadores binarios sobre un dominio $\mathcal{X}$. Sea $\mathcal{D}$ una distribución desconocida sobre $\mathcal{X}$. Sea $f$ una hipótesis objetivo en $\mathcal{H}$. Se fija $h\in \mathcal{H}$. Probar que: 
+*** 2.1
+
+#+begin_wording
+/Overfitting con polinomios/. Prueba que dado un conjunto $S=\{(x_i, f(x_i))\}_{i=1}^m \subseteq (\mathbb{R}^d \times \{0,1\})^m$ existe un polinomio $p_S$ verificando $h_S(x)=1$ sii $p_S(x)\ge 0$ con:
+
+\[h(x) = \left\{\begin{array}{lcl}
+y_i && \exists i : x_i=x\\
+0   && si\quad no
+\end{array}\right.\]
+
+De aquí se deduce que la clase de funciones de umbrales polinómicos usando el paradigma ERM puede llevar a /overfitting/
+#+end_wording
+
+Tomamos:
+
+\[p_S(x) = -\prod_{i : f(x_i)=1} (x-x_i)^2\]
+
+Es un polinomio que se anula en los puntos donde $h_S(x)=1$ y tiene un valor menor que 0 en otro caso.
+
+*** 2.2
+
+#+begin_wording
+Sea $\mathcal{H}$ clase de clasificadores binarios sobre un dominio $\mathcal{X}$. Sea $\mathcal{D}$ una distribución desconocida sobre $\mathcal{X}$. Sea $f$ una hipótesis objetivo en $\mathcal{H}$. Se fija $h\in \mathcal{H}$. Probar que: 
 
 \[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\mathbbb{D},f}(h)\]
+#+end_wording
 
 Llamamos $P=P_{x\sim \mathcal{D}}(f(x)\neq h(x))$
 
@@ -510,6 +537,76 @@ Llamamos $P=P_{x\sim \mathcal{D}}(f(x)\neq h(x))$
 &= \sum_{k=1}^m \binom{m-1}{k-1} P^k(1-P)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} P^{k+1}(1-P)^{m-1-k} = \\
 &= P\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} P^{k}(1-P)^{m-1-k} = P(1+(1-P))^{m-1} = P
 \end{align*}
+*** 2.3
+
+#+begin_wording
+*Clasificadores de rectángulo*
+
+Un clasificador de rectángulo es un clasificador que asigna 1 a los puntos que se quedan dentro de un cierto rectángulo en el plano. 
+
+\[h_{a,b,c,d}(x,y) = \left\{\begin{array}{lcl}
+1 && a\le x\le b, c\le y\le d\\
+0 && si \quad no
+\end{array}\right.\]
+
+La clase de clasificadores de rectángulo en el plano se define por:
+
+\[\mathcal{H}^2_{rec} = \{ h_{a,b,c,d}: a\le b, c\le d\}\]
+
+Asumiremos propiedad de factibilidad.
+
+1. Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos del conjunto de entrenamiento. Prueba que $A$ es un ERM.
+2. Probar que si $A$ recibe un conjunto de entrenamiento de tamaño mayor o igual que $\frac{4}{\epsilon}log\left(\frac{4}{\delta}\right)$ entonces con probabiliad al menos $1-\delta$ devuelve una hipótesis con error no superior a $\epsilon$.
+3. Generaliza a rectángulos en $\mathbb{R}^d$
+4. Probar que el tiempo de aplicación del algoritmo $A$ anterior es polinomial en $d$, $1/\epsilon$, y en $log(1/\delta)$.
+#+end_wording
+
+1. 
+
+Partiendo de la propiedad de factibilidad, debe existir un clasificador de rectángulo $\bar{h} = h_{a,b,c,d}$ que haga el ERM nulo y que verifique $L_{\mathcal{D},f}(\bar{h})$. Por tanto debe verificarse que para un conjunto de entrenamiento $S$, $h_S$ debe contener a todos los ejemplos positivos del conjunto de entrenamiento, ya que si valiese 0 en algún ejemplo positivo del conjunto de entrenamiento, el ERM sería mayor que 0.
+
+El algoritmo que devuelve el mínimo rectángulo que engloba a todos los ejemplos positivos es por tanto un ERM.
+
+2.
+
+Sea $R^{\ast} = R(a,b,c,d)$ el rectángulo del apartado 1. Entonces $P_{S\sim \mathcal{D}^2}[f(R^{\ast})=\{1\}] = 1$
+
+Tomamos $R_1 = R(a,a^{\ast},c,d)$ un rectángulo que concentra una masa de probabilidad menor o igual a $\epsilon/4$, con $a\le a^{\ast}$.
+
+$R_2=(b^{\ast},b,c,d), R_3=(a,b,c,c^{\ast}), R_4=(a,b,d^{\ast},d)$ se definen de forma análoga.
+
+
+LLamando $h_R=A(S)$, $R$ el rectángulo obtenido como resultado de aplicar el algoritmo del ejercicio. Es claro que con probabilidad 1, $R\subset R^{\ast}$. 
+
+Si se tiene $\forall i : R\cap R_i \neq \emptyset$:
+
+\begin{align*}
+L_{\mathcal{D},f}(h_R) &= P_{x\sim \mathcal{D}}[h_R(x)\neq f(x)] \le P_{x\sim \mathcal{D}}\left(\cup_i [h_R(x)\neq f(x)]\cap R_i\right) \le\\
+&\le P_{x\sim \mathcal{D}}\left(\cup_i R_i\right) \le 4\frac{\epsilon}{4} = \epsilon
+\end{align*}
+
+
+La demostración acaba probando que:
+
+\[P(\exists i : S\cap R_i = \emptyset) \le \sum_{i=1}^4 P(S\cap R_i = \emptyset) = 4(1-\frac{\epsilon}{4})^m \le 4e^{-m}\]
+
+3. 
+En $\mathbb{R}^d$ podríamos obtener el mismo resultado tomando $m \ge \frac{2d}{\epsilon}log\left(\frac{2d}{\delta}\right)$, repitiendo una demostración análoga.
+
+4.
+
+Sea 
+
+\begin{align*}
+m &= \frac{2d}{\epsilon}log\left(\frac{2d}{\delta}\right) = \frac{2d}{\epsilon}\left[log(2d) + log\left(\frac{1}{\delta}\right)\right] \le \\
+&\le \frac{2d}{\epsilon}\left[2d + log\left(\frac{1}{\delta}\right)\right] = p(d, 1/\epsilon, log(1/\delta))
+\end{align*}
+
+
+Fijada una componente de entre las $d$ posibles, los algoritmos de fuerza bruta para buscar el máximo y el mínimo son $m^2$. Por tanto el algoritmo global tendrá eficiencia:
+
+
+\[\mathcal{O}(d m^2) \subset \mathcal{O}(d \cdot p(d, 1/\epsilon, log(1/\delta))^2)\]
 
 * Memoria
 
