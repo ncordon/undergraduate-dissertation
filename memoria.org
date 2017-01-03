@@ -655,5 +655,41 @@ Fijada una componente de entre las $d$ posibles, los algoritmos de fuerza bruta 
 
 \[\mathcal{O}(d m^2) \subset \mathcal{O}(d \cdot p(d, 1/\epsilon, log(1/\delta))^2)\]
 
+*** 3.1
+#+begin_wording
+*Monotonía de la complejidad muestral*
+
+Sea $\mathcal{H}$ una clase de hipótesis para clasificación binaria. Suponer que $\mathcal{H}$ es PAC learnable y su complejidad muestral está dada por $m_{\mathcal{H}}$. Probar que $m_{\mathcal{H}}$ es monótona decreciente en cada variable.
+#+end_wording
+
+LLamo $\gamma = min_{h'\in \mathcal{H}} L_{\mathcal{D}} (h')$
+
+Fijado $1 > \delta > 0$, y dados $\epsilon_1 < \epsilon_2$. Sea $m \ge m_{\mathcal{H}}(\epsilon_1, \delta)$ verificando que dado $S\sim \mathcal{D}^m$ entonces:
+
+\[\mathbb{P}_{S \sim \mathcal{D}^m} (L_{\mathcal{D}}(h) - \gamma \le \epsilon_1}) \ge 1-\delta\]
+
+Entonces por monotonía de la función de probabilidad:
+
+\[\mathbb{P}_{S \sim \mathcal{D}^m} (L_{\mathcal{D}}(h) - \gamma \le \epsilon_2}) \ge \mathbb{P}_{S \sim \mathcal{D}^m} (L_{\mathcal{D}}(h) - \gamma \le \epsilon_1}) \ge 1-\delta \]
+
+Análoga la demostración en la primera variable.
+
+*** 3.2
+*** 3.3
+#+begin_wording
+Sea $\mathcal{X} = \mathbb{R}^2$, $\mathcal{Y} = \{0,1\}$ y sea $\mathcal{H}$ la clase de círculos concéntricos en el plano, esto es, $\mathcal{H} = \{h_r : r\in \mathbb{R}^{+}\}$, con $h_r(x) = 1_{|x| \le r}$. Probar que $\mathcal{H}$ es PAC learnable asumiendo propiedad de factibilidad si su complejidad muestral está acotada por:
+
+\[m_{\mathcal{H}}( \epsilon, \delta ) \le \left\lceil \frac{log(1/\delta)}{\epsilon} \right\rceil\]
+
+#+end_wording
+
+
+Fijamos $\mathcal{D}$ una distribución sobre $\mathcal{X}$. Tomamos el algoritmo que devuelve para un conjunto de entrenamiento $S$ la hipótesis $h_r$ donde $r = argmax_{x \in S} |x|$
+
+Escogemos $0 < \delta, \epsilon < 1$, y $m \ge m_{\mathcal{H}}(\delta, \epsilon)$
+
+Sea $R > 0$ verificando $P_{x\sim \mathcal{D}}(h_R = f) = 1$. Sea $0 < r < R$ verificando $P_{x\sim \mathcal{D}}(h_r = h_R) = 1 - \epsilon$.
+
+\[P_{S \sim \mathcal{D}^m} (L_{\mathcal{D}, f} (A(S)) > \epsilon) = \bbig( P_{x\sim \mathcal{D}}( |x| < r ) \bbig)^m \le (1-\epsilon)^m \le e^{-\epsilon m} < \delta\]
 * Memoria
 
