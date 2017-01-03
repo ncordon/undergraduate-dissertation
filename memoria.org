@@ -393,10 +393,10 @@ Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelant
 - *Dominio*: $\mathcal{X}$. LLamamos una instancia a $x\in \mathcal{X}$
 - *Conjunto de etiquetas*: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario.
 - *Verdadero etiquetado*: Asumimos la existencia de una función $f: \mathcal{X} \rightarrow \mathcal{Y}$ que devuelve el verdadero etiquetado de todas las instancias.
-- *Generación de instancias*: Asumimos la existencia de una distribuciónd de probabilidad $\mathca{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
+- *Generación de instancias*: Asumimos la existencia de una distribuciónd de probabilidad $\mathcal{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
 - *Conjunto/Secuencia de entrenamiento*: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una secuencia en la que pueden repetirse tuplas. Los ejemplos del conjunto de entrenamiento representan una m.a.s $(\mathcal{X}_1,\ldots \mathcal{X}_m)$, muestra aleatoria simple, idénticamente distribuida, donde cada $X_i$ sigue la misma distribución que $\mathcal{X}$, $X_i \sim \mathcal{D}$. Además, cada ejemplo del conjunto de entrenamiento se etiqueta según $f$. Notamos este hecho $S \sim \mathcal{D}^m$.
 - *Resultado del aprendizaje*: una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. Se usa la notación $A(S)$ para denotar la hipótesis que un algoritmo $A$ devuelve para una secuencia de entrenamiento $S$.
-- *Error del clasificador*: Sea $A \subset \mathcal{X}$ miembro de alguna $\sigma$ -álgebra de conjuntos de $\mathcal{X}$, $\mathcal{D}$ distribución de probabilidad sobre $\mathcal{X}$, $\mathca{D}(A)$ denota la probabilidad de que un punto de $\mathcal{X}$ esté en $A$, es decir, la probabilidad de que ocurra el hecho $A$. Basándonos en este, definimos el error del clasificador $h$ como:
+- *Error del clasificador*: Sea $A \subset \mathcal{X}$ miembro de alguna $\sigma$ -álgebra de conjuntos de $\mathcal{X}$, $\mathcal{D}$ distribución de probabilidad sobre $\mathcal{X}$, $\mathcal{D}(A)$ denota la probabilidad de que un punto de $\mathcal{X}$ esté en $A$, es decir, la probabilidad de que ocurra el hecho $A$. Basándonos en este, definimos el error del clasificador $h$ como:
 
 \[L_{D,f}(h) := \mathcal{D}(\{h(x)\neq f(x)\}) = \mathbb{P}_{x\sim \mathcal{D}} [h(x)\neq f(x)]\]
 
@@ -453,7 +453,7 @@ La hipótesis de factibilidad implica que $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(
 
 El valor $L_{\mathcal{D},f}(h_S)$ dependerá del conjunto de entrenamiento $S$, y la elección del mismo está sometida al azar. Además, necesitamos definir cómo de buena será la predicción.
 
-**** Aprendizaje PAC.
+*** Aprendizaje PAC.
 
 #+begin_definition
 *Aprendizaje PAC (Probablemente Aproximadamente Correcto)*
@@ -479,6 +479,7 @@ Entonces para toda función de verdadero etiquetado $f: \mathcal{X}\rightarrow \
 Como consecuencia, deducimos que la complejidad muestral es menor o igual a $\left\lceil \frac{1}{\epsilon}log \left(\frac{|\mathcal{H}|}{\delta} \right) \right\rceil$
 #+end_theorem
 
+#+begin_proof
 Fijada una distribución $\mathcal{D}$ y una función de etiquetado $f$, notamos:
 
 \[\mathcal{H}_B = \{h\in \mathcal{H}: L_{\mathcal{D},f}(h) > \epsilon\}\]
@@ -500,8 +501,9 @@ Además, fijada $h\in \mathcal{H}_B$, como $L_{\mathcal{D},f}(h) > \epsilon$:
 Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $\mathcal{H}_B \subseteq \mathcal{H}$ dan lugar a:
 
 \[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le |\mathcal{H}|e^{-\epsilon m} \le \delta\]
+#+end_proof
 
-**** Generalización aprendizaje PAC: PAC agnóstico
+*** Generalización aprendizaje PAC: PAC agnóstico
 Hasta ahora tenemos dos problemas en la definición de PAC. Intentamos buscar una hipótesis sobre una función de verdadero etiquetado, $f$, que por tanto no podrá asignar dos imágenes distintas al mismo punto, y además, estamos suponiendo que se cumple la propiedad de factibilidad.
 
 Para paliar esto, podríamos considerar $\mathcal{D}$ como la distribución conjunta sobre $\mathcal{X} \times \mathcal{Y}$, y la noción de error para $h: \mathcal{X} \rightarrow \mathcal{Y}$ quedaría:
@@ -513,7 +515,7 @@ Con estos conceptos revisitados, podríamos asegurar que la hipótesis que menor
 \[f_{\mathcal{D}}(x) = \left\{\begin{array}{ll}
 1 & \mathbb{P} [y = 1 |x] >= 0.5\\
 0 & \quad si \quad no
-\end{array}\]
+\end{array}\right.\]
 
 Pero deseamos ir aún más allá, y poder generalizar la definición para una función de pérdida arbitraria.
 
@@ -527,15 +529,19 @@ Dados un conjunto $\mathcal{H}$, $Z$ y una $\sigma$ álgebra de conjuntos sobre 
 que verifique que la función currificada $l(h, \cdot)$ sea medible $\forall h\in \mathcal{H}$ sobre la $\sigma$ álgebra inicial.
 #+end_definition
 
+Con funciones de pérdidas arbitrarias, redefiniríamos los conceptos de /error/ y /error empírico/ de la forma:
+
+\begin{align*}
+L_{\mathcal{D}} (h) := \mathbb{E}_{z\sim \mathcal{D}}[l(h,z)]\\
+L_{S} (h) := \frac{1}{m} \sum_{i=1}^m l(h,z_i)
+\end{align*}
 
 #+begin_definition
 *Aprendizaje PAC agnóstico*
 
 Una clase de funciones $\mathcal{H}$ es agnósticamente PAC learnable respecto a $Z$ (sobre el que tenemos definida una $\sigma$ álgebra de conjuntos) y a una función de pérdida $l: \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}$ si existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A$ verificando que si $0 \le \epsilon, \delta \le 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
 
-\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(h) \le min_{h'\in \mathcal{H}} L_{\mathcal{D}}(h') + \epsilon] \ge 1-\delta\]
-
-con $L_{\mathcal{D}}(h) = \mathbb{E}_{z \sim \mathcal{D}}[l(h,z)]$
+\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(h) \le inf_{h'\in \mathcal{H}} L_{\mathcal{D}}(h') + \epsilon] \ge 1-\delta\]
 #+end_definition
 
 
@@ -544,11 +550,99 @@ Notamos que esta definición, en caso de cumplirse la propiedad de factibilidad,
 \[l_{0-1} (h(x,y)) := \left\{\begin{array}{ll}
 0 & h(x) = y\\
 1 & si \quad no
-\end{array}\]
+\end{array}\right.\]
 
 equivale a la primera definición que dimos de aprendizaje PAC. Por ello no distinguiremos en el uso de uno u otro concepto, sino que se deducirá de si estamos asumiendo propiedad de factibilidad o no.
 
 Cuando permitimos que el algoritmo $A$ devuelva una función $h \notin \mathcal{H}$, de manera que $h \in \mathcal{H}'$ y $\mathcal{H} \subset \mathcal{H}'$ una clase de funciones a donde la función de pérdida es extendible de manera natural, el aprendizaje recibe el nombre de *aprendizaje impropio*. La definición aquí dada se ha hecho para *aprendizaje propio*.
+
+*** Condiciones suficientes para ser PAC learnable
+#+begin_definition
+*Conjunto de entrenamiento $\epsilon$ representativo*
+
+Un conjunto de entrenamiento $S$ se dice $\epsilon$ representativo respecto a un dominio $Z$, a una clase de hipótesis $\mathcal{H}$, una función de pérdida $l$ y una distribución $\mathcal{D}$ si:
+
+\[\forall h\in \mathcal{H}, |L_S(h)-L_{\mathcal{D}}(h)}| \le \epsilon\]
+#+end_definition
+
+#+begin_lemma
+Sea un conjunto de entrenamiento de tamaño $S$, $\frac{\epsilon}{2}$ representativo respecto a un dominio $Z$, a una clase de hipótesis $\mathcal{H}$, una función de pérdida $l$ y una distribución $\mathcal{D}$. Entonces:
+
+\[L_{\mathcal{D}} (ERM(S)) \le inf_{h\in \mathcal{H}} L_{\mathcal{D}}(h) + \epsilon\]
+#+end_lemma
+
+#+begin_proof
+Para $h \in \mathcal{H}$ arbitrario.
+
+\[L_{\mathcal{D}}(h_S) \le L_{\mathcal{S}}(h_S) + \frac{\epsilon}{2} \le L_{\mathcal{S}}(h) + \frac{\epsilon}{2} \le L_{\mathcal{D}}(h) + \frac{\epsilon}{2} + \frac{\epsilon}{2} =  L_{\mathcal{D}}(h) + \epsilon\]
+#+end_proof
+
+#+begin_definition
+*Convergencia uniforme*
+
+Decimos que una clase de hipótesis $\mathcal{H}$ tiene la propiedad de convergencia uniforme respecto a un dominio $Z$, y a una función $l$ si para todo $0 < \delta, \epsilon < 1$ existe $m_{\epsilon, \delta}$ verificando que para toda distribución $\mathcal{D}$ sobre $Z$, si $S$ es un conjunto de entrenamiento de tamaño mayor o igual a $m_{\epsilon, \delta}, entonces:
+
+\[P_{S\sim \mathcal{D}^m} [\forall h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| \le \epsilon] \ge 1-\delta\]
+#+end_definition
+
+
+#+begin_theorem
+*La convergencia uniforme es condición suficiente para ser PAC learnable*
+
+Sea $\mathcal{H}$ una clase de hipótesis con la propiedad de convergencia uniforme. Entonces es PAC learnable con complejidad muestral menor o igual al $m_{\frac{\epsilon}{2}, \delta}$ dado en la definición anterior y el algoritmo ERM
+#+end_theorem
+
+#+begin_fact
+*Las clases finitas tienen la propiedad de convergencia uniforme*
+
+Sea $\mathcal{H}$ una clase de hipótesis finita, $Z$ un dominio y sea $l : \mathcal{H} \times Z \rightarrow [a,b]$ una función de pérdida. Entonces $\mathcal{H}$ verifica la propiedad de convegencia uniforme con: 
+
+\[m_{\epsilon, \delta} \le \left\lceil \frac{log(2|\mathcal{H}|/\delta)(b-a)^2}{2\epsilon^2} \right\rceil\]
+#+end_fact
+
+#+begin_lemma
+*Desigualdad de Hoeffding*
+
+Sean $X_1, \ldots X_n$ una muestra aleatoria simple de una variable $X$, $\bar{X} = \frac{1}{m} \sum_{i=1}^m X_i$ con $E[\bar{X}] = \mu$ y $P[a \le X_i \le b] = 1$. Entonces para todo $\epsilon > 0$
+
+\[P\left[\left| \bar{X} - \mu \right| > \epsilon \right] \le 2e^{-2m \left(\frac{\epsilon}{(b-a)}\right)^2 \]
+#+end_lemma
+
+#+begin_proof
+Sea $\mathcal{H}$ una clase de hipótesis finita.
+
+Fijamos $0 < \delta, \epsilon < 1$. Necesitamos encontrar $m\in \mathbb{N}$ verificando:
+
+\[P_{S\sim \mathcal{D}^m} [\exists h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] < \delta\]
+
+Partimos de la siguiente desigualdad, que usaremos más adelante, obtenida por subaditividad:
+
+\[P_{S\sim \mathcal{D}^m} [\exists h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le \sum_{h \in \mathcal{H}} P_{S\sim \mathcal{D}^m} [|L_S(h) - L_{\mathcal{D}}(h)| > \epsilon]\]
+Fijamos $h \in \mathcal{H}$.
+
+Dado un conjunto de entrenamiento $S = (z_1, \ldots z_m)$, recordamos que $L_{\mathcal{D}} (h) = \mathbb{E}_{z\sim \mathcal{D}} [l(h,z)]$ y que $L_S(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i)$
+
+Donde $z_i \sim \mathcal{D}$ y por tanto $\mathbb{E}_{S \sim \mathcal{D}^m} [L_S(h)] = \mathbb{E}_{z \sim \mathcal{D}} [l(h,z)] = L_{\mathcal{D}} (h)$. Además, llamando $X_i = l(h,z_i)$, por ser $z_i$ realizaciones muestrales de una m.a.s se tiene que las $X_i$ son independientes e idénticamente distribuidas, con $P[a < X_i < b] = 1$. Estamos en condiciones de aplicar la desigualdad de Hoeffding.
+
+Por tanto:
+
+\[P_{S \sim \mathcal{D}^m} \left[\left| \frac{1}{m} \sum_{i=1}^m X_i - L_{\mathcal{D}} (h) \right| > \epsilon\right] = P_{S\sim \mathcal{D}^m} [|L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2}\]
+
+Y por tanto:
+
+\[P_{S\sim \mathcal{D}^m} [\exists h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] < |\mathcal{H}| 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2\]
+#+end_proof
+
+Recordemos hasta ahora el resultado que habíamos obtenido era su carácter PAC learnable, donde agnósticamente PAC learnable y learnable con funciones de pérdida 0-1 era un término equivalente. El teorema que enunciamos a continuación, deducible a partir del teorema sobre el caracter agnóstico - PAC learnable de clases de funciones con propiedad de convergencia uniforme, en particular las finitas, generaliza el resultado para cualquier funciones de pérdida acotada.
+
+#+begin_theorem
+*Las clases finitas son agnósticamente PAC learnable*
+
+Sea $\mathcal{H}$ una clase de hipótesis finita, $Z$ un dominio y sea $l : \mathcal{H} \times Z \rightarrow [a,b]$ una función de pérdida. Entonces $\mathcal{H}$ es PAC learnable con complejidad muestral:
+
+\[m_{\mathcal{H}}( \epsilon, \delta ) \le \left\lceil \frac{2 log(2|\mathcal{H}|/\delta)(b-a)^2}{\epsilon^2} \right\rceil\]
+#+end_theorem
+
 ** Ejercicios
 *** 2.1
 
@@ -662,7 +756,7 @@ Fijada una componente de entre las $d$ posibles, los algoritmos de fuerza bruta 
 Sea $\mathcal{H}$ una clase de hipótesis para clasificación binaria. Suponer que $\mathcal{H}$ es PAC learnable y su complejidad muestral está dada por $m_{\mathcal{H}}$. Probar que $m_{\mathcal{H}}$ es monótona decreciente en cada variable.
 #+end_wording
 
-LLamo $\gamma = min_{h'\in \mathcal{H}} L_{\mathcal{D}} (h')$
+LLamo $\gamma = inf_{h'\in \mathcal{H}} L_{\mathcal{D}} (h')$
 
 Fijado $1 > \delta > 0$, y dados $\epsilon_1 < \epsilon_2$. Sea $m \ge m_{\mathcal{H}}(\epsilon_1, \delta)$ verificando que dado $S\sim \mathcal{D}^m$ entonces:
 
