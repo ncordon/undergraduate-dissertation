@@ -30,6 +30,7 @@
 ** TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
 ** TODO Buscar una traducción adecuada a Recall
 
+** TODO Cuidado! La definición PAC de Valiant establece complejidad polinómica en $\frac{1}{\epsilon}$ y $\frac{1}{\delta}$, pero se demuestra a posteriori que la definición dada por el libro UML equivale. También habla de complejidad computacional, aunque esto el libro lo separa.
 * Notas de trabajo
 ** Small Disjuncts
 *** Introducción
@@ -384,7 +385,7 @@ precisión frente a *Recall*:
 
 - Precisión refleja la exactitud de los datos
 - *Recall* refleja la completitud de los datos
-
+  
 ** PAC learning
 *** Introducción
 Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
@@ -433,16 +434,14 @@ y_i && \exists i\in \{1\ldots m\} : x=x_i\\
 Este clasificador es perfecto respecto a la minimización de riesgo empírico, pero $\mathbb{P}_{x\sim \mathcal{D}}[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el clasificador idénticamente 1. A este fenómeno lo denominamos *overfitting*.
 
 **** ERM con /sesgo inductivo/
-
+ 
 Se intenta corregir el ERM corrigiendo el espacio de búsqueda, esto es, la clase de hipótesis $\mathcal{H}$ desde la que el algoritmo puede escoger un $h: \mathcal{X}\rightarrow \mathcal{Y}$. Llamamos a esto /sesgo inductivo/ puesto que se asumirá una determinada clase de funciones $\mathcal{H}$ en función de las características del problema.
 
 Notaremos a este nuevo paradigma $ERM_{\mathcal{H}}(S)$, y lo definimos de manera que:
 
 \[ERM_{\mathcal{H}}(S) := h_S \in argmin_{h\in \mathcal{H}} L_S(h)\]
 
-***** ERM con /sesgo inductivo/ hacia una clase de funciones finita
-
-Por el momento asumiremos $\mathcal{H}$ es finito. También asumiremos la *propiedad de factibilidad* como una hipótesis.
+Definimos la propiedad de factibilidad, que usaremos más adelante.
 
 #+begin_definition
 *Propiedad de factibilidad*
@@ -452,32 +451,32 @@ Existe  $\bar{h} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$.
 
 La hipótesis de factibilidad implica que $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(\bar{h})=0] = 1$, y por tanto $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h_S)=0]=1$.
 
-El valor $L_{\mathcal{D},f}(h_S)$ depende del conjunto de entrenamiento $S$, y la elección del mismo está sometida al azar. Además, necesitamos definir cómo de buena será la predicción.
+El valor $L_{\mathcal{D},f}(h_S)$ dependerá del conjunto de entrenamiento $S$, y la elección del mismo está sometida al azar. Además, necesitamos definir cómo de buena será la predicción.
 
+**** Aprendizaje PAC.
 
 #+begin_definition
-*Exactitud y confianza de una predicción*
+*Aprendizaje PAC (Probablemente Aproximadamente Correcto)*
 
-Daremos la definición para hipótesis minimizadoras del riesgo empírico.
+Una clase de funciones $\mathcal{H}$ es PAC learnable si existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo $A$ verificando que si $0 \le \epsilon, \delta \le 1$, entonces para toda distribución $\mathcal{D}$ sobre $\mathcal{X}$ y para toda función de verdadero etiquetado $f:\mathcal{X} \rightarrow \{0,1\}$, si la propiedad de factibilidad se cumple, ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$ etiquetado mediante $f$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
 
-Sean un dominio $\mathcal{X}\sim \mathcal{D}$, un conjunto de etiquetas $\mathcal{Y} = \{0,1\}$, y $f: \mathcal{X}\rightarrow \mathcal{Y}$ una función de verdadero etiquetado. 
-
-Si se verifica que para unos ciertos $0 \le \epsilon, \delta \le 1$ se cumple:
-
-\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) \le \epsilon] \ge 1-\delta\]
-
-entonces llamamos $\epsilon$ a la exactitud de la predicción, y $1-\delta$ a la confianza de la predicción.
+\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h) \le \epsilon] \ge 1-\delta\]
 #+end_definition
 
+$(1-\delta)$ es la /confianza de la predicción/ (probablemente) y $\epsilon$ la /exactitud/ (correcto).
+
+Podemos considerar $m_{\mathcal{H}}$ única en el sentido de que para cada $(\delta, \epsilon)$ nos devuelve el menor natural verificando las hipótesis del enunciado.
 
 #+begin_theorem
 *Las clases finitas de funciones son PAC learnable*
 
-Sea un dominio $\mathcal{X}$, un conjunto de etiquetas $\mathcal{Y} = \{0,1\}$ y $\mathcal{H}$ una clase de funciones finita. Sean $0 \le \epsilon, \delta \le 1$, y un natural $m\in \mathbb{N}$ verificando:
+Sea $\mathcal{H}$ una clase de funciones finita. Sean $0 \le \epsilon, \delta \le 1$, y un natural $m\in \mathbb{N}$ verificando:
 
 \[m \ge \frac{1}{\epsilon}log\left(\frac{|\mathcal{H}|}{\delta}\right)\]
 
-Entonces para toda función de verdadero etiquetado $f: \mathcal{X}\rightarrow \mathcal{Y}$, y para toda distribución $\mathcal{X}\sim \mathcal{D}$ para la que se verifique la *propiedad de factibilidad* entonces las hipótesis que obtenemos a través del algoritmo ERM son con una confianza superior a $1-\delta$ (aproximadamente) $\epsilon$ (correctas) exactas.
+Entonces para toda función de verdadero etiquetado $f: \mathcal{X}\rightarrow \{0,1\}$, y para toda distribución $\mathcal{X}\sim \mathcal{D}$ para la que se verifique la *propiedad de factibilidad* entonces las hipótesis que obtenemos a través del algoritmo ERM son con una confianza superior a $1-\delta$ $\epsilon$ exactas.
+
+Como consecuencia, deducimos que la complejidad muestral es menor o igual a $\left\lceil \frac{1}{\epsilon}log \left(\frac{|\mathcal{H}|}{\delta} \right) \right\rceil$
 #+end_theorem
 
 Fijada una distribución $\mathcal{D}$ y una función de etiquetado $f$, notamos:
@@ -498,10 +497,58 @@ Además, fijada $h\in \mathcal{H}_B$, como $L_{\mathcal{D},f}(h) > \epsilon$:
 \end{align*}
 
 
-Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $\mathcal{H}_B \le \mathcal{H}$ dan lugar a:
+Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $\mathcal{H}_B \subseteq \mathcal{H}$ dan lugar a:
 
 \[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le |\mathcal{H}|e^{-\epsilon m} \le \delta\]
 
+**** Generalización aprendizaje PAC: PAC agnóstico
+Hasta ahora tenemos dos problemas en la definición de PAC. Intentamos buscar una hipótesis sobre una función de verdadero etiquetado, $f$, que por tanto no podrá asignar dos imágenes distintas al mismo punto, y además, estamos suponiendo que se cumple la propiedad de factibilidad.
+
+Para paliar esto, podríamos considerar $\mathcal{D}$ como la distribución conjunta sobre $\mathcal{X} \times \mathcal{Y}$, y la noción de error para $h: \mathcal{X} \rightarrow \mathcal{Y}$ quedaría:
+
+\[L_{\mathcal{D}}(h):= \mathbb{P}_{(x,y) \sim \mathcal{D}} [h(x) \neq y]\]
+
+Con estos conceptos revisitados, podríamos asegurar que la hipótesis que menor error comete para $\mathcal{Y} = \{0,1\}$ es el llamado *clasificador de Bayes*:
+
+\[f_{\mathcal{D}}(x) = \left\{\begin{array}{ll}
+1 & \mathbb{P} [y = 1 |x] >= 0.5\\
+0 & \quad si \quad no
+\end{array}\]
+
+Pero deseamos ir aún más allá, y poder generalizar la definición para una función de pérdida arbitraria.
+
+#+begin_definition
+*Función de pérdida*
+
+Dados un conjunto $\mathcal{H}$, $Z$ y una $\sigma$ álgebra de conjuntos sobre $Z$, se denomina función de pérdida de $\mathcal{H}$ sobre $Z$ a cualquier función de la forma:
+
+\[l : \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}\]
+
+que verifique que la función currificada $l(h, \cdot)$ sea medible $\forall h\in \mathcal{H}$ sobre la $\sigma$ álgebra inicial.
+#+end_definition
+
+
+#+begin_definition
+*Aprendizaje PAC agnóstico*
+
+Una clase de funciones $\mathcal{H}$ es agnósticamente PAC learnable respecto a $Z$ (sobre el que tenemos definida una $\sigma$ álgebra de conjuntos) y a una función de pérdida $l: \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}$ si existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A$ verificando que si $0 \le \epsilon, \delta \le 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
+
+\[\mathbb{P}_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(h) \le min_{h'\in \mathcal{H}} L_{\mathcal{D}}(h') + \epsilon] \ge 1-\delta\]
+
+con $L_{\mathcal{D}}(h) = \mathbb{E}_{z \sim \mathcal{D}}[l(h,z)]$
+#+end_definition
+
+
+Notamos que esta definición, en caso de cumplirse la propiedad de factibilidad, tomando $Z = \mathcal{X} \times \mathcal{Y}$, y la llamada función de pérdida 0-1:
+
+\[l_{0-1} (h(x,y)) := \left\{\begin{array}{ll}
+0 & h(x) = y\\
+1 & si \quad no
+\end{array}\]
+
+equivale a la primera definición que dimos de aprendizaje PAC. Por ello no distinguiremos en el uso de uno u otro concepto, sino que se deducirá de si estamos asumiendo propiedad de factibilidad o no.
+
+Cuando permitimos que el algoritmo $A$ devuelva una función $h \notin \mathcal{H}$, de manera que $h \in \mathcal{H}'$ y $\mathcal{H} \subset \mathcal{H}'$ una clase de funciones a donde la función de pérdida es extendible de manera natural, el aprendizaje recibe el nombre de *aprendizaje impropio*. La definición aquí dada se ha hecho para *aprendizaje propio*.
 ** Ejercicios
 *** 2.1
 
