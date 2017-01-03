@@ -769,6 +769,26 @@ Entonces por monotonía de la función de probabilidad:
 Análoga la demostración en la primera variable.
 
 *** 3.2
+#+begin_wording
+Sea $\mathcal{X}$ un conjunto discreto, y $\mathcal{H}_{singleton} = \{h_z : z\in \mathcal{X}\} \cup \{h^{-}\}$ donde para cada $z\in \mathcal{X}$, $h_z(x) = 1, x=z$ y $h_z(x) = 0, x\neq z$. $h^{-}$ es la hipótesis nula. Se verifica que la verdadera función de etiquetado etiqueta todas las instancias del dominio negativamente, excepto quizás una.
+
+1. Describe un algoritmo que implemente ERM para aprender $\mathcal{H}_{singleton}$
+2. Demostrar que $\mathcal{H}_{singleton}$ es PAC learnable. Dar una cota superior a la complejidad muestral.
+#+end_wording
+
+1. 
+
+Tomamos el algoritmo que devuelve $h^{-}$ en caso de que $\not\exists (x,y) \in S, y=1$, o $h_x$ si $\exists (x,y) \in S : y=1$.
+
+2.
+
+Por hipótesis de factibilidad $\exists h \in \mathcal{H}_{singleton}$ verificando que $P_{x\sim \mathcal{D}} [h = f] = 1$
+
+Si $L_{\mathcal{D}} (ERM(S)) > \epsilon$ entonces como a lo sumo falla en una instancia, $z \in \mathcal{X}$, con $P_{x\sim \mathcal{D}} (x = z) > \epsilon$, lo que significa que esa instancia no está presente entre ninguna de las $m$ muestras del conjunto de entrenamiento.
+
+\[P_{S\sim \mathcal{D}^m}(L_{\mathcal{D}} (ERM(S)) > \epsilon) \le (1-\epsilon)^m \le e^{-m}\]
+
+Por tanto una cota superior para la complejidad muestral es $\left \lceil \frac{log(1/\delta)}{\epsilon} \right\rceil$
 *** 3.3
 #+begin_wording
 Sea $\mathcal{X} = \mathbb{R}^2$, $\mathcal{Y} = \{0,1\}$ y sea $\mathcal{H}$ la clase de círculos concéntricos en el plano, esto es, $\mathcal{H} = \{h_r : r\in \mathbb{R}^{+}\}$, con $h_r(x) = 1_{|x| \le r}$. Probar que $\mathcal{H}$ es PAC learnable asumiendo propiedad de factibilidad si su complejidad muestral está acotada por:
