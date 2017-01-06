@@ -29,10 +29,10 @@
 ** TODO Se repite el proceso del CBO hasta que sólo se actualia la media de un clúster (?)
 ** TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
 ** TODO Buscar una traducción adecuada a Recall
-
 ** TODO Cuidado! La definición PAC de Valiant establece complejidad polinómica en $\frac{1}{\epsilon}$ y $\frac{1}{\delta}$, pero se demuestra a posteriori que la definición dada por el libro UML equivale. También habla de complejidad computacional, aunque esto el libro lo separa.
 * Notas de trabajo
-** Small Disjuncts
+** Small Disjuncts Review
+Este material es un resumen de lo encontrado en cite:he09_learn_from_imbal_data
 *** Introducción
 
 El problema de la clasificación consiste en datos un conjunto de
@@ -386,7 +386,51 @@ precisión frente a *Recall*:
 - Precisión refleja la exactitud de los datos
 - *Recall* refleja la completitud de los datos
   
+** Clasificación con CCCD
+Resumido desde el artículo cite:JMLR:v17:15-604
+*** Concepto de CCCD (Class Cover Catch Digraphs)
+
+Sea $(\Omega, M), \Omega = \mathbb{R}^d$ un espacio de medida y sea $\mathcal{X}_n = \{x_1, x_2, \ldots x_n\} \subseteq \Omega$, $\mathcal{Y}_m = \{y_1, \ldots y_m\} \subseteq \Omega$ observaciones para dos clases $X, Y$ con sus respectivas funciones de distribución $F_X, F_Y$ y función de distribución conjunta $F_{XY}$. Asumimos que la clase positiva es la clase $\mathcal{X}$. Para cada $x_i \in \mathcal{X}_n$ consideramos un radio $r_i$, y la bola abierta $B(x_i, r_i)$. $x_i$ se dice que cubre a $x_j$ si $x_j$ está en $B(x_i, r_i)$, considerando el espacio métrico con la distancia euclídea. Los CCCD son grafos dirigidos $(V,A)$ donde $V = \mathcal{X}_n$ y $(u,v) \in A \Leftrightarrow v\in B(u, r_u)$
+
+Dado un subconjunto $Q_{\mathcal{X}} \subseteq \mathcal{X}_n$, queremos encontrar la cobertura de menor número de bolas de entre $\{B_1, \ldots B_n\}$ asociadas a los puntos de $\mathcal{X}_n$
+Si $Q_{\mathcal{X}} = \mathcal{X}_n$ la cobertura se llama /propia/. Si $Q_{\mathcal{X}} \subset \mathcal{X}_n$ estrictamente, la cobertura se llama /impropia/.
+
+Se define el vecindario de un punto $s\in V$ como:
+
+\[N(s) = \{t \in V : (s,t) \in A\}\]
+
+Un conjunto dominante de un grafo dirigido $(V,A)$ es un conjunto $S\subseteq V$ tal que $\cup_{s \in S} N(s) = V$
+
+*** Pure-CCCDs (PCCDs)
+Las coberturas no contienen puntos que no pertenecen a $\mathcal{X}_n$
+
+Definen:
+
+\[r(x):= (1-\tau) d(x,l(x)) + \tau d(x,u(x))\]
+\[u(x):= argmin_{y\in \mathcal{Y}_m} d(x,y)\]
+\[l(x):= argmax\{d(x,z): d(x,z) < d(x,u(x))\}\]
+
+
+#+begin_theorem
+Encontrar la cobertura mínima aproximada por greedy de $\mathcal{X}_n$, con clase negativa $\mathcal{Y}_m$ es $\mathcal{O}(n(n+m)d)$. Además esta cobertura es de tamaño a lo sumo $\mathcal{O}(n)$ más grande que la óptima.
+#+end_theorem
+
+Un clasificador P-CCCD encuentra las coberturas $C_\mathcal{X}$ y $C_\mathcal{Y}$, por tanto es de complejidad $\mathcal{O}((n+m)^2 d)$
+
+Dado un punto del $z$ espacio muestral, caben 3 posibilidades:
+
+1. Está o en $C_\mathcal{X}$ o en $C_\mathcal{Y}$, pero no en ambas.
+2. Está en ambas coberturas.
+3. No está en ninguna.
+
+La clase se estima por:
+
+\[argmin_{C \in C_{\mathcal{X}}, C_{\mathcal{Y}}} \Bbig[ min_{x \in B(x,r) \in C} \rho(z,x) \Bbig]\]
+
+donde $\rho(z,x) = \frac{d(z,x)}{r(x)}$.
+
 ** PAC learning
+Resumen/adaptación del contenido del libro cite:shwartz_understanding_ml
 *** Introducción
 Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
 
@@ -807,3 +851,5 @@ Sea $R > 0$ verificando $P_{x\sim \mathcal{D}}(h_R = f) = 1$. Sea $0 < r < R$ ve
 \[P_{S \sim \mathcal{D}^m} (L_{\mathcal{D}, f} (A(S)) > \epsilon) = \bbig( P_{x\sim \mathcal{D}}( |x| < r ) \bbig)^m \le (1-\epsilon)^m \le e^{-\epsilon m} < \delta\]
 * Memoria
 
+
+bibliography:references.bib
