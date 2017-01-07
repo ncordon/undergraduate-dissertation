@@ -8,6 +8,7 @@
 #+LATEX_HEADER: \input{/mnt/580F625C089B22E0/Universidad/5/CuatrimestreI/TFG/Repo/titlepage}
 #+LATEX_HEADER: \usepackage{amsmath} 
 #+LATEX_HEADER: \usepackage{amsthm}
+#+LATEX_HEADER: \usepackage{dsfont}
 #+LATEX_HEADER: \newtheorem{theorem}{Teorema}
 #+LATEX_HEADER: \newtheorem{fact}{Proposición}
 #+LATEX_HEADER: \newtheorem{corollary}{Corolario}
@@ -429,6 +430,7 @@ La clase se estima por:
 
 donde $\rho(z,x) = \frac{d(z,x)}{r(x)}$.
 
+Los clasificadores PCCDs aproximan al clasificador de Bayes cuando $F_{\mathcal{X}}$ y ${\mathcal{Y}}$ y las clases son separables, es decir, $min_{x\in \mathcal{X}_n, y\in \mathcal{Y}_m} d(x,y) > 0$.
 ** PAC learning
 Resumen/adaptación del contenido del libro cite:shwartz_understanding_ml
 *** Introducción
@@ -686,6 +688,98 @@ Sea $\mathcal{H}$ una clase de hipótesis finita, $Z$ un dominio y sea $l : \mat
 
 \[m_{\mathcal{H}}( \epsilon, \delta ) \le \left\lceil \frac{2 log(2|\mathcal{H}|/\delta)(b-a)^2}{\epsilon^2} \right\rceil\]
 #+end_theorem
+
+*** Equilibrio error-varianza /bias-complexity tradeoff/
+Veamos que dado un algoritmo de aprendizaje no puede ser el óptimo para aprender todas las distribuciones.
+
+Damos un lema previo, la desigualdad de Markov:
+
+#+begin_lemma
+*Desigualdad de Markov*
+
+Dada una variable aleatoria $Z$ no negativa. Entonces para todo $a\ge 0$
+
+\[P[Z \ge a] \le \frac{\mathbb{E}[Z]}{a}\]
+#+end_lemma
+
+#+begin_theorem
+*Teorema de No Free Lunch*
+
+Sea $A$ cualquier algoritmo de aprendizaje para clasificación binaria con respecto a la función de pérdida 0-1 sobre el dominio $\mathcal{X}$. Sea un conjunto de entrenamiento de tamaño $m < |\mathcal{X}|/2$. Entonces existe una distribución $\mathcal{D}$ sobre $\mathcal{X} \times \{0,1\}$ verificando:
+
+1. Existe una función $f: \mathcal{X} \rightarrow \{0,1\}$ con $L_{\mathcal{D}}(f)=0$
+2. $P_{S\sim \mathcal{D}^m} [L_{\mathcal{D}} (A(S)) \ge 1/8] \ge 1/7$
+#+end_theorem
+
+#+begin_proof
+Sea un conjunto de entrenamiento (consideramos un conjunto y no una secuencia) de tamaño $2m$, $C$. Hay $T = 2^{2m}$ posibilidades de etiquetado del conjunto, esto es, $2^{2m}$ posibles hipótesis, $f_i: C\rightarrow \{0,1\}$, que vamos a extender a $\mathcal{X}$ llamándolas $\bar{f}_i$ de forma que $\bar{f}_i_{|C} = f_i$ y $\bar{f}_i(x) = 0 \quad \forall x\in \mathcal{X}\setminus C$. Vamos a tomar para cada una de ellas una distribución $\mathcal{D}_i$ definida sobre $\mathcal{X} \times \{0,1\}$ definida por:
+
+
+\[\forall (x,y)\in \mathcal{X} \times \{0,1\} \qquad P_{z\sim \mathcal{D}_i} [z = (x,y)] = \left\{\begin{array}{ll}
+1/|C| & \exists x_i \in C : y=f(x_i)\\
+0     & si \quad no
+\end{array}\right.\]
+
+Claramente $L_{\mathcal{D}_i}(f_i) = 0$
+
+Vamos a probar que:
+
+\[\exists i\in \{1, \ldots 2m\} : \mathbb{E}_{S\sim \mathcal{D}_i^m} [L_{\mathcal{D}_i} (A(S))] \ge \frac{1}{4}\]
+
+Hay $k = (2m)^m$ posibles secuencias de entrenamiento de tamaño $m$, $S_j, j=1, \ldots k$ tomadas desde $C$. Siendo $S_j = (x_1, \ldots x_m)$ notamos $S_j^i = ((x_1, f_i(x_1)), \ldots, (x_m, f_i(x_m)))$. Cada $S_j$ tiene la misma probabilidad de ser nuestro conjunto de entrenamiento (extracción de $m$ valores con reemplazamiento desde el conjunto $C$), verificándose:
+
+\[\mathbb{E}_{S\sim \mathcal{D}_i^m} [L_{\mathcal{D}_i} (A(S))] = \frac{1}{k} \sum_{j=1}^k L_{\mathcal{D}_i} (A(S_j^i))\]
+
+Recordando que hemos llamado $k=(2m)^m$, $T=2^{2m}$, se tiene:
+
+\begin{align*}
+max_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\mathcal{D}_i} (A(S_j^i)) &\ge 
+       \frac{1}{T} \sum_{i=1}^{T} \frac{1}{k} \sum_{j=1}^{k}  L_{\mathcal{D}_i} (A(S_j^i))   =\\
+&=     \frac{1}{k} \sum_{j=1}^{k} \frac{1}{T} \sum_{i=1}^{T}  L_{\mathcal{D}_i} (A(S_j^i)) \ge\\
+&\ge min_{j \in \{1, \ldots k\}} \frac{1}{T} \sum_{i=1}^{T}  L_{\mathcal{D}_i} (A(S_j^i))
+\end{align*}
+
+
+Además fijado $j \in \{1,\ldots k\}$, se tiene que que para todo $i \in \{1,\ldots T\}$:
+
+\[L_{\mathcal{D}_i} (h) = \frac{1}{|C|} \sum_{x\in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]\]
+
+
+Por tanto:
+
+\begin{align*}
+\frac{1}{T} \sum_{i=1}^{T}  L_{\mathcal{D}_i} (A(S_j^i)) &\ge
+\frac{1}{T} \sum_{i=1}^{T}  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = \\
+&= \frac{1}{2m} \sum_{x \in C} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} \ge \\
+&\ge \frac{1}{2} min_{x\in C} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}
+\end{align*}
+
+
+Como dado un $x\in C$ cualquiera, la mitad de clasificadores $f_i$ clasificarán $x$ bien y la otra mitad mal, se tiene:
+
+\[\frac{1}{2} min_{x\in C} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = \frac{1}{2} \frac{1}{T} \frac{T}{2} = \frac{1}{4}\]
+
+Y uniendo toda esta información:
+
+\[max_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\mathcal{D}_i} (A(S_j^i)) \ge \frac{1}{4}\]
+
+Sea $k = argmax_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\mathcal{D}_i} (A(S_j^i))$
+
+Si $\mathcal{D} = \mathcal{D}_k$ cumple la parte 2 del enunciado del teorema, es nuestra distribución buscada, y como función buscada en el apartado 1. podemos tomar $f=f_k$
+
+Como $L_{\mathcal{D}} (A(\cdot))$ puede ser vista como una variable aleatoria donde $S \sim \mathcal{D}^m$ y que toma valores en $[0,1]$, tenemos que tomando $Z = 1-L_{\mathcal{D}}(A(\cdot))$, $a=\frac{7}{8}$ en el lema previo llegamos a:
+
+\[P_{S\sim \mathcal{D}^m} \left(\frac{1}{8} \ge L_{\mathcal{D}}(A(S)) \right) \le \frac{3}{4} \cdot \frac{8}{7} = 24/28\]
+
+donde $\mathbb{E}(Z) = \mathbb{E} (1 - L_{\mathcal{D}}(A(\cdot))) = 1 - \mathbb{E} (L_{\mathcal{D}}(A(\cdot))) \le \frac{3}{4}$
+
+Es decir:
+
+\[P_{S\sim \mathcal{D}^m} \left( L_{\mathcal{D}}(A(S)) \ge \frac{1}{8} \right) \ge \frac{4}{28} = \frac{1}{7}\]
+#+end_proof
+
+
+Como consecuencia del teorema, podemos decir que no hay un algoritmo de aprendizaje óptimo para todas las distribuciones, puesto que para una dada por el resultado del teorema, el algoritmo ERM con $\mathcal{H} = \{f\}$ aprendería mejor.
 
 ** Ejercicios
 *** 2.1
