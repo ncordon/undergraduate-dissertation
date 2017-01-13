@@ -5,7 +5,6 @@
 #+STARTUP: indent
 #+DATE:
 #+LATEX_HEADER: \usepackage[spanish]{babel}
-#+LATEX_HEADER: \input{./titlepage}
 #+LATEX_HEADER: \usepackage{amsmath} 
 #+LATEX_HEADER: \usepackage{amsthm}
 #+LATEX_HEADER: \usepackage{dsfont}
@@ -20,8 +19,6 @@
 #+LATEX_HEADER: \newenvironment{wording}{\setlength{\parskip}{0pt}\rule{\textwidth}{0.5em}}{~\\\rule{\textwidth}{0.5em}}
 #+LATEX_HEADER: \everymath{\displaystyle}
 
-\break
-
 
 * TODO
 ** TODO Definir matemáticamente el problema de la clasificación 
@@ -34,7 +31,6 @@
 ** TODO Buscar una traducción adecuada a Recall
 ** TODO Cuidado! La definición PAC de Valiant establece complejidad polinómica en $\frac{1}{\epsilon}$ y $\frac{1}{\delta}$, pero se demuestra a posteriori que la definición dada por el libro UML equivale. También habla de complejidad computacional, aunque esto el libro lo separa.
 * Memoria
-
 * Notas de trabajo
 ** Small Disjuncts Review
 Este material es un resumen de lo encontrado en cite:he09_learn_from_imbal_data
@@ -603,17 +599,15 @@ Adaptación del contenido del libro cite:shwartz_understanding_ml
 *** Introducción
 Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
 
-- *Dominio*: $\mathcal{X}$. LLamamos una instancia a $x\in \mathcal{X}$
+- *Dominio*: $\mathcal{X}$, sobre el que tenemos definida una $\sigma$ álgebra de conjuntos. Llamamos una instancia a $x\in \mathcal{X}$
 - *Conjunto de etiquetas*: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario.
 - *Verdadero etiquetado*: Asumimos la existencia de una función $f: \mathcal{X} \rightarrow \mathcal{Y}$ que devuelve el verdadero etiquetado de todas las instancias.
-- *Generación de instancias*: Asumimos la existencia de una distribuciónd de probabilidad $\mathcal{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
-- *Conjunto/Secuencia de entrenamiento*: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una secuencia en la que pueden repetirse tuplas. Los ejemplos del conjunto de entrenamiento representan una m.a.s $(\mathcal{X}_1,\ldots \mathcal{X}_m)$, muestra aleatoria simple, idénticamente distribuida, donde cada $X_i$ sigue la misma distribución que $\mathcal{X}$, $X_i \sim \mathcal{D}$. Además, cada ejemplo del conjunto de entrenamiento se etiqueta según $f$. Notamos este hecho $S \sim \mathcal{D}^m$.
+- *Generación de instancias*: Asumimos la existencia de una distribución de probabilidad $\mathcal{D}$ sobre $\mathcal{X}$, para la $\sigma$ álgebra de conjuntos mencionada anteriormente, que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
+- *Conjunto/Secuencia de entrenamiento*: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una tupla en $(\mathcal{X} \times \mathcal{Y})^m$ en la que pueden repetirse ejemplos. Podemos ver el conjunto de entrenamiento como una m.a.s (muestra aleatoria simple) $(\mathcal{X}_1,\ldots \mathcal{X}_m)$, idéntica e independientemente distribuida, donde cada $X_i$ sigue la misma distribución que $\mathcal{X}$, $X_i \sim \mathcal{D}$ y se etiqueta por $f$. Lo notaremos $S \sim \mathcal{D}^m$, por abuso de notación.
 - *Resultado del aprendizaje*: una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. Se usa la notación $A(S)$ para denotar la hipótesis que un algoritmo $A$ devuelve para una secuencia de entrenamiento $S$.
-- *Error del clasificador*: Sea $A \subset \mathcal{X}$ miembro de alguna $\sigma$ -álgebra de conjuntos de $\mathcal{X}$, $\mathcal{D}$ distribución de probabilidad sobre $\mathcal{X}$, $\mathcal{D}(A)$ denota la probabilidad de que un punto de $\mathcal{X}$ esté en $A$, es decir, la probabilidad de que ocurra el hecho $A$. Basándonos en este, definimos el error del clasificador $h$ como:
+- *Error del clasificador*: Definimos el error del clasificador, suponiendo $\{x\in \mathcal{X} : h(x) \neq f(x)\}$ en la $\sigma$ álgebra, como:
 
-\[L_{D,f}(h) := \mathcal{D}(\{h(x)\neq f(x)\}) = \mathbb{P}_{x\sim \mathcal{D}} [h(x)\neq f(x)]\]
-
-Además asumimos que el algoritmo de aprendizaje no conoce ni la distribución $\mathcal{D}$ ni la función $f$.
+\[L_{D,f}(h) :=  P_{x\sim \mathcal{D}} [h(x)\neq f(x)]\]
 
 **** Minimización del riesgo empírico (ERM)
 
@@ -622,10 +616,10 @@ Además asumimos que el algoritmo de aprendizaje no conoce ni la distribución $
 
 Definimos el riesgo empírico o error empírico como:
 
-\[L_S(h) = \frac{|i\in {1\ldots m}: h(x_i) \neq y_i|}{m}\]
+\[L_S(h) = \frac{\#\{i\in {1\ldots m}: h(x_i) \neq y_i\}}{m}\]
 #+end_definition
 
-Podemos pensar en él como el error del clasificador sobre el conjunto de entrenamiento. El paradigma que intenta buscar una hipótesis que minimice el error empírico recibe el nombre de /Minimización de Riesgo Empírico - ERM/ y notamos $ERM(S)$ al clasificador que obtenemos basándonos en este paradigma para un determinado conjunto de entrenamiento $S$.
+Podemos pensar en él como el error del clasificador sobre el conjunto de entrenamiento. El algoritmo que intenta buscar una hipótesis que minimice el error empírico recibe el nombre de /Minimización de Riesgo Empírico - ERM/ y notamos $ERM(S)$ al clasificador que obtenemos basándonos en este algoritmo, para un determinado conjunto de entrenamiento $S \sim \mathcal{D}^m$.
 
 Este error no es siempre óptimo. Pensemos en el siguiente ejemplo:
 
@@ -637,18 +631,20 @@ Sea $\mathcal{X} = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[
 \end{array}\right.\]
 
 
-$S = \{(x_1,y_1), \ldots (x_m, y_m)\}$ un conjunto de entrenamiento de tamaño $m$ sin elementos repetidos y el clasificador:
+$S = ((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ y el clasificador:
 
 \[h_S(x) = \left\{\begin{array}{lcl}
 y_i && \exists i\in \{1\ldots m\} : x=x_i\\
 0 && \nexists i\in \{1\ldots m\} : x=x_i
 \end{array}\right.\]
 
-Este clasificador es perfecto respecto a la minimización de riesgo empírico, pero $\mathbb{P}_{x\sim \mathcal{D}}[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el clasificador idénticamente 1. A este fenómeno lo denominamos *overfitting*.
+Nótese que el conjunto de entrenamiento no puede tener elementos no repetidos puesto que se etiquetan mediante $f$, que es una función y no puede arrojar dos imágenes distintas para un mismo $x \in \mathcal{X}$ de entrada.
+
+Este clasificador es perfecto respecto a la minimización de riesgo empírico, pero $L_{\mathcal{D}, f}(h_S) = 1/2$. Es decir, tiene el mismo nivel de acierto que el clasificador idénticamente 1. A este fenómeno, minimizar el riesgo empírico siendo un clasificador con un error muy alto, lo denominamos *overfitting*.
 
 **** ERM con /sesgo inductivo/
  
-Se intenta corregir el ERM corrigiendo el espacio de búsqueda, esto es, la clase de hipótesis $\mathcal{H}$ desde la que el algoritmo puede escoger un $h: \mathcal{X}\rightarrow \mathcal{Y}$. Llamamos a esto /sesgo inductivo/ puesto que se asumirá una determinada clase de funciones $\mathcal{H}$ en función de las características del problema.
+Se intenta corregir el ERM restringiendo el espacio de búsqueda, esto es, la clase de hipótesis $\mathcal{H}$ desde la que el algoritmo puede escoger un $h: \mathcal{X}\rightarrow \mathcal{Y}$. Llamamos a esto /sesgo inductivo/ puesto que se asumirá una determinada clase de funciones $\mathcal{H}$ en función de las características del problema.
 
 Notaremos a este nuevo paradigma $ERM_{\mathcal{H}}(S)$, y lo definimos de manera que:
 
@@ -950,10 +946,5 @@ Como consecuencia del teorema, podemos decir que no hay un algoritmo de aprendiz
 
 
 
-
-
-
-
-
 bibliography:references
-bibliographystyle:IEEEtrans
+bibliographystyle:IEEEtran
