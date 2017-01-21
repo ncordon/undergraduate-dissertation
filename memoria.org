@@ -1081,5 +1081,35 @@ Del teorema No Free Lunch revisitado deducimos:
 Sea $\mathcal{H}$ clase de hipótesis con dimensión VC infinita. Entonces $\mathcal{H}$ no es PAC learnable
 #+end_theorem
 
+**** Ejemplos
+
+***** Intervalos $]-\infty, a[$
+
+Sea $\mathcal{H} = \{h_a = \mathds{1}_[x<a]: a\in \mathbb{R}\}$ clase de hipótesis sobre $\mathbb{R}$. 
+
+Dado un conjunto $C=\{\alpha\}$, podemos tomar $h_{\alpha}$ y $h_{\alpha+1}$, que nos dan todos los posibles etiquetados de $C$.
+Sin embargo, dado un conjunto de tamaño 2, $C=\{\alpha, \beta\}$, donde podemos suponer spg. $\alpha < \beta$. Entonces no podemos encontrar $h_b \in \mathcal{H}$ verificando $h_b(\alpha)=0$ y $h_b(\beta) = 1$, ya que esto implicaría que $b > \beta$ y por tanto entraría en contradicción con que $h_b(\alpha) = 0$
+
+Hemos probado $VCdim(\mathcal{H}) = 1$.
+
+***** Intervalos cerrados y acotados
+
+Sea $\mathcal{H} = \{h_{a,b} = \mathds{1}_[a<x<b]: a,b\in \mathbb{R}\}$ clase de hipótesis sobre $\mathbb{R}$. 
+
+Dado un conjunto $C=\{\alpha\, \beta\}$, con $\alpha < \beta$, las hipótesis $h_{\alpha+\delta_1, \beta + \delta_2}$ con $\delta_i \in \{0,1\}$ nos dan todos los posibles etiquetados de $C$.
+Sin embargo, dado un conjunto de tamaño 3, $C=\{\alpha, \beta\, \theta}$, donde podemos suponer $\alpha < \beta < \theta$. Entonces no podemos encontrar $h_b \in \mathcal{H}$ verificando $h_b(\alpha)=1$ y $h_b(\theta) = 1$ y $h_b(\beta) = 0$
+
+Hemos probado $VCdim(\mathcal{H}) = 2$.
+
+***** Clases finitas
+
+Sea $\mathcal{H}$ una clase finita. Entonces para un conjunto $C \subeteq \mathcal{H}$ se tiene $|mathcal{H}_C| \le |\mathcal{H}|$ y por tanto el conjunto no puede ser cubierto por $\mathcal{H}$ si $|\mathcal{H}| < 2^{|C|}$, lo que implica $VCdim(\mathcal{H}) \le log_2(|\mathcal{|H||)$
+
+***** Dimensión VC y número de parámetros
+
+Puede demostrarse que la dimensión VC de los clasificadores de rectángulo $\mathcal{H} = \{h_{a,b,c,d} := \mathds{1}_{[a\le x\le b, c\le y\le d]}\}$ en $\mathbb{R}^2$, que ya mencionamos en un ejemplo en los temas anteriores es 4. Esto, unido a los ejemplos anteriores con intervalos podría hacernos conjeturar que la dimensión VC depende del número de parámetros con el que definimos los clasificadores. El siguiente ejemplo demuestra que esto es falso.
+
+Dada la clase de clasificadores $\mathcal{H} = \{h_{\theta}: \theta \in \mathbb{R}\}$ donde $h_{\theta}: \mathcal{X} \rightarrow {0,1}$ está definida por $h_\theta (x) = \lceil 0.5 sen(\theta x) \rceil$, y $d\in \mathbb{N}$ arbitrario, podemos tomar $d$ puntos codificados por $x_i = 0.x_{1,j} \ldots x_^{2^d,j} x^{2^d + 1,j}$ donde cada $x_{i}$ es una fila de la matriz $(x_{i,j})$ donde la columna $2^{d+1}$ ésima es 1, y la columna $i$ -ésima codifica el número $i-1$ en binario, leído de arriba a abajo. Así dado una asignación de $d$ etiquetas, debe codificar un número en binario entre $1$ y $2^d-1$, a saber, la columna $k$ ésima de la matriz. Tomamos el clasificador $h = \lceil 0.5 sen(10^k \pi x) \rceil$ que verificará que su asignación de etiquetas es justamente la columna $k$ ésima. El sentido de la última columna constantemente $1$ puede explicarse en que daremos $x_{i,1} \ldots x_{i,k}$ medias vueltas a la circunferencia unidad y recorreremos y una fracción $0.x_{i,k+1} \ldots x_{2^d,j} 1$ no nula de otra media vuelta a la circunferencia. Si $x_{i,k} = 1$ entonces $h(x_i) = 1$, y si $x_{i,k}=0$ entonces $h(x_i) = 0$. Luego $VCdim(\mathcal{H}) = \infty$.
+
 bibliography:references
 bibliographystyle:IEEEtran
