@@ -31,6 +31,14 @@
 ** TODO Buscar una traducción adecuada a Recall
 ** TODO Cuidado! La definición PAC de Valiant establece complejidad polinómica en $\frac{1}{\epsilon}$ y $\frac{1}{\delta}$, pero se demuestra a posteriori que la definición dada por el libro UML equivale. También habla de complejidad computacional, aunque esto el libro lo separa.
 * Memoria
+* Parte informática
+** Jonatthan Ortigosa-Hernández, Iñakinza, Jose A.Lozano
+** MWMOTE
+** RWO
+** RACOG, WRACOG
+** JMLR2015, p.2695
+** DBSMOTE 2012 Appl Intell
+** PDFOS
 * Notas de trabajo
 ** Small Disjuncts Review
 Este material es un resumen de lo encontrado en cite:he09_learn_from_imbal_data
@@ -457,7 +465,7 @@ Es un polinomio que se anula en los puntos donde $h_S(x)=1$ y tiene un valor men
 #+begin_wording
 Sea $\mathcal{H}$ clase de clasificadores binarios sobre un dominio $\mathcal{X}$. Sea $\mathcal{D}$ una distribución desconocida sobre $\mathcal{X}$. Sea $f$ una hipótesis objetivo en $\mathcal{H}$. Se fija $h\in \mathcal{H}$. Probar que: 
 
-\[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\mathbbb{D},f}(h)\]
+\[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\mathbb{D},f}(h)\]
 #+end_wording
 
 Llamamos $P=\mathbb{P}_{x\sim \mathcal{D}}(f(x)\neq h(x))$
@@ -651,7 +659,7 @@ El hecho de tomar el error sobre el conjunto de entrenamiento como aproximación
 
 Sea $\mathcal{H}$ clase de clasificadores binarios sobre un dominio $\mathcal{X}$. Sea $\mathcal{D}$ una distribución desconocida sobre $\mathcal{X}$. Sea $f$ una hipótesis objetivo en $\mathcal{H}$. Se fija $h\in \mathcal{H}$. Probar que: 
 
-\[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\mathbbb{D},f}(h)\]
+\[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\mathbb{D},f}(h)\]
 #+end_fact
 
 Llamamos $P=\mathbb{P}_{x\sim \mathcal{D}}(f(x)\neq h(x))$
@@ -1028,6 +1036,50 @@ Es decir:
 Como consecuencia del teorema, podemos decir que no hay un algoritmo de aprendizaje óptimo para todas las distribuciones, puesto que para una dada por el resultado del teorema, el algoritmo ERM con $\mathcal{H} = \{f\}$ aprendería mejor.
 
 
+*** Dimensión Vapnik-Chervonenkis
+La abreviaremos dimensión VC
+
+#+begin_definition
+*Restricción de $\mathcal{H}$ a $C$*
+
+Sea $\mathcal{H}$ clase de hipótesis de $\mathcal{X}$ a $\{0,1\}$, y $C=\{c_1, \ldots c_m\} \subseteq \mathcał{X}$. Llamamos restricción de $\mathcal{H}$ a $C$ al conjunto de funciones $\C \rightarrow \{0,1\}$
+
+\[\mathcal{H}_{C} = \{h|_C : h\in \mathcal{H}\}\]
+#+end_definition
+
+#+begin_definition
+*Cubrimiento de $C$ por $\mathcal{H}$*
+
+Una clase de hipótesis $\mathcal{H}$ cubre un conjunto finito $C \subseteq \mathcal{X}$ si la restricción de $\mathcal{H}$ a $C$ nos da todas las posibles funciones de $C$ a $\{0,1\}$. Esto es, si $|\mathcal{H}_{C}| = 2^{|C|}$
+#+end_definition
+
+Cuando demostrábamos el teorema de No Free Lunch, no teníamos ninguna restricción sobre la distribución que construíamos ni sobre la hipótesis que daba lugar a esa distribución, la $f$ que cumplía que tenía error nulo. Siempre que el conjunto $C$ que tomamos sea cubierto por $\mathcal{H}$, podremos asegurar que la $f$ que genera la distribución pertenece a la clase de funciones $\mathcal{H}$. Formalmente:
+
+#+begin_theorem
+*Teorema de No Free Lunch revisitado*
+
+Sea $\mathcal{H}$ una clase de hipótesis de $\mathcal{H}$ a $\{0,1\}$, $m < |\mathcal{X}|/2$ el tamaño del conjunto de entrenamiento. Supongamos que existe $C\subseteq \mathcal{X}$ de tamaño $2m$ al que cubre $\mathcal{H}$. Sea $A$ cualquier algoritmo de aprendizaje, entonces existe una distribución $\mathcal{D}$ sobre $\mathcal{X} \times \{0,1\}$ verificando:
+
+1. Existe una función $f: \mathcal{X} \rightarrow \{0,1\}$, $f\in \mathcal{H}$ con $L_{\mathcal{D}}(f)=0$
+2. $P_{S\sim \mathcal{D}^m} [L_{\mathcal{D}} (A(S)) \ge 1/8] \ge 1/7$
+#+end_theorem
+
+Intuitivamente, si existe un conjunto $C$ cubierto por $\mathcal{H}$ y nuestro conjunto de entrenamiento contiene la mitad de instancias de $C$ (recordemos que la distribución que construíamos en la demostración de No Free Lunch asignaba toda la masa de probabilidad al conjunto $C$), entonces no tenemos información suficiente para etiquetar correctamente el resto de instancias (hay demasiadas posibles hipótesis que etiquetan el conjunto de entrenamiento de igual forma pero difieren en el resto de instancias).
+
+#+begin_definition
+*Dimensión VC*
+
+Definimos la dimensión VC de una clase de hipótesis $\mathcal{H}$ como el tamaño máximo de los conjuntos $C \subseteq \mathcal{X}$ verificando que están cubiertos por $\mathcal{H}$. Si no existe máximo, decimos que $\mathcal{H}$ tiene dimensión VC infinita. La notamos $VCdim(\mathbb{H})$
+#+end_definition
+
+
+Del teorema No Free Lunch revisitado deducimos:
+
+#+begin_theorem
+*Ser PAC learnable implica tener dimensión VC finita*
+
+Sea $\mathcal{H}$ clase de hipótesis con dimensión VC infinita. Entonces $\mathcal{H}$ no es PAC learnable
+#+end_theorem
 
 bibliography:references
 bibliographystyle:IEEEtran
