@@ -1035,8 +1035,8 @@ Es decir:
 
 Como consecuencia del teorema, podemos decir que no hay un algoritmo de aprendizaje óptimo para todas las distribuciones, puesto que para una dada por el resultado del teorema, el algoritmo ERM con $\mathcal{H} = \{f\}$ aprendería mejor.
 
-
 *** Dimensión Vapnik-Chervonenkis
+**** Introducción
 La abreviaremos dimensión VC
 
 #+begin_definition
@@ -1113,3 +1113,41 @@ Dada la clase de clasificadores $\mathcal{H} = \{h_{\theta}: \theta \in \mathbb{
 
 bibliography:references
 bibliographystyle:IEEEtran
+**** Teorema fundamental de aprendizaje PAC
+
+#+begin_theorem
+*Teorema fundamental de aprendizaje PAC*
+
+Sea $\mathcal{H}$ clase de hipótesis de la forma $h: \mathcal{X} \rightarrow \{0,1\}$ y la función de pérdida 0-1. Entonces equivalen:
+
+1. $\mathcal{H}$ tiene la propiedad de convergencia uniforme.
+2. $\mathcal{H}$ es agnósticamente PAC learnable por cuaquier algoritmo ERM.
+3. $\mathcal{H}$ es agnósticamente PAC learnable.
+4. $\mathcal{H}$ es PAC learnable.
+5. $\mathcal{H}$ es PAC learnable por cualquier algoritmo ERM.
+6. $VCdim (\mathcal{H}) < \infty$.
+#+end_theorem
+
+
+La implicación que nos falta es $6 \implies 1$. El resto de implicaciones se consiguen a partir de teoremas ya probados en temas anteriores.
+
+Daremos una serie de lemas y definiciones previas antes de probarla.
+
+#+begin_definition
+*Función de crecimiento*
+
+Sea $\mathcal{H}$ una clase de hipótesis. Definimos como función de crecimiento de $\mathcal{H}$:
+
+\[\begin{array}{ll}
+\tau_{\mathcal{H}}: & \mathbb{N} \rightarrow \mathbb{N}\\
+                    & m          \mapsto     \underset{C \subseteq \mathcal{X}: |C|=m}{max}{|\mathcal{H}_C|}
+\end{array}\]
+
+Esta función está bien definida puesto que fijado $m \in \mathbb{N}$ se tiene siempre que $|\mathcal{H}_C| \le 2^C$
+#+end_definition
+
+#+begin_lemma
+*Lema de Sauer-Shelah*
+
+Sea $\mathcal{H}$ clase de hipótesis con $VCdim(\mathcal{H}) \le d < \infty$. Entonces para todo $m\in \mathbb{N}$ se tiene $\tau_{\mathcal{H}} (m) \le \sum_{i=0}^d \binom{m}{i}$. Se deduce que si $m > d+1$ entonces $\tau_{\mathcal{H}}(m) \le (em/d)^d$.
+#+end_lemma
