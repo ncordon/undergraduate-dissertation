@@ -696,7 +696,7 @@ El valor $L_{\mathcal{D},f}(h_S)$ dependerá del conjunto de entrenamiento $S$, 
 #+begin_definition
 *Aprendizaje PAC (Probablemente Aproximadamente Correcto)*
 
-Una clase de funciones definidas sobre $\mathcal{X}$, $\mathcal{H}$ es PAC learnable si existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo $A$ verificando que si $0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $\mathcal{X}$ y para toda función de verdadero etiquetado $f:\mathcal{X} \rightarrow \{0,1\}$, si la propiedad de factibilidad se cumple, ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$ etiquetado mediante $f$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
+Una clase de funciones definidas sobre $\mathcal{X}$, $\mathcal{H}$ es PAC cognoscible si existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo $A$ verificando que si $0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $\mathcal{X}$ y para toda función de verdadero etiquetado $f:\mathcal{X} \rightarrow \{0,1\}$, si la propiedad de factibilidad se cumple, ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$ etiquetado mediante $f$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
 
 \[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h) \le \epsilon] \ge 1-\delta\]
 #+end_definition
@@ -710,7 +710,7 @@ Nótese que las condiciones exigidas: cumplir la propiedad de factibilidad y que
 **** Aprendizaje con clases finitas
 
 #+begin_theorem
-*Las clases finitas de funciones son PAC learnable*
+*Las clases finitas de funciones son PAC cognoscible*
 
 Sea $\mathcal{H}$ una clase finita de funciones definidas sobre un conjunto $\mathcal{X}$. Sean $0 < \epsilon, \delta < 1$, y un natural $m\in \mathbb{N}$ verificando:
 
@@ -747,7 +747,7 @@ Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $\
 
 **** Aprendizaje con clases no finitas
  
-¿Hay ejemplos de clases infinitas PAC learnable? Veamos un ejemplo.
+¿Hay ejemplos de clases infinitas PAC cognoscibles? Veamos un ejemplo.
 
 #+begin_definition
 *Clasificadores de rectángulo*
@@ -766,9 +766,9 @@ La clase de clasificadores de rectángulo en el plano se define por:
 
 
 #+begin_fact
-*Los rectángulos son PAC learnables*
+*Los rectángulos son PAC cognoscibles*
 
-Asumiendo propiedad de factibilidad, los rectángulos son PAC learnables
+Asumiendo propiedad de factibilidad, los rectángulos son PAC cognoscibles
 #+end_fact
 
 Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos del conjunto de entrenamiento $S$.
@@ -777,7 +777,7 @@ Partiendo de la propiedad de factibilidad, debe existir un clasificador de rect�
 
 El algoritmo que devuelve el mínimo rectángulo que engloba a todos los ejemplos positivos es por tanto un ERM.
 
-Veamos que con este algoritmo minimizador del ERM la clase de rectángulos es PAC learnable.
+Veamos que con este algoritmo minimizador del ERM la clase de rectángulos es PAC cognoscible.
 
 Sea $R^{\ast} = R(a,b,c,d)$ el rectángulo del apartado 1. Entonces $P_{S\sim \mathcal{D}^2}[f(R^{\ast})=\{1\}] = 1$
 
@@ -836,7 +836,7 @@ L_{S} (h) := \frac{1}{m} \sum_{i=1}^m l(h,z_i)
 #+begin_definition
 *Aprendizaje PAC agnóstico*
 
-Una clase de funciones $\mathcal{H}$ definidas en $\mathcal{X}$ y con imagen en $\mathcal{Y}$ es agnósticamente PAC learnable respecto a $Z = \mathcal{X} \times \mathcal{Y}$ (sobre el que tenemos definida una $\sigma$ álgebra de conjuntos) y a una función de pérdida $l: \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}$ si existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A$ verificando que si $0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
+Una clase de funciones $\mathcal{H}$ definidas en $\mathcal{X}$ y con imagen en $\mathcal{Y}$ es agnósticamente PAC cognoscible respecto a $Z = \mathcal{X} \times \mathcal{Y}$ (sobre el que tenemos definida una $\sigma$ álgebra de conjuntos) y a una función de pérdida $l: \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}$ si existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A$ verificando que si $0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
 
 \[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(h) \le inf_{h'\in \mathcal{H}} L_{\mathcal{D}}(h') + \epsilon] \ge 1-\delta\]
 #+end_definition
@@ -853,7 +853,7 @@ equivale a la primera definición que dimos de aprendizaje PAC si asumimos propi
 
 Cuando permitimos que el algoritmo $A$ devuelva una función $h \notin \mathcal{H}$, de manera que $h \in \mathcal{H}'$ y $\mathcal{H} \subset \mathcal{H}'$ una clase de funciones a donde la función de pérdida es extendible de manera natural, el aprendizaje recibe el nombre de *aprendizaje impropio*. La definición aquí dada se ha hecho para *aprendizaje propio*.
 
-*** Condiciones suficientes para ser PAC learnable
+*** Condiciones suficientes para ser PAC cognoscible
 #+begin_definition
 *Conjunto de entrenamiento $\epsilon$ representativo*
 
@@ -877,15 +877,15 @@ Para $h \in \mathcal{H}$ arbitrario:
 #+begin_definition
 *Convergencia uniforme / clase de Glivenko-Cantelli*
 
-Decimos que una clase de hipótesis $\mathcal{H}$ tiene la propiedad de *convergencia uniforme o es de Glivenko-Cantelli*, respecto a un dominio $Z$, y a una función $l$ si para todo $0 < \delta, \epsilon < 1$ existe $m_{\epsilon, \delta}$ verificando que para toda distribución $\mathcal{D}$ sobre $Z$, si $S$ es un conjunto de entrenamiento de tamaño mayor o igual a $m_{\epsilon, \delta}$, entonces:
+Decimos que una clase de hipótesis $\mathcal{H}$ tiene la propiedad de *convergencia uniforme o es de Glivenko-Cantelli*, respecto a un dominio $Z$, y a una función de pérdida $l$ si existe una función $m_{\mathcal{H}}^{UC}: ]0,1[^2 \rightarrow \mathbb{N}$ verificando que para todo $0 < \delta, \epsilon < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, si $S$ es un conjunto de entrenamiento de tamaño mayor o igual a $m \ge m_{\mathcal{H}}^{UC}(\epsilon, \delta)$, entonces:
 
 \[P_{S\sim \mathcal{D}^m} [\forall h\in \mathcal{H}, |L_S(h) - L_{\mathcal{D}}(h)| \le \epsilon] \ge 1-\delta\]
 #+end_definition
 
 #+begin_theorem
-*La convergencia uniforme es condición suficiente para ser PAC learnable*
+*La convergencia uniforme es condición suficiente para ser PAC cognoscible*
 
-Sea $\mathcal{H}$ una clase de hipótesis con la propiedad de convergencia uniforme. Entonces es PAC learnable con complejidad muestral menor o igual al $m_{\frac{\epsilon}{2}, \delta}$ dado en la definición anterior y el algoritmo ERM
+Sea $\mathcal{H}$ una clase de hipótesis con la propiedad de convergencia uniforme. Entonces es PAC cognoscible con complejidad muestral menor o igual al $m_{\mathcal{H}}^{UC} \left(\frac{\epsilon}{2}, \delta \right)$ dado en la definición anterior y el algoritmo ERM.
 #+end_theorem
 
 #+begin_proof
@@ -933,12 +933,12 @@ Y por tanto:
 \[P_{S\sim \mathcal{D}^m} [\exists h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] < |\mathcal{H}| 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2}\]
 #+end_proof
 
-Recordemos hasta ahora el resultado que habíamos obtenido era su carácter PAC learnable, donde agnósticamente PAC learnable y learnable con funciones de pérdida 0-1 era un término equivalente. El teorema que enunciamos a continuación, deducible a partir del teorema sobre el caracter agnóstico - PAC learnable de clases de funciones con propiedad de convergencia uniforme, en particular las finitas, generaliza el resultado para cualquier funciones de pérdida acotada.
+Recordemos hasta ahora el resultado que habíamos obtenido era su carácter PAC cognoscible, donde agnósticamente PAC cognoscible y cognoscible con funciones de pérdida 0-1 era un término equivalente. El teorema que enunciamos a continuación, deducible a partir del teorema sobre el caracter agnóstico - PAC cognoscible de clases de funciones con propiedad de convergencia uniforme, en particular las finitas, generaliza el resultado para cualquier funciones de pérdida acotada.
 
 #+begin_theorem
-*Las clases finitas son agnósticamente PAC learnable*
+*Las clases finitas son agnósticamente PAC cognoscible*
 
-Sea $\mathcal{H}$ una clase de hipótesis finita, $Z$ un dominio y sea $l : \mathcal{H} \times Z \rightarrow [a,b]$ una función de pérdida. Entonces $\mathcal{H}$ es PAC learnable con complejidad muestral:
+Sea $\mathcal{H}$ una clase de hipótesis finita, $Z$ un dominio y sea $l : \mathcal{H} \times Z \rightarrow [a,b]$ una función de pérdida. Entonces $\mathcal{H}$ es PAC cognoscible con complejidad muestral:
 
 \[m_{\mathcal{H}}( \epsilon, \delta ) \le \left\lceil \frac{2 log(2|\mathcal{H}|/\delta)(b-a)^2}{\epsilon^2} \right\rceil\]
 #+end_theorem
@@ -1108,9 +1108,9 @@ Definimos la dimensión VC de una clase de hipótesis $\mathcal{H}$ como el tama
 Del teorema No Free Lunch revisitado deducimos:
 
 #+begin_theorem
-*Ser PAC learnable implica tener dimensión VC finita*
+*Ser PAC cognoscible implica tener dimensión VC finita*
 
-Sea $\mathcal{H}$ clase de hipótesis con $VC(\mathcal{H}) = \infty$. Entonces $\mathcal{H}$ no es PAC learnable
+Sea $\mathcal{H}$ clase de hipótesis con $VC(\mathcal{H}) = \infty$. Entonces $\mathcal{H}$ no es PAC cognoscible
 #+end_theorem
 
 **** Ejemplos
@@ -1153,10 +1153,10 @@ bibliographystyle:IEEEtran
 Sea $\mathcal{H}$ clase de hipótesis de la forma $h: \mathcal{X} \rightarrow \{0,1\}$ y la función de pérdida 0-1. Entonces equivalen:
 
 1. $\mathcal{H}$ tiene la propiedad de convergencia uniforme.
-2. $\mathcal{H}$ es agnósticamente PAC learnable por cuaquier algoritmo ERM.
-3. $\mathcal{H}$ es agnósticamente PAC learnable.
-4. $\mathcal{H}$ es PAC learnable.
-5. $\mathcal{H}$ es PAC learnable por cualquier algoritmo ERM.
+2. $\mathcal{H}$ es agnósticamente PAC cognoscible por cuaquier algoritmo ERM.
+3. $\mathcal{H}$ es agnósticamente PAC cognoscible.
+4. $\mathcal{H}$ es PAC cognoscible.
+5. $\mathcal{H}$ es PAC cognoscible por cualquier algoritmo ERM.
 6. $VC (\mathcal{H}) < \infty$.
 #+end_theorem
 
@@ -1202,3 +1202,19 @@ En definitiva hemos probado que fragmentamos $|A| + k + |B| - k = |A| + |B| = |\
 Probado esto, si $\tau_{\mathca{H}}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $\mathcal{H}$ debe fragmentar un conjunto de tamaño $d+1$ al menos, puesto que el número de subconjuntos de un conjunto finito $C$ menor que  $d+1$ es exactamente $\sum_{i=0}^d \binom{|C|}{i}$. Luego tendríamos $VC(\mathcal{H}) > d$
 
 #+end_proof
+*** Aprendizaje no uniforme
+Establecemos el concepto de aprendizaje no uniforme, relajando la definición de agnósticamente PAC cognoscible. Recordamos que en la definición de PAC cognoscible, el tamaño de la muestra sólo dependía de los parámetros de confianza y error que buscásemos satisfacer. En el aprendizaje uniforme hacemos depender el tamaño de la muestra de dichos parámetros de confianza y error, pero además también de una hipótesis de etiquetado a la que queremos acercarnos, sea cual sea la verdadera distribución de las instancias y sus etiquetas.
+
+#+begin_definition
+*Aprendizaje no uniforme*
+
+Una clase de funciones $\mathcal{H}$ sobre $Z=\mathcal{X} \times \mathcal{Y}$ es no-uniformemente PAC cognoscible si existe un algoritmo $A$ y una función $m_{\mathcal{H}}^{NU} : ]0,1[^2 x \mathcal{H} \rightarrow \mathbb{N}$ verificando que si $0 < \epsilon, \delta < 1$, y $\bar{h} \in \mathcal{H}$ entonces para toda distribución $\mathcal{D}$ sobre $Z$ ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$, con $m\ge m_{\mathcal{H}}^{NU} (\epsilon, \delta, \bar{h})$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
+
+\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(h) \le L_{\mathcal{D}}(\bar{h}) + \epsilon] \ge 1-\delta\]
+#+end_definition
+
+#+begin_lemma
+*Caracterización de aprendizaje no uniforme*
+
+Una clase de hipótesis $\mathcal{H}$ sobre $Z=\mathcal{X} \times \{0,1\}$ es no uniformemente cognoscible sii es unión contable de clases agnósticamente PAC cognoscibles
+#+end_lemma
