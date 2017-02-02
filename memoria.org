@@ -875,9 +875,9 @@ Para $h \in \mathcal{H}$ arbitrario:
 #+end_proof
 
 #+begin_definition
-*Convergencia uniforme*
+*Convergencia uniforme / clase de Glivenko-Cantelli*
 
-Decimos que una clase de hipótesis $\mathcal{H}$ tiene la propiedad de convergencia uniforme respecto a un dominio $Z$, y a una función $l$ si para todo $0 < \delta, \epsilon < 1$ existe $m_{\epsilon, \delta}$ verificando que para toda distribución $\mathcal{D}$ sobre $Z$, si $S$ es un conjunto de entrenamiento de tamaño mayor o igual a $m_{\epsilon, \delta}$, entonces:
+Decimos que una clase de hipótesis $\mathcal{H}$ tiene la propiedad de *convergencia uniforme o es de Glivenko-Cantelli*, respecto a un dominio $Z$, y a una función $l$ si para todo $0 < \delta, \epsilon < 1$ existe $m_{\epsilon, \delta}$ verificando que para toda distribución $\mathcal{D}$ sobre $Z$, si $S$ es un conjunto de entrenamiento de tamaño mayor o igual a $m_{\epsilon, \delta}$, entonces:
 
 \[P_{S\sim \mathcal{D}^m} [\forall h\in \mathcal{H}, |L_S(h) - L_{\mathcal{D}}(h)| \le \epsilon] \ge 1-\delta\]
 #+end_definition
@@ -1042,34 +1042,66 @@ La abreviaremos dimensión VC
 #+begin_definition
 *Restricción de $\mathcal{H}$ a $C$*
 
-Sea $\mathcal{H}$ clase de hipótesis de $\mathcal{X}$ a $\{0,1\}$, y $C=\{c_1, \ldots c_m\} \subseteq \mathcał{X}$. Llamamos restricción de $\mathcal{H}$ a $C$ al conjunto de funciones $\C \rightarrow \{0,1\}$
+Sea $\mathcal{H}$ clase de hipótesis de $\mathcal{X}$ a $\{0,1\}$, y $C=\{c_1, \ldots c_m\} \subseteq \mathcał{X}$. Llamamos restricción de $\mathcal{H}$ a $C$ al conjunto de funciones:
 
-\[\mathcal{H}_{C} = \{h|_C : h\in \mathcal{H}\}\]
+\[\mathcal{H}_{C} = \{h_{|C} : h\in \mathcal{H}\} \cong \{(h(c_1), \ldots h(c_m)): h\in \mathcal{H}\}\]
 #+end_definition
+
 
 #+begin_definition
-*Cubrimiento de $C$ por $\mathcal{H}$*
+*Restricción de $\mathcal{X}$ a $\mathcal{H}$*
 
-Una clase de hipótesis $\mathcal{H}$ cubre un conjunto finito $C \subseteq \mathcal{X}$ si la restricción de $\mathcal{H}$ a $C$ nos da todas las posibles funciones de $C$ a $\{0,1\}$. Esto es, si $|\mathcal{H}_{C}| = 2^{|C|}$
+Sea $\mathcal{H}$ clase de hipótesis de $\mathcal{X}$ a $\{0,1\}$, y $C=\{c_1, \ldots c_m\} \subseteq \mathcał{X}$. Llamamos restricción de $\mathcal{X}$ por $\mathcal{H}$ a:
+
+\[\mathcal{X}_{\mathcal{H}} = \{S \subseteq X: \exists h\in \mathcal{H}, h(S)=\{1\} \}\]
 #+end_definition
 
-Cuando demostrábamos el teorema de No Free Lunch, no teníamos ninguna restricción sobre la distribución que construíamos ni sobre la hipótesis que daba lugar a esa distribución, la $f$ que cumplía que tenía error nulo. Siempre que el conjunto $C$ que tomamos sea cubierto por $\mathcal{H}$, podremos asegurar que la $f$ que genera la distribución pertenece a la clase de funciones $\mathcal{H}$. Formalmente:
+
+#+begin_definition
+*Conjunto fragmentado por otro*
+ 
+Un conjunto $\mathcal{F}$ diremos que fragmenta a otro conjunto finito $C$ si se verifica que para todo subconjunto de $D \subseteq C$ existe $S\in \mathcal{F}$ con $S \cap C = D$
+#+end_definition
+
+
+#+begin_definition
+*Conjunto fragmentado por una clase de hipótesis*
+
+Una clase de hipótesis $\mathcal{H}$ fragmenta un conjunto finito $C \subseteq \mathcal{X}$ sii la restricción de $\mathcal{H}$ a $C$ nos da todas las posibles funciones de $C$ a $\{0,1\}$. Esto es, si $|\mathcal{H}_{C}| = 2^{|C|}$
+
+#+begin_lemma
+*Caracterización del concepto de fragmentación de $C$ por $\mathcal{H}$*
+
+Una clase de hipótesis $\mathcal{H}$ fragmenta un conjunto finito $C \subseteq \mathcal{X}$ sii $X_{\mathcal{H}}$ fragmenta $C$
+#+end_lemma
+
+#+begin_proof
+La demostración de la caracterización es trivial desde la biyección:
+
+\[\{h_{|C} : h\in \mathcal{H}\} \cong \{(h(c_1), \ldots h(c_m)): h\in \mathcal{H}\}\]
+
+con $C = \{c_1, \ldots c_m\}$
+#+end_proof
+
+Este lema nos permite trabajar indistintamente con la fragmentación de un conjunto por una clase de funciones o por la restricción del espacio por dicha clase de hipótesis.
+
+Cuando demostrábamos el teorema de No Free Lunch, no teníamos ninguna restricción sobre la distribución que construíamos ni sobre la hipótesis que daba lugar a esa distribución, la $f$ que cumplía que tenía error nulo. Siempre que el conjunto $C$ que tomamos sea fragmentado por $\mathcal{H}$, podremos asegurar que la $f$ que genera la distribución pertenece a la clase de funciones $\mathcal{H}$. Formalmente:
 
 #+begin_theorem
 *Teorema de No Free Lunch revisitado*
 
-Sea $\mathcal{H}$ una clase de hipótesis de $\mathcal{H}$ a $\{0,1\}$, $m < |\mathcal{X}|/2$ el tamaño del conjunto de entrenamiento. Supongamos que existe $C\subseteq \mathcal{X}$ de tamaño $2m$ al que cubre $\mathcal{H}$. Sea $A$ cualquier algoritmo de aprendizaje, entonces existe una distribución $\mathcal{D}$ sobre $\mathcal{X} \times \{0,1\}$ verificando:
+Sea $\mathcal{H}$ una clase de hipótesis de $\mathcal{H}$ a $\{0,1\}$, $m < |\mathcal{X}|/2$ el tamaño del conjunto de entrenamiento. Supongamos que existe $C\subseteq \mathcal{X}$ de tamaño $2m$ fragmentado $\mathcal{H}$. Sea $A$ cualquier algoritmo de aprendizaje, entonces existe una distribución $\mathcal{D}$ sobre $\mathcal{X} \times \{0,1\}$ verificando:
 
 1. Existe una función $f: \mathcal{X} \rightarrow \{0,1\}$, $f\in \mathcal{H}$ con $L_{\mathcal{D}}(f)=0$
 2. $P_{S\sim \mathcal{D}^m} [L_{\mathcal{D}} (A(S)) \ge 1/8] \ge 1/7$
 #+end_theorem
 
-Intuitivamente, si existe un conjunto $C$ cubierto por $\mathcal{H}$ y nuestro conjunto de entrenamiento contiene la mitad de instancias de $C$ (recordemos que la distribución que construíamos en la demostración de No Free Lunch asignaba toda la masa de probabilidad al conjunto $C$), entonces no tenemos información suficiente para etiquetar correctamente el resto de instancias (hay demasiadas posibles hipótesis que etiquetan el conjunto de entrenamiento de igual forma pero difieren en el resto de instancias).
+Intuitivamente, si existe un conjunto $C$ fragmentado por $\mathcal{H}$ y nuestro conjunto de entrenamiento contiene la mitad de instancias de $C$ (recordemos que la distribución que construíamos en la demostración de No Free Lunch asignaba toda la masa de probabilidad al conjunto $C$), entonces no tenemos información suficiente para etiquetar correctamente el resto de instancias (hay demasiadas posibles hipótesis que etiquetan el conjunto de entrenamiento de igual forma pero difieren en el resto de instancias).
 
 #+begin_definition
 *Dimensión VC*
 
-Definimos la dimensión VC de una clase de hipótesis $\mathcal{H}$ como el tamaño máximo de los conjuntos $C \subseteq \mathcal{X}$ verificando que están cubiertos por $\mathcal{H}$. Si no existe máximo, decimos que $\mathcal{H}$ tiene dimensión VC infinita. La notamos $VCdim(\mathbb{H})$
+Definimos la dimensión VC de una clase de hipótesis $\mathcal{H}$ como el tamaño máximo de los conjuntos $C \subseteq \mathcal{X}$ verificando que son fragmentados por $\mathcal{H}$. Si no existe máximo, decimos que $\mathcal{H}$ tiene dimensión VC infinita. La notamos $VC(\mathbb{H})$
 #+end_definition
 
 
@@ -1078,7 +1110,7 @@ Del teorema No Free Lunch revisitado deducimos:
 #+begin_theorem
 *Ser PAC learnable implica tener dimensión VC finita*
 
-Sea $\mathcal{H}$ clase de hipótesis con dimensión VC infinita. Entonces $\mathcal{H}$ no es PAC learnable
+Sea $\mathcal{H}$ clase de hipótesis con $VC(\mathcal{H}) = \infty$. Entonces $\mathcal{H}$ no es PAC learnable
 #+end_theorem
 
 **** Ejemplos
@@ -1103,7 +1135,7 @@ Hemos probado $VCdim(\mathcal{H}) = 2$.
 
 ***** Clases finitas
 
-Sea $\mathcal{H}$ una clase finita. Entonces para un conjunto $C \subeteq \mathcal{H}$ se tiene $|mathcal{H}_C| \le |\mathcal{H}|$ y por tanto el conjunto no puede ser cubierto por $\mathcal{H}$ si $|\mathcal{H}| < 2^{|C|}$, lo que implica $VCdim(\mathcal{H}) \le log_2(|\mathcal{|H||)$
+Sea $\mathcal{H}$ una clase finita. Entonces para un conjunto $C \subeteq \mathcal{H}$ se tiene $|mathcal{H}_C| \le |\mathcal{H}|$ y por tanto el conjunto no puede ser fragmentado por $\mathcal{H}$ si $|\mathcal{H}| < 2^{|C|}$, lo que implica $VCdim(\mathcal{H}) \le log_2(|\mathcal{|H||)$
 
 ***** Dimensión VC y número de parámetros
 
@@ -1125,7 +1157,7 @@ Sea $\mathcal{H}$ clase de hipótesis de la forma $h: \mathcal{X} \rightarrow \{
 3. $\mathcal{H}$ es agnósticamente PAC learnable.
 4. $\mathcal{H}$ es PAC learnable.
 5. $\mathcal{H}$ es PAC learnable por cualquier algoritmo ERM.
-6. $VCdim (\mathcal{H}) < \infty$.
+6. $VC (\mathcal{H}) < \infty$.
 #+end_theorem
 
 
@@ -1149,5 +1181,24 @@ Esta función está bien definida puesto que fijado $m \in \mathbb{N}$ se tiene 
 #+begin_lemma
 *Lema de Sauer-Shelah*
 
-Sea $\mathcal{H}$ clase de hipótesis con $VCdim(\mathcal{H}) \le d < \infty$. Entonces para todo $m\in \mathbb{N}$ se tiene $\tau_{\mathcal{H}} (m) \le \sum_{i=0}^d \binom{m}{i}$. Se deduce que si $m > d+1$ entonces $\tau_{\mathcal{H}}(m) \le (em/d)^d$.
+Sea $\mathcal{H}$ clase de hipótesis con $VC(\mathcal{H}) \le d < \infty$. Entonces para todo $m\in \mathbb{N}$ se tiene $\tau_{\mathcal{H}} (m) \le \sum_{i=0}^d \binom{m}{i}$. Se deduce que si $m > d+1$ entonces $\tau_{\mathcal{H}}(m) \le (em/d)^d$.
 #+end_lemma
+
+
+#+begin_proof
+Empezamos probando que una clase de hipótesis $\mathcal{F}$ finita fragmenta al menos $|\mathcal{F}|$ conjuntos.
+
+Lo hacemos por inducción sobre el tamaño de $\mathcal{X}_\mathcal{F}$ que es un conjunto finito por ser $\mathcal{F}$ clase finita.
+
+Si su tamaño es 1, parte al conjunto vacío.
+
+Supuesto que se verifica la hipótesis para tamaños menores que $k-1$ y sea $|\mathcal{X}_\mathcal{F}| = k$. Escogemos entonces $x\in \mathcal{X}$ verificando que $x$ pertenece a algunos conjuntos de $\mathcal{X}_\mathcal{F}$ pero no a todos (debe existir, sino tendríamos que $\mathcal{X}_\mathcal{F}$ contiene un único conjunto).
+
+Sean $A = \{S \subseteq \mathcal{X}_\mathcal{F} : x\in S\}$, $A'=\{S\setminus\{x\} : S \in A\}$, $B= \{S \subseteq \mathcal{X}_\mathcal{F} : x\not\in S\}$.
+
+Claramente $|A| = |A'|$ y por hipótesis de inducción $A'$ fragmenta $k \ge |A|$ conjuntos, y $B$ fragmenta $|B|$ conjuntos. También es trivial ver que los conjuntos $S$ y $S\cup \{x\}$ son fragmentados por $A$ donde $S$ es un conjunto fragmentado por $A'$. Hemos probado que $A$ fragmenta $|A| + k$ conjuntos, y si un conjunto es fragmentado por $A$ y $B$ a la vez, entoces no contiene a $x$, luego es fragmentado por $A'$ y por $B$ a la vez, y podremos tener a lo sumo $k$ conjuntos de este tipo.
+
+En definitiva hemos probado que fragmentamos $|A| + k + |B| - k = |A| + |B| = |\mathcal{F}|$ conjuntos.
+Probado esto, si $\tau_{\mathca{H}}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $\mathcal{H}$ debe fragmentar un conjunto de tamaño $d+1$ al menos, puesto que el número de subconjuntos de un conjunto finito $C$ menor que  $d+1$ es exactamente $\sum_{i=0}^d \binom{|C|}{i}$. Luego tendríamos $VC(\mathcal{H}) > d$
+
+#+end_proof
