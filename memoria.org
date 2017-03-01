@@ -1213,8 +1213,69 @@ Una clase de funciones $\mathcal{H}$ sobre $Z=\mathcal{X} \times \mathcal{Y}$ es
 \[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(h) \le L_{\mathcal{D}}(\bar{h}) + \epsilon] \ge 1-\delta\]
 #+end_definition
 
-#+begin_lemma
+**** Minimización de riesgo estructural
+Hasta ahora hemos traducido el conocimiento previo sobre el problema como una restricción global en la clase de hipótesis para la minimización del riesgo empírico. Ahora generalizaremos esto aún más y estableceremos la suposición de que $\mathcal{H}= \cup_{n\in \mathbb{N}} \mathcal{H}_n$, donde a cada clase $\mathcal{H}_n$ se le asignará un peso $w(n)$. 
+
+#+begin_theorem
+Sea $w : \mathcal{N} \rightarrow [0,1]$ verificando $\sum_{n=1}^\infty w(n) \le 1$. Sea $\mathcal{H}$ una clase de hipótesis binarias que puede ser escrita como $\mathcal{H}= \cup_{n\in \mathbb{N}} \mathcal{H}_n$ unión numerable de clases con la propiedad de convergencia uniforme. Sea $m_{\mathcal{H}_n}^{UC}$ .Sea $\epsilon_n : \mathcal{N} \times [0,1] \rightarrow [0,1]$, $\epsilon_n (m,\delta) = inf \{\epsilon \in [0,1] : m_{\mathcal{H}_n}^{UC} (\epsilon, \delta) \le m\}$. Entonces para todo $\delta \in [0,1]$ y para toda distribución $\mathcal{D}$ se verifica:
+
+
+\[ \quad P_{S \sim \mathcal \mathcal{D}^m} [\forall n\in \mathbb{N}, \forall h\in \mathcal{H}_n, \quad |L_{\mathcal{D}}(h) - L_S(h)| \le \epsilon_n (m, w(n)\cdot \delta)] \ge 1-\delta\] 
+
+
+En particular dado $h\in \mathcal{H}_n$ tomando $q = min\{n: h\in \mathcal{H}_n\}$:
+
+\[P_{S \sim \mathcal \mathcal{D}^m} [\forall n\in \mathbb{N}, \quad |L_{\mathcal{D}}(h) - L_S(h)| \le \epsilon_n (m, w(q)\cdot \delta)] \ge 1-\delta \]
+#+end_theorem
+
+#+begin_proof
+Fijado $n$, por hipótesis de convergencia uniforme:
+
+\[P [\forall h\in \mathcal{H}_n, \quad |L_{\mathcal{D}}(h) - L_S(h)| \le \epsilon_n (m, w(n) \delta) ] \ge 1- w(n) \delta\]
+
+Por tanto:
+
+\begin{align*}
+& P [\forall n\in \mathbb{N}, h\in\mathcal{H} \quad |L_{\mathcal{D}}(h) - L_S(h)| \le \epsilon_n (m, w(n)\cdot \delta)] = \\
+& = 1 - P[\exists n\in \mathbb{N}, h\in \mathcal{H}_n, \quad |L_{\mathcal{D}}(h) - L_S(h)| > \epsilon_n (m, w(n) \delta)] > 1- \sum_{n=1}^{\infty} w(n) \delta \ge 1-\delta
+\end{align*}
+
+#+end_proof
+
+Esto da lugar a un nuevo paradigma para obtener buenas aproximaciones de la función de verdadero etiquetado, la *minimización del error estructural (SRM)*. Sea $\mathcal{H} = \cup_{n\in \mathbb{N}} \mathcal{H}_n$ donde $\mathcal{H}_n$ tiene la propiedad de convergencia uniforme con $m_{\mathcal{H}_n}^{CU}$, y $w : \mathbb{N} \rightarrow [0,1]$, $\sum_n w(n) \le 1$. Definiendo (con $h\in \mathcal{H}$):
+
+\[\epsilon_n (m,\delta) = inf \{\epsilon \in [0,1] : m_{\mathcal{H}_n}^{UC} (\epsilon, \delta) \le m\}, \quad n(h) = min\{n: h\in \mathcal{H}_n\}\]
+
+SRM consiste en devolver $h \in \underset{h\in \mathcal{H}}{argmin} [L_S(h) + \epsilon_{n(h)}(m,w(n(h)) \cdot \delta)]$.
+
+En comparación con el paradigma ERM, no intentamos sólo miminizar el error empírico, sino que además cuantificamos cómo de bien aproxima una determinada clase de hipótesis. Además, cabe remarcar que estamos suponiendo que siempre existe $\underset{h\in \mathcal{H}}{argmin} [L_S(h) + \epsilon_{n(h)}(m,w(n(h)) \cdot \delta)]$
+
+#+begin_theorem
+Sea $\mathcal{H}$ una clase de hipótesis verificando $\mathcal{H} = \cup_{n\in \mathbb{N}} \mathcal{H}_n$ donde cada $\mathcal{H}_n$ tiene la propiedad de convergencia uniforme con complejidad muestral $m_{\mathcal{H}_n}^{CU}$. Sea $w : \mathbb{N} \rightarrow [0,1]$ verificando $w(n) = \frac{6}{(\pi n)^2}$. Entonces $\mathcal{H}$ es no-uniformemente cognoscible usando paradigma SRM. Además se verifica:
+
+\[m_{\mathcal{H}}^{NU} (\epsilon, \delta, h) \le m_{\mathcal{H}_{n(h)}}^{CU} \left(\epsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right)\]
+#+end_theorem
+
+
+#+begin_proof
+Fijamos $h\in \mathcal{H}, \epsilon \in [0,1], \delta \in [0,1]$. Tomamos $m \ge m_{\mathcal{H}_{n(h)}}^{CU} \left(\epsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right)$. Claramente $\epsilon_{n(h)}(m, w(n(h)) \delta) \le \epsilon/2$
+
+Usando el hecho de que $\frac{w(n(h))}{2} = \frac{3\delta}{(\pi n(h))^2}$ y $\sum_{n\ge 1} w(n) = 1$ aplicando el teorema anterior obtenemos que con probabilidad menor que $\delta / 2$ respecto a la elección de $S \sim \mathcal{D}^m$ se cumple:
+
+\[\exists \bar{h} \in \mathcal{H}, L_{\mathcal{D}} (\bar{h}) \le L_S(\bar{h}) + \epsilon_{n(\bar{h})}(m, w(n(\bar{h})) \delta)\]
+
+Además con probabilidad menor que $\delta/2$, usando convergencia uniforme:
+
+\[L_S(h) \le L_{\mathcal{D}}(h) + \epsilon/2\]
+
+Uniendo estas dos desigualdades con el hecho de que $L_{\mathcal{D}} (A(S)) \le \underset{\bar{h}}{min} [L_S(\bar{h}) + \epsilon_{n(\bar{h})}(m, w(n(\bar{h})) \delta)]$, obtenemos el resultado buscado.
+#+end_proof
+
+
+
+#+begin_theorem
 *Caracterización de aprendizaje no uniforme*
 
 Una clase de hipótesis $\mathcal{H}$ sobre $Z=\mathcal{X} \times \{0,1\}$ es no uniformemente cognoscible sii es unión contable de clases agnósticamente PAC cognoscibles
-#+end_lemma
+#+end_theorem
+
