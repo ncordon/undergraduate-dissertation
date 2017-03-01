@@ -1094,6 +1094,8 @@ Sea $\mathcal{H}$ una clase de hipótesis de $\mathcal{H}$ a $\{0,1\}$, $m < |\m
 
 1. Existe una función $f: \mathcal{X} \rightarrow \{0,1\}$, $f\in \mathcal{H}$ con $L_{\mathcal{D}}(f)=0$
 2. $P_{S\sim \mathcal{D}^m} [L_{\mathcal{D}} (A(S)) \ge 1/8] \ge 1/7$
+
+label:nofreelunch-v2
 #+end_theorem
 
 Intuitivamente, si existe un conjunto $C$ fragmentado por $\mathcal{H}$ y nuestro conjunto de entrenamiento contiene la mitad de instancias de $C$ (recordemos que la distribución que construíamos en la demostración de No Free Lunch asignaba toda la masa de probabilidad al conjunto $C$), entonces no tenemos información suficiente para etiquetar correctamente el resto de instancias (hay demasiadas posibles hipótesis que etiquetan el conjunto de entrenamiento de igual forma pero difieren en el resto de instancias).
@@ -1101,7 +1103,7 @@ Intuitivamente, si existe un conjunto $C$ fragmentado por $\mathcal{H}$ y nuestr
 #+begin_definition
 *Dimensión VC*
 
-Definimos la dimensión VC de una clase de hipótesis $\mathcal{H}$ como el tamaño máximo de los conjuntos $C \subseteq \mathcal{X}$ verificando que son fragmentados por $\mathcal{H}$. Si no existe máximo, decimos que $\mathcal{H}$ tiene dimensión VC infinita. La notamos $VC(\mathbb{H})$
+Definimos la dimensión VC de una clase de hipótesis $\mathcal{H}$ como el tamaño máximo de los conjuntos $C \subseteq \mathcal{X}$ verificando que son fragmentados por $\mathcal{H}$. Si no existe máximo, decimos que $\mathcal{H}$ tiene dimensión VC infinita. La notamos $VC(\mathcal{H})$
 #+end_definition
 
 
@@ -1268,14 +1270,20 @@ Además con probabilidad menor que $\delta/2$, usando convergencia uniforme:
 
 \[L_S(h) \le L_{\mathcal{D}}(h) + \epsilon/2\]
 
-Uniendo estas dos desigualdades con el hecho de que $L_{\mathcal{D}} (A(S)) \le \underset{\bar{h}}{min} [L_S(\bar{h}) + \epsilon_{n(\bar{h})}(m, w(n(\bar{h})) \delta)]$, obtenemos el resultado buscado.
+Uniendo estas dos desigualdades con el hecho de que $L_{\mathcal{D}} (A(S)) \le \underset{\bar{h}}{min} [L_S(\bar{h}) + \epsilon_{n(\bar{h})}(m, w(n(\bar{h})) \delta)]$, y $A$ un algoritmo SRM, obtenemos el resultado buscado.
 #+end_proof
 
-
+**** Caracterización de aprendizaje no-uniforme
 
 #+begin_theorem
-*Caracterización de aprendizaje no uniforme*
+*Teorema de caracterización de aprendizaje no-uniforme*
 
-Una clase de hipótesis $\mathcal{H}$ sobre $Z=\mathcal{X} \times \{0,1\}$ es no uniformemente cognoscible sii es unión contable de clases agnósticamente PAC cognoscibles
+Una clase de hipótesis binarias $\mathcal{H}$ es no uniformemente cognoscible sii es unión contable de clases agnósticamente PAC cognoscibles
 #+end_theorem
+
+#+begin_proof
+Supongamos $\mathcal{H} = \cup_{n\in \mathbb{N}} \mathcal{H}_n$ donde cada $\mathcal{H}_n$ es agnósticamente PAC aprendible. Por teorema fundamental de aprendizaje estadístico, cada clase $\mathcal{H}_n$ tiene la propiedad de convergencia uniforme, y podemos aplicar el teorema anterior.
+
+En el sentido opuesto, si $\mathcal{H}$ es no-uniformemente cognoscible, usando un cierto algoritmo $A$. Definimos $\mathcal{H}_n = \{h \in \mathcal{H} : m_{\mathcal{H}}^{NU}(1/8, 1/7, h) \le n\}$ para todo $n$ natural. Claramente $\mathcal{H} = \cup_{n\in \mathbb{N}} \mathcal{H}_n$. Sea una distribución $\mathcal{D}$ que satisface la propiedad de factibilidad sobre $\mathcal{H}_n$. Entonces con probabilidad de al menos $6/7$ sobre $S \sim \mathcal{D}^n$ se tiene $L_{\mathcal{D}}(A(S)) \le 1/8$. Esto niega que $VC(\mathcal{H}_n)$ sea infinita, por teorema ref:nofreelunch-v2, y por tanto $\mathcal{H}_n$ es agnósticamente PAC cognoscible.
+#+end_proof
 
