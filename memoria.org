@@ -7,6 +7,7 @@
 #+LATEX_HEADER: \usepackage[spanish]{babel}
 #+LATEX_HEADER: \usepackage{amsmath} 
 #+LATEX_HEADER: \usepackage{amsthm}
+#+LATEX_HEADER: \usepackage{mathrsfs}
 #+LATEX_HEADER: \usepackage{dsfont}
 #+LATEX_HEADER: \newtheorem{theorem}{Teorema}
 #+LATEX_HEADER: \newtheorem{fact}{Proposición}
@@ -607,29 +608,34 @@ Adaptación del contenido del libro cite:shwartz_understanding_ml
 *** Introducción
 Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
 
-- *Dominio*: $\mathcal{X}$, sobre el que tenemos definida una $\sigma$ álgebra de conjuntos. Llamamos una instancia a $x\in \mathcal{X}$
-- *Conjunto de etiquetas*: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario.
+- *Dominio*: $\mathcal{X}$, sobre el que tenemos definida una $\sigma$ álgebra de conjuntos $\mathscr{B}$. Llamamos una instancia a $x\in \mathcal{X}$
+- *Conjunto de etiquetas*: $\mathcal{Y} \subseteq \mathbb{R}$ finito , que asumiremos como $\{0,1\}$ en lo que sigue hasta que se indique lo contrario. Esto nos restringe al paradigma de clasificación binario.
 - *Verdadero etiquetado*: Asumimos la existencia de una función $f: \mathcal{X} \rightarrow \mathcal{Y}$ que devuelve el verdadero etiquetado de todas las instancias.
 - *Generación de instancias*: Asumimos la existencia de una distribución de probabilidad $\mathcal{D}$ sobre $\mathcal{X}$, para la $\sigma$ álgebra de conjuntos mencionada anteriormente, que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
-- *Conjunto/Secuencia de entrenamiento*: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una tupla en $(\mathcal{X} \times \mathcal{Y})^m$ en la que pueden repetirse ejemplos. Podemos ver el conjunto de entrenamiento como una m.a.s (muestra aleatoria simple) $(\mathcal{X}_1,\ldots \mathcal{X}_m)$, idéntica e independientemente distribuida, donde cada $X_i$ sigue la misma distribución que $\mathcal{X}$, $X_i \sim \mathcal{D}$ y se etiqueta por $f$. Lo notaremos $S \sim \mathcal{D}^m$, por abuso de notación.
-- *Resultado del aprendizaje*: una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. Se usa la notación $A(S)$ para denotar la hipótesis que un algoritmo $A$ devuelve para una secuencia de entrenamiento $S$.
-- *Error del clasificador*: Definimos el error del clasificador, suponiendo $\{x\in \mathcal{X} : h(x) \neq f(x)\}$ en la $\sigma$ álgebra, como:
+- *Conjunto de entrenamiento*: Tenemos una muestra aleatoria simple $S = (\mathcal{X}_1, \ldots ,\mathcal{X}_m)$, idéntica e independientemente distribuida, donde $S \sim \mathcal{D}^m$, esto es cada $X_i$ sigue la misma distribución que $\mathcal{X}$, $X_i \sim \mathcal{D}$, y las distribuciones marginales son independientes entre sí. Notaremos $S_x$ a una realización muestral $(x_1, \ldots x_m)$. Cada elemento $x_i$ de una realización muestral $S_x = (x_1, \ldots x_n)$ se etiqueta por $f$, y llamando $f(x_i) = y_i$ definimos como conjunto de entrenamiento a la tupla $((x_1, y_1), \ldots ,(x_m, y_m))$. La relación entre la realización muestral y el conjunto de entrenamiento asociado es biunívoca, por lo que por abuso de notación llamaremos indiferentemente conjunto de entrenamiento a ambas tuplas.
+- *Resultado del aprendizaje*: disponemos de un algoritmo de aprendizaje $A: (\mathcal{X} \times \mathcal{Y})^m \rightarrow \mathcal{Y}^{\mathcal{X}}$ que recibe un conjunto de entrenamiento y devuelve una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. El algoritmo "desconoce" el valor de la verdadera función de etiquetado $f$ en los puntos no pertenecientes al conjunto de entrenamiento.
+- *Error del clasificador*: Definimos el error de un clasificador $h: \mathcal{X} \rightarrow \mathcal{Y}$ como:
 
-\[L_{D,f}(h) :=  P_{x\sim \mathcal{D}} [h(x)\neq f(x)]\]
+\[L_{\mathcal{D},f}(h) :=  P (\{x\in \mathcal{X} : h(x)\neq f(x)\}) = P[f\neq h]\]
 
-Por simplificar la escritura, omitiremos a partir de ahora el hecho de que sobre $\mathcal{X}$ tenemos una $\sigma$ álgebra de conjuntos, y que todas las distribuciones asignan probabilidad convenientemente a los conjuntos de dicha $\sigma$ álgebra. Además, consideraremos que la función de verdadero etiquetado y los clasificadores son funciones medibles para que la definición de los errores sean correctas.
+Por simplificar la escritura, omitiremos a partir de ahora el hecho de que sobre $\mathcal{X}$ tenemos definida una $\sigma$ álgebra de conjuntos, $\mathscr{B}$, y que todas las distribuciones asignan probabilidad a los conjuntos de alguna $\sigma$ álgebra que contenga a $\mathscr{B}$. Además, consideraremos que la función de verdadero etiquetado y los clasificadores son funciones medibles para que la definición de los errores sea correcta.
 
 **** Minimización del riesgo empírico (ERM)
 
 #+begin_definition
 *Riesgo empírico (ER)*
 
-Definimos el riesgo empírico o error empírico como:
+Fijado un clasificador $h : \mathcal{X} \rightarrow \mathcal{Y}$, definimos el riesgo empírico o error empírico, como una variable aleatoria:
 
-\[L_S(h) = \frac{\#\{i\in {1\ldots m}: h(x_i) \neq y_i\}}{m}\]
+\[\begin{array}{llll}
+L_S(h): & \mathcal{X}_1 \times \ldots \times \mathcal{X}_m & \rightarrow &\mathbb{R}\\
+& (x_1, \ldots x_m) & \mapsto & L_{S_x} (h) = \frac{\#\{i\in {1\ldots m}: h(x_i) \neq f(x_i)\}}{m}
+\end{array}\]
 #+end_definition
 
-Podemos pensar en él como el error del clasificador sobre el conjunto de entrenamiento. Un algoritmo que obtiene hipótesis que minimizan el error empírico recibe el nombre de /ERM/ y notamos $ERM(S)$ al clasificador que obtiene, para un determinado conjunto de entrenamiento $S \sim \mathcal{D}^m$.
+Para un conjunto de entrenamiento el riesgo empírico proporciona el error del clasificador sobre el conjunto de entrenamiento.
+
+Un algoritmo que obtiene una hipótesis que minimiza el error empírico sobre un conjunto de entrenamiento recibe el nombre de ERM y notamos $ERM(S_x)$ al clasificador obtenido con dicho algoritmo.
 
 Este error no es siempre óptimo. Pensemos en el siguiente ejemplo:
 
@@ -641,102 +647,111 @@ Sea $\mathcal{X} = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[
 \end{array}\right.\]
 
 
-$S = ((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ y el clasificador:
+Sea $((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ y el clasificador:
 
-\[h_S(x) = \left\{\begin{array}{lcl}
+\[h(x) = \left\{\begin{array}{lcl}
 y_i && \exists i\in \{1\ldots m\} : x=x_i\\
 0 && \nexists i\in \{1\ldots m\} : x=x_i
 \end{array}\right.\]
 
 Nótese que el conjunto de entrenamiento no puede tener elementos no repetidos puesto que se etiquetan mediante $f$, que es una función y no puede arrojar dos imágenes distintas para un mismo $x \in \mathcal{X}$ de entrada.
 
-Este clasificador es perfecto respecto a la minimización de riesgo empírico, pero $L_{\mathcal{D}, f}(h_S) = 1/2$. Es decir, tiene el mismo nivel de acierto que el clasificador idénticamente 1. A este fenómeno, minimizar el riesgo empírico siendo un clasificador con un error muy alto, lo denominamos *overfitting*.
+Este clasificador es perfecto respecto a la minimización de riesgo empírico, pero $L_{\mathcal{D}, f}(h) = 1/2$. Es decir, tiene el mismo nivel de acierto que el clasificador idénticamente 1. A este fenómeno, minimizar el riesgo empírico siendo un clasificador con un error muy alto, lo denominamos /overfitting/.
 
 El hecho de tomar el error sobre el conjunto de entrenamiento como aproximación al verdadero error del clasificador se respalda por la siguiente proposición:
 
 #+begin_fact
-*Relación entre ER y error del clasificador*
+*Relación entre riesgo empírico y error del clasificador*
 
-Sea $\mathcal{H}$ clase de clasificadores binarios sobre un dominio $\mathcal{X}$. Sea $\mathcal{D}$ una distribución desconocida sobre $\mathcal{X}$. Sea $f$ una hipótesis objetivo en $\mathcal{H}$. Se fija $h\in \mathcal{H}$. Probar que: 
+Sea $\mathcal{H}$ clase de clasificadores binarios sobre un dominio $\mathcal{X}$. Sea $\mathcal{D}$ una distribución desconocida sobre $\mathcal{X}$. Sea $f$ la función de verdadero etiquetado. Para $h\in \mathcal{H}$ fijo se verifica:
 
-\[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\mathbb{D},f}(h)\]
+\[\mathbb{E} [L_S(h)] = L_{\mathcal{D},f}(h)\]
 #+end_fact
 
-Llamamos $P=\mathbb{P}_{x\sim \mathcal{D}}(f(x)\neq h(x))$
+Llamamos $p=P [f \neq h ] = L_{\mathcal{D},f}(h)$
 
 \begin{align*}
-\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] &= \sum_{k=0}^m \frac{k}{m} \binom{m}{k} P^k(1-P)^{m-k} = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} P^k(1-P)^{m-k} =\\
-&= \sum_{k=1}^m \binom{m-1}{k-1} P^k(1-P)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} P^{k+1}(1-P)^{m-1-k} = \\
-&= P\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} P^{k}(1-P)^{m-1-k} = P(1+(1-P))^{m-1} = P
+\mathbb{E} [L_S(h)] &= \sum_{k=0}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} =\\
+&= \sum_{k=1}^m \binom{m-1}{k-1} p^k(1-p)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k+1}(1-p)^{m-1-k} = \\
+&= p\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k}(1-p)^{m-1-k} = p(1+(1-p))^{m-1} = p
 \end{align*}
 
 
 **** ERM con /sesgo inductivo/
  
-Se intenta corregir el ERM restringiendo el espacio de búsqueda, esto es, la clase de hipótesis $\mathcal{H}$ desde la que el algoritmo puede escoger un $h: \mathcal{X}\rightarrow \mathcal{Y}$. Llamamos a esto /sesgo inductivo/ puesto que se asumirá una determinada clase de funciones $\mathcal{H}$ en función de las características del problema.
+Con objeto de corregir el ERM, para evitar /overfitting/, usamos el conocimiento previo sobre el problema (la información que dispongamos sobre el dominio, la distribución, etc) restringiendo el espacio de búsqueda, esto es, la clase de hipótesis $\mathcal{H}$ desde la que el algoritmo puede escoger un $h: \mathcal{X}\rightarrow \mathcal{Y}$. Llamamos a esto *sesgo inductivo* puesto que se asumirá una determinada clase de funciones $\mathcal{H}$ en función de las características del problema.
 
-Notaremos a un clasificador obtenido con este paradigma $h_S = ERM_{\mathcal{H}}(S)$, y lo definimos de manera que:
+Notaremos a un clasificador obtenido con este paradigma $h_{S_x} := ERM_{\mathcal{H}}(S_x)$, y lo definimos de manera que:
 
-\[h_S \in argmin_{h\in \mathcal{H}} L_S(h)\]
+\[h_{S_x} \in \underset{h\in \mathcal{H}}{argmin} \{L_{S_x}(h)\}\]
 
-Definimos la propiedad de factibilidad, que usaremos más adelante.
+La existencia de $\underset{h\in \mathcal{H}}{min} \{L_{S_x}(h)\}$ está garantizada, ya que $m \cdot L_{S_x}(h) \in \mathbb{N}$ para todo $h\in \mathcal{H}$.
+
+Enunciamos la propiedad de factibilidad, que usaremos más adelante.
 
 #+begin_definition
 *Propiedad de factibilidad*
 
-Existe  $\bar{h} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$.
+Existe $\bar{h} \in \mathcal{H}$ verificando $L_{\mathcal{D},f}(\bar{h}) = 0$.
 #+end_definition
 
-La hipótesis de factibilidad implica que $P_{S\sim \mathcal{D}^m}[L_S(\bar{h})=0] = 1$, y por tanto $P_{S\sim \mathcal{D}^m}[L_S(h_S)=0]=1$.
+La hipótesis de factibilidad implica que $P [L_S(\bar{h})=0] = 1$, ya que:
 
-El valor $L_{\mathcal{D},f}(h_S)$ dependerá del conjunto de entrenamiento $S$, y la elección del mismo está sometida al azar. Además, necesitamos una medida de la bondad de una predicción.
+\begin{align*}
+P (\{(x_1, \ldots x_m): \bar{h}(x_i) = f(x_i), i=1, \ldots m\}) =\\
+= \prod_{i=1}^m P [h=f] = \prod_{i=1}^m (1 - P[h\neq f]) = 1
+\end{align*}
+
+Por tanto $P [L_S(h_S)=0]=1$.
+
+Para finalizar estos preliminares remarcamos que el valor de $L_{\mathcal{D},f}(h_{S_x})$ dependerá del conjunto de entrenamiento, extraído y etiquetado a partir del vector aleatorio $S$, y la elección del mismo está sometida al azar. Asimismo, necesitamos una medida de la bondad de la predicción.
 
 *** Aprendizaje PAC.
 
 #+begin_definition
-*Aprendizaje PAC (Probablemente Aproximadamente Correcto)*
+*PAC (Probablemente Aproximadamente Correcto) cognoscible*
 
-Una clase de funciones definidas sobre $\mathcal{X}$, $\mathcal{H}$ es PAC cognoscible si existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo $A$ verificando que si $0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $\mathcal{X}$ y para toda función de verdadero etiquetado $f:\mathcal{X} \rightarrow \{0,1\}$, si la propiedad de factibilidad se cumple, ejecutando el algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$ etiquetado mediante $f$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ el algoritmo devuelve una hipótesis $A(S) = h\in \mathcal{H}$ verificando que:
+Una clase de funciones $\mathcal{H} \subseteq \mathcal{Y}^{\mathcal{X}}$ es PAC cognoscible sii existe una función $m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo $A$ verificando que si $0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $\mathcal{X}$ y para toda función de verdadero etiquetado $f:\mathcal{X} \rightarrow \{0,1\}$ cumpliendo la propiedad de factibilidad, ejecutando el algoritmo para un conjunto de entrenamiento generado por $S\sim \mathcal{D}^m$ etiquetado mediante $f$, con $m\ge m_{\mathcal{H}}(\epsilon, \delta)$ se tiene que:
 
-\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h) \le \epsilon] \ge 1-\delta\]
+\[P [L_{\mathcal{D},f}(A(S)) \le \epsilon] \ge 1-\delta\]
 #+end_definition
 
-$(1-\delta)$ es la /confianza de la predicción/ (probablemente) y $(1-\epsilon)$ la /exactitud/ (correcto).
+Llamamos a $(1-\delta)$ /confianza de la predicción/ y a $(1-\epsilon)$ la /exactitud/. Estos dos parámetros explican el nombre aproximadamente ($\leftrightarrow$ confianza) correcto ($\leftrightarrow$ exactitud).
 
-Podemos considerar $m_{\mathcal{H}}$ única en el sentido de que para cada $(\delta, \epsilon)$ nos devuelve el menor natural verificando las hipótesis del enunciado.
+Podemos considerar $m_{\mathcal{H}}$ única en el sentido de que para cada $(\delta, \epsilon)$ nos devuelva el menor natural verificando las hipótesis del enunciado.
 
-Nótese que las condiciones exigidas: cumplir la propiedad de factibilidad y que la hipótesis devuelta deba estar en $\mathcal{H}$ son muy fuertes.
+Nótese que las condiciones exigidas, cumplir la propiedad de factibilidad y que la hipótesis devuelta deba estar en $\mathcal{H}$, son muy fuertes. Relajaremos esta definición más adelante con el concepto de PAC agnóstico.
 
 **** Aprendizaje con clases finitas
 
 #+begin_theorem
-*Las clases finitas de funciones son PAC cognoscible*
+*Las clases finitas de funciones son PAC cognoscibles*
 
-Sea $\mathcal{H}$ una clase finita de funciones definidas sobre un conjunto $\mathcal{X}$. Sean $0 < \epsilon, \delta < 1$, y un natural $m\in \mathbb{N}$ verificando:
+Sea $\mathcal{H} \subseteq \mathcal{Y}^{\mathcal{X}}$ finito. Sean $0 < \epsilon, \delta < 1$, y un natural $m\in \mathbb{N}$ verificando:
 
 \[m \ge \frac{1}{\epsilon}log\left(\frac{|\mathcal{H}|}{\delta}\right)\]
 
-Entonces para toda función de verdadero etiquetado $f: \mathcal{X}\rightarrow \{0,1\}$, y para toda distribución $\mathcal{X}\sim \mathcal{D}$ para la que se verifique la *propiedad de factibilidad* entonces las hipótesis que obtenemos a través del algoritmo ERM son con una confianza superior a $1-\delta$, $1-\epsilon$ exactas.
+Entonces para toda función de verdadero etiquetado $f: \mathcal{X}\rightarrow \{0,1\}$, y para toda distribución $\mathcal{X}\sim \mathcal{D}$ para la que se verifique la propiedad de factibilidad, las hipótesis que obtenemos a través del algoritmo ERM son con una confianza superior a $1-\delta$, $1-\epsilon$ exactas.
 
 Como consecuencia, deducimos que la complejidad muestral es menor o igual a $\left\lceil \frac{1}{\epsilon}log \left(\frac{|\mathcal{H}|}{\delta} \right) \right\rceil$
 #+end_theorem
 
 #+begin_proof
-Fijada una distribución $\mathcal{D}$ y una función de etiquetado $f$, notamos:
+Fijada una distribución $\mathcal{D}$, $m\in \mathbb{N}$ y una función de etiquetado $f$, notamos:
 
 \[\mathcal{H}_B = \{h\in \mathcal{H}: L_{\mathcal{D},f}(h) > \epsilon\}\]
 
 Se tiene:
 
-\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le  P_{S\sim \mathcal{D}^m}[\exists h\in \mathcal{H}_B : L_S(h) = 0] \le \sum_{h\in \mathcal{H}_B} P_{S\sim \mathcal{D}^m}[L_S(h) = 0] \]
+\[P [L_{\mathcal{D},f}(h_S) > \epsilon] \le P [\exists h\in \mathcal{H}_B : L_S(h) = 0] \le \sum_{h\in \mathcal{H}_B} P [L_S(h) = 0] \]
 
-La primera desigualdad viene dada porque dada $h_S$ se verifica, por la propiedad de factibilidad, que $L_S(h_S)=0$. La segunda por subaditividad.
+La primera desigualdad viene dada porque dada $h_{S_x}$ se verifica, por la propiedad de factibilidad, que $L_S(h_{S_x})=0$. La segunda por subaditividad.
 
 Además, fijada $h\in \mathcal{H}_B$, como $L_{\mathcal{D},f}(h) > \epsilon$:
 
 \begin{align*}
-P_{S\sim \mathcal{D}^m}[L_S(h) = 0] = P_{(x_1, \ldots x_n)\sim \mathcal{D}^m} [\forall i \quad h(x_i) = f(x_i)] =\\
-= \prod_{i=1}^m P_{x\sim \mathcal{D}}[h(x)=f(x)] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\epsilon)^m \le e^{-\epsilon m}
+P [L_S(h) = 0] = P (\{(x_1, \ldots x_m) : h(x_i) = f(x_i), i =1,\ldots m\}) =\\
+= \prod_{i=1}^m P [h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\epsilon)^m \le e^{-\epsilon m}
 \end{align*}
 
 
@@ -754,10 +769,7 @@ Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $\
 
 Un clasificador de rectángulo es un clasificador que asigna 1 a los puntos que se quedan dentro de un cierto rectángulo en el plano real.
 
-\[h_{a,b,c,d}(x,y) = \left\{\begin{array}{lcl}
-1 && a\le x\le b, c\le y\le d\\
-0 && si \quad no
-\end{array}\right.\]
+\[h_{a,b,c,d} = \mathds{1}_{[a,b]\times [c,d]\]
 
 La clase de clasificadores de rectángulo en el plano se define por:
 
