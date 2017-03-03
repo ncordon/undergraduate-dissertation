@@ -810,7 +810,6 @@ La demostración acaba probando que:
 
 y tomando $m > \frac{4}{\epsilon} log \left( \frac{4}{\delta} \right)$.
 
-
 *** Generalización aprendizaje PAC: PAC agnóstico
 Hasta ahora tenemos dos problemas en la definición de PAC. Intentamos buscar una hipótesis sobre una función de verdadero etiquetado, $f$ determinista, que por tanto no podrá asignar dos imágenes distintas al mismo punto, y además, estamos suponiendo que se cumple la propiedad de factibilidad.
 
@@ -881,7 +880,7 @@ Decimos que una clase de hipótesis $\mathcal{H}$ tiene la propiedad de *converg
 #+begin_theorem
 *La convergencia uniforme es condición suficiente para ser PAC cognoscible*
 
-Sea $\mathcal{H}$ una clase de hipótesis con la propiedad de convergencia uniforme. Entonces es PAC cognoscible con cualquier algoritmo ERM y complejidad muestral menor o igual al $m_{\mathcal{H}}^{UC} \left(\frac{\epsilon}{2}, \delta \right)$ dado en la definición anterior.
+Sea $\mathcal{H}$ una clase de hipótesis con la propiedad de convergencia uniforme. Entonces es agnósticamente PAC cognoscible con cualquier algoritmo ERM y complejidad muestral menor o igual al $m_{\mathcal{H}}^{UC} \left(\frac{\epsilon}{2}, \delta \right)$ dado en la definición anterior.
 #+end_theorem
 
 #+begin_proof
@@ -903,15 +902,15 @@ Donde la segunda desigualdad viene desde la definición de ERM.
 
 Sea $\mathcal{H}$ una clase de hipótesis finita, $Z$ un dominio y sea $l : \mathcal{H} \times Z \rightarrow [a,b]$ una función de pérdida. Entonces $\mathcal{H}$ verifica la propiedad de convegencia uniforme con: 
 
-\[m_{\epsilon, \delta} \le \left\lceil \frac{log(2|\mathcal{H}|/\delta)(b-a)^2}{2\epsilon^2} \right\rceil\]
+\[m_{\mathcal{H}}^{CU}(\epsilon, \delta) \le \left\lfloor \frac{log(2|\mathcal{H}|/\delta)(b-a)^2}{2\epsilon^2} \right\rfloor + 1\]
 #+end_fact
 
 #+begin_lemma
 *Desigualdad de Hoeffding*
 
-Sean $X_1, \ldots X_n$ una muestra aleatoria simple de una variable $X$, $\bar{X} = \frac{1}{m} \sum_{i=1}^m X_i$ con $E[\bar{X}] = \mu$ y $P[a \le X_i \le b] = 1$. Entonces para todo $\epsilon > 0$
+Sean $(X_1, \ldots X_m)$ una muestra aleatoria simple de una variable $X$, $\bar{X} = \frac{1}{m} \sum_{i=1}^m X_i$ con $E[\bar{X}] = \mu$ y $P[a \le X_i \le b] = 1, i=1, \ldots m$. Entonces para todo $\epsilon > 0$
 
-\[P\left[\left| \bar{X} - \mu \right| > \epsilon \right] \le 2e^{-2m \left(\frac{\epsilon}{(b-a)}\right)^2} \]
+\[P\left[\left| \bar{X} - \mu \right| > \epsilon \right] \le 2e^{-2m \left(\frac{\epsilon}{b-a}\right)^2} \]
 #+end_lemma
 
 #+begin_proof
@@ -923,20 +922,22 @@ Fijamos $0 < \delta, \epsilon < 1$. Necesitamos encontrar $m\in \mathbb{N}$ veri
 
 Partimos de la siguiente desigualdad, que usaremos más adelante, obtenida por subaditividad:
 
-\[P_{S\sim \mathcal{D}^m} [\exists h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le \sum_{h \in \mathcal{H}} P_{S\sim \mathcal{D}^m} [|L_S(h) - L_{\mathcal{D}}(h)| > \epsilon]\]
+\[P [\exists h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le \sum_{h \in \mathcal{H}} P [|L_S(h) - L_{\mathcal{D}}(h)| > \epsilon]\]
 Fijamos $h \in \mathcal{H}$.
 
-Dado un conjunto de entrenamiento $S = (z_1, \ldots z_m)$, recordamos que $L_{\mathcal{D}} (h) = \mathbb{E}_{z\sim \mathcal{D}} [l(h,z)]$ y que $L_S(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i)$
+Dado un conjunto de entrenamiento $S_z = (z_1, \ldots z_m)$, recordamos que $L_{\mathcal{D}} (h) = \mathbb{E}_{z\sim \mathcal{D}} [l(h,z)]$ y que $L_{S_z}(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i)$
 
-Donde $z_i \sim \mathcal{D}$ y por tanto $\mathbb{E}_{S \sim \mathcal{D}^m} [L_S(h)] = \mathbb{E}_{z \sim \mathcal{D}} [l(h,z)] = L_{\mathcal{D}} (h)$. Además, llamando $X_i = l(h,z_i)$, por ser $z_i$ realizaciones muestrales de una m.a.s se tiene que las $X_i$ son independientes e idénticamente distribuidas, con $P[a < X_i < b] = 1$. Estamos en condiciones de aplicar la desigualdad de Hoeffding.
+Donde $z_i \sim \mathcal{D}$ y por tanto $\mathbb{E}_{S \sim \mathcal{D}^m} [L_S(h)] = \mathbb{E}_{z \sim \mathcal{D}} [l(h,z)] = L_{\mathcal{D}} (h)$. Además, llamando $X_i = l(h,Z_i)$, por ser $S=(Z_1, \ldots Z_m)$ m.a.s que genera los conjuntos de entrenamiento, se tiene que las $X_i$ son independientes e idénticamente distribuidas, con $P[a \le X_i \le b] = 1$. Estamos en condiciones de aplicar la desigualdad de Hoeffding.
 
 Por tanto:
 
-\[P_{S \sim \mathcal{D}^m} \left[\left| \frac{1}{m} \sum_{i=1}^m X_i - L_{\mathcal{D}} (h) \right| > \epsilon\right] = P_{S\sim \mathcal{D}^m} [|L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2}\]
+\[P \left[\left| \frac{1}{m} \sum_{i=1}^m X_i - L_{\mathcal{D}} (h) \right| > \epsilon\right] = P [|L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2}\]
 
 Y por tanto:
 
-\[P_{S\sim \mathcal{D}^m} [\exists h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] < |\mathcal{H}| 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2}\]
+\[P [\exists h\in \mathcal{H} |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le |\mathcal{H}| 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2}\]
+
+Despejando $m$ para que $|\mathcal{H}| 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2} < \delta$ llegamos al resultado buscado.
 #+end_proof
 
 Recordemos hasta ahora el resultado que habíamos obtenido era su carácter PAC cognoscible, donde agnósticamente PAC cognoscible y cognoscible con funciones de pérdida 0-1 era un término equivalente. El teorema que enunciamos a continuación, deducible a partir del teorema sobre el caracter agnóstico - PAC cognoscible de clases de funciones con propiedad de convergencia uniforme, en particular las finitas, generaliza el resultado para cualquier funciones de pérdida acotada.
@@ -948,6 +949,10 @@ Sea $\mathcal{H}$ una clase de hipótesis finita, $Z$ un dominio y sea $l : \mat
 
 \[m_{\mathcal{H}}( \epsilon, \delta ) \le \left\lceil \frac{2 log(2|\mathcal{H}|/\delta)(b-a)^2}{\epsilon^2} \right\rceil\]
 #+end_theorem
+
+#+begin_proof
+Es trivial desde el anterior teorema y el hecho de que convergencia uniforme implica ser agnósticamente PAC cognoscible
+#+end_proof
 
 *** Equilibrio error-varianza /bias-complexity tradeoff/
 Veamos que dado un algoritmo de aprendizaje no puede ser el óptimo para aprender todas las distribuciones.
