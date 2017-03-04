@@ -967,6 +967,12 @@ Dada una variable aleatoria $Z$ no negativa. Entonces para todo $a\ge 0$
 \[P[Z \ge a] \le \frac{\mathbb{E}[Z]}{a}\]
 #+end_lemma
 
+#+begin_proof
+Sea $f$ la función de densidad de $Z$.
+
+\[a P[Z \ge a] = \int_a^{+\infty} a f(z) dz \le \int_a^{+\infty} zf(z) dz \le \int_0^{+\infty} zf(z) dz = \mathbb{E}[Z]\]
+#+end_proof
+
 #+begin_theorem
 *Teorema de No Free Lunch*
 
@@ -977,21 +983,21 @@ Sea $A$ cualquier algoritmo de aprendizaje para clasificación binaria con respe
 #+end_theorem
 
 #+begin_proof
-Sea un conjunto de entrenamiento (consideramos un conjunto y no una secuencia) de tamaño $2m$, $C$. Hay $T = 2^{2m}$ posibilidades de etiquetado del conjunto, esto es, $2^{2m}$ posibles hipótesis, $f_i: C\rightarrow \{0,1\}$, que vamos a extender a $\mathcal{X}$ llamándolas $\bar{f}_i$ de forma que $\bar{f}_{i|C} = f_i$ y $\bar{f}_i(x) = 0 \quad \forall x\in \mathcal{X}\setminus C$. Vamos a tomar para cada una de ellas una distribución $\mathcal{D}_i$ definida sobre $\mathcal{X} \times \{0,1\}$ definida por:
+Sea un conjunto de entrenamiento (consideramos un conjunto y no una secuencia) de tamaño $2m$, $C$. Hay $T = 2^{2m}$ posibilidades de etiquetado del conjunto, esto es, $T$ posibles hipótesis, $f_i: C\rightarrow \{0,1\}$, que vamos a extender a $\mathcal{X}$ llamándolas $\bar{f}_i$ de forma que $\bar{f}_{i|C} = f_i$ y $\bar{f}_i(x) = 0 \quad \forall x\in \mathcal{X}\setminus C$. Vamos a tomar para cada una de ellas una distribución $\mathcal{D}_i$ definida sobre $\mathcal{X} \times \{0,1\}$ definida por:
 
 
-\[\forall (x,y)\in \mathcal{X} \times \{0,1\} \qquad P_{z\sim \mathcal{D}_i} [z = (x,y)] = \left\{\begin{array}{ll}
-1/|C| & \exists x_i \in C : y=f(x_i)\\
+\[\forall (x,y)\in \mathcal{X} \times \{0,1\} \qquad P_{Z\sim \mathcal{D}_i} [Z = (x,y)] = \left\{\begin{array}{ll}
+1/|C| & x \in C, y=f_i(x)\\
 0     & si \quad no
 \end{array}\right.\]
 
-Claramente $L_{\mathcal{D}_i}(f_i) = 0$
+Claramente $L_{\mathcal{D}_i}(f_i) = 0$. Tenemos distribuciones de probabilidad que sólo asignan toda la masa de probabilidad a la marginal en $\mathcal{X}$ al conjunto $C$.
 
 Vamos a probar que:
 
-\[\exists i\in \{1, \ldots 2m\} : \mathbb{E}_{S\sim \mathcal{D}_i^m} [L_{\mathcal{D}_i} (A(S))] \ge \frac{1}{4}\]
+\[\exists i\in \{1, \ldots T\} : \mathbb{E}_{S\sim \mathcal{D}_i^m} [L_{\mathcal{D}_i} (A(S))] \ge \frac{1}{4}\]
 
-Hay $k = (2m)^m$ posibles secuencias de entrenamiento de tamaño $m$, $S_j, j=1, \ldots k$ tomadas desde $C$. Siendo $S_j = (x_1, \ldots x_m)$ notamos $S_j^i = ((x_1, f_i(x_1)), \ldots, (x_m, f_i(x_m)))$. Cada $S_j$ tiene la misma probabilidad de ser nuestro conjunto de entrenamiento (extracción de $m$ valores con reemplazamiento desde el conjunto $C$), verificándose:
+Fijamos $i \in \{1, \ldots T\}$. Hay $k = (2m)^m$ posibles tuplas de tamaño $m$, $S_{j}, j=1, \ldots k$ tomadas desde $C$. Siendo $S_j = (x_1, \ldots x_m)$ notamos $S_j^i = ((x_1, f_i(x_1)), \ldots, (x_m, f_i(x_m)))$. Cada $S_j$ tiene la misma probabilidad de ser nuestro conjunto de entrenamiento (extracción de $m$ valores con reemplazamiento desde el conjunto $C$), verificándose:
 
 \[\mathbb{E}_{S\sim \mathcal{D}_i^m} [L_{\mathcal{D}_i} (A(S))] = \frac{1}{k} \sum_{j=1}^k L_{\mathcal{D}_i} (A(S_j^i))\]
 
@@ -1005,24 +1011,26 @@ max_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\mathcal{D}_i} (A(S_j^i
 \end{align*}
 
 
-Además fijado $j \in \{1,\ldots k\}$, se tiene que que para todo $i \in \{1,\ldots T\}$:
+Además fijado $j \in \{1,\ldots k\}$:
 
-\[L_{\mathcal{D}_i} (h) = \frac{1}{|C|} \sum_{x\in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}\]
+Sean ${v_r}_{i=r}^p$ los elementos de $C$ no presentes en el conjunto de entrenamiento $S_j$. Claramente, como $|C|=2m$ y $|S_j| = m$ y puede tener elementos repetidos, $p \ge m$
+
+\[L_{\mathcal{D}_i} (A(S^i_j)) = \frac{1}{|C|} \sum_{x\in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}\]
 
 
 Por tanto:
 
 \begin{align*}
 \frac{1}{T} \sum_{i=1}^{T}  L_{\mathcal{D}_i} (A(S_j^i)) &\ge
-\frac{1}{T} \sum_{i=1}^{T}  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = \\
-&= \frac{1}{2m} \sum_{x \in C} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} \ge \\
-&\ge \frac{1}{2} min_{x\in C} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}
+\frac{1}{T} \sum_{i=1}^{T}  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} \ge \\
+&\ge \frac{1}{2p} \sum_{r=1}^p \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} \ge \\
+&\ge \frac{1}{2} min_{r} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]}
 \end{align*}
 
 
-Como dado un $x\in C$ cualquiera, la mitad de clasificadores $f_i$ clasificarán $x$ bien y la otra mitad mal, se tiene:
+Como dado un $v_r$ cualquiera, $v_r \notin S_j$, y existen $f_i, f_{i'}$ que se diferencian justo en el elemento $v_r$, uno coincidirá con el valor en $v_r$ de $A(S_{j}^i) = A(S_{j}^{i'}$ y otro no:
 
-\[\frac{1}{2} min_{x\in C} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = \frac{1}{2} \frac{1}{T} \frac{T}{2} = \frac{1}{4}\]
+\[\frac{1}{2} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} = \frac{1}{2} \frac{1}{T} \frac{T}{2} = \frac{1}{4}\]
 
 Y uniendo toda esta información:
 
