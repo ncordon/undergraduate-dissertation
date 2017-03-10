@@ -1,0 +1,5 @@
+language: r
+
+before_install: true
+install: true
+script: true
