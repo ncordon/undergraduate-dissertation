@@ -22,15 +22,20 @@
 
 
 * TODO
-** TODO Definir matemáticamente el problema de la clasificación 
-** TODO ¿Pueden coexistir desbalanceo intrínseco/extrínseco con desbalanceo relativo/debido a instancias raras?
-** TODO La notación del undersampling y oversampling quizás no es lo suficientemente buena
-** TODO Informed undersampling - NearMiss3. No se entiende demasiado bien
-** TODO Sampling basado en clústering: ¿el tamaño de clúster está prefijado?
-** TODO Se repite el proceso del CBO hasta que sólo se actualia la media de un clúster (?)
-** TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
-** TODO Buscar una traducción adecuada a Recall
-** TODO Cuidado! La definición PAC de Valiant establece complejidad polinómica en $\frac{1}{\epsilon}$ y $\frac{1}{\delta}$, pero se demuestra a posteriori que la definición dada por el libro UML equivale. También habla de complejidad computacional, aunque esto el libro lo separa.
+** Paquete de R
+*** RWO
+**** TODO Roulette?
+**** TODO Sumando desviación típica, no restándola.
+** Teoría
+*** TODO Definir matemáticamente el problema de la clasificación 
+*** TODO ¿Pueden coexistir desbalanceo intrínseco/extrínseco con desbalanceo relativo/debido a instancias raras?
+*** TODO La notación del undersampling y oversampling quizás no es lo suficientemente buena
+*** TODO Informed undersampling - NearMiss3. No se entiende demasiado bien
+*** TODO Sampling basado en clústering: ¿el tamaño de clúster está prefijado?
+*** TODO Se repite el proceso del CBO hasta que sólo se actualia la media de un clúster (?)
+*** TODO Pasar a ordenador la primera parte de las notas de trabajo, actualmente en papel.
+*** TODO Buscar una traducción adecuada a Recall
+*** TODO Cuidado! La definición PAC de Valiant establece complejidad polinómica en $\frac{1}{\epsilon}$ y $\frac{1}{\delta}$, pero se demuestra a posteriori que la definición dada por el libro UML equivale. También habla de complejidad computacional, aunque esto el libro lo separa.
 * Memoria
 * Parte informática
 ** Jonatthan Ortigosa-Hernández, Iñakinza, Jose A.Lozano

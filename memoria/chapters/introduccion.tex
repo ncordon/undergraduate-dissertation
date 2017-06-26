@@ -1,0 +1,70 @@
+\subsubsection{Introducción}
+
+Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
+
+\begin{itemize}
+\item \textbf{Dominio}: $\mathcal{X}$, sobre el que tenemos definida una $\sigma$ álgebra de conjuntos. Llamamos una instancia a $x\in \mathcal{X}$
+\item \textbf{Conjunto de etiquetas}: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario.
+\item \textbf{Verdadero etiquetado}: Asumimos la existencia de una función $f: \mathcal{X} \rightarrow \mathcal{Y}$ que devuelve el verdadero etiquetado de todas las instancias.
+\item \textbf{Generación de instancias}: Asumimos la existencia de una distribución de probabilidad $\mathcal{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
+\item \textbf{Conjunto/Secuencia de entrenamiento}: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una tupla en $\mathcal{X}^m \times \mathcal{Y}^m$ en la que pueden repetirse ejemplos. La elección del conjunto de entrenamiento representa una m.a.s $(\mathcal{X}_1,\ldots \mathcal{X}_m)$, muestra aleatoria simple, idéntica e independientemente distribuida, donde cada $X_i$ sigue la misma distribución que $\mathcal{X}$, $X_i \sim \mathcal{D}$. Además, cada ejemplo del conjunto de entrenamiento se etiqueta según $f$. Notamos este hecho $S \sim \mathcal{D}^m$, aunque se trata de un abuso de notación.
+\item \textbf{Resultado del aprendizaje}: una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. Se usa la notación $A(S)$ para denotar la hipótesis que un algoritmo $A$ devuelve para una secuencia de entrenamiento $S$.
+\item \textbf{Error del clasificador}: Definimos el error del clasificador, suponiendo $\{x\in \mathcal{X} : h(x) \neq f(x)\}$ en la $\sigma$ álgebra, como:
+\end{itemize}
+
+\[L_{D,f}(h) :=  P_{x\sim \mathcal{D}} [h(x)\neq f(x)]\]
+
+\begin{enumerate}
+\item Minimización del riesgo empírico (ERM)
+\label{sec-3-4-1-1}
+
+\begin{definition}
+\textbf{Riesgo empírico (ER)}
+
+Definimos el riesgo empírico o error empírico como:
+
+\[L_S(h) = \frac{|i\in {1\ldots m}: h(x_i) \neq y_i|}{m}\]
+\end{definition}
+
+Podemos pensar en él como el error del clasificador sobre el conjunto de entrenamiento. El paradigma que intenta buscar una hipótesis que minimice el error empírico recibe el nombre de \emph{Minimización de Riesgo Empírico - ERM} y notamos $ERM(S)$ al clasificador que obtenemos basándonos en este paradigma para un determinado conjunto de entrenamiento $S$.
+
+Este error no es siempre óptimo. Pensemos en el siguiente ejemplo:
+
+Sea $\mathcal{X} = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[0,2]\subset \mathbb{R}$, y la siguiente función:
+
+\[f(x) = \left\{\begin{array}{lcl}
+1 && x\in [0,1]\\
+0 && x\in \mathbb{R}\setminus [0,1]
+\end{array}\right.\]
+
+
+$S = \{(x_1,y_1), \ldots (x_m, y_m)\}$ un conjunto de entrenamiento de tamaño $m$ sin elementos repetidos y el clasificador:
+
+\[h_S(x) = \left\{\begin{array}{lcl}
+y_i && \exists i\in \{1\ldots m\} : x=x_i\\
+0 && \nexists i\in \{1\ldots m\} : x=x_i
+\end{array}\right.\]
+
+Este clasificador es perfecto respecto a la minimización de riesgo empírico, pero $\mathbb{P}_{x\sim \mathcal{D}}[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el clasificador idénticamente 1. A este fenómeno lo denominamos \textbf{overfitting}.
+
+\item ERM con \emph{sesgo inductivo}
+\label{sec-3-4-1-2}
+
+Se intenta corregir el ERM corrigiendo el espacio de búsqueda, esto es, la clase de hipótesis $\mathcal{H}$ desde la que el algoritmo puede escoger un $h: \mathcal{X}\rightarrow \mathcal{Y}$. Llamamos a esto \emph{sesgo inductivo} puesto que se asumirá una determinada clase de funciones $\mathcal{H}$ en función de las características del problema.
+
+Notaremos a este nuevo paradigma $ERM_{\mathcal{H}}(S)$, y lo definimos de manera que:
+
+\[ERM_{\mathcal{H}}(S) := h_S \in argmin_{h\in \mathcal{H}} L_S(h)\]
+
+Definimos la propiedad de factibilidad, que usaremos más adelante.
+
+\begin{definition}
+\textbf{Propiedad de factibilidad}
+
+Existe  $\bar{h} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$.
+\end{definition}
+
+La hipótesis de factibilidad implica que $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(\bar{h})=0] = 1$, y por tanto $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h_S)=0]=1$.
+
+El valor $L_{\mathcal{D},f}(h_S)$ dependerá del conjunto de entrenamiento $S$, y la elección del mismo está sometida al azar. Además, necesitamos definir cómo de buena será la predicción.
+\end{enumerate}
