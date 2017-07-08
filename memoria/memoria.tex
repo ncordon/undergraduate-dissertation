@@ -1,23 +1,15 @@
 \documentclass[a4paper,11pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{fixltx2e}
+\usepackage[spanish,es-lcroman]{babel}
 \usepackage{graphicx}
 \usepackage{longtable}
 \usepackage{float}
 \usepackage{wrapfig}
-\usepackage{rotating}
-\usepackage[normalem]{ulem}
-\usepackage{amsmath}
-\usepackage{textcomp}
-\usepackage{marvosym}
 \usepackage{wasysym}
 \usepackage{amssymb}
 \usepackage{hyperref}
-\tolerance=1000
-\usepackage{minted}
-\usepackage[spanish]{babel}
-\usepackage{amsmath}
+%\usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{dsfont}
 
@@ -34,17 +26,49 @@
 
 \everymath{\displaystyle}
 
-\input{titlepage}
-
 \begin{document}
-\maketitle
+% *********************************************************
+% Frontmatter
+% *********************************************************
+\pagenumbering{roman}
+
+\makeatletter
+  \def\input@path{{./frontmatter/}}
+\makeatother
+
+\input{titlepage}
+\chapter*{Resumen}
+  \input{es-abstract}
+\chapter*{Abstract}
+  \input{en-abstract}
+
 \tableofcontents
 
-\break
+\break 
 
+% *********************************************************
+% Mainmatter
+% *********************************************************
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\makeatletter
+  \def\input@path{{./chapters/}}
+\makeatother
+
+
+\chapter*{Introducción}
+  
+\chapter*{Objetivos}
+  
+  
+\part{Matemáticas}
 \chapter{Introducción}
-Basado mayormente en el contenido de \cite{shwartz_understanding_ml}
-\input{chapters/introduccion}
+  Basado mayormente en el contenido de \cite{shwartz_understanding_ml}
+  
+  \input{introduccion}
+
+\part{Informática}
 
 \bibliography{references}
 \bibliographystyle{IEEEtran}
