@@ -36,16 +36,16 @@ Entre las áreas relacionadas con el aprendizaje automático, cabe mencionar:
  \item \textbf{Optimización de algoritmos}
 \end{enumerate}
 
-\subsection{Ejemplo práctico}
+\subsection{Ejemplo práctico}\label{sec:first-ex}
 Pensemos en un ejemplo: tenemos clientes de un banco que quieren solicitar un préstamo, y a todos se les categoriza
 el nivel de ingresos y el tamaño del préstamo (cómo de grande es su importe). Estas variables se miden 
 en una escala de $0$ a $1$ donde $1$ es el nivel máximo. Queremos etiquetar a cada cliente como $S$:conceder préstamo o 
 $N$:no conceder préstamo. Identificamos $0\equiv N$ y $1\equiv S$.
 
 Dado un histórico de $m\in \mathbb{N}$ clientes a los que se les concedieron y devolvieron o no préstamos, tenemos una tupla 
-$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = ((x_i)_1, (x_i)_2) \in [0,1]^2$ y $y_i \in \{0,1\}$, y $(x_i)_1$ representa el nivel ingresos mensuales, 
-y $(x_i)_2$ el tamaño del préstamo solicitado. Tenemos a los clientes clasificados en función de si devolvieron los 
-préstamos o no.
+$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = ((x_i)_1, (x_i)_2) \in [0,1]^2$ y $y_i \in \{0,1\}$, y $(x_i)_1$ representa el nivel 
+ingresos mensuales, y $(x_i)_2$ el tamaño del préstamo solicitado. Tenemos a los clientes clasificados en función de si 
+devolvieron los préstamos o no.
 
 Quiero encontrar una función que me ofrezca una predicción sobre cualquier cliente, para minimizar posibles pérdidas del banco, es
 decir, busco $f:[0,1]^2 \rightarrow \{0,1\}$, que llamaremos predicción.
@@ -65,22 +65,47 @@ una óptima. Asumiremos por simplicidad que la clase de predicciones son subrect
 
 También necesitaremos definir una medida de acierto: ¿cómo de buena es una predicción?.
 
-\section{Framework matemático}
+\section{Modelo matemático}
 
-Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
+Podemos dar unas notaciones/definiciones básicas que utilizaremos de aquí en adelante, en base a lo descrito en \ref{sec:first-ex}:
 
 \begin{itemize}
-\item \textbf{Dominio}: $\mathcal{X}$, sobre el que tenemos definida una $\sigma$ álgebra de conjuntos. 
-Llamamos una instancia a $x\in \mathcal{X}$
-\item \textbf{Conjunto de etiquetas}: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario.
-\item \textbf{Verdadero etiquetado}: Asumimos la existencia de una función $f: \mathcal{X} \rightarrow \mathcal{Y}$ que devuelve el verdadero etiquetado de todas las instancias.
-\item \textbf{Generación de instancias}: Asumimos la existencia de una distribución de probabilidad $\mathcal{D}$ sobre $\mathcal{X}$ que nos da información sobre la probabilidad de extraer cada posible instancia desde $\mathcal{X}$.
-\item \textbf{Conjunto/Secuencia de entrenamiento}: $S = ((x_1,y_1), \ldots (x_m, y_m))$ secuencia con cada elemento perteneciente a $\mathcal{X}\times \mathcal{Y}$. A veces lo llamaremos conjunto, por abuso de notación, pero se trata de una tupla en $\mathcal{X}^m \times \mathcal{Y}^m$ en la que pueden repetirse ejemplos. La elección del conjunto de entrenamiento representa una m.a.s $(\mathcal{X}_1,\ldots \mathcal{X}_m)$, muestra aleatoria simple, idéntica e independientemente distribuida, donde cada $X_i$ sigue la misma distribución que $\mathcal{X}$, $X_i \sim \mathcal{D}$. Además, cada ejemplo del conjunto de entrenamiento se etiqueta según $f$. Notamos este hecho $S \sim \mathcal{D}^m$, aunque se trata de un abuso de notación.
-\item \textbf{Resultado del aprendizaje}: una función $h: \mathcal{X} \rightarrow \mathcal{Y}$ que llamaremos hipótesis/clasificador. Se usa la notación $A(S)$ para denotar la hipótesis que un algoritmo $A$ devuelve para una secuencia de entrenamiento $S$.
-\item \textbf{Error del clasificador}: Definimos el error del clasificador, suponiendo $\{x\in \mathcal{X} : h(x) \neq f(x)\}$ en la $\sigma$ álgebra, como:
+\item \textbf{Dominio}: $\mathcal{X}$. Llamamos una instancia a $x\in \mathcal{X}$
+\item \textbf{Conjunto de etiquetas}: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario. En ocasiones 
+también usaremos $\mathcal{Y} = \{-1,1\}$ para las etiquetas.
+\item \textbf{Verdadero etiquetado}: \sloppy Asumimos la existencia de una función ${f: \mathcal{X} \rightarrow \mathcal{Y}}$ 
+que devuelve el verdadero etiquetado de todas las instancias.
+\item \textbf{Generación de instancias}: \fussy Asumimos la existencia de una distribución de probabilidad $\mathcal{D} = (\mathcal{B}, P)$, 
+con $x\sim \mathcal{D}$, donde $A\subseteq \mathcal{P}(\mathcal{X})$ es $\sigma$ álgebra de conjuntos sobre $\mathcal{X}$ y $P: \mathcal{B} \rightarrow [0,1]$
+función de probabilidad. La distribución de probabilidad nos da información sobre la probabilidad de extraer cada posible instancia desde 
+$x \in \mathcal{X}$. Por evitar conflictos, usualmente escribiremos $P$ como $P_{x\sim \mathcal{D}}$.
+
+\item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1) \ldots (x_m,y_m)) \in (\mathcal{X} \times \mathcal{Y})^m$ 
+Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. Notaremos $S_x = (x_1, \ldots x_m)$
+
+De momento asumiremos que las etiquetas del conjunto de entrenamiento se corresponden con el verdadero etiquetado: 
+$y_i = f(x_i)$, por lo que no podemos tener dos instancias con etiquetas diferentes.
+
+La elección de $S_x$ es idéntica e independientemente distribuida, esto es $x_i \sim \mathcal{D}$ para todo $i=1, \ldots, m$.
+Lo notamos $S_x \sim \mathcal{D}^m$
+
+\item \textbf{Hipótesis/clasificador/predicción}: cada posible aplicación perteneciente a 
+$\{h: h:\mathcal{X} \rightarrow \mathcal{Y}\} := 2^{\mathcal{X}}$. 
+
+\item \textbf{Algoritmo de aprendizaje}: Llamamos algoritmo de aprendizaje a cualquier aplicación que tome conjuntos de entrenamiento
+y devuelva hipótesis sobre el problema:
+
+\[A: \underset{m\in \mathbb{N}}{\bigcup} (\mathcal{X}\times\mathcal{Y})^m \rightarrow 2^{\mathcal{X}}\]
+
+Asumimos que el algoritmo no tiene acceso a la función de verdadero etiquetado $f: \mathcal{X} \rightarrow \mathcal{Y}$ ni a
+la distribución $\mathcal{D}$.
+
+\item \textbf{Error del clasificador}: Definimos el error del clasificador, suponiendo 
+$\{x\in \mathcal{X} : h(x) \neq f(x)\} := [h\neq f] \in \mathcal{B}$ como:
+
+\[L_{D,f}(h) :=  P_{x\sim \mathcal{D}} [h \neq f]\]
 \end{itemize}
 
-\[L_{D,f}(h) :=  P_{x\sim \mathcal{D}} [h(x)\neq f(x)]\]
 
 \begin{enumerate}
 \item Minimización del riesgo empírico (ERM)
