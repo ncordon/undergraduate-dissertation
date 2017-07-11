@@ -25,9 +25,9 @@
 \usepackage{color}
 \newenvironment{wording}{\setlength{\parskip}{0pt}\rule{\textwidth}{0.5em}}{~\\\rule{\textwidth}{0.5em}}
 
-\newcommand{\img}[1]{
+\newcommand{\img}[2]{
   \begin{center}
-  \includegraphics[width=0.8\textwidth]{#1}
+  \includegraphics[width=#2\textwidth]{#1}
   \end{center}
 }
 \everymath{\displaystyle}
@@ -48,6 +48,7 @@
 \chapter*{Abstract}
   \input{en-abstract}
 
+\setcounter{tocdepth}{1}
 \tableofcontents
 
 \break 
