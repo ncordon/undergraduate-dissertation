@@ -12,6 +12,7 @@
 %\usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{dsfont}
+\usepackage{enumerate}
 
 \newtheorem{theorem}{Teorema}
 \newtheorem{fact}{Proposición}
@@ -24,6 +25,11 @@
 \usepackage{color}
 \newenvironment{wording}{\setlength{\parskip}{0pt}\rule{\textwidth}{0.5em}}{~\\\rule{\textwidth}{0.5em}}
 
+\newcommand{\img}[1]{
+  \begin{center}
+  \includegraphics[width=0.8\textwidth]{#1}
+  \end{center}
+}
 \everymath{\displaystyle}
 
 \begin{document}
@@ -60,14 +66,21 @@
 \chapter*{Introducción}
   
 \chapter*{Objetivos}
-  
-  
-\part{Matemáticas}
-\chapter{Introducción}
-  Basado mayormente en el contenido de \cite{shwartz_understanding_ml}
+
+% *********************************************************
+% Parte de matemáticas
+% *********************************************************  
+\part{Matemáticas}  
+\chapter{Modelización}
+  El material principal en el que se ha basado la sección de matemáticas ha sido \cite{shwartz_understanding_ml}, que proporciona una detallada
+  formalización de los fundamentos matemáticos del Aprendizaje Automático.
   
   \input{introduccion}
 
+  
+% *********************************************************
+% Parte de informática
+% *********************************************************  
 \part{Informática}
 
 \bibliography{references}

@@ -1,6 +1,71 @@
 
 
-\subsubsection{Introducción}
+\section{Motivación}
+
+El objetivo del aprendizaje automático es convertir datos en conocimiento a través de un razonamiento inductivo, de manera que
+proporcionándole datos a una máquina, seamos capaces de extraer un conocimiento (una generalización de los datos, que nos permita
+inferir información a partir de nuevos datos). Surge la pregunta de por qué es necesario el aprendizaje automático o 
+\textit{machine learning}, si la estadística también se encarga de obtener conocimiento a partir de unos datos.
+
+\subsection{¿Por qué necesitamos \textit{machine learning}?}
+\begin{enumerate}[i]
+ \item Para resolver \textbf{tareas que requieren automatización}: entran dentro de esta categoría tanto aquellas tareas para
+ las que no existe una axiomatización o un conocimiento exacto, como pueden ser el reconocimiento de dígitos o de voz, como 
+ aquellas tareas que requieren del análisis de un gran número de datos, y quedan fuera de la capacidad humana para realizar
+ un análisis estadístico manual por ejemplo. En el primer caso necesitamos apoyarnos en conocimiento auxiliar (por ejemplo, 
+ un conjunto de dígitos o de muestras de voz preetiquetadas con los que poder comparar muestras sin etiquetar/clasificar); 
+ en el segundo, se hace necsario el uso de una máquina para poder extraer conocimiento de todos los datos.
+ 
+ \item \textbf{Tareas que requieren adaptatividad}: como puede ser el reconocimiento de texto, donde no hay un patrón único de
+ escritura para cada persona, y necesitamos que el algoritmo pueda generalizar eso.
+\end{enumerate}
+
+\subsection{Áreas relacionadas con el aprendizaje}
+Entre las áreas relacionadas con el aprendizaje automático, cabe mencionar:
+
+\begin{enumerate}[i]
+ \item \textbf{Inteligencia Artificial}
+ \item \textbf{Algorítmica}: debemos analizar el tiempo asintótico de los algoritmos mediante los que aprende la máquina.
+ \item \textbf{Inferencia}: entre las diferencias que podemos mencionar con la estadística convencional, destaca la necesidad de 
+ programar las tareas, dado el volumen de datos con el que normalmente se trabaja, mientras que en muchos análisis estadísticos basta 
+ lápiz y papel. También destaca la \textbf{independencia respecto a distribución} con la que se trabaja (no se asume una distribución
+ determinada sobre los datos). La principal diferencia del aprendizaje automático respecto a la inferencia es que la inferencia
+ se encarga de comprobar la validez de las hipótesis que propone el estadista, mientras que el algoritmo de 
+ \textit{machine learning} genera hipótesis para unos datos determinados, con unas ciertas condiciones de aproximación y error.
+ \item \textbf{Álgebra lineal}
+ \item \textbf{Optimización de algoritmos}
+\end{enumerate}
+
+\subsection{Ejemplo práctico}
+Pensemos en un ejemplo: tenemos clientes de un banco que quieren solicitar un préstamo, y a todos se les categoriza
+el nivel de ingresos y el tamaño del préstamo (cómo de grande es su importe). Estas variables se miden 
+en una escala de $0$ a $1$ donde $1$ es el nivel máximo. Queremos etiquetar a cada cliente como $S$:conceder préstamo o 
+$N$:no conceder préstamo. Identificamos $0\equiv N$ y $1\equiv S$.
+
+Dado un histórico de $m\in \mathbb{N}$ clientes a los que se les concedieron y devolvieron o no préstamos, tenemos una tupla 
+$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = ((x_i)_1, (x_i)_2) \in [0,1]^2$ y $y_i \in \{0,1\}$, y $(x_i)_1$ representa el nivel ingresos mensuales, 
+y $(x_i)_2$ el tamaño del préstamo solicitado. Tenemos a los clientes clasificados en función de si devolvieron los 
+préstamos o no.
+
+Quiero encontrar una función que me ofrezca una predicción sobre cualquier cliente, para minimizar posibles pérdidas del banco, es
+decir, busco $f:[0,1]^2 \rightarrow \{0,1\}$, que llamaremos predicción.
+
+Asumimos que los datos de los clientes de que disponemos no van a tener una distribución determinada y
+van a ser idéntica e independientemente distribuidos. El histórico siempre va a crecer, y no sabemos cómo va a hacerlo, queriendo aprovechar
+al máximo la información del mismo. Es decir, los datos de un cliente provienen de una variable aleatoria que sigue una determinada
+distribución $X \sim \mathcal{D}$; y tenemos muestas de clientes (que llamaremos conjunto de entrenamiento), variable i.i.d
+$S \sim \mathcal{D}^m$. 
+
+También asumiremos que tenemos una clase de predicciones $\mathcal{H} \subseteq \{0,1\}^{[0,1]^2}$, de entre las que existe
+una óptima. Asumiremos por simplicidad que la clase de predicciones son subrectángulos de $[0,1]^2$, esto es, funciones:
+
+\[h_{a,b,c,d} = \mathds{1}_{[a,b]\times[c,d]}, \qquad [a,b]\times [c,d] \subseteq [0,1]^2\]
+
+%\img{./imgs/rect-ex.png}
+
+También necesitaremos definir una medida de acierto: ¿cómo de buena es una predicción?.
+
+\section{Framework matemático}
 
 Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante.
 
