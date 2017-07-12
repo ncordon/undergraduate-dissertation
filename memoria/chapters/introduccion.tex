@@ -1,5 +1,3 @@
-
-
 \section{Motivación}
 
 El objetivo del aprendizaje automático es convertir datos en conocimiento a través de un razonamiento inductivo, de manera que
@@ -67,63 +65,87 @@ También necesitaremos definir una medida de acierto: ¿cómo de buena es una pr
 
 \section{Modelo matemático}
 
+Sea $(X, \Sigma, P)$ un espacio de probabilidad. Esto es, $\Sigma \subseteq \mathcal{P}(X)$ es $\sigma$ álgebra sobre $X$ y 
+$P: \Sigma \rightarrow [0,1]$ verifica los axiomas de Kolmogorov:
+
+\begin{enumerate}[i]
+ \item $\sigma$ aditividad: dados $\{A_n\}_{n\in \mathbb{N}} \in \Sigma$ disjuntos, entonces: 
+ \[P \left(\bigcup A_n\right) = \sum_{n\ge 1} P(A_n)\]
+ \item $P(X) = 1$
+\end{enumerate}
+
 Podemos dar unas notaciones/definiciones básicas que utilizaremos de aquí en adelante, en base a lo descrito en \ref{sec:first-ex}:
 
 \begin{itemize}
-\item \textbf{Dominio}: $\mathcal{X}$. Llamamos una instancia a $x\in \mathcal{X}$
-\item \textbf{Conjunto de etiquetas}: $\mathcal{Y}$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario. En ocasiones 
-también usaremos $\mathcal{Y} = \{-1,1\}$ para las etiquetas.
-\item \textbf{Verdadero etiquetado}: \sloppy Asumimos la existencia de una función ${f: \mathcal{X} \rightarrow \mathcal{Y}}$ 
-que devuelve el verdadero etiquetado de todas las instancias.
-\item \textbf{Generación de instancias}: \fussy Asumimos la existencia de una distribución de probabilidad $\mathcal{D} = (\mathcal{B}, P)$, 
-con $x\sim \mathcal{D}$, donde $A\subseteq \mathcal{P}(\mathcal{X})$ es $\sigma$ álgebra de conjuntos sobre $\mathcal{X}$ y $P: \mathcal{B} \rightarrow [0,1]$
-función de probabilidad. La distribución de probabilidad nos da información sobre la probabilidad de extraer cada posible instancia desde 
-$x \in \mathcal{X}$. Por evitar conflictos, usualmente escribiremos $P$ como $P_{x\sim \mathcal{D}}$.
+\item \textbf{Dominio}: $X$. Llamamos \textbf{instancia} a $x\in X$
 
-\item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1) \ldots (x_m,y_m)) \in (\mathcal{X} \times \mathcal{Y})^m$ 
+\item \textbf{Conjunto de etiquetas}: $Y$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario. En ocasiones 
+también usaremos $Y = \{-1,1\}$ para las etiquetas.
+
+\item \textbf{Verdadero etiquetado}: \sloppy Asumimos la existencia de una función ${f: X \rightarrow Y}$ 
+que proporciona la verdadera etiqueta de todas las instancias.
+
+\item \textbf{Generación de instancias}: \fussy Llamamos a $\mathcal{D} = (\Sigma, P)$ distribución de probabilidad sobre $X$,
+y lo notamos $x\sim \mathcal{D}$. La distribución de probabilidad nos da información sobre la probabilidad de extraer cada 
+posible instancia desde  $x \in X$. Por evitar conflictos, usualmente escribiremos $P$ como $P_{x\sim \mathcal{D}}$.
+
+\item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1) \ldots (x_m,y_m)) \in (X \times Y)^m$ 
 Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. Notaremos $S_x = (x_1, \ldots x_m)$
 
 De momento asumiremos que las etiquetas del conjunto de entrenamiento se corresponden con el verdadero etiquetado: 
-$y_i = f(x_i)$, por lo que no podemos tener dos instancias con etiquetas diferentes.
+$y_i = f(x_i)$, por lo que no podemos tener una instancia con etiquetas diferentes.
 
 La elección de $S_x$ es idéntica e independientemente distribuida, esto es $x_i \sim \mathcal{D}$ para todo $i=1, \ldots, m$.
-Lo notamos $S_x \sim \mathcal{D}^m$
+Lo notamos $S_x \sim \mathcal{D}^m$.
 
 \item \textbf{Hipótesis/clasificador/predicción}: cada posible aplicación perteneciente a 
-$\{h: h:\mathcal{X} \rightarrow \mathcal{Y}\} := 2^{\mathcal{X}}$. 
-
-\item \textbf{Algoritmo de aprendizaje}: Llamamos algoritmo de aprendizaje a cualquier aplicación que tome conjuntos de entrenamiento
-y devuelva hipótesis sobre el problema:
-
-\[A: \underset{m\in \mathbb{N}}{\bigcup} (\mathcal{X}\times\mathcal{Y})^m \rightarrow 2^{\mathcal{X}}\]
-
-Asumimos que el algoritmo no tiene acceso a la función de verdadero etiquetado $f: \mathcal{X} \rightarrow \mathcal{Y}$ ni a
-la distribución $\mathcal{D}$.
+$\{h, h:X \rightarrow Y\} := 2^{X}$. 
 
 \item \textbf{Error del clasificador}: Definimos el error del clasificador, suponiendo 
-$\{x\in \mathcal{X} : h(x) \neq f(x)\} := [h\neq f] \in \mathcal{B}$ como:
+$\{x\in X : h(x) \neq f(x)\} := [h\neq f] \in \Sigma$ como:
 
-\[L_{D,f}(h) :=  P_{x\sim \mathcal{D}} [h \neq f]\]
+\[L_{\mathcal{D},f}(h) :=  P_{x\sim \mathcal{D}} [h \neq f]\]
+
+\item \textbf{Algoritmo de aprendizaje}: Llamamos algoritmo de aprendizaje a cualquier aplicación que tome conjuntos de 
+entrenamiento y devuelva hipótesis sobre el problema:
+
+\[A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}\]
+
+Asumimos que el algoritmo no tiene acceso a la función de verdadero etiquetado $f: X \rightarrow Y$ ni a
+la distribución $\mathcal{D}$.
 \end{itemize}
 
 
-\begin{enumerate}
-\item Minimización del riesgo empírico (ERM)
-\label{sec-3-4-1-1}
+\subsection{Minimización del riesgo empírico}
 
-\begin{definition}
-\textbf{Riesgo empírico (ER)}
+\begin{definition*} \textbf{Riesgo empírico}
 
 Definimos el riesgo empírico o error empírico como:
 
-\[L_S(h) = \frac{|i\in {1\ldots m}: h(x_i) \neq y_i|}{m}\]
-\end{definition}
+\[L_S(h) = \frac{|i\in {1,\ldots, m}: h(x_i) \neq y_i|}{m}\]
 
-Podemos pensar en él como el error del clasificador sobre el conjunto de entrenamiento. El paradigma que intenta buscar una hipótesis que minimice el error empírico recibe el nombre de \emph{Minimización de Riesgo Empírico - ERM} y notamos $ERM(S)$ al clasificador que obtenemos basándonos en este paradigma para un determinado conjunto de entrenamiento $S$.
+\end{definition*}
 
-Este error no es siempre óptimo. Pensemos en el siguiente ejemplo:
+Es decir, es el error del clasificador $h$ sobre el conjunto de entrenamiento $S$. 
 
-Sea $\mathcal{X} = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[0,2]\subset \mathbb{R}$, y la siguiente función:
+\begin{definition*} \textbf{Minimizador del riesgo empírico, ERM}
+
+Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un ERM 
+(\emph{Empirical Risk Minimizer}) si busca una hipótesis cuyo error empírico sea mínimo:
+
+\[A(S) = \argmin_{h\in 2^X} L_S(h)\]
+\end{definition*}
+
+Cuando notemos $ERM(S)$ nos refereriremos a una propiedad que se verifica para toda la clase de algoritmos que son ERM.
+
+Trivialmente $L_S(f) = 0$ para cualquier $S \in (X \times Y)^m$ conjunto de entrenamiento, por la hipótesis de que existe una
+verdadera función de etiquetado. Esto implica que $A(S) = 0$ para $A$ un algoritmo ERM.
+
+Aunque $A(S)$ minimice el error sobre el conjunto de entrenamiento, esto no significa que el error $L_{\mathcal{D},f} (A(S))$ 
+sea mínimo. Pensemos en el siguiente ejemplo:
+
+\begin{example}
+Sea $X = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[0,2]\subset \mathbb{R}$, y la siguiente función:
 
 \[f(x) = \left\{\begin{array}{lcl}
 1 && x\in [0,1]\\
@@ -131,33 +153,51 @@ Sea $\mathcal{X} = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[
 \end{array}\right.\]
 
 
-$S = \{(x_1,y_1), \ldots (x_m, y_m)\}$ un conjunto de entrenamiento de tamaño $m$ sin elementos repetidos y el clasificador:
+Sea $S = ((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ sin elementos repetidos y el clasificador:
 
 \[h_S(x) = \left\{\begin{array}{lcl}
 y_i && \exists i\in \{1\ldots m\} : x=x_i\\
 0 && \nexists i\in \{1\ldots m\} : x=x_i
 \end{array}\right.\]
 
-Este clasificador es perfecto respecto a la minimización de riesgo empírico, pero $\mathbb{P}_{x\sim \mathcal{D}}[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el clasificador idénticamente 1. A este fenómeno lo denominamos \textbf{overfitting}.
+Este clasificador es un ERM, pero $P_{x\sim \mathcal{D}}[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el 
+clasificador idénticamente 1. A este fenómeno lo denominamos \textbf{overfitting}.
+\end{example}
 
-\item ERM con \emph{sesgo inductivo}
-\label{sec-3-4-1-2}
+\begin{definition*} \textbf{Overfitting}
 
-Se intenta corregir el ERM corrigiendo el espacio de búsqueda, esto es, la clase de hipótesis $\mathcal{H}$ desde la que el algoritmo puede escoger un $h: \mathcal{X}\rightarrow \mathcal{Y}$. Llamamos a esto \emph{sesgo inductivo} puesto que se asumirá una determinada clase de funciones $\mathcal{H}$ en función de las características del problema.
+ Decimos que un clasificador $h: X\rightarrow Y$ produce overfitting sobre el conjunto de entrenamiento 
+ $S$ si $L_S(h) << L_{\mathcal{D},f}(h)$.
+\end{definition*}
 
-Notaremos a este nuevo paradigma $ERM_{\mathcal{H}}(S)$, y lo definimos de manera que:
 
-\[ERM_{\mathcal{H}}(S) := h_S \in argmin_{h\in \mathcal{H}} L_S(h)\]
+\subsection{ERM con sesgo inductivo}
+Se intenta corregir el riesgo de producir \emph{overfitting} restringiendo el espacio de búsqueda, esto es, la clase de 
+hipótesis $\mathcal{H} \subseteq 2^X$ desde la que el algoritmo puede escoger un $h: X\rightarrow Y$. Llamamos a esto 
+\emph{sesgo inductivo}, puesto que se asume una determinada clase de funciones $\mathcal{H}$ en función de las 
+características del problema y del conocimiento previo que tenemos del mismo.
 
-Definimos la propiedad de factibilidad, que usaremos más adelante.
+\begin{definition*} \textbf{ERM con sesgo inductivo}
 
-\begin{definition}
-\textbf{Propiedad de factibilidad}
+Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un ERM con sesgo 
+inductivo hacia $\mathcal{H}$ y lo notamos $ERM_{\mathcal{H}}$, si busca una hipótesis en $\mathcal{H}$ cuyo error empírico 
+sea mínimo, es decir:
 
-Existe  $\bar{h} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$.
-\end{definition}
+\[A(S) = \argmin_{h\in \mathcal{H}} L_S(h)\]
+\end{definition*}
 
-La hipótesis de factibilidad implica que $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(\bar{h})=0] = 1$, y por tanto $\mathbb{P}_{S\sim \mathcal{D}^m}[L_S(h_S)=0]=1$.
+Cuando notemos $ERM_{\mathcal{H}}(S)$ nos refereriremos a una propiedad que se verifica para toda la clase de algoritmos que 
+son $ERM_{\mathcal{H}}$.
 
-El valor $L_{\mathcal{D},f}(h_S)$ dependerá del conjunto de entrenamiento $S$, y la elección del mismo está sometida al azar. Además, necesitamos definir cómo de buena será la predicción.
-\end{enumerate}
+\begin{definition*} \textbf{Propiedad de factibilidad}
+
+Diremos que $\mathcal{H}$ cumple la propiedad de factibilidad si $\exists {\bar{h}} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$.
+\end{definition*}
+
+De la hipótesis de factibilidad sobre $\mathcal{H}$ se deduce $P_{S\sim \mathcal{D}^m}[L_S(\bar{h})=0] = 1$, y por tanto 
+$P_{S\sim \mathcal{D}^m} \bigg[L_S(ERM_{\mathcal{H}}(S)) = 0 \bigg] = 1$.
+
+El valor $L_{\mathcal{D},f}(ERM_{\mathcal{H}}(S))$ dependerá por tanto del conjunto de entrenamiento $S$, y la elección del
+mismo está sometida al azar. 
+
+%Además, necesitamos definir cómo de buena será la predicción.

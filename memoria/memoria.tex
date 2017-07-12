@@ -14,28 +14,73 @@
 \usepackage{dsfont}
 \usepackage{enumerate}
 
+% *************************************************************************************************************
+% Entorno para ejemplos
+% https://tex.stackexchange.com/questions/5223/command-for-argmin-or-argmax
+% *************************************************************************************************************
+\usepackage{mdframed} % Add easy frames to paragraphs
+\usepackage{lipsum} % For dummy text
+\usepackage{xcolor}
+\usepackage{xparse} % Add support for \NewDocumentEnvironment
+\definecolor{graylight}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+
+\newmdenv[ % Define mdframe settings and store as leftrule
+  linecolor=graylight,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{leftrule}
+
+\NewDocumentEnvironment{example}{O{\textbf{Ejemplo:}}} % Define example environment
+{\begin{leftrule}\noindent\textcolor{black}{#1}\par}
+{\end{leftrule}}
+
+
+% *************************************************************************************************************
+% Definiciones de teoremas, corolarios, lemas
+% *************************************************************************************************************
 \newtheorem{theorem}{Teorema}
+\newtheorem*{theorem*}{Teorema}
 \newtheorem{fact}{Proposición}
+\newtheorem*{fact*}{Proposición}
 \newtheorem{lemma}{Lema}
+\newtheorem*{lemma*}{Lema}
 \newtheorem{corollary}{Corolario}
+\newtheorem*{corollary*}{Corolario}
 \newtheorem{definition}{Definición}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{1em}
+\newtheorem*{definition*}{Definición}
 
-\usepackage{color}
-\newenvironment{wording}{\setlength{\parskip}{0pt}\rule{\textwidth}{0.5em}}{~\\\rule{\textwidth}{0.5em}}
 
+% *************************************************************************************************************
+% Comandos
+% *************************************************************************************************************
+
+% Inserción de imágenes
 \newcommand{\img}[2]{
   \begin{center}
   \includegraphics[width=#2\textwidth]{#1}
   \end{center}
 }
+
+% arg min
+\DeclareMathOperator*{\argmin}{arg\,min }
+
+
+% *************************************************************************************************************
+% Otras configuraciones
+% *************************************************************************************************************
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
 \everymath{\displaystyle}
 
+
+
 \begin{document}
-% *********************************************************
+% *************************************************************************************************************
 % Frontmatter
-% *********************************************************
+% *************************************************************************************************************
 \pagenumbering{roman}
 
 \makeatletter
@@ -53,9 +98,9 @@
 
 \break 
 
-% *********************************************************
+% *************************************************************************************************************
 % Mainmatter
-% *********************************************************
+% *************************************************************************************************************
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
@@ -68,20 +113,20 @@
   
 \chapter*{Objetivos}
 
-% *********************************************************
+% *************************************************************************************************************
 % Parte de matemáticas
-% *********************************************************  
+% *************************************************************************************************************
 \part{Matemáticas}  
 \chapter{Modelización}
-  El material principal en el que se ha basado la sección de matemáticas ha sido \cite{shwartz_understanding_ml}, que proporciona una detallada
-  formalización de los fundamentos matemáticos del Aprendizaje Automático.
+  El material principal en el que se ha basado la sección de matemáticas ha sido \cite{shwartz_understanding_ml}, 
+  que proporciona una detallada formalización de los fundamentos matemáticos del Aprendizaje Automático.
   
   \input{introduccion}
 
   
-% *********************************************************
+% *************************************************************************************************************
 % Parte de informática
-% *********************************************************  
+% *************************************************************************************************************
 \part{Informática}
 
 \bibliography{references}

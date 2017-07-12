@@ -259,3 +259,6 @@ TSWLatexianTemp*
 *-tags.tex
 
 old/ltxpng/*
+
+# Geogebra files
+*.ggb
