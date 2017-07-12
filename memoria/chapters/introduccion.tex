@@ -79,7 +79,7 @@ Podemos dar unas notaciones/definiciones básicas que utilizaremos de aquí en a
 \item \textbf{Dominio}: $X$. Llamamos \textbf{instancia} a $x\in X$
 
 \item \textbf{Conjunto de etiquetas}: $Y$ consideramos $\{0,1\}$, lo que nos restringe al paradigma binario. En ocasiones 
-también usaremos $Y = \{-1,1\}$ para las etiquetas.
+también usaremos $Y = \{-1,1\}$ para las etiquetas. Al $1$ se le llama clase positiva, y al $0$ o $-1$ clase negativa.
 
 \item \textbf{Verdadero etiquetado}: \sloppy Asumimos la existencia de una función ${f: X \rightarrow Y}$ 
 que proporciona la verdadera etiqueta de todas las instancias.
@@ -119,6 +119,17 @@ Es decir, nos centraremos en el problema de la clasificación, que se trata de u
 el conjunto de entrenamiento), \emph{batch} (recibimos todo el conjunto de entrenamiento, y no sucesivas porciones del mismo en
 contraposición al aprendizaje por lotes) y pasivo (el algoritmo no tiene interacción con el usuario).
 
+\subsection{Relación entre hipótesis y conjuntos}
+En clasificación binaria, existe una biyección canónica entre la clase de hipótesis y el conjunto potencia de $X$, donde
+a cada hipótesis se le asigna su clase positiva:
+
+\[\begin{array}{rcl} 
+  \{h, h:X \rightarrow Y\} & \longrightarrow & \mathcal{P}(X) \\
+  h & \longmapsto & X_h := \{x\in X: h(x) = 1\}
+ \end{array}\]
+
+Es biyección claramente, lo que justifica que identifiquemos $\{h, h:X \rightarrow Y\}$ con $2^X$, donde $2^X$ suele ser una notación
+empleada para referirse a $\mathcal{P}(X)$. Esta biyección nos permitirá trabajar indistintamente con hipótesis o conjuntos.
 
 \subsection{Minimización del riesgo empírico}
 
@@ -202,9 +213,12 @@ $\exists {\bar{h}} \in H$ verificando $L_{D,f}(\bar{h}) = 0$.
 \end{definition*}
 
 \begin{fact}
-Dada $H$ verificando factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, entonces:
+Dada $H$ verificando factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, entonces siendo 
+${\bar{h}} \in H$ tal que $L_{D,f}(\bar{h}) = 0$, se verifica:
 
-\[\underset{S\sim \mathcal{D}^m}{P} \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1\]
+\[\underset{S\sim \mathcal{D}^m}{P} \bigg[L_S(\bar{h}) = 0 \bigg] = 1\]
+
+En particular: $\underset{S\sim \mathcal{D}^m}{P} \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$
 \label{fact:ermh}
 \end{fact}
 

@@ -77,38 +77,42 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, e
   \end{definition*}
 
 
-  \begin{fact} \textbf{Los rectángulos son PAC cognoscibles}
+  \begin{fact} \textbf{$H_{rec}^2$ es PAC cognoscible}
 
   Bajo hipótesis de factibilidad, los rectángulos son PAC cognoscibles
   \end{fact}
 
     \begin{proof}
-    Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos del conjunto de entrenamiento $S_x$.
+    Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos del conjunto 
+    de entrenamiento $S$. Notamos a dicho rectángulo $R(S)$, $A(S) = \mathds{1}_{R(S)}$.
 
-    Partiendo de la hipótesis de factibilidad, debe existir un clasificador de rectángulo $\bar{h} = h_{a,b,c,d}$ que haga el ERM nulo y que cumpla $L_{\mathcal{D},f}(\bar{h}) = 0$. Por tanto debe verificarse que $h_{S_x}$ debe acertar en todas las instancias positivas (cuya etiqueta sea 1) del conjunto de entrenamiento, con probabilidad 1, ya que si valiese 0 en algún ejemplo positivo del conjunto de entrenamiento, el ERM sería mayor que 0.
+    Por hipótesis de factibilidad, $\exists R^{\ast} = [a,b]\times [c,d]$ tal que $\bar{h} = \mathds{1}_{R^{\ast}}$ cumple 
+    $L_{\mathcal{D},f}(\bar{h}) = 0$, y por proposición \ref{fact:ermh} se tiene 
+    $\underset{S\sim \mathcal{D}^m}{P} \bigg[L_S(\bar{h}) = 0 \bigg] = 1$. 
+    Dado por tanto $S \in (X\times Y)^m$ tal que $L_S(\bar{h}) = 0$, claramente $\bar{h}(x,1)= 1 = A(S)(x,1)$ para 
+    todo $(x,1)\in S$. Por tanto $R(S) \subseteq R^{\ast}$ c.p.d., y se deduce $\bar{h}(x,0)= 0 = A(S)(x,0)$ para 
+    todo $(x,0)\in S$. $A$ es por tanto un ERM.
 
-    El algoritmo que devuelve el mínimo rectángulo que engloba a todos los ejemplos positivos es por tanto un ERM.
+    Fijamos $1 > \epsilon, \delta > 0$.
 
-    Veamos que con este algoritmo minimizador del ERM la clase de rectángulos es PAC cognoscible.
+    Tomamos $R_1 = [a,b^{\ast}] \times [c,d]$ un rectángulo verificando $L_{\mathcal{D},f}(\mathds{1}_{R_1}) = \epsilon/4$, 
+    con $a\le b^{\ast} \le b$.
 
-    Sea $R^{\ast} = [a,b]\times [c,d]$ el rectángulo que materializa la hipótesis de factibilidad. Fijamos $1 > \epsilon, \delta > 0$.
+    $R_2= [a^{\ast},b] \times [c,d], R_3=[a,b] \times [c,d^{\ast}], R_4=[a,b] \times [c^{\ast},d]$ se definen 
+    de forma análoga, y notamos $\bar{R_i} = R^{\ast} \setminus R_i$
 
-    Tomamos $R_1 = [a,b^{\ast}] \times [c,d]$ un rectángulo verificando $L_{\mathcal{D},f}(\mathds{1}_{R_1}) \le \epsilon/4$, con $a\le b^{\ast} \le b$.
+    Fijado $R=R(S)$, supongamos $\forall i : R \cap \bar{R_i} \neq \emptyset$. Entonces:
 
-    $R_2= [a^{\ast},b] \times [c,d], R_3=[a,b] \times [c,d^{\ast}], R_4=[a,b] \times [c^{\ast},d]$ se definen de forma análoga.
-
-
-    Llamando $h_{R}=A(S)$, $R(S) = R$ el rectángulo obtenido como resultado de aplicar el algoritmo del ejercicio para cada conjunto de entrenamiento, es claro que $P_{S \sim \mathcal{D}^m}[R \subset R^{\ast}] = 1$. 
-
-    Supongamos $\forall i : R \cap R_i \neq \emptyset$. Entonces:
-
-    \[L_{\mathcal{D},f}(h_R) = P_{x\sim \mathcal{D}} [h_R \neq f] \le P \left(\cup_i [h_R \neq f] \cap R_i\right) \le P \left(\cup_i R_i\right) \le 4\frac{\epsilon}{4} = \epsilon\]
+    \[L_{\mathcal{D},f}(h_R) = \underset{x\sim \mathcal{D}}{P} [h_R \neq f] \le \underset{x\sim \mathcal{D}}{P} 
+    \left(\underset{i}{\cup} [h_R \neq f] \cap \bar{R}_i\right) \le \underset{x\sim \mathcal{D}}{P} \left(\underset{i}{\cup} 
+    \bar{R}_i\right) \le 4\frac{\epsilon}{4}\]
 
     La demostración acaba probando que:
 
-    \[P_{S\sim \mathcal{D}^m} [\exists i : R(S)\cap R_i = \emptyset] \le \sum_{i=1}^4 P [R(S)\cap R_i = \emptyset] = 4(1-\frac{\epsilon}{4})^m \le 4e^{-\epsilon m/4}\]
+    \[\underset{S\sim \mathcal{D}^m}{P} [\exists i : R(S)\cap \bar{R}_i = \emptyset] \le \sum_{i=1}^4 
+    \underset{S\sim \mathcal{D}^m}{P}[R(S)\cap \bar{R}_i = \emptyset] = 4(1-\frac{\epsilon}{4})^m \le 4e^{-\epsilon m/4}\]
 
-    y tomando $m > \frac{4}{\epsilon} log \left( \frac{4}{\delta} \right)$.
+    y tomando $m > \frac{4}{\epsilon} log \left( \frac{4}{\delta} \right)$ llegamos al resultado buscado.
     \end{proof}
 \end{example}
 
