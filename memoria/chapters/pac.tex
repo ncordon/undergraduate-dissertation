@@ -1,0 +1,114 @@
+\section{PAC cognoscibilidad}
+Proporcionamos a continuación una definición que materializa el concepto de que un algoritmo pueda aprender de los datos. Las
+siglas PAC derivan de Probablemente Aproximadamente Correcto.
+
+\begin{definition*} \textbf{PAC cognoscible}
+
+Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen una función 
+$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo $A$ verificando que para todo
+$0 < \epsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
+verdadero etiquetado $f\in H$, dados $m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
+
+\[P_{S\sim \mathcal{D}^m} \bigg[L_{\mathcal{D},f}(A(S)) \le \epsilon \bigg] \ge 1-\delta\]
+\end{definition*}
+
+Llamamos a $(1-\delta)$ \textbf{confianza} de la predicción y a $(1-\epsilon)$ \textbf{exactitud}. Estos dos parámetros 
+explican el nombre aproximadamente ($\equiv$ confianza) correcto ($\equiv$ exactitud).
+
+La definición de PAC cognoscibilidad nos exige que exista un algoritmo y una función a la que proporcionándole unos requisitos
+de confianza y exactitud, nos indique un tamaño del conjunto de entrenamiento tal que el algoritmo pueda aproximar cualquier
+distribución y etiquetado, siempre que le ofrezcamos como entrada un conjunto de entrenamiento que satisfaga los 
+requisitos de tamaño.
+
+Consideraremos $m_{H}$ única en el sentido de que para cada $(\delta, \epsilon)$ nos devuelva el menor natural
+verificando las hipótesis del enunciado.
+
+Nótese que las condiciones exigidas, cumplir la hipótesis de factibilidad y que la hipótesis devuelta deba estar en $H$, 
+son muy fuertes. En contraposición, esta definición tiene la virtud de que el tamaño muestral es independiente de la 
+distribución. Relajaremos esta definición más adelante con el concepto de PAC agnóstico.
+
+\begin{theorem*} \textbf{Las clases finitas son PAC cognoscibles}
+
+Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, es PAC cognoscible con:
+
+\[m_H(\epsilon, \delta) \le \left\lceil \frac{1}{\epsilon}log \left(\frac{|H|}{\delta} \right) \right\rceil\]
+\end{theorem*}
+
+  \begin{proof}
+  Fijamos $\epsilon \in ]0,1[$. Sea una distribución $\mathcal{D}$ sobre $X$, $m\in \mathbb{N}$ y una función de verdadero 
+  etiquetado $f\in H$, tomamos la clase de hipótesis ``malas'':
+
+  \[H_B = \{h\in H: L_{\mathcal{D},f}(h) > \epsilon\}\]
+
+  Sea $A$ un $ERM_{\mathcal{H}}$, entonces:
+
+  \[\underset{S\sim \mathcal{D}^m}{P} [L_{\mathcal{D},f}(A(S)) > \epsilon] \le \underset{S\sim \mathcal{D}^m}{P} 
+  [\exists h\in H_B : L_S(h) = 0] \le \sum_{h\in H_B} P [L_S(h) = 0] \]
+
+  La primera desigualdad viene dada por la proposición \ref{fact:ermh}. La segunda, por subaditividad, puesto que:
+  
+  \[\underset{S\sim \mathcal{D}^m}{P} [\exists h\in H_B : L_S(h) = 0] = \underset{S\sim \mathcal{D}^m}{P} \left(\underset{h\in H_B}{\bigcup} [L_S(h) = 0]\right)\]
+
+  Además, fijada $h\in H_B$, como $L_{\mathcal{D},f}(h) > \epsilon$:
+
+  \begin{align*}
+  \underset{S\sim \mathcal{D}^m}{P}[L_S(h) = 0] = \underset{S\sim \mathcal{D}^m}{P}[h(x_i) = f(x_i), i =1,\ldots m\}] =\\
+  = \prod_{i=1}^m \underset{x\sim \mathcal{D}}{P}[h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\epsilon)^m \le e^{-\epsilon m}
+  \end{align*}
+
+
+  Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $H_B \subseteq H$ dan lugar a:
+
+  \[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le |H|e^{-\epsilon m}\]
+  
+  Y basta acabar haciendo encontrando $m\in \mathbb{N}$ tal que $|H|e^{-\epsilon m} \le \delta$.
+  \end{proof}
+
+¿Hay ejemplos de clases infinitas PAC cognoscibles? La respuesta es afirmativa. Veamos un ejemplo.
+
+\begin{example}
+  \begin{definition*} \textbf{Clasificadores de rectángulo}
+
+  La clase de clasificadores de rectángulo en el plano se define por:
+
+  \[H^2_{rec} = \{ h_{a,b,c,d}: a\le b, c\le d\}\]
+
+  donde $h_{a,b,c,d} = \mathds{1}_{[a,b]\times [c,d]}$
+  \end{definition*}
+
+
+  \begin{fact} \textbf{Los rectángulos son PAC cognoscibles}
+
+  Bajo hipótesis de factibilidad, los rectángulos son PAC cognoscibles
+  \end{fact}
+
+    \begin{proof}
+    Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos del conjunto de entrenamiento $S_x$.
+
+    Partiendo de la hipótesis de factibilidad, debe existir un clasificador de rectángulo $\bar{h} = h_{a,b,c,d}$ que haga el ERM nulo y que cumpla $L_{\mathcal{D},f}(\bar{h}) = 0$. Por tanto debe verificarse que $h_{S_x}$ debe acertar en todas las instancias positivas (cuya etiqueta sea 1) del conjunto de entrenamiento, con probabilidad 1, ya que si valiese 0 en algún ejemplo positivo del conjunto de entrenamiento, el ERM sería mayor que 0.
+
+    El algoritmo que devuelve el mínimo rectángulo que engloba a todos los ejemplos positivos es por tanto un ERM.
+
+    Veamos que con este algoritmo minimizador del ERM la clase de rectángulos es PAC cognoscible.
+
+    Sea $R^{\ast} = [a,b]\times [c,d]$ el rectángulo que materializa la hipótesis de factibilidad. Fijamos $1 > \epsilon, \delta > 0$.
+
+    Tomamos $R_1 = [a,b^{\ast}] \times [c,d]$ un rectángulo verificando $L_{\mathcal{D},f}(\mathds{1}_{R_1}) \le \epsilon/4$, con $a\le b^{\ast} \le b$.
+
+    $R_2= [a^{\ast},b] \times [c,d], R_3=[a,b] \times [c,d^{\ast}], R_4=[a,b] \times [c^{\ast},d]$ se definen de forma análoga.
+
+
+    Llamando $h_{R}=A(S)$, $R(S) = R$ el rectángulo obtenido como resultado de aplicar el algoritmo del ejercicio para cada conjunto de entrenamiento, es claro que $P_{S \sim \mathcal{D}^m}[R \subset R^{\ast}] = 1$. 
+
+    Supongamos $\forall i : R \cap R_i \neq \emptyset$. Entonces:
+
+    \[L_{\mathcal{D},f}(h_R) = P_{x\sim \mathcal{D}} [h_R \neq f] \le P \left(\cup_i [h_R \neq f] \cap R_i\right) \le P \left(\cup_i R_i\right) \le 4\frac{\epsilon}{4} = \epsilon\]
+
+    La demostración acaba probando que:
+
+    \[P_{S\sim \mathcal{D}^m} [\exists i : R(S)\cap R_i = \emptyset] \le \sum_{i=1}^4 P [R(S)\cap R_i = \emptyset] = 4(1-\frac{\epsilon}{4})^m \le 4e^{-\epsilon m/4}\]
+
+    y tomando $m > \frac{4}{\epsilon} log \left( \frac{4}{\delta} \right)$.
+    \end{proof}
+\end{example}
+

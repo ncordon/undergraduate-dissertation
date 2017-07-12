@@ -54,7 +54,7 @@ al máximo la información del mismo. Es decir, los datos de un cliente proviene
 distribución $X \sim \mathcal{D}$; y tenemos muestas de clientes (que llamaremos conjunto de entrenamiento), variable i.i.d
 $S \sim \mathcal{D}^m$. 
 
-También asumiremos que tenemos una clase de predicciones $\mathcal{H} \subseteq \{0,1\}^{[0,1]^2}$, de entre las que existe
+También asumiremos que tenemos una clase de predicciones $H \subseteq \{0,1\}^{[0,1]^2}$, de entre las que existe
 una óptima. Asumiremos por simplicidad que la clase de predicciones son subrectángulos de $[0,1]^2$, esto es, funciones:
 
 \[h_{a,b,c,d} = \mathds{1}_{[a,b]\times[c,d]}, \qquad [a,b]\times [c,d] \subseteq [0,1]^2\]
@@ -63,8 +63,7 @@ una óptima. Asumiremos por simplicidad que la clase de predicciones son subrect
 
 También necesitaremos definir una medida de acierto: ¿cómo de buena es una predicción?.
 
-\section{Modelo matemático}
-
+\section{Definiciones básicas}
 Sea $(X, \Sigma, P)$ un espacio de probabilidad. Esto es, $\Sigma \subseteq \mathcal{P}(X)$ es $\sigma$ álgebra sobre $X$ y 
 $P: \Sigma \rightarrow [0,1]$ verifica los axiomas de Kolmogorov:
 
@@ -90,13 +89,14 @@ y lo notamos $x\sim \mathcal{D}$. La distribución de probabilidad nos da inform
 posible instancia desde  $x \in X$. Por evitar conflictos, usualmente escribiremos $P$ como $P_{x\sim \mathcal{D}}$.
 
 \item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1) \ldots (x_m,y_m)) \in (X \times Y)^m$ 
-Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. Notaremos $S_x = (x_1, \ldots x_m)$
+Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. Notaremos 
+$S_x = (x_1, \ldots x_m)$
 
 De momento asumiremos que las etiquetas del conjunto de entrenamiento se corresponden con el verdadero etiquetado: 
 $y_i = f(x_i)$, por lo que no podemos tener una instancia con etiquetas diferentes.
 
 La elección de $S_x$ es idéntica e independientemente distribuida, esto es $x_i \sim \mathcal{D}$ para todo $i=1, \ldots, m$.
-Lo notamos $S_x \sim \mathcal{D}^m$.
+Lo notamos $S_x \sim \mathcal{D}^m$, o $S \sim \mathcal{D}^m$, por abuso de notación.
 
 \item \textbf{Hipótesis/clasificador/predicción}: cada posible aplicación perteneciente a 
 $\{h, h:X \rightarrow Y\} := 2^{X}$. 
@@ -114,6 +114,10 @@ entrenamiento y devuelva hipótesis sobre el problema:
 Asumimos que el algoritmo no tiene acceso a la función de verdadero etiquetado $f: X \rightarrow Y$ ni a
 la distribución $\mathcal{D}$.
 \end{itemize}
+
+Es decir, nos centraremos en el problema de la clasificación, que se trata de un aprendizaje supervisado (conocemos las etiquetas para
+el conjunto de entrenamiento), \emph{batch} (recibimos todo el conjunto de entrenamiento, y no sucesivas porciones del mismo en
+contraposición al aprendizaje por lotes) y pasivo (el algoritmo no tiene interacción con el usuario).
 
 
 \subsection{Minimización del riesgo empírico}
@@ -170,34 +174,52 @@ clasificador idénticamente 1. A este fenómeno lo denominamos \textbf{overfitti
  $S$ si $L_S(h) << L_{\mathcal{D},f}(h)$.
 \end{definition*}
 
+Necesitamos incorporar por tanto \textbf{conocimiento previo} al problema, de manera que revisitamos la definición de riesgo
+empírico.
 
 \subsection{ERM con sesgo inductivo}
 Se intenta corregir el riesgo de producir \emph{overfitting} restringiendo el espacio de búsqueda, esto es, la clase de 
-hipótesis $\mathcal{H} \subseteq 2^X$ desde la que el algoritmo puede escoger un $h: X\rightarrow Y$. Llamamos a esto 
-\emph{sesgo inductivo}, puesto que se asume una determinada clase de funciones $\mathcal{H}$ en función de las 
+hipótesis $H \subseteq 2^X$ desde la que el algoritmo puede escoger un $h: X\rightarrow Y$. Llamamos a esto 
+\emph{sesgo inductivo}, puesto que se asume una determinada clase de funciones $H$ en función de las 
 características del problema y del conocimiento previo que tenemos del mismo.
 
 \begin{definition*} \textbf{ERM con sesgo inductivo}
 
 Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un ERM con sesgo 
-inductivo hacia $\mathcal{H}$ y lo notamos $ERM_{\mathcal{H}}$, si busca una hipótesis en $\mathcal{H}$ cuyo error empírico 
+inductivo hacia $H$ y lo notamos $ERM_H$, si busca una hipótesis en $H$ cuyo error empírico 
 sea mínimo, es decir:
 
-\[A(S) = \argmin_{h\in \mathcal{H}} L_S(h)\]
+\[A(S) = \argmin_{h\in H} L_S(h)\]
 \end{definition*}
 
-Cuando notemos $ERM_{\mathcal{H}}(S)$ nos refereriremos a una propiedad que se verifica para toda la clase de algoritmos que 
-son $ERM_{\mathcal{H}}$.
+Cuando notemos $ERM_H(S)$ nos refereriremos a una propiedad que se verifica para toda la clase de algoritmos que 
+son $ERM_H$.
 
-\begin{definition*} \textbf{Propiedad de factibilidad}
+\begin{definition*} \textbf{Hipótesis de factibilidad}
 
-Diremos que $\mathcal{H}$ cumple la propiedad de factibilidad si $\exists {\bar{h}} \in \mathcal{H}$ verificando $L_{D,f}(\bar{h}) = 0$.
+Diremos que $H$ verifica hipótesis de factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, si 
+$\exists {\bar{h}} \in H$ verificando $L_{D,f}(\bar{h}) = 0$.
 \end{definition*}
 
-De la hipótesis de factibilidad sobre $\mathcal{H}$ se deduce $P_{S\sim \mathcal{D}^m}[L_S(\bar{h})=0] = 1$, y por tanto 
-$P_{S\sim \mathcal{D}^m} \bigg[L_S(ERM_{\mathcal{H}}(S)) = 0 \bigg] = 1$.
+\begin{fact}
+Dada $H$ verificando factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, entonces:
 
-El valor $L_{\mathcal{D},f}(ERM_{\mathcal{H}}(S))$ dependerá por tanto del conjunto de entrenamiento $S$, y la elección del
+\[\underset{S\sim \mathcal{D}^m}{P} \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1\]
+\label{fact:ermh}
+\end{fact}
+
+  \begin{proof}
+  Sea $A$ un $ERM_H$, y además sabemos que por hipótesis de factibilidad existe $\bar{h} \in H$ tal que
+  $L_{\mathcal{D},f}(\bar{h}) = \underset{x\sim \mathcal{D}}{P}[\bar{h}\neq f] = 0$
+
+  Entonces: \[\underset{S\sim \mathcal{D}^m}{P}[L_S(\bar{h}) > 0] = \underset{S\sim \mathcal{D}^m}{P}
+  [\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \underset{x\sim \mathcal{D}}{P}[h\neq f] = 0\]
+
+  Y como $[L_S(\bar{h}) = 0] \subseteq [L_S(A(S)) = 0]$ por ser $A(S) = \argmin_{h\in \mathcal{H}} L_S(h)$, deducimos:
+  \[1 = \underset{S\sim \mathcal{D}^m}{P}[L_S(\bar{h}) = 0] \le \underset{S\sim \mathcal{D}^m}{P}[L_S(A(S)) = 0] \le 1\]
+  \end{proof}
+
+El valor $L_{\mathcal{D},f}(ERM_H(S))$ dependerá por tanto del conjunto de entrenamiento $S$, y la elección del
 mismo está sometida al azar. 
 
 %Además, necesitamos definir cómo de buena será la predicción.
