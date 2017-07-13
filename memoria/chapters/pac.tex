@@ -5,11 +5,12 @@ siglas PAC derivan de Probablemente Aproximadamente Correcto.
 \begin{definition*} \textbf{PAC cognoscible}
 
 Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen una función 
-$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo $A$ verificando que para todo
+$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo 
+$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ verificando que para todo
 $0 < \epsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
 verdadero etiquetado $f\in H$, dados $m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
 
-\[P_{S\sim \mathcal{D}^m} \bigg[L_{\mathcal{D},f}(A(S)) \le \epsilon \bigg] \ge 1-\delta\]
+\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \epsilon \bigg] \ge 1-\delta\]
 \end{definition*}
 
 Llamamos a $(1-\delta)$ \textbf{confianza} de la predicción y a $(1-\epsilon)$ \textbf{exactitud}. Estos dos parámetros 
@@ -22,10 +23,6 @@ requisitos de tamaño.
 
 Consideraremos $m_{H}$ única en el sentido de que para cada $(\delta, \epsilon)$ nos devuelva el menor natural
 verificando las hipótesis del enunciado.
-
-Nótese que las condiciones exigidas, cumplir la hipótesis de factibilidad y que la hipótesis devuelta deba estar en $H$, 
-son muy fuertes. En contraposición, esta definición tiene la virtud de que el tamaño muestral es independiente de la 
-distribución. Relajaremos esta definición más adelante con el concepto de PAC agnóstico.
 
 \begin{theorem*} \textbf{Las clases finitas son PAC cognoscibles}
 
@@ -42,24 +39,24 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, e
 
   Sea $A$ un $ERM_{\mathcal{H}}$, entonces:
 
-  \[\underset{S\sim \mathcal{D}^m}{P} [L_{\mathcal{D},f}(A(S)) > \epsilon] \le \underset{S\sim \mathcal{D}^m}{P} 
+  \[\mprob [L_{\mathcal{D},f}(A(S)) > \epsilon] \le \mprob 
   [\exists h\in H_B : L_S(h) = 0] \le \sum_{h\in H_B} P [L_S(h) = 0] \]
 
   La primera desigualdad viene dada por la proposición \ref{fact:ermh}. La segunda, por subaditividad, puesto que:
   
-  \[\underset{S\sim \mathcal{D}^m}{P} [\exists h\in H_B : L_S(h) = 0] = \underset{S\sim \mathcal{D}^m}{P} \left(\underset{h\in H_B}{\bigcup} [L_S(h) = 0]\right)\]
+  \[\mprob [\exists h\in H_B : L_S(h) = 0] = \mprob \left(\underset{h\in H_B}{\bigcup} [L_S(h) = 0]\right)\]
 
   Además, fijada $h\in H_B$, como $L_{\mathcal{D},f}(h) > \epsilon$:
 
   \begin{align*}
-  \underset{S\sim \mathcal{D}^m}{P}[L_S(h) = 0] = \underset{S\sim \mathcal{D}^m}{P}[h(x_i) = f(x_i), i =1,\ldots m\}] =\\
-  = \prod_{i=1}^m \underset{x\sim \mathcal{D}}{P}[h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\epsilon)^m \le e^{-\epsilon m}
+  \mprob[L_S(h) = 0] = \mprob[h(x_i) = f(x_i), i =1,\ldots m\}] =\\
+  = \prod_{i=1}^m \prob[h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\epsilon)^m \le e^{-\epsilon m}
   \end{align*}
 
 
   Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $H_B \subseteq H$ dan lugar a:
 
-  \[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D},f}(h_S) > \epsilon] \le |H|e^{-\epsilon m}\]
+  \[\mprob[L_{\mathcal{D},f}(h_S) > \epsilon] \le |H|e^{-\epsilon m}\]
   
   Y basta acabar haciendo encontrando $m\in \mathbb{N}$ tal que $|H|e^{-\epsilon m} \le \delta$.
   \end{proof}
@@ -83,36 +80,132 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, e
   \end{fact}
 
     \begin{proof}
+    Haremos la prueba tratando los clasificadores como conjuntos, en virtud de la biyección canónica \eqref{sec:hip-con}
+    
     Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos del conjunto 
-    de entrenamiento $S$. Notamos a dicho rectángulo $R(S)$, $A(S) = \mathds{1}_{R(S)}$.
+    de entrenamiento $S$.
 
-    Por hipótesis de factibilidad, $\exists R^{\ast} = [a,b]\times [c,d]$ tal que $\bar{h} = \mathds{1}_{R^{\ast}}$ cumple 
-    $L_{\mathcal{D},f}(\bar{h}) = 0$, y por proposición \ref{fact:ermh} se tiene 
-    $\underset{S\sim \mathcal{D}^m}{P} \bigg[L_S(\bar{h}) = 0 \bigg] = 1$. 
-    Dado por tanto $S \in (X\times Y)^m$ tal que $L_S(\bar{h}) = 0$, claramente $\bar{h}(x,1)= 1 = A(S)(x,1)$ para 
-    todo $(x,1)\in S$. Por tanto $R(S) \subseteq R^{\ast}$ c.p.d., y se deduce $\bar{h}(x,0)= 0 = A(S)(x,0)$ para 
-    todo $(x,0)\in S$. $A$ es por tanto un ERM.
+    Por hipótesis de factibilidad, $\exists R^\ast = [a,b]\times [c,d]$ tal que $L_{\mathcal{D},f}(R^\ast) = 0$, y por 
+    proposición \ref{fact:ermh} se tiene $\mprob \bigg[L_S(R^\ast) = 0 \bigg] = 1$. 
+    Dado por tanto $S \in (X\times Y)^m$ tal que $L_S(R^\ast) = 0$, claramente $x \in A(S)$ para 
+    todo $(x,1)\in S$. Por tanto $A(S) \subseteq R^\ast$, y se deduce $x \notin A(S)$ para 
+    cualquier $(x,0)\in S$. Por tanto, $A$ es un ERM.
 
     Fijamos $1 > \epsilon, \delta > 0$.
 
-    Tomamos $R_1 = [a,b^{\ast}] \times [c,d]$ un rectángulo verificando $L_{\mathcal{D},f}(\mathds{1}_{R_1}) = \epsilon/4$, 
-    con $a\le b^{\ast} \le b$.
+    Tomamos los rectángulos:
+    
+    \begin{align*} 
+    R_1 = [a,b^{\ast}] \times [c,d], \qquad R_2= [a^{\ast},b] \times [c,d] \\ 
+    R_3=[a,b] \times [c,d^{\ast}],   \qquad R_4=[a,b] \times [c^{\ast},d]     
+    \end{align*}
+ 
+    verificándose $R_i \subseteq R^\ast$ y $L_{\mathcal{D},f}(R_i) \le \frac{\epsilon}{4}$. Llamamos 
+    $\bar{R}_i = R\setminus R_i$
+    
+    Supongamos s.p.g que $L_{\mathcal{D},f}(R_i) > 0$ para todo $i\in\{1,\ldots 4\}$ (caso opuesto 
+    bastaría hacer la demostración para los rectángulos para los que no fuese nulo). Llamamos 
+    $\bar{\epsilon} = \max_i L_{\mathcal{D},f}(R_i)$ y $\widetilde{\epsilon} = \min_i L_{\mathcal{D},f}(R_i)$.
 
-    $R_2= [a^{\ast},b] \times [c,d], R_3=[a,b] \times [c,d^{\ast}], R_4=[a,b] \times [c^{\ast},d]$ se definen 
-    de forma análoga, y notamos $\bar{R_i} = R^{\ast} \setminus R_i$
+    Fijado $S\in (X\times Y)^m$, $R=A(S)$, supongamos $\forall i : R \cap \bar{R_i} \neq \emptyset$. Entonces:
 
-    Fijado $R=R(S)$, supongamos $\forall i : R \cap \bar{R_i} \neq \emptyset$. Entonces:
-
-    \[L_{\mathcal{D},f}(h_R) = \underset{x\sim \mathcal{D}}{P} [h_R \neq f] \le \underset{x\sim \mathcal{D}}{P} 
-    \left(\underset{i}{\cup} [h_R \neq f] \cap \bar{R}_i\right) \le \underset{x\sim \mathcal{D}}{P} \left(\underset{i}{\cup} 
-    \bar{R}_i\right) \le 4\frac{\epsilon}{4}\]
+    \[L_{\mathcal{D},f}(R) = \prob [h_R \neq f] \le \prob 
+    \left(\underset{i}{\cup} [h_R \neq f] \cap \bar{R}_i\right) \le \prob \left(\underset{i}{\cup} 
+    \bar{R}_i\right) \le 4 \bar{\epsilon}\]
 
     La demostración acaba probando que:
 
-    \[\underset{S\sim \mathcal{D}^m}{P} [\exists i : R(S)\cap \bar{R}_i = \emptyset] \le \sum_{i=1}^4 
-    \underset{S\sim \mathcal{D}^m}{P}[R(S)\cap \bar{R}_i = \emptyset] = 4(1-\frac{\epsilon}{4})^m \le 4e^{-\epsilon m/4}\]
+    \[\mprob [\exists i : A(S)\cap \bar{R}_i = \emptyset] \le \sum_{i=1}^4 
+    \mprob[A(S)\cap \bar{R}_i = \emptyset] \le 4 \left(1-\widetilde{\epsilon} \right)^m \le 4e^{-\widetilde{\epsilon}m/4}\]
 
-    y tomando $m > \frac{4}{\epsilon} log \left( \frac{4}{\delta} \right)$ llegamos al resultado buscado.
+    y tomando $m > \frac{4}{\widetilde{\epsilon}} log \left( \frac{4}{\delta} \right)$ llegaríamos al resultado buscado.
     \end{proof}
 \end{example}
 
+
+Nótese que las condiciones exigidas, cumplir la hipótesis de factibilidad y que la hipótesis devuelta deba estar en $H$, 
+son muy fuertes. En contraposición, esta definición tiene la virtud de que el tamaño muestral es independiente de la 
+distribución. Relajaremos esta definición con el concepto de PAC agnóstico (APAC)
+
+
+\section{APAC cognoscibilidad}
+
+Vamos a relajar tanto la definición de cognoscibilidad como las condiciones sobre las que aprender 
+(factibilidad por ejemplo, pérdidas arbitrarias, etc).
+
+\begin{definition} \textbf{Función de pérdida}
+Dados una clase $\mathcal{H}$, se denomina función de pérdida de $\mathcal{H}$ sobre $Z$ 
+a cualquier función de la forma:
+
+\[l : \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}\]
+
+que verifique que fijada $h\in \mathcal{H}$ arbitrario la función $l(h, \cdot)$ sea medible.
+\end{definition}
+
+Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}:
+
+\begin{itemize}
+  \item \textbf{Conjunto de etiquetas}: $Y$ arbitrario.
+
+  \item \textbf{Verdadero etiquetado}: No asumimos que exista.
+
+  \item \textbf{Generación de instancias}: Tenemos una distribución $\mathcal{D}$ sobre $Z = X\times Y$. De esta
+  manera no asumimos determinismo, y podríamos tener una instancias con varias etiquetas diferentes. Notaremos
+  $z = (x,y) \in Z, x\in X, y\in Y$.
+
+  \item \textbf{Error del clasificador}: Lo redefinimos como:
+  \[L_{\mathcal{D}}(h) :=  \mathbb{E}_{z\sim \mathcal{D}}[l(h,z)]\]
+  
+  \item \textbf{Error empírico}: Lo redefinimos como:
+  \[L_{S} (h) := \frac{1}{m} \sum_{i=1}^m l(h,z_i)\]
+\end{itemize}
+
+Con estos conceptos revisitados, podríamos asegurar que la hipótesis que menor error comete para 
+$\mathcal{Y} = \{0,1\}$ y la función de pérdidad $0-1$ es el llamado \textbf{clasificador de Bayes}:
+
+\[f_{\mathcal{D}}(x) = \left\{\begin{array}{ll}
+1 & P [y = 1 |x] >= 0.5\\
+0 & \quad si \quad no
+\end{array}\right.\]
+
+Pero evidentemente asumimos que el algoritmo no tiene acceso a la distribución, sino solo a los datos 
+preetiquetados de $S$.
+
+
+\begin{definition*} \textbf{APAC cognoscible}
+
+Una clase de funciones $\mathcal{H} \subseteq \mathcal{Y}^{\mathcal{X}}$ es agnósticamente 
+PAC cognoscible respecto a $Z = \mathcal{X} \times \mathcal{Y}$ y a una función de pérdida 
+$l: \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}$ si existe una función 
+$m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A$ verificando que si 
+$0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ ejecutando el 
+algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$, con 
+$m\ge m_{\mathcal{H}}(\epsilon, \delta)$ se tiene:
+
+\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(A(S)) \le \underset{h\in \mathcal{H}}{inf} L_{\mathcal{D}}(h) + \epsilon] \ge 1-\delta\]
+
+El algoritmo $A$ devuelve un elemento de $\mathcal{H}$.
+\end{definition*}
+
+Notamos desde esta definición tomando una *función de pérdida 0-1*:
+
+\[l_{0-1} (h,(x,y)) := \left\{\begin{array}{ll}
+0 & h(x) = y\\
+1 & si \quad no
+\end{array}\right.\]
+
+equivale a la primera definición que dimos de aprendizaje PAC si asumimos propiedad de factibilidad. Por ello no distinguiremos en el uso de uno u otro concepto, sino que se deducirá de si estamos asumiendo propiedad de factibilidad o no.
+
+Cuando permitimos que el algoritmo $A$ devuelva una función $h \notin \mathcal{H}$, de manera que $h \in \mathcal{H}'$ y $\mathcal{H} \subset \mathcal{H}'$ una clase de funciones donde la función de pérdida es extensible de manera natural, el aprendizaje recibe el nombre de *aprendizaje impropio*. La definición aquí dada se ha hecho para *aprendizaje propio*.
+
+
+\begin{definition*} \textbf{APAC cognoscible}
+
+Una clase de funciones $H \subseteq 2^X$ es APAC cognoscible sii existen una función 
+$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo 
+$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ verificando que para todo
+$0 < \epsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
+verdadero etiquetado $f\in H$, dados $m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
+
+\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) > \inf_{h\in H} L_D(h) + \epsilon] < \delta\]
+\end{definition*}

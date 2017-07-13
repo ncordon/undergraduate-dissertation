@@ -1,7 +1,7 @@
 \section{Motivación}
 
 El objetivo del aprendizaje automático es convertir datos en conocimiento a través de un razonamiento inductivo, de manera que
-proporcionándole datos a una máquina, seamos capaces de extraer un conocimiento (una generalización de los datos, que nos permita
+proporcionándole datos a una máquina seamos capaces de extraer un conocimiento (una generalización de los datos que nos permita
 inferir información a partir de nuevos datos). Surge la pregunta de por qué es necesario el aprendizaje automático o 
 \textit{machine learning}, si la estadística también se encarga de obtener conocimiento a partir de unos datos.
 
@@ -10,12 +10,12 @@ inferir información a partir de nuevos datos). Surge la pregunta de por qué es
  \item Para resolver \textbf{tareas que requieren automatización}: entran dentro de esta categoría tanto aquellas tareas para
  las que no existe una axiomatización o un conocimiento exacto, como pueden ser el reconocimiento de dígitos o de voz, como 
  aquellas tareas que requieren del análisis de un gran número de datos, y quedan fuera de la capacidad humana para realizar
- un análisis estadístico manual por ejemplo. En el primer caso necesitamos apoyarnos en conocimiento auxiliar (por ejemplo, 
+ un análisis estadístico manual. En el primer caso necesitamos apoyarnos en conocimiento auxiliar (por ejemplo, 
  un conjunto de dígitos o de muestras de voz preetiquetadas con los que poder comparar muestras sin etiquetar/clasificar); 
  en el segundo, se hace necsario el uso de una máquina para poder extraer conocimiento de todos los datos.
  
- \item \textbf{Tareas que requieren adaptatividad}: como puede ser el reconocimiento de texto, donde no hay un patrón único de
- escritura para cada persona, y necesitamos que el algoritmo pueda generalizar eso.
+ \item \textbf{Tareas que requieren adaptatividad}: si cambian los datos de entrada, necesitamos que los algoritmos se readapten
+ a ellos, y no tengamos un conocimiento rígido, sino que pueda cambiar/mejorar en función de la entrada.
 \end{enumerate}
 
 \subsection{Áreas relacionadas con el aprendizaje}
@@ -36,26 +36,25 @@ Entre las áreas relacionadas con el aprendizaje automático, cabe mencionar:
 
 \subsection{Ejemplo práctico}\label{sec:first-ex}
 Pensemos en un ejemplo: tenemos clientes de un banco que quieren solicitar un préstamo, y a todos se les categoriza
-el nivel de ingresos y el tamaño del préstamo (cómo de grande es su importe). Estas variables se miden 
-en una escala de $0$ a $1$ donde $1$ es el nivel máximo. Queremos etiquetar a cada cliente como $S$:conceder préstamo o 
-$N$:no conceder préstamo. Identificamos $0\equiv N$ y $1\equiv S$.
+el tamaño del préstamo que quieren solicitar(cómo de grande es su importe) y su nivel de ingresos. Estas variables se miden 
+en una escala de $0$ a $1$ donde $1$ es el nivel máximo. Queremos etiquetar a cada cliente como $1$:conceder préstamo o 
+$0$:no conceder préstamo.
 
 Dado un histórico de $m\in \mathbb{N}$ clientes a los que se les concedieron y devolvieron o no préstamos, tenemos una tupla 
-$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = ((x_i)_1, (x_i)_2) \in [0,1]^2$ y $y_i \in \{0,1\}$, y $(x_i)_1$ representa el nivel 
-ingresos mensuales, y $(x_i)_2$ el tamaño del préstamo solicitado. Tenemos a los clientes clasificados en función de si 
-devolvieron los préstamos o no.
+$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = ((x_i)_1, (x_i)_2) \in [0,1]^2, y_i \in \{0,1\}$. Asimismo $(x_i)_1$ representa el 
+tamaño del préstamo solicitado y $(x_i)_2$ representa el nivel ingresos mensuales. Tenemos a los clientes clasificados en 
+función de si devolvieron los préstamos o no.
 
-Quiero encontrar una función que me ofrezca una predicción sobre cualquier cliente, para minimizar posibles pérdidas del banco, es
-decir, busco $f:[0,1]^2 \rightarrow \{0,1\}$, que llamaremos predicción.
+Queremos encontrar una función que ofrezca una predicción sobre cualquier cliente, para minimizar posibles pérdidas del banco, es
+decir, buscamos una $f:[0,1]^2 \rightarrow \{0,1\}$ que llamaremos predicción.
 
 Asumimos que los datos de los clientes de que disponemos no van a tener una distribución determinada y
-van a ser idéntica e independientemente distribuidos. El histórico siempre va a crecer, y no sabemos cómo va a hacerlo, queriendo aprovechar
-al máximo la información del mismo. Es decir, los datos de un cliente provienen de una variable aleatoria que sigue una determinada
-distribución $X \sim \mathcal{D}$; y tenemos muestas de clientes (que llamaremos conjunto de entrenamiento), variable i.i.d
-$S \sim \mathcal{D}^m$. 
+van a ser idéntica e independientemente distribuidos (i.i.d.). El histórico siempre va a crecer, y no sabemos cómo va a hacerlo, queriendo aprovechar
+al máximo la información del mismo.
 
 También asumiremos que tenemos una clase de predicciones $H \subseteq \{0,1\}^{[0,1]^2}$, de entre las que existe
-una óptima. Asumiremos por simplicidad que la clase de predicciones son subrectángulos de $[0,1]^2$, esto es, funciones:
+una óptima. Podríamos limitar la clase de predicciones sobre la que buscamos como subrectángulos de $[0,1]^2$ por ejemplo, 
+esto es, funciones:
 
 \[h_{a,b,c,d} = \mathds{1}_{[a,b]\times[c,d]}, \qquad [a,b]\times [c,d] \subseteq [0,1]^2\]
 
@@ -64,6 +63,8 @@ una óptima. Asumiremos por simplicidad que la clase de predicciones son subrect
 También necesitaremos definir una medida de acierto: ¿cómo de buena es una predicción?.
 
 \section{Definiciones básicas}
+\label{sec:defs}
+
 Sea $(X, \Sigma, P)$ un espacio de probabilidad. Esto es, $\Sigma \subseteq \mathcal{P}(X)$ es $\sigma$ álgebra sobre $X$ y 
 $P: \Sigma \rightarrow [0,1]$ verifica los axiomas de Kolmogorov:
 
@@ -86,7 +87,7 @@ que proporciona la verdadera etiqueta de todas las instancias.
 
 \item \textbf{Generación de instancias}: \fussy Llamamos a $\mathcal{D} = (\Sigma, P)$ distribución de probabilidad sobre $X$,
 y lo notamos $x\sim \mathcal{D}$. La distribución de probabilidad nos da información sobre la probabilidad de extraer cada 
-posible instancia desde  $x \in X$. Por evitar conflictos, usualmente escribiremos $P$ como $P_{x\sim \mathcal{D}}$.
+posible instancia desde  $x \in X$. Por evitar conflictos, usualmente escribiremos $P$ como $\prob$.
 
 \item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1) \ldots (x_m,y_m)) \in (X \times Y)^m$ 
 Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. Notaremos 
@@ -104,7 +105,7 @@ $\{h, h:X \rightarrow Y\} := 2^{X}$.
 \item \textbf{Error del clasificador}: Definimos el error del clasificador, suponiendo 
 $\{x\in X : h(x) \neq f(x)\} := [h\neq f] \in \Sigma$ como:
 
-\[L_{\mathcal{D},f}(h) :=  P_{x\sim \mathcal{D}} [h \neq f]\]
+\[L_{\mathcal{D},f}(h) :=  \prob [h \neq f]\]
 
 \item \textbf{Algoritmo de aprendizaje}: Llamamos algoritmo de aprendizaje a cualquier aplicación que tome conjuntos de 
 entrenamiento y devuelva hipótesis sobre el problema:
@@ -123,10 +124,13 @@ contraposición al aprendizaje por lotes) y pasivo (el algoritmo no tiene intera
 En clasificación binaria, existe una biyección canónica entre la clase de hipótesis y el conjunto potencia de $X$, donde
 a cada hipótesis se le asigna su clase positiva:
 
-\[\begin{array}{rcl} 
+\begin{equation}
+ \begin{array}{rcl} 
   \{h, h:X \rightarrow Y\} & \longrightarrow & \mathcal{P}(X) \\
   h & \longmapsto & X_h := \{x\in X: h(x) = 1\}
- \end{array}\]
+ \end{array}
+ \label{sec:hip-con} 
+\end{equation}
 
 Es biyección claramente, lo que justifica que identifiquemos $\{h, h:X \rightarrow Y\}$ con $2^X$, donde $2^X$ suele ser una notación
 empleada para referirse a $\mathcal{P}(X)$. Esta biyección nos permitirá trabajar indistintamente con hipótesis o conjuntos.
@@ -175,7 +179,7 @@ y_i && \exists i\in \{1\ldots m\} : x=x_i\\
 0 && \nexists i\in \{1\ldots m\} : x=x_i
 \end{array}\right.\]
 
-Este clasificador es un ERM, pero $P_{x\sim \mathcal{D}}[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el 
+Este clasificador es un ERM, pero $\prob[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el 
 clasificador idénticamente 1. A este fenómeno lo denominamos \textbf{overfitting}.
 \end{example}
 
@@ -216,21 +220,21 @@ $\exists {\bar{h}} \in H$ verificando $L_{D,f}(\bar{h}) = 0$.
 Dada $H$ verificando factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, entonces siendo 
 ${\bar{h}} \in H$ tal que $L_{D,f}(\bar{h}) = 0$, se verifica:
 
-\[\underset{S\sim \mathcal{D}^m}{P} \bigg[L_S(\bar{h}) = 0 \bigg] = 1\]
+\[\mprob \bigg[L_S(\bar{h}) = 0 \bigg] = 1\]
 
-En particular: $\underset{S\sim \mathcal{D}^m}{P} \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$
+En particular: $\mprob \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$
 \label{fact:ermh}
 \end{fact}
 
   \begin{proof}
   Sea $A$ un $ERM_H$, y además sabemos que por hipótesis de factibilidad existe $\bar{h} \in H$ tal que
-  $L_{\mathcal{D},f}(\bar{h}) = \underset{x\sim \mathcal{D}}{P}[\bar{h}\neq f] = 0$
+  $L_{\mathcal{D},f}(\bar{h}) = \prob[\bar{h}\neq f] = 0$
 
-  Entonces: \[\underset{S\sim \mathcal{D}^m}{P}[L_S(\bar{h}) > 0] = \underset{S\sim \mathcal{D}^m}{P}
-  [\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \underset{x\sim \mathcal{D}}{P}[h\neq f] = 0\]
+  Entonces: \[\mprob[L_S(\bar{h}) > 0] = \mprob
+  [\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \prob[h\neq f] = 0\]
 
   Y como $[L_S(\bar{h}) = 0] \subseteq [L_S(A(S)) = 0]$ por ser $A(S) = \argmin_{h\in \mathcal{H}} L_S(h)$, deducimos:
-  \[1 = \underset{S\sim \mathcal{D}^m}{P}[L_S(\bar{h}) = 0] \le \underset{S\sim \mathcal{D}^m}{P}[L_S(A(S)) = 0] \le 1\]
+  \[1 = \mprob[L_S(\bar{h}) = 0] \le \mprob[L_S(A(S)) = 0] \le 1\]
   \end{proof}
 
 El valor $L_{\mathcal{D},f}(ERM_H(S))$ dependerá por tanto del conjunto de entrenamiento $S$, y la elección del
