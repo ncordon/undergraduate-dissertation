@@ -37,7 +37,7 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, e
 
   \[H_B = \{h\in H: L_{\mathcal{D},f}(h) > \epsilon\}\]
 
-  Sea $A$ un $ERM_{\mathcal{H}}$, entonces:
+  Sea $A$ un $ERM_{H}$, entonces:
 
   \[\mprob [L_{\mathcal{D},f}(A(S)) > \epsilon] \le \mprob 
   [\exists h\in H_B : L_S(h) = 0] \le \sum_{h\in H_B} P [L_S(h) = 0] \]
@@ -133,26 +133,23 @@ distribución. Relajaremos esta definición con el concepto de PAC agnóstico (A
 Vamos a relajar tanto la definición de cognoscibilidad como las condiciones sobre las que aprender 
 (factibilidad por ejemplo, pérdidas arbitrarias, etc).
 
+Sea $Z$ un conjunto, $\mathcal{D} = (\Sigma, \mathcal{P})$ distribución sobre $Z$
+
 \begin{definition} \textbf{Función de pérdida}
-Dados una clase $\mathcal{H}$, se denomina función de pérdida de $\mathcal{H}$ sobre $Z$ 
-a cualquier función de la forma:
+Sea $H$ un conjunto arbitrario, se denomina función de pérdida de $H$ sobre $Z$ a cualquier función de la 
+forma:
 
-\[l : \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}\]
+\[l : H \times Z \rightarrow \mathbb{R}^{+}\]
 
-que verifique que fijada $h\in \mathcal{H}$ arbitrario la función $l(h, \cdot)$ sea medible.
+que verifique que fijada $h\in H$ arbitrario la función $l(h, \cdot)$ sea $\Sigma$ medible.
 \end{definition}
 
 Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}:
 
 \begin{itemize}
-  \item \textbf{Conjunto de etiquetas}: $Y$ arbitrario.
-
   \item \textbf{Verdadero etiquetado}: No asumimos que exista.
 
-  \item \textbf{Generación de instancias}: Tenemos una distribución $\mathcal{D}$ sobre $Z = X\times Y$. De esta
-  manera no asumimos determinismo, y podríamos tener una instancias con varias etiquetas diferentes. Notaremos
-  $z = (x,y) \in Z, x\in X, y\in Y$.
-
+  \item \textbf{Generación de instancias}: Tenemos una distribución $\mathcal{D}$ sobre $Z$.
   \item \textbf{Error del clasificador}: Lo redefinimos como:
   \[L_{\mathcal{D}}(h) :=  \mathbb{E}_{z\sim \mathcal{D}}[l(h,z)]\]
   
@@ -160,8 +157,57 @@ Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}
   \[L_{S} (h) := \frac{1}{m} \sum_{i=1}^m l(h,z_i)\]
 \end{itemize}
 
+Estamos en condiciones de dar una definción más laxa de cognoscibilidad.
+
+\begin{definition*} \textbf{APAC cognoscible}
+
+Una clase $H$ es agnósticamente PAC (APAC) cognoscible respecto a $Z$ y a una función de pérdida 
+$l: H \times Z \rightarrow \mathbb{R}^{+}$ si existe una función 
+$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo 
+$A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow H$ verificando que si 
+$0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ se verifica
+que dado $S\sim \mathcal{D}^m$, con $m\ge m_{H}(\epsilon, \delta)$ se tiene:
+
+\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \epsilon] \ge 1-\delta\]
+\end{definition*}
+
+Nótese que en contraste con nuestra definición de PAC cognoscibilidad, el algoritmo $A$ podía devolver una 
+hipótesis que no estuviera en $H$. Cuando permitimos que el algoritmo $A$ devuelva una función 
+$h \notin H$, de manera que $h \in H'$ y  $H \subset H'$ una clase de funciones donde la función de pérdida 
+es extensible de manera natural, el aprendizaje recibe el nombre de \textbf{aprendizaje impropio}. La definición 
+anterior se ha hecho para \textbf{aprendizaje propio}.
+
+
+\subsection{Particularización a distintos paradigmas}
+
+\subsubsection{Clasificación binaria}
+
+Tendremos $Y=\{0,1\}$ o $Y=\{-1,1\}$ conjunto de etiquetas, un conjunto $X$ y $Z=X\times Y$, y nuestras clases
+de hipótesis $H$ estarán contenidas en $Y^X$, de manera que al aprender distribuciones sobre $Z$ podríamos 
+tener etiquetas distintas para una misma instancia $x \in X$
+
+\begin{definition*} \textbf{Función de pérdida $0-1$}
+
+Llamamos función de pérdida $0-1$ a $l$ función de pérdida de $H\subseteq Y^X$ sobre $Z$ verificando:
+ 
+ \[l(h, (x,y)) = \left\{\begin{array}{ll}
+                         1 & \textrm{si } h(x)\neq y\\
+                         0 & \textrm{en otro caso}
+                        \end{array}\right.\]
+
+para cualquier $h\in \mathcal{H}$, cualquier $(x,y) \in Z$
+
+\label{def:l01}
+\end{definition*}
+
+Consideraremos la función de pérdida $0-1$ en clasificación binaria de ahora en adelante, a no ser que se especifique
+lo opuesto.
+
+Nótese también que PAC cognoscibilidad es equivalente a APAC cognoscibilidad si asumimos hipótesis 
+de factibilidad.
+
 Con estos conceptos revisitados, podríamos asegurar que la hipótesis que menor error comete para 
-$\mathcal{Y} = \{0,1\}$ y la función de pérdidad $0-1$ es el llamado \textbf{clasificador de Bayes}:
+clasificación binaria y la función de pérdidad $0-1$ es el llamado \textbf{clasificador de Bayes}:
 
 \[f_{\mathcal{D}}(x) = \left\{\begin{array}{ll}
 1 & P [y = 1 |x] >= 0.5\\
@@ -169,43 +215,36 @@ $\mathcal{Y} = \{0,1\}$ y la función de pérdidad $0-1$ es el llamado \textbf{c
 \end{array}\right.\]
 
 Pero evidentemente asumimos que el algoritmo no tiene acceso a la distribución, sino solo a los datos 
-preetiquetados de $S$.
+preetiquetados de $S$, y que por tanto no puede devolver el clasificador de Bayes directamente.
 
+Particularizamos a continuación la definición de APAC anterior a clasificación binaria
+con función de pérdida $0-1$ y aprendizaje impropio (ya que la función de pérdida $0-1$ está definida 
+en $2^X$).
 
-\begin{definition*} \textbf{APAC cognoscible}
-
-Una clase de funciones $\mathcal{H} \subseteq \mathcal{Y}^{\mathcal{X}}$ es agnósticamente 
-PAC cognoscible respecto a $Z = \mathcal{X} \times \mathcal{Y}$ y a una función de pérdida 
-$l: \mathcal{H} \times Z \rightarrow \mathbb{R}^{+}$ si existe una función 
-$m_{\mathcal{H}} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A$ verificando que si 
-$0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ ejecutando el 
-algoritmo para un conjunto de entrenamiento $S\sim \mathcal{D}^m$, con 
-$m\ge m_{\mathcal{H}}(\epsilon, \delta)$ se tiene:
-
-\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(A(S)) \le \underset{h\in \mathcal{H}}{inf} L_{\mathcal{D}}(h) + \epsilon] \ge 1-\delta\]
-
-El algoritmo $A$ devuelve un elemento de $\mathcal{H}$.
-\end{definition*}
-
-Notamos desde esta definición tomando una *función de pérdida 0-1*:
-
-\[l_{0-1} (h,(x,y)) := \left\{\begin{array}{ll}
-0 & h(x) = y\\
-1 & si \quad no
-\end{array}\right.\]
-
-equivale a la primera definición que dimos de aprendizaje PAC si asumimos propiedad de factibilidad. Por ello no distinguiremos en el uso de uno u otro concepto, sino que se deducirá de si estamos asumiendo propiedad de factibilidad o no.
-
-Cuando permitimos que el algoritmo $A$ devuelva una función $h \notin \mathcal{H}$, de manera que $h \in \mathcal{H}'$ y $\mathcal{H} \subset \mathcal{H}'$ una clase de funciones donde la función de pérdida es extensible de manera natural, el aprendizaje recibe el nombre de *aprendizaje impropio*. La definición aquí dada se ha hecho para *aprendizaje propio*.
-
-
-\begin{definition*} \textbf{APAC cognoscible}
+\begin{definition*} \textbf{APAC cognoscible - paradigma binario}
 
 Una clase de funciones $H \subseteq 2^X$ es APAC cognoscible sii existen una función 
-$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo 
-$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ verificando que para todo
-$0 < \epsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
-verdadero etiquetado $f\in H$, dados $m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
+$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow 2^X$ verificando que para todo
+$0 < \epsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dados 
+$m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
 
 \[\mprob \bigg[L_{\mathcal{D},f}(A(S)) > \inf_{h\in H} L_D(h) + \epsilon] < \delta\]
 \end{definition*}
+
+\subsubsection{Clasificación multiclase}
+
+Dado $Y$, verificando $|Y| > 2$, $Z=X\times Y$ y $H\subseteq Y^X$, al problema lo llameremos de 
+clasificación multiclase. 
+
+Una posible función de pérdida para este problema sería también la función de pérdida $0-1$:
+
+\subsection{Regresión}
+
+Tenemos un problema de regresión si tomamos $Z=X \times \mathbb{R}$ y $H\subseteq \mathbb{R}^X$
+y $l(h,(x,y)) = (h(x)-y)^2$ función de pérdida cuadrática.
+
+\subsection{k-clustering}
+
+Tenemos un problema de clústering si $Z=\mathbb{R}^d$ y los elementos de $H$ son funciones constantes 
+$h = (c_1, \ldots c_k)$ con $c_i \in \mathbb{R}^d$. Una posible función de pérdida podría ser 
+$l((c_1, \ldots c_k), z) = \min_{i} \norm{c_i}^2$.
