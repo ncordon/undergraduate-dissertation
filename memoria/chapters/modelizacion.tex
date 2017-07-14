@@ -65,16 +65,7 @@ También necesitaremos definir una medida de acierto: ¿cómo de buena es una pr
 \section{Definiciones básicas}
 \label{sec:defs}
 
-Sea $(X, \Sigma, P)$ un espacio de probabilidad. Esto es, $\Sigma \subseteq \mathcal{P}(X)$ es $\sigma$ álgebra sobre $X$ y 
-$P: \Sigma \rightarrow [0,1]$ verifica los axiomas de Kolmogorov:
-
-\begin{enumerate}[i]
- \item $\sigma$ aditividad: dados $\{A_n\}_{n\in \mathbb{N}} \in \Sigma$ disjuntos, entonces: 
- \[P \left(\bigcup A_n\right) = \sum_{n\ge 1} P(A_n)\]
- \item $P(X) = 1$
-\end{enumerate}
-
-Podemos dar unas notaciones/definiciones básicas que utilizaremos de aquí en adelante, en base a lo descrito en \ref{sec:first-ex}:
+Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelante, en base a lo descrito en \ref{sec:first-ex}:
 
 \begin{itemize}
 \item \textbf{Dominio}: $X$. Llamamos \textbf{instancia} a $x\in X$
@@ -85,9 +76,8 @@ también usaremos $Y = \{-1,1\}$ para las etiquetas. Al $1$ se le llama clase po
 \item \textbf{Verdadero etiquetado}: \sloppy Asumimos la existencia de una función ${f: X \rightarrow Y}$ 
 que proporciona la verdadera etiqueta de todas las instancias.
 
-\item \textbf{Generación de instancias}: \fussy Llamamos a $\mathcal{D} = (\Sigma, P)$ distribución de probabilidad sobre $X$,
-y lo notamos $x\sim \mathcal{D}$. La distribución de probabilidad nos da información sobre la probabilidad de extraer cada 
-posible instancia desde  $x \in X$. Por evitar conflictos, usualmente escribiremos $P$ como $\prob$.
+\item \textbf{Generación de instancias}: \fussy Se tiene $x\sim \mathcal{D} = (\Sigma, \prob)$. La distribución de probabilidad nos da información sobre la probabilidad de extraer cada 
+posible instancia desde  $x \in X$. 
 
 \item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1) \ldots (x_m,y_m)) \in (X \times Y)^m$ 
 Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. Notaremos 
