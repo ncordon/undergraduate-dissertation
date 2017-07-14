@@ -67,11 +67,15 @@
 % arg min
 \DeclareMathOperator*{\argmin}{arg\,min }
 
-% abbreviations
+% norma || ||
+\newcommand{\norm}[1]{||{#1}||}
+
+% Abreviaciones para escribir menos
 \newcommand{\mprob}{\underset{S\sim \mathcal{D}^m}{P}}
 \newcommand{\prob}{\underset{x\sim \mathcal{D}}{P}}
 \newcommand{\zprob}{\underset{z\sim \mathcal{D}}{P}}
-\newcommand{\norm}[1]{||{#1}||}
+\newcommand{\dist}{\mathcal{D}}
+
 
 % *************************************************************************************************************
 % Otras configuraciones
@@ -109,25 +113,27 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
+
 \makeatletter
   \def\input@path{{./chapters/}}
 \makeatother
 
 
 \chapter*{Introducción}
-  
+  El material principal en el que se ha basado la sección de matemáticas ha sido \cite{shwartz_understanding_ml}, 
+  que proporciona una detallada formalización de los fundamentos matemáticos del Aprendizaje Automático.
 \chapter*{Objetivos}
 
 % *************************************************************************************************************
 % Parte de matemáticas
 % *************************************************************************************************************
 \part{Matemáticas}  
-\chapter{Modelización}
-  El material principal en el que se ha basado la sección de matemáticas ha sido \cite{shwartz_understanding_ml}, 
-  que proporciona una detallada formalización de los fundamentos matemáticos del Aprendizaje Automático.
-  
-  \input{introduccion}
-  \input{pac}
+  \chapter{Modelización}
+    \input{probabilidad}
+    \input{modelizacion}
+    \input{pac}
+\chapter{Condiciones suficientes para ser PAC cognoscible}
+  \input{glivenko-cantelli}
   
 % *************************************************************************************************************
 % Parte de informática

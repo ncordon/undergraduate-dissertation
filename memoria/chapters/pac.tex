@@ -2,7 +2,7 @@
 Proporcionamos a continuación una definición que materializa el concepto de que un algoritmo pueda aprender de los datos. Las
 siglas PAC derivan de Probablemente Aproximadamente Correcto.
 
-\begin{definition*} \textbf{PAC cognoscible}
+\begin{definition} \textbf{PAC cognoscible}
 
 Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo 
@@ -11,7 +11,9 @@ $0 < \epsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y pa
 verdadero etiquetado $f\in H$, dados $m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
 
 \[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \epsilon \bigg] \ge 1-\delta\]
-\end{definition*}
+
+\label{def:pac}
+\end{definition}
 
 Llamamos a $(1-\delta)$ \textbf{confianza} de la predicción y a $(1-\epsilon)$ \textbf{exactitud}. Estos dos parámetros 
 explican el nombre aproximadamente ($\equiv$ confianza) correcto ($\equiv$ exactitud).
@@ -24,12 +26,12 @@ requisitos de tamaño.
 Consideraremos $m_{H}$ única en el sentido de que para cada $(\delta, \epsilon)$ nos devuelva el menor natural
 verificando las hipótesis del enunciado.
 
-\begin{theorem*} \textbf{Las clases finitas son PAC cognoscibles}
+\begin{theorem} \textbf{Las clases finitas son PAC cognoscibles}
 
 Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, es PAC cognoscible con:
 
 \[m_H(\epsilon, \delta) \le \left\lceil \frac{1}{\epsilon}log \left(\frac{|H|}{\delta} \right) \right\rceil\]
-\end{theorem*}
+\end{theorem}
 
   \begin{proof}
   Fijamos $\epsilon \in ]0,1[$. Sea una distribución $\mathcal{D}$ sobre $X$, $m\in \mathbb{N}$ y una función de verdadero 
@@ -64,14 +66,14 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, e
 ¿Hay ejemplos de clases infinitas PAC cognoscibles? La respuesta es afirmativa. Veamos un ejemplo.
 
 \begin{example}
-  \begin{definition*} \textbf{Clasificadores de rectángulo}
+  \begin{definition} \textbf{Clasificadores de rectángulo}
 
   La clase de clasificadores de rectángulo en el plano se define por:
 
   \[H^2_{rec} = \{ h_{a,b,c,d}: a\le b, c\le d\}\]
 
   donde $h_{a,b,c,d} = \mathds{1}_{[a,b]\times [c,d]}$
-  \end{definition*}
+  \end{definition}
 
 
   \begin{fact} \textbf{$H_{rec}^2$ es PAC cognoscible}
@@ -159,7 +161,7 @@ Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}
 
 Estamos en condiciones de dar una definción más laxa de cognoscibilidad.
 
-\begin{definition*} \textbf{APAC cognoscible}
+\begin{definition} \textbf{APAC cognoscible}
 
 Una clase $H$ es agnósticamente PAC (APAC) cognoscible respecto a $Z$ y a una función de pérdida 
 $l: H \times Z \rightarrow \mathbb{R}^{+}$ si existe una función 
@@ -169,7 +171,7 @@ $0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre
 que dado $S\sim \mathcal{D}^m$, con $m\ge m_{H}(\epsilon, \delta)$ se tiene:
 
 \[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \epsilon] \ge 1-\delta\]
-\end{definition*}
+\end{definition}
 
 Nótese que en contraste con nuestra definición de PAC cognoscibilidad, el algoritmo $A$ podía devolver una 
 hipótesis que no estuviera en $H$. Cuando permitimos que el algoritmo $A$ devuelva una función 
@@ -186,7 +188,7 @@ Tendremos $Y=\{0,1\}$ o $Y=\{-1,1\}$ conjunto de etiquetas, un conjunto $X$ y $Z
 de hipótesis $H$ estarán contenidas en $Y^X$, de manera que al aprender distribuciones sobre $Z$ podríamos 
 tener etiquetas distintas para una misma instancia $x \in X$
 
-\begin{definition*} \textbf{Función de pérdida $0-1$}
+\begin{definition} \textbf{Función de pérdida $0-1$}
 
 Llamamos función de pérdida $0-1$ a $l$ función de pérdida de $H\subseteq Y^X$ sobre $Z$ verificando:
  
@@ -196,9 +198,7 @@ Llamamos función de pérdida $0-1$ a $l$ función de pérdida de $H\subseteq Y^
                         \end{array}\right.\]
 
 para cualquier $h\in \mathcal{H}$, cualquier $(x,y) \in Z$
-
-\label{def:l01}
-\end{definition*}
+\end{definition}
 
 Consideraremos la función de pérdida $0-1$ en clasificación binaria de ahora en adelante, a no ser que se especifique
 lo opuesto.
@@ -221,7 +221,7 @@ Particularizamos a continuación la definición de APAC anterior a clasificació
 con función de pérdida $0-1$ y aprendizaje impropio (ya que la función de pérdida $0-1$ está definida 
 en $2^X$).
 
-\begin{definition*} \textbf{APAC cognoscible - paradigma binario}
+\begin{definition} \textbf{APAC cognoscible - paradigma binario}
 
 Una clase de funciones $H \subseteq 2^X$ es APAC cognoscible sii existen una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow 2^X$ verificando que para todo
@@ -229,7 +229,7 @@ $0 < \epsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, da
 $m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
 
 \[\mprob \bigg[L_{\mathcal{D},f}(A(S)) > \inf_{h\in H} L_D(h) + \epsilon] < \delta\]
-\end{definition*}
+\end{definition}
 
 \subsubsection{Clasificación multiclase}
 

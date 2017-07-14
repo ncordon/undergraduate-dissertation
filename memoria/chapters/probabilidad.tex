@@ -1,0 +1,9 @@
+\section{Introducción a la probabilidad}
+\begin{lemma} \textbf{Desigualdad de Hoeffding}
+
+Sean $(X_1, \ldots X_m)$ una muestra aleatoria simple de una variable $X$, 
+$\bar{X} = \frac{1}{m} \sum_{i=1}^m X_i$ con $E[\bar{X}] = \mu$ y $P[a \le X_i \le b] = 1, i=1, \ldots m$. 
+Entonces para todo $\epsilon > 0$
+
+\[P\left[\left| \bar{X} - \mu \right| > \epsilon \right] \le 2e^{-2m \left(\frac{\epsilon}{b-a}\right)^2}\]
+\end{lemma}
