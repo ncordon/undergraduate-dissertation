@@ -1,4 +1,4 @@
-\section{Introducción a la probabilidad}
+\section{$\sigma$ álgebras, anillos y semianillos}
 
 Sea en lo que sigue $X$ un conjunto. Dados $A_i \subseteq X$, para $i=1, \ldots n$, notamos $\sum_{i=1}^n A_i$
 a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyset$ cuando $i\neq j$.
@@ -132,6 +132,8 @@ entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
  Sea $S$ un semianillo en $X$. Entonces:
  
  \[R(S) = \{A: A=\sum_{i=1}^n A_i, n\ge 1, A_i \in S\}\]
+ 
+ \label{claim:semiring}
 \end{fact}
 
 \begin{proof}
@@ -150,17 +152,78 @@ entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
 \end{proof}
 
 
+\section{Medida, medidas externa}
+
 \begin{definition} \textbf{Medida}
 
  Sea $\mathcal{A} \subseteq \mathcal{P}(X)$. Llamamos medida sobre $\mathcal{A}$ a cualquier función 
- $\mu: \mathcal{A} \rightarrow [0, \infty]$ verificando:
+ $\mu: \mathcal{A} \rightarrow [0, +\infty]$ verificando:
 
  \begin{enumerate}[i]
   \item $\mu(\emptyset) = 0$
-  \item Dados $A_n \in \mathcal{A}$ tales que $A = \sum_{i=n}{+\infty} A_n \in \mathcal{A}$, entonces 
-  $\mu(A)= \sum_{i=n}{+\infty} \mu(A_n)$
+  \item Dados $A_n \in \mathcal{A}$ tales que $A = \sum_{i=n}^{+\infty} A_n \in \mathcal{A}$, entonces 
+  $\mu(A)= \sum_{i=n}^{+\infty} \mu(A_n)$
  \end{enumerate}
 \end{definition}
+
+
+\begin{theorem}
+ Sea $S$ semianillo en $S$, $\mu: S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe una única medida 
+ en $R(S)$, $\bar{\mu}: R(S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$.
+\end{theorem}
+
+\begin{proof}
+ Recordamos que $R(S) = \{A: A=\sum_{i=1}^n A_i, n\ge 1, A_i \in S\}$ por la proposición $\ref{claim:semiring}$,
+ 
+ Es claro que $\bar{\mu}$ debería cumplir: $\bar{\mu}(\sum_{i=1}^n A_i) = \sum_{i=1}^n \mu(A_i)$ con $A_i \in S$.
+ 
+ Veamos que $\bar{\mu}$ no depende de cómo escribamos un conjunto, esto es, dados $A = \sum_{i=1}^n A_i = \sum_{j=1}^k B_j$,
+ veamos que $\bar{\mu}$ está bien definida para $A$.
+ 
+ Como $A_i = A_i \cap A = A_i \cap \left(\cup_{j=1}^k B_j\right) = \cup_{j=1}^k A_i \cap B_j$, donde $A_i \in S$ y
+ $A_i \cap B_j \in S$ por ser $S$ semianillo. Además como los $A_i$ son disjuntos, los $A_i\cap B_j$ también.
+ Aplicando que $\mu$ es medida sobre $S$:
+ 
+ \[\mu(A_i) = \sum_{j=1}^k \mu(A_i \cap B_j) \implies \sum_{i=1}^n \mu(A_i) = \sum_{i}^n \sum_{j=1}^k \mu(A_i \cap B_j)\]
+ 
+ Análogamente podemos probar:
+ 
+ \[\sum_{j=1}^k \mu(B_j) = \sum_{i}^n \sum_{j=1}^k \mu(A_i \cap B_j)\]
+ 
+ Luego $\bar{\mu}$ está bien definida. Además $\bar{\mu} (\emptyset) = 0$ por ser $\mu(\emptyset) = 0$.
+ 
+ Falta probar la $\sigma$-aditividad de $\bar{\mu}$ y por construcción, habríamos llegado al resultado buscado.
+ 
+ Sean $A_n = \sum_{i=1}^{k_n} A_i^n \in R(S)$ con $A_i^n \in S$ y $A = \sum_{i=1}^{+\infty} A_n \in R(S)$. 
+ Por ser $A \in R(S)$, tendríamos que podemos reescribir $A = \sum_{j=1}^k B_j$ con $B_j \in S$.
+ 
+ Fijamos un $B_p$ y tenemos:
+ 
+ \[B_p = B_p \cap A = \cup_{n=1}^{+\infty} \left(\cup_{i=1}^{n_k} A_i^k \cap B_p\right)\]
+ 
+ Es decir, hemos reescrito $B_p$ como una unión numerable de $A_i^k \cap B_p$, disjuntos por serlo los $A_i$, 
+ luego $B_p = \cup_{m\ge 1} C_m$, con $C_m \in S$.
+ 
+ Aplicando $\sigma$-aditividad en $S$, llegamos a $\mu(B_p) = \sum_{n=1}^{+\infty} \sum_{i=1}^{n_k} \mu(A_i^k \cap B_p)$
+ 
+ Además, como podemos reescribir $A_i^{n_k} = \sum_{j=1}^k A_i^{n_k} \cap B_j$, tendríamos:
+ 
+ \begin{align*}
+ \mu(A) &= \sum_{j=1}^k \sum_{n=1}^{+\infty} \sum_{i=1}^{n_k} \mu(A_i^k \cap B_j) = 
+           \sum_{n=1}^{+\infty} \sum_{i=1}^{n_k} \sum_{j=1}^k \mu(A_i^k \cap B_j) = \\
+        &= \sum_{n=1}^{+\infty} \sum_{i=1}^{n_k} \mu(A_i^k) =
+           \sum_{n=1}^{+\infty} \mu \left(\sum_{i=1}^{n_k} A_i \right)
+ \end{align*}
+\end{proof}
+
+\begin{definition} \textbf{Medida exterior}
+ 
+\end{definition}
+
+
+
+
+\section{Espacio medible, de probabilidad}
 
 \begin{definition} \textbf{Espacio medible}
 
@@ -187,6 +250,8 @@ entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
  Si $\dist$ es distribución sobre $X$, lo notamos $x\sim \mathcal{D}$
 \end{definition}
 
+
+\section{Desigualdades de concentración}
 \begin{lemma} \textbf{Desigualdad de Hoeffding}
 
  Sean $(X_1, \ldots X_m)$ una muestra aleatoria simple de una variable $X$, 
