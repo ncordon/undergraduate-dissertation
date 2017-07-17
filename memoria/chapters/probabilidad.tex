@@ -4,21 +4,22 @@ Sea en lo que sigue $X$ un conjunto. Dados $A_i \subseteq X$, para $i=1, \ldots 
 a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyset$ cuando $i\neq j$.
 
 \begin{definition} \textbf{Conjunto potencia}
- Definimos el conjunto potencia de $X$ a $\mathcal{P}(X):= \{A: A\subseteq X\}$.
+
+ Definimos el conjunto potencia de $X$ como $\mathcal{P}(X):= \{A: A\subseteq X\}$.
  
- Como notación alternativa para $\mathcal{P}(X)$ usaremos $2^X$.
+ Como notación para $\mathcal{P}(X)$ usaremos frecuentemente $2^X$.
 \end{definition}
 
 
 \begin{definition} \textbf{$\sigma$-álgebra}
 
- $\Sigma \subseteq \mathcal{P}(X) = \{A: A\subseteq X\}$ es $\sigma$-álgebra de conjuntos sobre $X$ si se verifica:
+ $\Sigma \subseteq 2^X$ es $\sigma$-álgebra de conjuntos sobre $X$ si se verifica:
  
  \begin{enumerate}[i]
   \item $X \in \Sigma$
-  \item $\Sigma$ es cerrado para complementarios: Sea $A\in \Sigma$, entonces $A^c = X\setminus A \in \Sigma$
-  \item $\Sigma$ es cerrado para uniones numerables: Sean $\{A_n\}_{n\in\mathbb{N}} \subseteq \Sigma$, entonces: 
-  \[\underset{n\in\mathbb{N}}{\bigcup} A_n \in \Sigma\]
+  \item $\Sigma$ es cerrada para complementarios: Sea $A\in \Sigma$, entonces $A^c = X\setminus A \in \Sigma$
+  \item $\Sigma$ es cerrada para uniones numerables: Sean $\{A_n\}_{n\in\mathbb{N}} \subseteq \Sigma$, entonces: 
+  \[\underset{n \ge 1}{\bigcup} A_n \in \Sigma\]
  \end{enumerate}
 \end{definition}
 
@@ -35,22 +36,30 @@ a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyse
 \end{fact}
 
 \begin{proof}
- Se deducen fácilmente escribiendo $\emptyset = X^c$, $A\cap B = ((A\cap B)^c)^c = (A^c \cup B^c)^c$ y $A\setminus B = A\cap B^c$
- y usando las hipótesis de $\sigma$-álgebra.
+ Escribimos $\emptyset = X^c$, $A\cap B = (A^c \cup B^c)^c$ y $A\setminus B = A\cap B^c$
+ y usando las hipótesis de $\sigma$-álgebra se deduce fácilmente la proposición.
 \end{proof}
 
-
+\begin{definition}
+ Sea $\mathcal{A} \subseteq 2^X$. Llamamos $\sigma$-álgebra generada por $\mathcal{A}$ y lo notamos 
+ $\Sigma(\mathcal{A})$, a la menor $\sigma$-álgebra sobre $X$ que contiene a $\mathcal{A}$.
+ 
+ \[\Sigma(\mathcal{A}) = 
+   \bigcap_{\begin{array}{c}\Sigma, \sigma\textrm{álgebra en } X\\ \mathcal{A}\subseteq \Sigma \end{array}} \Sigma\]
+\end{definition}
 
 \begin{definition} \textbf{Semianillo en $X$}
 
- $S\subseteq \mathcal{P}(X)$ es subanillo si verifica:
+ $S\subseteq 2^X$ es subanillo si verifica:
  
  \begin{enumerate}[i]
   \item $\emptyset \in S$
-  \item $A,B \in S$ entonces $A\cup B \in S$
+  \item $A,B \in S$ entonces $A\cap B \in S$
   \item $A,B \in S$ entonces existen $A_1 \ldots A_n \in S$ verificándose $A\setminus B = \sum_{i=1}^n A_i$
  \end{enumerate}
 \end{definition}
+
+Damos un ejemplo de semianillo:
 
 \begin{example}
  \begin{definition}
@@ -69,8 +78,7 @@ a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyse
   \item $\emptyset \in \Sigma_i$, y $\emptyset \times \emptyset = \emptyset$
   \item $R_1 \cap R_2 = (A_1 \cap B_1) \times (A_2 \cap B_2)$, donde $A_i \cap B_i \in \Sigma_i$ por ser 
   $\Sigma_i$ cerrada bajo intersecciones.
-  \item $R_1 = A_1 \times A_2 \in Rec, R_2 = B_1 \times B_2 \in Rec$, entonces 
-  $R_1 \setminus R_2 = \{(x,y): (x,y) \in A_1 \times A_2, (x,y) \notin B_1 \times B_2)\}$
+  \item $R_1 \setminus R_2 = \{(x,y): (x,y) \in A_1 \times A_2, (x,y) \notin B_1 \times B_2)\}$
   
   Es decir $R_1 \setminus R_2 = Rec(A_1\setminus B_1, A_2) \cup Rec(B_1, A_2\setminus B_2)$ y 
   $A_i \setminus B_i \in \Sigma_i$ por ser $\Sigma_i$ cerrada bajo diferencias.
@@ -81,11 +89,11 @@ a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyse
 
 \begin{definition} \textbf{Anillo en $X$}
 
- $R\subseteq \mathcal{P}(X)$ es anillo si verifica:
+ $R\subseteq 2^X$ es anillo si verifica:
  
  \begin{enumerate}[i]
   \item $\emptyset \in R$
-  \item $A,B \in R$ entonces $A\cap B \in R$
+  \item $A,B \in R$ entonces $A\cup B \in R$
   \item $A,B \in R$ entonces $A\setminus B \in R$
  \end{enumerate}
 \end{definition}
@@ -102,7 +110,8 @@ a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyse
 
  Como $A\cap B = A\setminus (A\setminus B)$, se deduce la segunda condición de la definición de semianillo.
  
- Sean $A, B \in R$, tomando $A_1 = A\setminus B \in R$, entonces se verifica la tercera condición de semianillo.
+ Sean $A, B \in R$, tomando $A_1 = A\setminus B \in R$, $A_n = \emptyset \in R$ para todo $n > 1$, entonces se 
+ verifica la tercera condición de semianillo.
 \end{proof}
 
 \begin{counterex}
@@ -114,41 +123,43 @@ a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyse
  Y uno de que no todo anillo es $\sigma$-álgebra:
  
  Sea $S = \{A\subseteq \mathbb{N}: |A| < \infty\}$. Entonces se puede comprobar fácilmente que es anillo (y semianillo)
- de $\mathbb{N}$, pero no es cerrado para complementarios porque $\mathbb{N}$ no es finito.
+ de $\mathbb{N}$, pero no es cerrado para complementarios porque $\mathbb{N} = \emptyset^c$ no es finito.
 \end{counterex}
 
 
 \begin{definition}
- Sea $\mathcal{A} \subseteq \mathcal{P}(X)$. Llamamos anillo generado por $\mathcal{A}$ y lo notamos $R(A)$ al
- menor anillo que contiene a $A$:
+ Sea $\mathcal{A} \subseteq 2^X$. Llamamos anillo generado por $\mathcal{A}$ y lo notamos $(\mathcal{A})$ al
+ menor anillo que contiene a $\mathcal{A}$:
  
- \[R(A) = \bigcap_{\begin{array}{c}R \textrm{ anillo en } X\\ A\subseteq R \end{array}} R\]
+ \[(\mathcal{A}) = \bigcap_{\begin{array}{c}R \textrm{ anillo en } X\\ \mathcal{A}\subseteq R \end{array}} R\]
 \end{definition}
 
-Es trivial probar que la definición es correcta ($R(A)$ es anillo), ya que dados dos conjuntos $A,B \in R(A)$, 
-entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
+Es trivial probar que la definición es correcta ($(\mathcal{A})$ es anillo), ya que dados dos 
+conjuntos $B,C \in (\mathcal{A})$, entonces $A, B \in R$ para todo $R$ anillo conteniendo a $A$. Además la
+intersección es no vacía, porque $2^X \supseteq \mathcal{A}$ y $2^X$ es anillo.
 
 \begin{fact}
  Sea $S$ un semianillo en $X$. Entonces:
  
- \[R(S) = \{A: A=\sum_{i=1}^n A_i, n\ge 1, A_i \in S\}\]
+ \[(S) = \left\{\sum_{i=1}^n A_i:  n\ge 1, A_i \in S\right\}\]
  
  \label{claim:semiring}
 \end{fact}
 
 \begin{proof}
- LLamamos $\{A: A=\sum_{i=1}^n A_i, n\ge 1, A_i \in S\} = R$. Es claro que $S\subseteq R$.
+ Sea $R= \left\{\sum_{i=1}^n A_i:  n\ge 1, A_i \in S\right\}$. Es claro que $S\subseteq R$.
  
- Sean $A = \sum_{i=1}^n A_i, B = \sum_{i=1}^k B_i \in R$ no nulos. Entonces $A\cap B = \sum_{i,j} (A_i \cap B_j)$ y $R$
- es cerrado para intersección de elementos. Además:
+ Sean $A = \sum_{i=1}^n A_i, B = \sum_{i=1}^k B_i \in R$ no nulos. Entonces $A\cap B = \sum_{i,j} (A_i \cap B_j)$ 
+ y $R$, con $A_i\cap B_j \in S$ y $R$ es cerrado para intersección de elementos. Además:
  
- \[A\setminus B = \cup_{i=1}^n \cap_{j=1}^p B_j^c = \cap_{j=1}^p \left(\cup_{i=1}^n (A_i \cup B_j)\right) = \cap_{j=1}^p \left(\sum_{i=1}^n (A_i \cup B_j)\right)\]
+ \[A\setminus B = \cup_{i=1}^n A_i \bigcap \cap_{j=1}^p B_j^c = \bigcap_{j=1}^p 
+                  \left(\sum_{i=1}^n (A_i \cap B_j^c)\right)\]
  
  Luego aplicando que $R$ es cerrado para intersecciones, llegamos también a que lo es para diferencias.
  
- Por último, como $A\cup B = A \setminus B \sum B$, $A \cup B \in R$, y como $R(S)$ debe contener por definición
- las uniones de elementos de $S$, en particular $R\subseteq R(S)$, pero hemos probado que $R$ es anillo, y $R(S)$
- es el menor anillo que contiene a $S$, luego $R(S) = R$.
+ Por último, como $A\cup B = A \setminus B + B$, entonces $A \cup B \in R$, y $R$ es anillo, con $(S) \subseteq R$.
+ Por otro lado, $(S)$ debe contener por definición de anillo las uniones de elementos de $S$, en particular
+ $R\subseteq (S)$. Luego $(S) = R$.
 \end{proof}
 
 
@@ -156,73 +167,80 @@ entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
 
 \begin{definition} \textbf{Medida}
 
- Sea $\mathcal{A} \subseteq \mathcal{P}(X)$. Llamamos medida sobre $\mathcal{A}$ a cualquier función 
+ Sea $\mathcal{A} \subseteq 2^X$. Llamamos medida sobre $\mathcal{A}$ a cualquier función 
  $\mu: \mathcal{A} \rightarrow [0, +\infty]$ verificando:
 
  \begin{enumerate}[i]
   \item $\mu(\emptyset) = 0$
-  \item Dados $A_n \in \mathcal{A}$ tales que $A = \sum_{i=n}^{+\infty} A_n \in \mathcal{A}$, entonces 
-  $\mu(A)= \sum_{i=n}^{+\infty} \mu(A_n)$
+  \item $\mu$ es $\sigma$-aditiva: Dados $A_n \in \mathcal{A}$ disjuntos, entonces 
+   $\mu\left(\sum_{i=n}^{+\infty} A_n \right)= \sum_{i=n}^{+\infty} \mu(A_n)$.
  \end{enumerate}
 \end{definition}
 
+Nótese que la $\sigma$-aditividad implica aditividad finita, esto es, dados $A_i \in \mathcal{A}$ $i=1, \ldots n$,
+disjuntos, entonces $\mu\left(\sum_{i=1}^{n} A_i \right)= \sum_{i=1}^{n} \mu(A_i)$.
 
 \begin{theorem}
- Sea $S$ semianillo en $S$, $\mu: S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe una única medida 
- en $R(S)$, $\bar{\mu}: R(S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$.
+ Sea $S$ semianillo en $X$, $\mu: S \rightarrow [0,+\infty]$ medida sobre $S$. Entonces existe una única medida 
+ sobre $(S)$, $\bar{\mu}: (S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$.
 \end{theorem}
 
 \begin{proof}
- Recordamos que $R(S) = \{A: A=\sum_{i=1}^n A_i, n\ge 1, A_i \in S\}$ por la proposición $\ref{claim:semiring}$,
+ Recordamos que $(S) = \left\{\sum_{i=1}^n A_i: n\ge 1, A_i \in S \right\}$ por la proposición $\ref{claim:semiring}$,
  
- Es claro que $\bar{\mu}$ debería cumplir: $\bar{\mu}(\sum_{i=1}^n A_i) = \sum_{i=1}^n \mu(A_i)$ con $A_i \in S$.
+ Es claro que $\bar{\mu}$ debería cumplir: 
+ $\bar{\mu}\left(\sum_{i=1}^n A_i\right) = \sum_{i=1}^n \bar{\mu}(A_i) = \sum_{i=1}^n \mu(A_i)$
+ con $A_i \in S$. Por tanto, dado $A\in (S)$, tomamos $A_i\in S$ verificando $A = \sum_{i=1}^n A_i$, y definimos: 
+ \[\bar{\mu}(A) := \sum_{i=1}^n \mu(A_i)\]
  
- Veamos que $\bar{\mu}$ no depende de cómo escribamos un conjunto, esto es, dados $A = \sum_{i=1}^n A_i = \sum_{j=1}^k B_j$,
- veamos que $\bar{\mu}$ está bien definida para $A$.
+ Veamos que $\bar{\mu}$ está bien definida, esto es, dado $\sum_{i=1}^n A_i = \sum_{j=1}^k B_j = A$, 
+ veamos que se verifica $\sum_{i=1}^n \mu(A_i) = \sum_{j=1}^k \mu(B_j)$.
  
- Como $A_i = A_i \cap A = A_i \cap \left(\cup_{j=1}^k B_j\right) = \cup_{j=1}^k A_i \cap B_j$, donde $A_i \in S$ y
+ Como $A_i = A_i \cap A = A_i \cap \left(\cup_{j=1}^k B_j\right) = \bigcup_{j=1}^k A_i \cap B_j$, donde 
  $A_i \cap B_j \in S$ por ser $S$ semianillo. Además como los $A_i$ son disjuntos, los $A_i\cap B_j$ también.
  Aplicando que $\mu$ es medida sobre $S$:
  
- \[\mu(A_i) = \sum_{j=1}^k \mu(A_i \cap B_j) \implies \sum_{i=1}^n \mu(A_i) = \sum_{i}^n \sum_{j=1}^k \mu(A_i \cap B_j)\]
+ \[\mu(A_i) = \sum_{j=1}^k \mu(A_i \cap B_j) \implies \sum_{i=1}^n \mu(A_i) = 
+              \sum_{i=1}^n \sum_{j=1}^k \mu(A_i \cap B_j)\]
  
  Análogamente podemos probar:
  
- \[\sum_{j=1}^k \mu(B_j) = \sum_{i}^n \sum_{j=1}^k \mu(A_i \cap B_j)\]
+ \[\sum_{j=1}^k \mu(B_j) = \sum_{i=1}^n \sum_{j=1}^k \mu(A_i \cap B_j)\]
  
  Luego $\bar{\mu}$ está bien definida. Además $\bar{\mu} (\emptyset) = 0$ por ser $\mu(\emptyset) = 0$.
  
  Falta probar la $\sigma$-aditividad de $\bar{\mu}$ y por construcción, habríamos llegado al resultado buscado.
  
- Sean $A_n = \sum_{i=1}^{k_n} A_i^n \in R(S)$ con $A_i^n \in S$ y $A = \sum_{i=1}^{+\infty} A_n \in R(S)$. 
- Por ser $A \in R(S)$, tendríamos que podemos reescribir $A = \sum_{j=1}^k B_j$ con $B_j \in S$.
+ Sean $A_n = \sum_{i=1}^{k_n} A_i^n \in (S)$ disjuntos tal que $A_i^n \in S$ y $A = \sum_{i=1}^{+\infty} A_n \in (S)$. 
+ Por ser $A \in (S)$, tendríamos que podemos reescribir $A = \sum_{j=1}^k B_j$ con $B_j \in S$.
  
  Fijamos un $B_p$ y tenemos:
  
- \[B_p = B_p \cap A = \cup_{n=1}^{+\infty} \left(\cup_{i=1}^{n_k} A_i^k \cap B_p\right)\]
+ \[B_p = A \cap B_p = \bigcup_{n=1}^{+\infty} \left(\bigcup_{i=1}^{k_n} A_i^n \cap B_p\right) = 
+         \bigcup_{n=1}^{+\infty} \bigcup_{i=1}^{k_n} \left(A_i^n \cap B_p\right)\]
  
- Es decir, hemos reescrito $B_p$ como una unión numerable de $A_i^k \cap B_p$, disjuntos por serlo los $A_i$, 
- luego $B_p = \cup_{m\ge 1} C_m$, con $C_m \in S$.
+ Es decir, hemos reescrito $B_p$ como una unión numerable de $A_i^n \cap B_p \in S$, disjuntos, por serlo los $A_i$. 
  
- Aplicando $\sigma$-aditividad en $S$, llegamos a $\mu(B_p) = \sum_{n=1}^{+\infty} \sum_{i=1}^{n_k} \mu(A_i^k \cap B_p)$
+ Aplicando $\sigma$-aditividad en $S$, llegamos a $\mu(B_p) = \sum_{n=1}^{+\infty} \sum_{i=1}^{k_n} \mu(A_i^n \cap B_p)$
  
- Además, como podemos reescribir $A_i^{n_k} = \sum_{j=1}^k A_i^{n_k} \cap B_j$, tendríamos:
+ Además, como podemos reescribir $A_i^{n} = \sum_{j=1}^k A_i^{n} \cap B_j$, tendríamos:
  
  \begin{align*}
- \mu(A) &= \sum_{j=1}^k \sum_{n=1}^{+\infty} \sum_{i=1}^{n_k} \mu(A_i^k \cap B_j) = 
-           \sum_{n=1}^{+\infty} \sum_{i=1}^{n_k} \sum_{j=1}^k \mu(A_i^k \cap B_j) = \\
-        &= \sum_{n=1}^{+\infty} \sum_{i=1}^{n_k} \mu(A_i^k) =
-           \sum_{n=1}^{+\infty} \mu \left(\sum_{i=1}^{n_k} A_i \right)
+ \mu(A) &= \sum_{j=1}^k \sum_{n=1}^{+\infty} \sum_{i=1}^{k_n} \mu(A_i^n \cap B_j) = 
+           \sum_{n=1}^{+\infty} \sum_{i=1}^{k_n} \sum_{j=1}^k \mu(A_i^n \cap B_j) = \\
+        &= \sum_{n=1}^{+\infty} \sum_{i=1}^{k_n} \mu(A_i^n) =
+           \sum_{n=1}^{+\infty} \mu \left(\sum_{i=1}^{k_n} A_i^n \right) =
+           \sum_{n=1}^{+\infty} \mu(A_n)
  \end{align*}
 \end{proof}
 
 \begin{definition} \textbf{Medida exterior}
- Sea $\mu^\ast : \mathcal{P}(X) \rightarrow [0, +\infty]$ verificando:
+ Sea $\mu^\ast : 2^X \rightarrow [0, +\infty]$ verificando:
  
  \begin{enumerate}[i]
   \item $\mu^\ast(\emptyset) = 0$
   \item Monotonía: $A\subseteq B$ entonces $\mu^\ast(A) \le \mu^\ast(B)$
-  \item $\sigma$-subaditividad $\mu^\ast \left(\bigcup_{n=1}^{+\infty} A_n \right) \le \sum_{n=1}^{+\infty} \mu^\ast (A_n)$
+  \item $\sigma$-subaditividad: $\mu^\ast \left(\bigcup_{n=1}^{+\infty} A_n \right) \le \sum_{n=1}^{+\infty} \mu^\ast (A_n)$
  \end{enumerate}
  
  Entonces $\mu^\ast$ se dice medida exterior sobre $X$.
@@ -234,10 +252,10 @@ entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
  \[\Sigma(\mu^\ast) = \{A\subseteq X: \mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c), \forall T\subseteq X\}\]
 \end{definition}
 
-Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hecho una $\sigma$-álgebra.
+Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 
 \begin{theorem}
- Sea $\mu^\ast : \mathcal{P}(X) \rightarrow [0, +\infty]$ una medida externa sobre $X$. Entonces $\Sigma(\mu^\ast)$
+ Sea $\mu^\ast : 2^X \rightarrow [0, +\infty]$ una medida exterior sobre $X$. Entonces $\Sigma(\mu^\ast)$
  es una $\sigma$-álgebra sobre $X$ y $\mu^\ast_{|\Sigma(\mu^\ast)}$ es una medida sobre $\Sigma(\mu^\ast)$
  
  \label{th:outer-to-measure}
@@ -248,14 +266,15 @@ Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hec
  
  \[\mu^\ast(T) = \mu^\ast(T\cap X) + \mu^\ast(T\cap \emptyset) = \mu^\ast(T), \quad \forall T\subseteq X\]
  
- Luego $X \in \Sigma$. También es trivial comprobar que dado $A\in \Sigma$, entonces $A^c \in \Sigma$.
+ Luego $X,\emptyset \in \Sigma$. También es trivial ver que dado $A\in \Sigma$, entonces $A^c \in \Sigma$.
  
- Veamos que $\Sigma$ es cerrada para intersecciones: sean $A, B\in \Sigma$. Usaremos:
+ Veamos que $\Sigma$ es cerrada para intersecciones. Sean $A, B\in \Sigma$. Usaremos:
  
- \begin{align*}
-  T\cap A^c = T\cap (A\cap B)^c \cap A^c\\
+ \begin{align}
+  T\cap A^c = T\cap (A\cap B)^c \cap A^c \nonumber\\
   T\cap A \cap B^c = T \cap (A\cap B)^c \cap A
- \end{align*}
+  \label{eqn:set-eqs}\tag{$\ast$}
+ \end{align}
 
  Como $A\in \Sigma$, tenemos $\mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c)$
  
@@ -265,7 +284,7 @@ Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hec
  
  \begin{align*}
   \mu^\ast(T) &= \mu^\ast(T\cap A^c) + \mu^\ast(T\cap A \cap B) + \mu^\ast(T\cap A \cap B^c) = \\
-  &= \mu^\ast(T\cap (A\cap B)^c \cap A^c) + \mu^\ast(T \cap (A\cap B)^c \cap A) +\\
+  & \underset{\eqref{eqn:set-eqs}}{=} \mu^\ast(T\cap (A\cap B)^c \cap A^c) + \mu^\ast(T \cap (A\cap B)^c \cap A) +\\
   &+ \mu^\ast(T\cap A \cap B) = \mu^\ast(T\cap (A \cap B)^c) + \mu^\ast(T\cap A \cap B)
  \end{align*}
 
@@ -275,8 +294,8 @@ Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hec
  hemos probado que es cerrado para intersecciones y complementarios, $\Sigma$ es también cerrado para
  uniones y diferencias.
  
- Dados $A_n \in \Sigma$, como podemos escribir $\cup_{n\ge 1} A_n$ como $\cup_{n\ge 1} B_n$ con los $B_n$ 
- disjuntos, definidos como $B_1 = A_1$, y $B_{n+1} = A_{n+1} \left(\setminus{\cup_{i=1}^n A_i}\right)$, 
+ Dados $A_n \in \Sigma$, como podemos escribir $\bigcup_{n\ge 1} A_n = \sum_{n=1}^{+\infty} B_n$ con los $B_n$ 
+ disjuntos, definidos como $B_1 = A_1$, y $B_{n+1} = A_{n+1} \setminus\left(\cup_{i=1}^n A_i\right)$, 
  podemos limitarnos a estudiar uniones disjuntas.
  
  De hecho, dados $B,C \in \Sigma$ disjuntos:
@@ -286,10 +305,10 @@ Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hec
                              &= \mu^\ast(T \cap B) + \mu^\ast(T \cap C)
  \end{align*}
 
- Sean $\{B_n\}$ conjuntos disjuntos de $\Sigma$, y llamamos $J = \sum_{n=1}^{+\infty} B_n$, $J_k = \sum_{n=1}^{k} B_n$
+ Sean $B_n$ conjuntos disjuntos de $\Sigma$, y llamamos $J = \sum_{n=1}^{+\infty} B_n$, $J_k = \sum_{n=1}^{k} B_n$
  
  Hemos visto que $\Sigma$ es cerrada para uniones finitas, luego $J_k \in \Sigma$ para todo $k\in \mathbb{N}$.
- Fijamos $T\in \mathcal{P}(X)$
+ Vamos a ver que también lo es para uniones numerables. Sea $T\in 2^X$:
  
  \begin{equation}
   \mu^\ast(T) = \mu^\ast(T\cap B + T\cap B^c) \underset{\textrm{monotonía + subaditividad}} \le 
@@ -328,7 +347,7 @@ Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hec
 
 \begin{theorem} \textbf{Teorema de extensión de Caratheodory}
 
- Sea $S \subseteq \mathcal{P}(X)$ un semianillo, $\mu:S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe
+ Sea $S \subseteq 2^X$ un semianillo, $\mu:S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe
  una única medida $\bar{\mu}:\sigma(S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$
 \end{theorem}
 
@@ -336,7 +355,7 @@ Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hec
  Si existiese $\bar{\mu}$ debería verificar, por monotonía, que $\bar{\mu}(T) \le \sum_{n=1}^{+\infty} \bar{\mu}(A_n)$, 
  donde $T \subseteq \cup_{n\ge 1} A_n$ y $A_n\in R$ son disjuntos.
  
- Definimos, para cualquier $T\in \mathcal{P}(X)$:
+ Definimos, para cualquier $T\in 2^X$:
  
  \[\mu^\ast(T) = \inf\left\{\sum_{n=1}^{+\infty} \mu(A_n), \cup_{n\ge 1} A_n \supseteq T,
                  A_n\in S \forall n\in\mathbb{N}\right\}\]
@@ -385,7 +404,7 @@ Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hec
 
 \begin{definition} \textbf{Espacio medible}
 
- Sea $X$ un conjunto, $\Sigma$ una $\sigma$-álgebra de conjuntos sobre $X$. A la tupla $(X,\Sigma)$ la llamamos
+ Sea $X$ un conjunto, $\Sigma$ una $\sigma$-álgebra sobre $X$. A la tupla $(X,\Sigma)$ la llamamos
  espacio medible. A los elementos de $\Sigma$ los llamamos conjuntos medibles.
 \end{definition}
 
