@@ -152,7 +152,7 @@ entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
 \end{proof}
 
 
-\section{Medida, medidas externa}
+\section{Medidas y extensión de medidas}
 
 \begin{definition} \textbf{Medida}
 
@@ -217,9 +217,167 @@ entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
 \end{proof}
 
 \begin{definition} \textbf{Medida exterior}
+ Sea $\mu^\ast : \mathcal{P}(X) \rightarrow [0, +\infty]$ verificando:
  
+ \begin{enumerate}[i]
+  \item $\mu^\ast(\emptyset) = 0$
+  \item Monotonía: $A\subseteq B$ entonces $\mu^\ast(A) \le \mu^\ast(B)$
+  \item $\sigma$-subaditividad $\mu^\ast \left(\bigcup_{n=1}^{+\infty} A_n \right) \le \sum_{n=1}^{+\infty} \mu^\ast (A_n)$
+ \end{enumerate}
+ 
+ Entonces $\mu^\ast$ se dice medida exterior sobre $X$.
 \end{definition}
 
+\begin{definition}
+ Sea $\mu^\ast$ una medida exterior sobre $X$. Definimos la $\sigma$-álgebra asociada a $\mu^\ast$ como:
+ 
+ \[\Sigma(\mu^\ast) = \{A\subseteq X: \mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c), \forall T\subseteq X\}\]
+\end{definition}
+
+Queda comprobar que la definición de $\Sigma(\mu^\ast)$ es correcta y es de hecho una $\sigma$-álgebra.
+
+\begin{theorem}
+ Sea $\mu^\ast : \mathcal{P}(X) \rightarrow [0, +\infty]$ una medida externa sobre $X$. Entonces $\Sigma(\mu^\ast)$
+ es una $\sigma$-álgebra sobre $X$ y $\mu^\ast_{|\Sigma(\mu^\ast)}$ es una medida sobre $\Sigma(\mu^\ast)$
+ 
+ \label{th:outer-to-measure}
+\end{theorem}
+
+\begin{proof}
+ Empezamos viendo que $\Sigma = \Sigma(\mu^\ast)$ es una $\sigma$-álgebra.
+ 
+ \[\mu^\ast(T) = \mu^\ast(T\cap X) + \mu^\ast(T\cap \emptyset) = \mu^\ast(T), \quad \forall T\subseteq X\]
+ 
+ Luego $X \in \Sigma$. También es trivial comprobar que dado $A\in \Sigma$, entonces $A^c \in \Sigma$.
+ 
+ Veamos que $\Sigma$ es cerrada para intersecciones: sean $A, B\in \Sigma$. Usaremos:
+ 
+ \begin{align*}
+  T\cap A^c = T\cap (A\cap B)^c \cap A^c\\
+  T\cap A \cap B^c = T \cap (A\cap B)^c \cap A
+ \end{align*}
+
+ Como $A\in \Sigma$, tenemos $\mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c)$
+ 
+ Por otro lado, como $B\in \Sigma$, tenemos $\mu^\ast(T\cap A) = \mu^\ast(T\cap A\cap B) + \mu^\ast(T\cap A \cap B^c)$
+ 
+ Es decir:
+ 
+ \begin{align*}
+  \mu^\ast(T) &= \mu^\ast(T\cap A^c) + \mu^\ast(T\cap A \cap B) + \mu^\ast(T\cap A \cap B^c) = \\
+  &= \mu^\ast(T\cap (A\cap B)^c \cap A^c) + \mu^\ast(T \cap (A\cap B)^c \cap A) +\\
+  &+ \mu^\ast(T\cap A \cap B) = \mu^\ast(T\cap (A \cap B)^c) + \mu^\ast(T\cap A \cap B)
+ \end{align*}
+
+ Donde en la última igualdad se ha usado que $A\in \Sigma$.
+ 
+ Como podemos escribir $A\setminus B = A\cap B^c$, y $A\cup B = (A^c \cap B^c)^c$ con $A, B \in \Sigma$ que
+ hemos probado que es cerrado para intersecciones y complementarios, $\Sigma$ es también cerrado para
+ uniones y diferencias.
+ 
+ Dados $A_n \in \Sigma$, como podemos escribir $\cup_{n\ge 1} A_n$ como $\cup_{n\ge 1} B_n$ con los $B_n$ 
+ disjuntos, definidos como $B_1 = A_1$, y $B_{n+1} = A_{n+1} \left(\setminus{\cup_{i=1}^n A_i}\right)$, 
+ podemos limitarnos a estudiar uniones disjuntas.
+ 
+ De hecho, dados $B,C \in \Sigma$ disjuntos:
+ 
+ \begin{align*}
+  \mu^\ast(T \cap (B\cup C)) &= \mu^\ast(T \cap(B\cup C) \cap B) + \mu^\ast(T \cap(B\cup C) \cap B^c) =\\
+                             &= \mu^\ast(T \cap B) + \mu^\ast(T \cap C)
+ \end{align*}
+
+ Sean $\{B_n\}$ conjuntos disjuntos de $\Sigma$, y llamamos $J = \sum_{n=1}^{+\infty} B_n$, $J_k = \sum_{n=1}^{k} B_n$
+ 
+ Hemos visto que $\Sigma$ es cerrada para uniones finitas, luego $J_k \in \Sigma$ para todo $k\in \mathbb{N}$.
+ Fijamos $T\in \mathcal{P}(X)$
+ 
+ \begin{equation}
+  \mu^\ast(T) = \mu^\ast(T\cap B + T\cap B^c) \underset{\textrm{monotonía + subaditividad}} \le 
+  \mu^\ast(T\cap B) + \mu^\ast(T\cap B^c) \le \mu^\ast(T\cap B) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n))
+  \label{eqn:ineqT} \tag{*}
+ \end{equation}
+ 
+ Si $\mu^\ast(T) = +\infty$, entonces $\mu^\ast(T) \le \mu^\ast(T) = \mu^\ast(T\cap B^c) = +\infty$, y se da
+ la igualdad.
+ 
+ Si $\mu^\ast(T) < +\infty$, tenemos $\mu^\ast(T) \ge \mu^\ast(T\cap J_k) = \sum_{n=1}^k \mu^\ast(T\cap B_n)$
+ para $k$ arbitrario, y por tanto $\mu^\ast(T) \ge \sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n)$. Fijado $\epsilon > 0$
+ existe $N\in \mathbb{N}$ verificando:
+ 
+ \[\sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n) \le \sum_{n=1}^N \mu^\ast(T\cap B_n) + \epsilon\]
+ 
+ Es decir, tendríamos, desde \eqref{eqn:ineqT}:
+ 
+ \begin{align*}
+   \mu^\ast(T) \le \mu^\ast(T\cap B) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n) \le 
+   \mu^\ast(T\cap J_N) + \sum_{n=1}^{N}\mu^\ast(T\cap B_n) + \epsilon \le  \mu^\ast(T) + \epsilon
+ \end{align*}
+
+ Pero $\epsilon \ge 0$ era arbitrario, luego:
+ 
+ \[\mu^\ast(T) \le \mu^\ast(T\cap B) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n) \le \mu^\ast(T)\]
+ 
+ Es decir: $\mu^\ast(T) = \mu^\ast(T\cap B^c) + \mu^\ast(T\cap B^c)$ y $B\in \Sigma$, y $\Sigma$ es $\sigma$-álgebra
+ sobre $X$.
+ 
+ Tomando $T=B$, llegamos a $\mu^\ast(B) = \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n)$, luego $\mu|_{\Sigma}$ es
+ medida sobre $\Sigma$.
+ 
+\end{proof}
+
+
+\begin{theorem} \textbf{Teorema de extensión de Caratheodory}
+
+ Sea $S \subseteq \mathcal{P}(X)$ un semianillo, $\mu:S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe
+ una única medida $\bar{\mu}:\sigma(S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$
+\end{theorem}
+
+\begin{proof}
+ Si existiese $\bar{\mu}$ debería verificar, por monotonía, que $\bar{\mu}(T) \le \sum_{n=1}^{+\infty} \bar{\mu}(A_n)$, 
+ donde $T \subseteq \cup_{n\ge 1} A_n$ y $A_n\in R$ son disjuntos.
+ 
+ Definimos, para cualquier $T\in \mathcal{P}(X)$:
+ 
+ \[\mu^\ast(T) = \inf\left\{\sum_{n=1}^{+\infty} \mu(A_n), \cup_{n\ge 1} A_n \supseteq T,
+                 A_n\in S \forall n\in\mathbb{N}\right\}\]
+                 
+ Vamos a ver que $\mu^\ast$ es medida exterior sobre $X$.
+ 
+ Claramente, como $\mu \ge 0$, $\mu^\ast \ge 0$, y $\mu^\ast(\emptyset) = \mu(\emptyset) = 0$
+ 
+ Dado $B\subseteq A \subseteq X$, tenemos que si $\cup_{n\ge 1} A_n \supseteq A$ con $A_n\in S \forall n\in\mathbb{N}$,
+ entonces $\cup_{n\ge 1} A_n \supseteq B$ y de la definición de $\mu^\ast$ deducimos $\mu^\ast(A) \le \mu^\ast(B)$.
+ Hemos probado la monotonía de $\mu^\ast$.
+ 
+ Sean ahora $\{A_n\}$ subconjuntos de $X$, donde para cada $n\in \mathbb{N}$.
+ 
+ Si existe $A_n$ tal que $\mu^\ast(A_n) = +\infty$, entonces por monotonía 
+ $\mu^\ast(\cup_{n\ge} A_n) \ge \mu^\ast(A_n) = +\infty$, y por otro lado 
+ $\sum_{n=1}^{+\infty} \mu^\ast(A_n) \ge \mu^\ast(A_n) = +\infty$, es decir:
+
+ \[\mu^\ast(\cup_{n\ge} A_n) = \sum_{n=1}^{+\infty} \mu^\ast(A_n) = +\infty\]
+ 
+ Caso de que para todo $n$ se tenga $\mu^\ast(A_n) < +\infty$, fijamos $\epsilon > 0$
+ 
+ Dado$n\in \mathbb{N}$, por ser $\mu^\ast(A_n)$ un ínfimo, deben existir $\{A_p^n\}_{p\ge 1}$ con 
+ $A_p^n \in S$ para cualquier $p\in\mathbb{N}$ verificando $\cup_{p\ge 1} \supseteq A_n$ y que
+ $\sum_{p=1}^{+\infty} \le \mu^\ast(A_n) + \frac{\epsilon}{2^n}$
+ 
+ Es decir, tenemos $\cup_{n\ge 1} \subseteq \cup_{n\ge 1} \cup_{p\ge 1} A_p^n$ unión numerable
+ de conjuntos $A_p^n$ de $S$, luego:
+ 
+ \[\mu^\ast(\cup_{n\ge 1} A_n) \le \sum_{n=1}^{+\infty} \sum_{p=1}^{+\infty} \le 
+   \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \sum_{n=1}^{+\infty}\frac{\epsilon}{2^n} = 
+   \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \epsilon\]
+ 
+ Pero $\epsilon > 0$ era arbitrario, es decir: 
+ \[\mu^\ast(\cup_{n\ge 1} A_n) \le \sum_{n=1}^{+\infty}\mu^\ast(A_n)\]
+ 
+ Es decir $\mu^\ast$ es medida exterior en $X$, y podemos tomar $\bar{\mu}$ medida sobre $\Sigma(\mu^\ast)$ por
+ el teorema \ref{th:outer-to-measure}.
+ 
+ Falta comprobar que $\bar{\mu}_{|\Sigma(S)}$ es medida sobre $\Sigma(S)$ y que es la única extensión posible de $\mu$.
+\end{proof}
 
 
 
