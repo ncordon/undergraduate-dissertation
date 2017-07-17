@@ -15,7 +15,7 @@
 \usepackage{enumerate}
 
 % *************************************************************************************************************
-% Entorno para ejemplos
+% Entorno para ejemplos y contraejemplos
 % https://tex.stackexchange.com/questions/5223/command-for-argmin-or-argmax
 % *************************************************************************************************************
 \usepackage{mdframed} % Add easy frames to paragraphs
@@ -33,10 +33,13 @@
   skipbelow=\topsep
 ]{leftrule}
 
-\NewDocumentEnvironment{example}{O{\textbf{Ejemplo:}}} % Define example environment
+\NewDocumentEnvironment{example}{O{\textbf{Ejemplo:}}}
 {\begin{leftrule}\noindent\textcolor{black}{#1}\par}
 {\end{leftrule}}
 
+\NewDocumentEnvironment{counterex}{O{\textbf{Contraejemplo:}}}
+{\begin{leftrule}\noindent\textcolor{black}{#1}\par}
+{\end{leftrule}}
 
 % *************************************************************************************************************
 % Definiciones de teoremas, corolarios, lemas

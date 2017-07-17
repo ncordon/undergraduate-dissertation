@@ -1,17 +1,164 @@
 \section{Introducción a la probabilidad}
 
+Sea en lo que sigue $X$ un conjunto. Dados $A_i \subseteq X$, para $i=1, \ldots n$, notamos $\sum_{i=1}^n A_i$
+a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyset$ cuando $i\neq j$.
+
+\begin{definition} \textbf{Conjunto potencia}
+ Definimos el conjunto potencia de $X$ a $\mathcal{P}(X):= \{A: A\subseteq X\}$.
+ 
+ Como notación alternativa para $\mathcal{P}(X)$ usaremos $2^X$.
+\end{definition}
 
 
 \begin{definition} \textbf{$\sigma$-álgebra}
 
- Sea $X$ un conjunto, $\Sigma \subseteq \mathcal{P}(X) = \{A: A\subseteq X\}$ es $\sigma$-álgebra de conjuntos
- de $X$ si se verifica:
+ $\Sigma \subseteq \mathcal{P}(X) = \{A: A\subseteq X\}$ es $\sigma$-álgebra de conjuntos sobre $X$ si se verifica:
  
  \begin{enumerate}[i]
   \item $X \in \Sigma$
   \item $\Sigma$ es cerrado para complementarios: Sea $A\in \Sigma$, entonces $A^c = X\setminus A \in \Sigma$
   \item $\Sigma$ es cerrado para uniones numerables: Sean $\{A_n\}_{n\in\mathbb{N}} \subseteq \Sigma$, entonces: 
   \[\underset{n\in\mathbb{N}}{\bigcup} A_n \in \Sigma\]
+ \end{enumerate}
+\end{definition}
+
+\begin{fact}
+ Sea $\Sigma$ $\sigma$-álgebra sobre $X$. Entonces:
+ 
+ \begin{enumerate}[i]
+  \item $\emptyset \in \Sigma$
+  \item $\Sigma$ es cerrada para intersecciones: dados $A,B \in \Sigma$, entonces $A\cap B \in \Sigma$
+  \item $\Sigma$ es cerrada para diferencias: dados $A,B \in \Sigma$, entonces $A\setminus B \in \Sigma$
+ \end{enumerate}
+ 
+ \label{fact:propsigma}
+\end{fact}
+
+\begin{proof}
+ Se deducen fácilmente escribiendo $\emptyset = X^c$, $A\cap B = ((A\cap B)^c)^c = (A^c \cup B^c)^c$ y $A\setminus B = A\cap B^c$
+ y usando las hipótesis de $\sigma$-álgebra.
+\end{proof}
+
+
+
+\begin{definition} \textbf{Semianillo en $X$}
+
+ $S\subseteq \mathcal{P}(X)$ es subanillo si verifica:
+ 
+ \begin{enumerate}[i]
+  \item $\emptyset \in S$
+  \item $A,B \in S$ entonces $A\cup B \in S$
+  \item $A,B \in S$ entonces existen $A_1 \ldots A_n \in S$ verificándose $A\setminus B = \sum_{i=1}^n A_i$
+ \end{enumerate}
+\end{definition}
+
+\begin{example}
+ \begin{definition}
+  Sean $X_1, X_2$ conjuntos, $\Sigma_i$ $\sigma$-álgebra sobre $A_i$. 
+  
+  Dados $A_1 \in \Sigma_1, A_2 \in \Sigma_2$ arbitrarios, definimos el rectángulo de lados $A_1$ y $A_2$ como:
+  
+  \[Rec(A_1, A_2) = A_1 \times A_2\]
+ \end{definition}
+ 
+ 
+ La clase de rectángulos $Rec = \{Rec(A_1, A_2): A_i \in \Sigma_i\}$ es un semianillo en $X_1 \times X_2$,
+ ya que dados $R_1 = A_1 \times A_2 \in Rec, R_2 = B_1 \times B_2 \in Rec$ arbitrarios:
+ 
+ \begin{enumerate}
+  \item $\emptyset \in \Sigma_i$, y $\emptyset \times \emptyset = \emptyset$
+  \item $R_1 \cap R_2 = (A_1 \cap B_1) \times (A_2 \cap B_2)$, donde $A_i \cap B_i \in \Sigma_i$ por ser 
+  $\Sigma_i$ cerrada bajo intersecciones.
+  \item $R_1 = A_1 \times A_2 \in Rec, R_2 = B_1 \times B_2 \in Rec$, entonces 
+  $R_1 \setminus R_2 = \{(x,y): (x,y) \in A_1 \times A_2, (x,y) \notin B_1 \times B_2)\}$
+  
+  Es decir $R_1 \setminus R_2 = Rec(A_1\setminus B_1, A_2) \cup Rec(B_1, A_2\setminus B_2)$ y 
+  $A_i \setminus B_i \in \Sigma_i$ por ser $\Sigma_i$ cerrada bajo diferencias.
+ \end{enumerate}
+
+\end{example}
+
+
+\begin{definition} \textbf{Anillo en $X$}
+
+ $R\subseteq \mathcal{P}(X)$ es anillo si verifica:
+ 
+ \begin{enumerate}[i]
+  \item $\emptyset \in R$
+  \item $A,B \in R$ entonces $A\cap B \in R$
+  \item $A,B \in R$ entonces $A\setminus B \in R$
+ \end{enumerate}
+\end{definition}
+
+
+\begin{fact}
+ Toda $\sigma$-álgebra es anillo. Todo anillo es semianillo.
+\end{fact}
+
+\begin{proof}
+ Que $\sigma$-álgebra es más fuerte que anillo quedó probado en la proposición $\ref{fact:propsigma}$
+ 
+ Sea ahora $R \subseteq X$ anillo y veamos que es semianillo.
+
+ Como $A\cap B = A\setminus (A\setminus B)$, se deduce la segunda condición de la definición de semianillo.
+ 
+ Sean $A, B \in R$, tomando $A_1 = A\setminus B \in R$, entonces se verifica la tercera condición de semianillo.
+\end{proof}
+
+\begin{counterex}
+ Veamos un contraejemplo de que no todo semianillo es anillo:
+ 
+ $\Sigma = \{\emptyset, [0,1], [1,2], [0,2]\}$ es $\sigma$-álgebra sobre $[0,2]$, y $[0,1]^2$ y $[1,2]^2$ son rectángulos
+ en $[0,2]^2$, pero $[0,1]^2 \cup [1,2]^2$ no puede ser escrito como producto de $A,B \in \Sigma$.
+ 
+ Y uno de que no todo anillo es $\sigma$-álgebra:
+ 
+ Sea $S = \{A\subseteq \mathbb{N}: |A| < \infty\}$. Entonces se puede comprobar fácilmente que es anillo (y semianillo)
+ de $\mathbb{N}$, pero no es cerrado para complementarios porque $\mathbb{N}$ no es finito.
+\end{counterex}
+
+
+\begin{definition}
+ Sea $\mathcal{A} \subseteq \mathcal{P}(X)$. Llamamos anillo generado por $\mathcal{A}$ y lo notamos $R(A)$ al
+ menor anillo que contiene a $A$:
+ 
+ \[R(A) = \bigcap_{\begin{array}{c}R \textrm{ anillo en } X\\ A\subseteq R \end{array}} R\]
+\end{definition}
+
+Es trivial probar que la definición es correcta ($R(A)$ es anillo), ya que dados dos conjuntos $A,B \in R(A)$, 
+entonces $A, B \in R$ para todo $R$ anillo contenido a $A$.
+
+\begin{fact}
+ Sea $S$ un semianillo en $X$. Entonces:
+ 
+ \[R(S) = \{A: A=\sum_{i=1}^n A_i, n\ge 1, A_i \in S\}\]
+\end{fact}
+
+\begin{proof}
+ LLamamos $\{A: A=\sum_{i=1}^n A_i, n\ge 1, A_i \in S\} = R$. Es claro que $S\subseteq R$.
+ 
+ Sean $A = \sum_{i=1}^n A_i, B = \sum_{i=1}^k B_i \in R$ no nulos. Entonces $A\cap B = \sum_{i,j} (A_i \cap B_j)$ y $R$
+ es cerrado para intersección de elementos. Además:
+ 
+ \[A\setminus B = \cup_{i=1}^n \cap_{j=1}^p B_j^c = \cap_{j=1}^p \left(\cup_{i=1}^n (A_i \cup B_j)\right) = \cap_{j=1}^p \left(\sum_{i=1}^n (A_i \cup B_j)\right)\]
+ 
+ Luego aplicando que $R$ es cerrado para intersecciones, llegamos también a que lo es para diferencias.
+ 
+ Por último, como $A\cup B = A \setminus B \sum B$, $A \cup B \in R$, y como $R(S)$ debe contener por definición
+ las uniones de elementos de $S$, en particular $R\subseteq R(S)$, pero hemos probado que $R$ es anillo, y $R(S)$
+ es el menor anillo que contiene a $S$, luego $R(S) = R$.
+\end{proof}
+
+
+\begin{definition} \textbf{Medida}
+
+ Sea $\mathcal{A} \subseteq \mathcal{P}(X)$. Llamamos medida sobre $\mathcal{A}$ a cualquier función 
+ $\mu: \mathcal{A} \rightarrow [0, \infty]$ verificando:
+
+ \begin{enumerate}[i]
+  \item $\mu(\emptyset) = 0$
+  \item Dados $A_n \in \mathcal{A}$ tales que $A = \sum_{i=n}{+\infty} A_n \in \mathcal{A}$, entonces 
+  $\mu(A)= \sum_{i=n}{+\infty} \mu(A_n)$
  \end{enumerate}
 \end{definition}
 
@@ -22,18 +169,17 @@
 \end{definition}
 
 
-\begin{definition} \textbf{Espacio de probabilidad}
+\begin{definition} \textbf{Espacio de medida}
 
- Sea $(X, \Sigma)$ espacio medible, y $P: \Sigma \rightarrow [0,1]$ verifican los axiomas de Kolmogorov:
-
- \begin{enumerate}[i]
-  \item $\sigma$-aditividad: dados $\{A_n\}_{n\in \mathbb{N}} \in \Sigma$ disjuntos, entonces: 
-  \[P \left(\bigcup A_n\right) = \sum_{n\ge 1} P(A_n)\]
-  \item $P(X) = 1$
- \end{enumerate}
-
- A $P$ se le llama función de probabilidad sobre $X$, y a $(X, \Sigma, P)$ espacio de probabilidad.
+ Sea $(X, \Sigma)$ espacio medible, y $\mu: \Sigma \rightarrow [0,\infty]$ medida. A la tupla $(X, \Sigma, P)$ 
+ la llamamos espacio de medida.
 \end{definition}
+
+
+\begin{definition} \textbf{Espacio de probabilidad}
+ Sea $(X, \Sigma, P)$ espacio de medida. Entonces lo llamamos espacio de probabilidad si $P(\Sigma)\subseteq [0,1]$
+\end{definition}
+
 
 \begin{definition} \textbf{Distribución de probabilidad}
 
