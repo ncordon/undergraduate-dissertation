@@ -163,6 +163,21 @@ intersección es no vacía, porque $2^X \supseteq \mathcal{A}$ y $2^X$ es anillo
 \end{proof}
 
 
+\begin{fact}
+ Sea $S$ un semianillo en $X$. Entonces:
+ 
+ \[\Sigma(S) = \Sigma((S))\]
+\end{fact}
+
+\begin{proof}
+ $S\subseteq (S)$, luego $\Sigma(S) \subseteq \Sigma((S))$
+ 
+ Por otro lado, $\sum_{i=1}^n A_i \in \Sigma(S)$ para $A_i \in S$, luego $(S) \subseteq \Sigma(S)$, y por tanto
+ deducimos $\Sigma((S)) \subseteq \Sigma(S)$.
+\end{proof}
+
+
+
 \section{Medidas y extensión de medidas}
 
 \begin{definition} \textbf{Medida}
@@ -183,6 +198,8 @@ disjuntos, entonces $\mu\left(\sum_{i=1}^{n} A_i \right)= \sum_{i=1}^{n} \mu(A_i
 \begin{theorem}
  Sea $S$ semianillo en $X$, $\mu: S \rightarrow [0,+\infty]$ medida sobre $S$. Entonces existe una única medida 
  sobre $(S)$, $\bar{\mu}: (S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$.
+ 
+ \label{th:ext-semitoring}
 \end{theorem}
 
 \begin{proof}
@@ -305,42 +322,35 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
                              &= \mu^\ast(T \cap B) + \mu^\ast(T \cap C)
  \end{align*}
 
- Sean $B_n$ conjuntos disjuntos de $\Sigma$, y llamamos $J = \sum_{n=1}^{+\infty} B_n$, $J_k = \sum_{n=1}^{k} B_n$
+ Sean $B_n$ conjuntos disjuntos de $\Sigma$, y llamamos $B = \sum_{n=1}^{+\infty} B_n$, $\bar{B}_k = \sum_{n=1}^{k} B_n$
  
- Hemos visto que $\Sigma$ es cerrada para uniones finitas, luego $J_k \in \Sigma$ para todo $k\in \mathbb{N}$.
- Vamos a ver que también lo es para uniones numerables. Sea $T\in 2^X$:
+ Hemos visto que $\Sigma$ es cerrada para uniones finitas, luego $\bar{B}_k \in \Sigma$ para todo $k\in \mathbb{N}$.
+ Vamos a ver que también lo es para uniones numerables. Sea $T\in 2^X$.
  
- \begin{equation}
-  \mu^\ast(T) = \mu^\ast(T\cap B + T\cap B^c) \underset{\textrm{monotonía + subaditividad}} \le 
-  \mu^\ast(T\cap B) + \mu^\ast(T\cap B^c) \le \mu^\ast(T\cap B) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n))
-  \label{eqn:ineqT} \tag{*}
- \end{equation}
- 
- Si $\mu^\ast(T) = +\infty$, entonces $\mu^\ast(T) \le \mu^\ast(T) = \mu^\ast(T\cap B^c) = +\infty$, y se da
+
+ Si $\mu^\ast(T) = +\infty$, entonces $\mu^\ast(T) \le \mu^\ast(T\cap B ) + \mu^\ast(T\cap B^c) = +\infty$, y se da
  la igualdad.
  
- Si $\mu^\ast(T) < +\infty$, tenemos $\mu^\ast(T) \ge \mu^\ast(T\cap J_k) = \sum_{n=1}^k \mu^\ast(T\cap B_n)$
+ Si $\mu^\ast(T) < +\infty$, tenemos $\mu^\ast(T) \ge \mu^\ast(T\cap \bar{B}_k) = \sum_{n=1}^k \mu^\ast(T\cap B_n)$
  para $k$ arbitrario, y por tanto $\mu^\ast(T) \ge \sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n)$. Fijado $\epsilon > 0$
- existe $N\in \mathbb{N}$ verificando:
+ existe $M\in \mathbb{N}$ verificando que para todo $N\ge M$:
  
- \[\sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n) \le \sum_{n=1}^N \mu^\ast(T\cap B_n) + \epsilon\]
+ \[\sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n) \le \sum_{n=1}^N \mu^\ast(T\cap B_n) + \epsilon = 
+   \mu^\ast(T\cap \bar{B}_N) + \epsilon\]
  
- Es decir, tendríamos, desde \eqref{eqn:ineqT}:
+ Es decir, tendríamos:
  
  \begin{align*}
-   \mu^\ast(T) \le \mu^\ast(T\cap B) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n) \le 
-   \mu^\ast(T\cap J_N) + \sum_{n=1}^{N}\mu^\ast(T\cap B_n) + \epsilon \le  \mu^\ast(T) + \epsilon
+  \mu^\ast(T) &=   \mu^\ast(T\cap B^c + T\cap B) \le \mu^\ast(T\cap B^c) + \mu^\ast(T\cap B) \le \\
+              &\le \mu^\ast(T\cap B^c) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n) \le \\
+              &\le \mu^\ast(T\cap \bar{B}_N^c) + \mu^\ast(T\cap \bar{B}_N) + \epsilon
+                =  \mu^\ast(T) + \epsilon
  \end{align*}
 
- Pero $\epsilon \ge 0$ era arbitrario, luego:
+ Pero $\epsilon > 0$ era arbitrario, luego $\mu^\ast(T) = \mu^\ast(T\cap B^c) + \mu^\ast(T\cap B)$ y tomando 
+ $T=B$, se deduce también que $\mu^\ast(B) = \sum_{n=1}^{+\infty}\mu^\ast(B_n)$.
  
- \[\mu^\ast(T) \le \mu^\ast(T\cap B) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n) \le \mu^\ast(T)\]
- 
- Es decir: $\mu^\ast(T) = \mu^\ast(T\cap B^c) + \mu^\ast(T\cap B^c)$ y $B\in \Sigma$, y $\Sigma$ es $\sigma$-álgebra
- sobre $X$.
- 
- Tomando $T=B$, llegamos a $\mu^\ast(B) = \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n)$, luego $\mu|_{\Sigma}$ es
- medida sobre $\Sigma$.
+ Es decir, $\Sigma$ es $\sigma$-álgebra. y $\mu|_{\Sigma}$ es medida sobre $\Sigma$.
  
 \end{proof}
 
@@ -348,54 +358,74 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 \begin{theorem} \textbf{Teorema de extensión de Caratheodory}
 
  Sea $S \subseteq 2^X$ un semianillo, $\mu:S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe
- una única medida $\bar{\mu}:\sigma(S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$
+ una medida $\bar{\mu}:\Sigma(S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$
 \end{theorem}
 
 \begin{proof}
- Si existiese $\bar{\mu}$ debería verificar, por monotonía, que $\bar{\mu}(T) \le \sum_{n=1}^{+\infty} \bar{\mu}(A_n)$, 
- donde $T \subseteq \cup_{n\ge 1} A_n$ y $A_n\in R$ son disjuntos.
+ Si existiese $\bar{\mu}$ debería verificar, por monotonía, $\bar{\mu}(T) \le \sum_{n=1}^{+\infty} \bar{\mu}(A_n)$, 
+ donde $T \subseteq \bigcup_{n\ge 1} A_n$. Esto nos da una idea de la prueba.
+ 
+ Por el teorema \ref{th:ext-semitoring}, podemos considerar $\mu$ como la extensión a $R(S)=R$.
  
  Definimos, para cualquier $T\in 2^X$:
  
- \[\mu^\ast(T) = \inf\left\{\sum_{n=1}^{+\infty} \mu(A_n), \cup_{n\ge 1} A_n \supseteq T,
-                 A_n\in S \forall n\in\mathbb{N}\right\}\]
-                 
+ \[\mu^\ast(T):= \inf\left\{\sum_{n=1}^{+\infty} \mu(A_n): \bigcup_{n\ge 1} A_n \supseteq T,
+                 A_n\in R \quad \forall n\in\mathbb{N}\right\}\]
+
+ donde por convención adoptamos $\inf \emptyset := +\infty$
+ 
  Vamos a ver que $\mu^\ast$ es medida exterior sobre $X$.
  
  Claramente, como $\mu \ge 0$, $\mu^\ast \ge 0$, y $\mu^\ast(\emptyset) = \mu(\emptyset) = 0$
  
- Dado $B\subseteq A \subseteq X$, tenemos que si $\cup_{n\ge 1} A_n \supseteq A$ con $A_n\in S \forall n\in\mathbb{N}$,
- entonces $\cup_{n\ge 1} A_n \supseteq B$ y de la definición de $\mu^\ast$ deducimos $\mu^\ast(A) \le \mu^\ast(B)$.
+ Dado $B\subseteq A \subseteq X$, tenemos que si $\bigcup_{n\ge 1} A_n \supseteq A$ con $A_n\in R$
+ entonces $\bigcup_{n\ge 1} A_n \supseteq B$ y de la definición de $\mu^\ast$ deducimos $\mu^\ast(A) \le \mu^\ast(B)$.
  Hemos probado la monotonía de $\mu^\ast$.
  
- Sean ahora $\{A_n\}$ subconjuntos de $X$, donde para cada $n\in \mathbb{N}$.
+ Sean ahora $A_n \subseteq X$, con $n\in \mathbb{N}$.
  
- Si existe $A_n$ tal que $\mu^\ast(A_n) = +\infty$, entonces por monotonía 
- $\mu^\ast(\cup_{n\ge} A_n) \ge \mu^\ast(A_n) = +\infty$, y por otro lado 
- $\sum_{n=1}^{+\infty} \mu^\ast(A_n) \ge \mu^\ast(A_n) = +\infty$, es decir:
+ Si existe $A_k$ tal que $\mu^\ast(A_k) = +\infty$, entonces $\mu^\ast(\cup_{n\ge} A_n) \ge \mu^\ast(A_k) = +\infty$, 
+ por monotonía, y por otro lado $\sum_{n=1}^{+\infty} \mu^\ast(A_n) \ge \mu^\ast(A_k) = +\infty$. Es decir:
 
  \[\mu^\ast(\cup_{n\ge} A_n) = \sum_{n=1}^{+\infty} \mu^\ast(A_n) = +\infty\]
  
  Caso de que para todo $n$ se tenga $\mu^\ast(A_n) < +\infty$, fijamos $\epsilon > 0$
  
  Dado$n\in \mathbb{N}$, por ser $\mu^\ast(A_n)$ un ínfimo, deben existir $\{A_p^n\}_{p\ge 1}$ con 
- $A_p^n \in S$ para cualquier $p\in\mathbb{N}$ verificando $\cup_{p\ge 1} \supseteq A_n$ y que
- $\sum_{p=1}^{+\infty} \le \mu^\ast(A_n) + \frac{\epsilon}{2^n}$
+ $A_p^n \in R$ para cualquier $p\in\mathbb{N}$ verificando $\cup_{p\ge 1} A_p^n \supseteq A_n$ y
+ $\sum_{p=1}^{+\infty} \mu^\ast(A_p^n) \le \mu^\ast(A_n) + \frac{\epsilon}{2^n}$
  
- Es decir, tenemos $\cup_{n\ge 1} \subseteq \cup_{n\ge 1} \cup_{p\ge 1} A_p^n$ unión numerable
+ Es decir, tenemos $\bigcup_{n\ge 1} A_n \subseteq \bigcup_{n\ge 1} \cup_{p\ge 1} A_p^n$ unión numerable
  de conjuntos $A_p^n$ de $S$, luego:
  
- \[\mu^\ast(\cup_{n\ge 1} A_n) \le \sum_{n=1}^{+\infty} \sum_{p=1}^{+\infty} \le 
-   \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \sum_{n=1}^{+\infty}\frac{\epsilon}{2^n} = 
+ \[\mu^\ast \left(\bigcup_{n\ge 1} A_n \right) \le \sum_{n=1}^{+\infty} \sum_{p=1}^{+\infty} \mu^\ast(A_p^n)
+   \le \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \sum_{n=1}^{+\infty}\frac{\epsilon}{2^n} = 
    \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \epsilon\]
  
  Pero $\epsilon > 0$ era arbitrario, es decir: 
- \[\mu^\ast(\cup_{n\ge 1} A_n) \le \sum_{n=1}^{+\infty}\mu^\ast(A_n)\]
+ \[\mu^\ast \left(\bigcup_{n\ge 1} A_n \right) \le \sum_{n=1}^{+\infty}\mu^\ast(A_n)\]
  
- Es decir $\mu^\ast$ es medida exterior en $X$, y podemos tomar $\bar{\mu}$ medida sobre $\Sigma(\mu^\ast)$ por
+ Es decir $\mu^\ast$ es medida exterior en $X$, y podemos tomar $\widetilde{\mu}$ medida sobre $\Sigma(\mu^\ast)$ por
  el teorema \ref{th:outer-to-measure}.
  
- Falta comprobar que $\bar{\mu}_{|\Sigma(S)}$ es medida sobre $\Sigma(S)$ y que es la única extensión posible de $\mu$.
+ Falta comprobar que $\bar{\mu} = \widetilde{\mu}_{|\Sigma(S)}$ es medida sobre $\Sigma(S)$. Basta ver que $S\in \Sigma(\mu^\ast)$,
+ y tendríamos $\Sigma(S) \subseteq \Sigma(\mu^\ast)$.
+ 
+ Dado $A\in R$, para todo $T\in 2^X$ arbitrario tenemos:
+ 
+ \[\mu^\ast(T) \le \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c)\]
+ 
+ Sea ahora $T_n \in R$ verificando $T\subseteq \bigcup_{n\ge 1} T_n$, entonces 
+ $T\cap A \subseteq \bigcup_{n\ge 1} T_n \cap A$ y $T\cap A \subseteq \bigcup_{n\ge 1} T_n \cap A^c$ con 
+ $A\cap T_n, A^c \cap T_n \in R$. Nótese que aquí estamos usando explícitamente que $R$ es anillo. Así:
+ 
+ \[\mu^\ast(T) \le \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c) \le \sum_{n=1}^{+\infty}\mu(T_n \cap A) + 
+ \sum_{n=1}^{+\infty} \mu(T_n \cap A^c) = \sum_{n=1}^{+\infty} \mu(T_n)\]
+ 
+ Donde fijado $\epsilon > 0$ podemos buscar $T_n \in R$ verificando $\sum_{n=1}^{+\infty} \mu(T_n) \le \mu^\ast(T) + \epsilon$, 
+ por estar definido $\mu^\ast$ como un ínfimo.
+ 
+ Luego $\mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c)$ y $A\in \Sigma(\mu^\ast)$
 \end{proof}
 
 
@@ -411,7 +441,7 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 
 \begin{definition} \textbf{Espacio de medida}
 
- Sea $(X, \Sigma)$ espacio medible, y $\mu: \Sigma \rightarrow [0,\infty]$ medida. A la tupla $(X, \Sigma, P)$ 
+ Sea $(X, \Sigma)$ espacio medible, y $\mu: \Sigma \rightarrow [0,+\infty]$ medida. A la tupla $(X, \Sigma, P)$ 
  la llamamos espacio de medida.
 \end{definition}
 
