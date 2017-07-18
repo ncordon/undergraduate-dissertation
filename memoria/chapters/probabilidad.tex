@@ -494,6 +494,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
 \end{proof}
 
 \begin{lemma} \textbf{Lema de Hoeffding}
+
  Sea $W$ una variable aleatoria con $a\le W \le b$ con $\expect(W) = 0$. Entonces para todo $\lambda > 0$:
  
  \[\expect(e^{\lambda W}) \le e^{\frac{\lambda^2(b-a)^2}{8}}\]
@@ -502,8 +503,46 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
 \end{lemma}
 
 \begin{proof}
+ Supongamos $a=0$ o $b=0$. Entonces la desigualdad se cumpliría ya que se tendría $P[W=0]=1$. Por
+ reducción al absurdo, en el caso $a=0$ si $P[W\ge 0] = 1$ y si se tuviera $P[W>0] > 0$ entonces $\mathbb{E}(W) > 0$.
+ El caso $b=0$ es análogo.
  
-\end{proof}
+ Con $a=0$ o $b=0$, tendríamos así $\expect(e^{\lambda W}) = \expect(1) = 1 = e^0 \le e^{\frac{\lambda^2 (b-a)^2}{8}}$, 
+ por ser la exponencial monótona. 
+ 
+ Supongamos pues en lo que sigue $a, b\neq 0$ (por tanto deberá ser $a < b$)
+ 
+ Por convexidad de $x\mapsto e^{\lambda x}$ con $a\le x \le b$, tenemos que:
+ 
+ \[e^{\lambda W} \le \frac{b-W}{b-a} e^{\lambda a} + \frac{W-a}{b-a}e^{\lambda b}\]
+
+ Tomando esperanzas en ambos términos:
+ 
+ \[\expect \left(e^{\lambda W}\right) \le \frac{b-\expect(W)}{b-a} e^{\lambda a} + 
+   \frac{\expect(W)-a}{b-a}e^{\lambda b} = \frac{b}{b-a} e^{\lambda a} - \frac{a}{b-a} e^{\lambda b}\]
+ 
+ Notando $t = \lambda(b-a), s = \frac{-a}{b-a}$, podemos definir $\varphi : \mathbb{R} \rightarrow \mathbb{R}$
+ dada por $\varphi(t) = -st + \log(1-s+se^t)$ y se tiene:
+ 
+ \[e^{\varphi(t)} = \frac{b}{b-a} e^{\lambda a} - \frac{a}{b-a} e^{\lambda b}\]
+ 
+ Basta por tanto probar que $e^{\varphi(t)} \le e^{t^2/8}$
+ 
+ Se tiene $1-s+se^t = 1 + \frac{a}{b-a} - \frac{a}{b-a} e^t = \frac{b}{a-b} - \frac{a}{b-a} e^t > 0$, por
+ ser $a< 0 < b$. Luego $\varphi\in \mathcal{C}^{\infty}$.
+ 
+ \begin{align*}
+  &\varphi(0) = 0 \\  
+  & \varphi'(0) = \left.-s + \frac{se^t}{1-s+se^t} \right|_{t=0} = -s + \frac{s}{1-s+s} = 0\\
+  & \varphi''(t) = \frac{se^t}{1-s+se^t} \left(1-\frac{se^t}{1-s+se^t}\right) = x(1-x) \le \frac{1}{4}
+ \end{align*}
+ 
+ Donde en la última desigualdad hemos usado que el polinomio $x-x^2$ un máximo en $x=\frac{1}{2}$.
+ 
+ Así, tomando $f(t) = \varphi(t) - \frac{1}{8}t^2$, tenemos que $f(0) = 0 = f'(0)$ y $f''(t) \le 0$. Es decir, 
+ $f'(t) \ge 0$ para todo $t<0$ y $f'(t) \le 0$ para todo $t > 0$, luego $f$ tiene un máximo en $t=0$. Por tanto
+ $f \le 0$ y $\varphi(t) \le \frac{1}{8} t^2$.
+ \end{proof}
 
 
 \begin{lemma} \textbf{Desigualdad de Hoeffding}
