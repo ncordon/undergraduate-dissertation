@@ -187,13 +187,13 @@ intersección es no vacía, porque $2^X \supseteq \mathcal{A}$ y $2^X$ es anillo
 
  \begin{enumerate}[i]
   \item $\mu(\emptyset) = 0$
-  \item $\mu$ es $\sigma$-aditiva: Dados $A_n \in \mathcal{A}$ disjuntos, entonces 
-   $\mu\left(\sum_{i=n}^{+\infty} A_n \right)= \sum_{i=n}^{+\infty} \mu(A_n)$.
+  \item $\mu$ es $\sigma$-aditiva: Dados $A_n \in \mathcal{A}$ disjuntos tales que $\sum_{i=1}^n A_i \in \mathcal{A}$, 
+  entonces \[\mu\left(\sum_{i=n}^{+\infty} A_n \right)= \sum_{i=n}^{+\infty} \mu(A_n)\]
  \end{enumerate}
 \end{definition}
 
 Nótese que la $\sigma$-aditividad implica aditividad finita, esto es, dados $A_i \in \mathcal{A}$ $i=1, \ldots n$,
-disjuntos, entonces $\mu\left(\sum_{i=1}^{n} A_i \right)= \sum_{i=1}^{n} \mu(A_i)$.
+disjuntos, tales que $\sum_{i=1}^n A_i \in \mathcal{A}$, entonces $\mu\left(\sum_{i=1}^{n} A_i \right)= \sum_{i=1}^{n} \mu(A_i)$.
 
 \begin{theorem}
  Sea $S$ semianillo en $X$, $\mu: S \rightarrow [0,+\infty]$ medida sobre $S$. Entonces existe una única medida 
@@ -460,18 +460,20 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 \end{definition}
 
 \begin{definition} \textbf{Espacio probabilístico producto}
- Sean $(X_i, \Sigma_i, P_i)$ con $i=1,2$ espacios probabilísticos. Entonces decimos que 
- $(X_1 \times X_2, \Sigma_1 \otimes \Sigma_2, \bar{P})$ es espacio probalístico producto si verifica:
+ Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios probabilísticos. Entonces decimos que 
+ $(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, \bar{P})$ es espacio probalístico 
+ producto si verifica:
  
  \begin{enumerate}[i]
-  \item $\Sigma_1 \otimes \Sigma_2 = \Sigma\left(\{A_1 \times A_2: A_i\in \Sigma_i\}\right)$
-  \item $\bar{P}(A_1 \times A_2) = P_1(A_1) \times P_2(A_2)$, con $A_i\in \Sigma_i$ arbitrarios.
+  \item $\Sigma_1 \otimes \ldots \otimes \Sigma_n = \Sigma\left(\{A_1 \times \ldots \times A_n: A_i\in \Sigma_i\}\right)$
+  \item $\bar{P}(A_1 \times \ldots \times A_n) = \prod_{i=1}^n P_i(A_i)$, con $A_i\in \Sigma_i$ arbitrarios.
  \end{enumerate}
 \end{definition}
 
-Siempre existe un espacio probabilístico producto por ser la clase de rectángulos de la forma $A_1 \times A_2$
-con $A_i$ conjunto $\Sigma_i$-medible un semianillo, tal y como se probó anteriormente, y en virtud del teorema
-de extensión de Caratheodory, \ref{th:caratheodory}.
+Siempre existe un espacio probabilístico producto por ser la clase de rectángulos de la forma 
+$A_1 \times A_2 \times \ldots \times A_n$ con $A_i$ conjunto $\Sigma_i$-medible, un semianillo. Lo probamos
+para $n=2$. Una obvia inducción nos dice que para $n$ arbitrario también es un semianillo. Además en virtud del
+teorema de extensión de Caratheodory, \ref{th:caratheodory} podemos definir $\bar{P}$ a partir de $P_i, i=1\ldots n$.
 
 \section{Desigualdades de concentración}
 Sea $(X,\Sigma,P)$ un espacio probabilístico en lo que sigue.
@@ -547,15 +549,56 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
 
 \begin{lemma} \textbf{Desigualdad de Hoeffding}
 
- Sean $(X_1, \ldots X_m)$ una muestra aleatoria simple de una variable $X$, 
- $\bar{X} = \frac{1}{m} \sum_{i=1}^m X_i$ con $E[\bar{X}] = \mu$ y $P[a \le X_i \le b] = 1, i=1, \ldots m$. 
- Entonces para todo $\epsilon > 0$
+ Sean $W_1, \ldots W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
+ $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\epsilon > 0$ arbitrario:
 
- \[P\left[\left| \bar{X} - \mu \right| > \epsilon \right] \le 2e^{-2m \left(\frac{\epsilon}{b-a}\right)^2}\]
+ \[P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \epsilon \right] \le 2e^{-2m^2 \frac{\epsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
+ 
+ En el caso particular $a_i = a$ y $b_i = b$ para todo $i=1, \ldots m$:
+ 
+ \[P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \epsilon \right] \le 2e^{-2m \left(\frac{\epsilon}{b-a}\right)^2}\]
+ 
  
  \label{ineq:hoeffding}
 \end{lemma}
 
 \begin{proof}
+ Llamamos $V_i = W_i - \expect(W_i)$. Nótese que $\overline{V} = \overline{W} - \expect(W)$
+ Aplicando monotonía de la función exponencial y la desigualdad de Markov \ref{ineq:markov}, tenemos que 
+ para todo $\epsilon, \lambda > 0$:
+ 
+ \[P[\overline{V} \ge \epsilon] = P[e^{\lambda\overline{V}} \ge e^{\lambda \epsilon}]
+ \le e^{-\lambda \epsilon} \expect(e^{\lambda \overline{V}})\]
+ 
+ Además como las $W_i$ eran independientes, $e^\lambda V_i$ lo son, y se tiene:
+ 
+ \[\expect(e^{\lambda V}) = \expect\left(\prod_{i=1}^m e^{\lambda V_i / m}\right) = \prod_{i=1}^m \expect(e^{\lambda V_i/m})\]
+ 
+ Además tenemos:
+ 
+ \begin{align*}
+  & \expect(V_i) = \expect(W_i) - \expect(\expect(W_i)) = \expect(W_i) - \expect(W_i) = 0  \\
+  & a_i-\expect(W_i) \le V_i \le b_i-\expect(W_i)
+ \end{align*}
+ 
+ Aplicando a cada $V_i$ el lema \ref{lemma:hoeffding}, llegamos a:
+ 
+ \[\expect(e^{\lambda V}) \le e^{-\lambda \epsilon} \cdot e^{\frac{\lambda^2 \sum_{i=1}^m(b_i-a_i)^2}{8m^2}} = 
+  e^{\frac{\lambda^2 \sum_{i=1}^m(b_i-a_i)^2}{8m^2} - \lambda\epsilon}\]
+ 
+ y el polinomio $q(\lambda)= \frac{\lambda^2}{8m^2} \sum_{i=1}^m(b_i-a_i)^2 - \lambda\epsilon$ se minimiza en 
+ $\lambda = \frac{4m^2\epsilon}{\sum_{i=1}^m(b_i-a_i)^2}$ deducimos:
+ 
+ \[P[\overline{V} \ge \epsilon] \le e^{-2m^2 \frac{\epsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
+ 
+ Análogamente se probaría:
+ 
+ \[P[-\overline{V} \ge \epsilon] \le e^{-2m^2 \frac{\epsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
+ 
+ 
+ y por subaditividad: 
+ 
+ \[P[|\overline{V}| > \epsilon] \le P[\overline{V} \ge \epsilon] + P[-\overline{V} \ge \epsilon]
+ \le 2e^{-2m^2 \frac{\epsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
  
 \end{proof}
