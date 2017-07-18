@@ -359,6 +359,8 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 
  Sea $S \subseteq 2^X$ un semianillo, $\mu:S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe
  una medida $\bar{\mu}:\Sigma(S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$
+ 
+ \label{th:caratheodory}
 \end{theorem}
 
 \begin{proof}
@@ -430,12 +432,12 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 
 
 
-\section{Espacio medible, de probabilidad}
+\section{Espacio probabilístico}
 
 \begin{definition} \textbf{Espacio medible}
 
  Sea $X$ un conjunto, $\Sigma$ una $\sigma$-álgebra sobre $X$. A la tupla $(X,\Sigma)$ la llamamos
- espacio medible. A los elementos de $\Sigma$ los llamamos conjuntos medibles.
+ espacio medible. A los elementos de $\Sigma$ los llamamos conjuntos $\Sigma$-medibles.
 \end{definition}
 
 
@@ -446,7 +448,7 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 \end{definition}
 
 
-\begin{definition} \textbf{Espacio de probabilidad}
+\begin{definition} \textbf{Espacio probabilístico}
  Sea $(X, \Sigma, P)$ espacio de medida. Entonces lo llamamos espacio de probabilidad si $P(\Sigma)\subseteq [0,1]$
 \end{definition}
 
@@ -457,8 +459,53 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  Si $\dist$ es distribución sobre $X$, lo notamos $x\sim \mathcal{D}$
 \end{definition}
 
+\begin{definition} \textbf{Espacio probabilístico producto}
+ Sean $(X_i, \Sigma_i, P_i)$ con $i=1,2$ espacios probabilísticos. Entonces decimos que 
+ $(X_1 \times X_2, \Sigma_1 \otimes \Sigma_2, \bar{P})$ es espacio probalístico producto si verifica:
+ 
+ \begin{enumerate}[i]
+  \item $\Sigma_1 \otimes \Sigma_2 = \Sigma\left(\{A_1 \times A_2: A_i\in \Sigma_i\}\right)$
+  \item $\bar{P}(A_1 \times A_2) = P_1(A_1) \times P_2(A_2)$, con $A_i\in \Sigma_i$ arbitrarios.
+ \end{enumerate}
+\end{definition}
+
+Siempre existe un espacio probabilístico producto por ser la clase de rectángulos de la forma $A_1 \times A_2$
+con $A_i$ conjunto $\Sigma_i$-medible un semianillo, tal y como se probó anteriormente, y en virtud del teorema
+de extensión de Caratheodory, \ref{th:caratheodory}.
 
 \section{Desigualdades de concentración}
+Sea $(X,\Sigma,P)$ un espacio probabilístico en lo que sigue.
+
+\begin{lemma} \textbf{Desigualdad de Markov}
+
+Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
+\[P[W \ge a] \le \frac{\expect(W)}{a}\]
+
+\label{ineq:markov}
+\end{lemma}
+
+\begin{proof}
+ Se verifica $a\mathds{1}_{[W\ge a]} \le W$. Tomando esperanzas en ambos lados (ya que la esperanza es no 
+ decreciente):
+ 
+ \[aP[W\ge a] = a\expect(\mathds{1}_{[W\ge a]}) \le \expect(a\mathds{1}_{[W\ge a]}) \le \expect(W)\]
+ 
+ de donde se deduce el resultado, dividiendo ambos miembros por $a$.
+\end{proof}
+
+\begin{lemma} \textbf{Lema de Hoeffding}
+ Sea $W$ una variable aleatoria con $a\le W \le b$ con $\expect(W) = 0$. Entonces para todo $\lambda > 0$:
+ 
+ \[\expect(e^{\lambda W}) \le e^{\frac{\lambda^2(b-a)^2}{8}}\]
+ 
+ \label{lemma:hoeffding}
+\end{lemma}
+
+\begin{proof}
+ 
+\end{proof}
+
+
 \begin{lemma} \textbf{Desigualdad de Hoeffding}
 
  Sean $(X_1, \ldots X_m)$ una muestra aleatoria simple de una variable $X$, 
@@ -466,4 +513,10 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  Entonces para todo $\epsilon > 0$
 
  \[P\left[\left| \bar{X} - \mu \right| > \epsilon \right] \le 2e^{-2m \left(\frac{\epsilon}{b-a}\right)^2}\]
+ 
+ \label{ineq:hoeffding}
 \end{lemma}
+
+\begin{proof}
+ 
+\end{proof}
