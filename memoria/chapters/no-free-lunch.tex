@@ -1,0 +1,85 @@
+\section{Teorema de No Free Lunch}
+Veamos que dado un algoritmo de aprendizaje no puede ser el óptimo para aprender todas las distribuciones.
+
+\begin{theorem}
+\textbf{Teorema de No Free Lunch}
+
+Sea $A$ cualquier algoritmo de aprendizaje para clasificación binaria con respecto a la función de pérdida 0-1 sobre el dominio $X$. Sea un conjunto de entrenamiento de tamaño $m < |X|/2$. Entonces existe una distribución $\mathcal{D}$ sobre $X \times \{0,1\}$ verificando:
+
+\begin{enumerate}
+\item Existe una función $f: X \rightarrow \{0,1\}$ con $L_{\mathcal{D}}(f)=0$
+\item $P_{S\sim \mathcal{D}^m} [L_{\mathcal{D}} (A(S)) \ge 1/8] \ge 1/7$
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Sea un conjunto de entrenamiento (consideramos un conjunto y no una secuencia) de tamaño $2m$, $C$. Hay $T = 2^{2m}$ posibilidades de etiquetado del conjunto, esto es, $T$ posibles hipótesis, $f_i: C\rightarrow \{0,1\}$, que vamos a extender a $X$ llamándolas $\bar{f}_i$ de forma que $\bar{f}_{i|C} = f_i$ y $\bar{f}_i(x) = 0 \quad \forall x\in X\setminus C$. Vamos a tomar para cada una de ellas una distribución $\mathcal{D}_i$ definida sobre $X \times \{0,1\}$ definida por:
+
+
+\[\forall (x,y)\in X \times \{0,1\} \qquad P_{Z\sim \mathcal{D}_i} [Z = (x,y)] = \left\{\begin{array}{ll}
+1/|C| & x \in C, y=f_i(x)\\
+0     & si \quad no
+\end{array}\right.\]
+
+Claramente $L_{\mathcal{D}_i}(f_i) = 0$. Tenemos distribuciones de probabilidad que sólo asignan toda la masa de probabilidad a la marginal en $X$ al conjunto $C$.
+
+Vamos a probar que:
+
+\[\exists i\in \{1, \ldots T\} : \mathbb{E}_{S\sim \mathcal{D}_i^m} [L_{\mathcal{D}_i} (A(S))] \ge \frac{1}{4}\]
+
+Fijamos $i \in \{1, \ldots T\}$. Hay $k = (2m)^m$ posibles tuplas de tamaño $m$, $S_{j}, j=1, \ldots k$ tomadas desde $C$. Siendo $S_j = (x_1, \ldots x_m)$ notamos $S_j^i = ((x_1, f_i(x_1)), \ldots, (x_m, f_i(x_m)))$. Cada $S_j$ tiene la misma probabilidad de ser nuestro conjunto de entrenamiento (extracción de $m$ valores con reemplazamiento desde el conjunto $C$), verificándose:
+
+\[\mathbb{E}_{S\sim \mathcal{D}_i^m} [L_{\mathcal{D}_i} (A(S))] = \frac{1}{k} \sum_{j=1}^k L_{\mathcal{D}_i} (A(S_j^i))\]
+
+Recordando que hemos llamado $k=(2m)^m$, $T=2^{2m}$, se tiene:
+
+\begin{align*}
+max_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\mathcal{D}_i} (A(S_j^i)) &\ge 
+       \frac{1}{T} \sum_{i=1}^{T} \frac{1}{k} \sum_{j=1}^{k}  L_{\mathcal{D}_i} (A(S_j^i))   =\\
+&=     \frac{1}{k} \sum_{j=1}^{k} \frac{1}{T} \sum_{i=1}^{T}  L_{\mathcal{D}_i} (A(S_j^i)) \ge\\
+&\ge min_{j \in \{1, \ldots k\}} \frac{1}{T} \sum_{i=1}^{T}  L_{\mathcal{D}_i} (A(S_j^i))
+\end{align*}
+
+
+Además fijado $j \in \{1,\ldots k\}$:
+
+Sean ${v_r}_{i=r}^p$ los elementos de $C$ no presentes en el conjunto de entrenamiento $S_j$. Claramente, como $|C|=2m$ y $|S_j| = m$ y puede tener elementos repetidos, $p \ge m$
+
+\[L_{\mathcal{D}_i} (A(S^i_j)) = \frac{1}{|C|} \sum_{x\in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}\]
+
+
+Por tanto:
+
+\begin{align*}
+\frac{1}{T} \sum_{i=1}^{T}  L_{\mathcal{D}_i} (A(S_j^i)) &\ge
+\frac{1}{T} \sum_{i=1}^{T}  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} \ge \\
+&\ge \frac{1}{2p} \sum_{r=1}^p \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} \ge \\
+&\ge \frac{1}{2} min_{r} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]}
+\end{align*}
+
+
+Como dado un $v_r$ cualquiera, $v_r \notin S_j$, y existen $f_i, f_{i'}$ que se diferencian justo en el elemento $v_r$, uno coincidirá con el valor en $v_r$ de $A(S_{j}^i) = A(S_{j}^{i'}$ y otro no:
+
+\[\frac{1}{2} \frac{1}{T} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} = \frac{1}{2} \frac{1}{T} \frac{T}{2} = \frac{1}{4}\]
+
+Y uniendo toda esta información:
+
+\[max_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\mathcal{D}_i} (A(S_j^i)) \ge \frac{1}{4}\]
+
+Sea $k = argmax_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\mathcal{D}_i} (A(S_j^i))$
+
+Si $\mathcal{D} = \mathcal{D}_k$ cumple la parte 2 del enunciado del teorema, es nuestra distribución buscada, y como función buscada en el apartado 1. podemos tomar $f=f_k$
+
+Como $L_{\mathcal{D}} (A(\cdot))$ puede ser vista como una variable aleatoria donde $S \sim \mathcal{D}^m$ y que toma valores en $[0,1]$, tenemos que tomando $Z = 1-L_{\mathcal{D}}(A(\cdot))$, $a=\frac{7}{8}$ en el lema previo llegamos a:
+
+\[P_{S\sim \mathcal{D}^m} \left(\frac{1}{8} \ge L_{\mathcal{D}}(A(S)) \right) \le \frac{3}{4} \cdot \frac{8}{7} = 24/28\]
+
+donde $\mathbb{E}(Z) = \mathbb{E} (1 - L_{\mathcal{D}}(A(\cdot))) = 1 - \mathbb{E} (L_{\mathcal{D}}(A(\cdot))) \le \frac{3}{4}$
+
+Es decir:
+
+\[P_{S\sim \mathcal{D}^m} \left( L_{\mathcal{D}}(A(S)) \ge \frac{1}{8} \right) \ge \frac{4}{28} = \frac{1}{7}\]
+\end{proof}
+
+
+Como consecuencia del teorema, podemos decir que no hay un algoritmo de aprendizaje óptimo para todas las distribuciones, puesto que para una dada por el resultado del teorema, el algoritmo ERM con $H = \{f\}$ aprendería mejor.
