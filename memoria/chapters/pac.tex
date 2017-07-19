@@ -7,15 +7,15 @@ siglas PAC derivan de Probablemente Aproximadamente Correcto.
 Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo 
 $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ verificando que para todo
-$0 < \epsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
-verdadero etiquetado $f\in H$, dados $m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
+$0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
+verdadero etiquetado $f\in H$, dados $m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$:
 
-\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \epsilon \bigg] \ge 1-\delta\]
+\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta\]
 
 \label{def:pac}
 \end{definition}
 
-Llamamos a $(1-\delta)$ \textbf{confianza} de la predicción y a $(1-\epsilon)$ \textbf{exactitud}. Estos dos parámetros 
+Llamamos a $(1-\delta)$ \textbf{confianza} de la predicción y a $(1-\varepsilon)$ \textbf{exactitud}. Estos dos parámetros 
 explican el nombre aproximadamente ($\equiv$ confianza) correcto ($\equiv$ exactitud).
 
 La definición de PAC cognoscibilidad nos exige que exista un algoritmo y una función a la que proporcionándole unos requisitos
@@ -23,44 +23,44 @@ de confianza y exactitud, nos indique un tamaño del conjunto de entrenamiento t
 distribución y etiquetado, siempre que le ofrezcamos como entrada un conjunto de entrenamiento que satisfaga los 
 requisitos de tamaño.
 
-Consideraremos $m_{H}$ única en el sentido de que para cada $(\delta, \epsilon)$ nos devuelva el menor natural
+Consideraremos $m_{H}$ única en el sentido de que para cada $(\delta, \varepsilon)$ nos devuelva el menor natural
 verificando las hipótesis del enunciado.
 
 \begin{theorem} \textbf{Las clases finitas son PAC cognoscibles}
 
 Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, es PAC cognoscible con:
 
-\[m_H(\epsilon, \delta) \le \left\lceil \frac{1}{\epsilon}log \left(\frac{|H|}{\delta} \right) \right\rceil\]
+\[m_H(\varepsilon, \delta) \le \left\lceil \frac{1}{\varepsilon}log \left(\frac{|H|}{\delta} \right) \right\rceil\]
 \end{theorem}
 
   \begin{proof}
-  Fijamos $\epsilon \in ]0,1[$. Sea una distribución $\mathcal{D}$ sobre $X$, $m\in \mathbb{N}$ y una función de verdadero 
+  Fijamos $\varepsilon \in ]0,1[$. Sea una distribución $\mathcal{D}$ sobre $X$, $m\in \mathbb{N}$ y una función de verdadero 
   etiquetado $f\in H$, tomamos la clase de hipótesis ``malas'':
 
-  \[H_B = \{h\in H: L_{\mathcal{D},f}(h) > \epsilon\}\]
+  \[H_B = \{h\in H: L_{\mathcal{D},f}(h) > \varepsilon\}\]
 
   Sea $A$ un $ERM_{H}$, entonces:
 
-  \[\mprob [L_{\mathcal{D},f}(A(S)) > \epsilon] \le \mprob 
+  \[\mprob [L_{\mathcal{D},f}(A(S)) > \varepsilon] \le \mprob 
   [\exists h\in H_B : L_S(h) = 0] \le \sum_{h\in H_B} P [L_S(h) = 0] \]
 
   La primera desigualdad viene dada por la proposición \ref{fact:ermh}. La segunda, por subaditividad, puesto que:
   
   \[\mprob [\exists h\in H_B : L_S(h) = 0] = \mprob \left(\underset{h\in H_B}{\bigcup} [L_S(h) = 0]\right)\]
 
-  Además, fijada $h\in H_B$, como $L_{\mathcal{D},f}(h) > \epsilon$:
+  Además, fijada $h\in H_B$, como $L_{\mathcal{D},f}(h) > \varepsilon$:
 
   \begin{align*}
   \mprob[L_S(h) = 0] = \mprob[h(x_i) = f(x_i), i =1,\ldots m\}] =\\
-  = \prod_{i=1}^m \prob[h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\epsilon)^m \le e^{-\epsilon m}
+  = \prod_{i=1}^m \prob[h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\varepsilon)^m \le e^{-\varepsilon m}
   \end{align*}
 
 
   Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $H_B \subseteq H$ dan lugar a:
 
-  \[\mprob[L_{\mathcal{D},f}(h_S) > \epsilon] \le |H|e^{-\epsilon m}\]
+  \[\mprob[L_{\mathcal{D},f}(h_S) > \varepsilon] \le |H|e^{-\varepsilon m}\]
   
-  Y basta acabar haciendo encontrando $m\in \mathbb{N}$ tal que $|H|e^{-\epsilon m} \le \delta$.
+  Y basta acabar haciendo encontrando $m\in \mathbb{N}$ tal que $|H|e^{-\varepsilon m} \le \delta$.
   \end{proof}
 
 ¿Hay ejemplos de clases infinitas PAC cognoscibles? La respuesta es afirmativa. Veamos un ejemplo.
@@ -93,7 +93,7 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, e
     todo $(x,1)\in S$. Por tanto $A(S) \subseteq R^\ast$, y se deduce $x \notin A(S)$ para 
     cualquier $(x,0)\in S$. Por tanto, $A$ es un ERM.
 
-    Fijamos $1 > \epsilon, \delta > 0$.
+    Fijamos $1 > \varepsilon, \delta > 0$.
 
     Tomamos los rectángulos:
     
@@ -102,25 +102,25 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, e
     R_3=[a,b] \times [c,d^{\ast}],   \qquad R_4=[a,b] \times [c^{\ast},d]     
     \end{align*}
  
-    verificándose $R_i \subseteq R^\ast$ y $L_{\mathcal{D},f}(R_i) \le \frac{\epsilon}{4}$. Llamamos 
+    verificándose $R_i \subseteq R^\ast$ y $L_{\mathcal{D},f}(R_i) \le \frac{\varepsilon}{4}$. Llamamos 
     $\bar{R}_i = R\setminus R_i$
     
     Supongamos s.p.g que $L_{\mathcal{D},f}(R_i) > 0$ para todo $i\in\{1,\ldots 4\}$ (caso opuesto 
     bastaría hacer la demostración para los rectángulos para los que no fuese nulo). Llamamos 
-    $\bar{\epsilon} = \max_i L_{\mathcal{D},f}(R_i)$ y $\widetilde{\epsilon} = \min_i L_{\mathcal{D},f}(R_i)$.
+    $\bar{\varepsilon} = \max_i L_{\mathcal{D},f}(R_i)$ y $\widetilde{\varepsilon} = \min_i L_{\mathcal{D},f}(R_i)$.
 
     Fijado $S\in (X\times Y)^m$, $R=A(S)$, supongamos $\forall i : R \cap \bar{R_i} \neq \emptyset$. Entonces:
 
     \[L_{\mathcal{D},f}(R) = \prob [h_R \neq f] \le \prob 
     \left(\underset{i}{\cup} [h_R \neq f] \cap \bar{R}_i\right) \le \prob \left(\underset{i}{\cup} 
-    \bar{R}_i\right) \le 4 \bar{\epsilon}\]
+    \bar{R}_i\right) \le 4 \bar{\varepsilon}\]
 
     La demostración acaba probando que:
 
     \[\mprob [\exists i : A(S)\cap \bar{R}_i = \emptyset] \le \sum_{i=1}^4 
-    \mprob[A(S)\cap \bar{R}_i = \emptyset] \le 4 \left(1-\widetilde{\epsilon} \right)^m \le 4e^{-\widetilde{\epsilon}m/4}\]
+    \mprob[A(S)\cap \bar{R}_i = \emptyset] \le 4 \left(1-\widetilde{\varepsilon} \right)^m \le 4e^{-\widetilde{\varepsilon}m/4}\]
 
-    y tomando $m > \frac{4}{\widetilde{\epsilon}} log \left( \frac{4}{\delta} \right)$ llegaríamos al resultado buscado.
+    y tomando $m > \frac{4}{\widetilde{\varepsilon}} log \left( \frac{4}{\delta} \right)$ llegaríamos al resultado buscado.
     \end{proof}
 \end{example}
 
@@ -167,10 +167,10 @@ Una clase $H$ es agnósticamente PAC (APAC) cognoscible respecto a $Z$ y a una f
 $l: H \times Z \rightarrow \mathbb{R}^{+}$ si existe una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo 
 $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow H$ verificando que si 
-$0 < \epsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ se verifica
-que dado $S\sim \mathcal{D}^m$, con $m\ge m_{H}(\epsilon, \delta)$ se tiene:
+$0 < \varepsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ se verifica
+que dado $S\sim \mathcal{D}^m$, con $m\ge m_{H}(\varepsilon, \delta)$ se tiene:
 
-\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \epsilon] \ge 1-\delta\]
+\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \varepsilon] \ge 1-\delta\]
 \end{definition}
 
 Nótese que en contraste con nuestra definición de PAC cognoscibilidad, el algoritmo $A$ podía devolver una 
@@ -225,10 +225,10 @@ en $2^X$).
 
 Una clase de funciones $H \subseteq 2^X$ es APAC cognoscible sii existen una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow 2^X$ verificando que para todo
-$0 < \epsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dados 
-$m \ge m_H(\epsilon, \delta)$ y $S\sim \mathcal{D}^m$:
+$0 < \varepsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dados 
+$m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$:
 
-\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) > \inf_{h\in H} L_D(h) + \epsilon] < \delta\]
+\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) > \inf_{h\in H} L_D(h) + \varepsilon] < \delta\]
 \end{definition}
 
 \subsubsection{Clasificación multiclase}

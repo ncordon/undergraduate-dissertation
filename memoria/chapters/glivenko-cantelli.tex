@@ -1,23 +1,23 @@
 \section{Clases de Glivenko-Cantelli}
 
-Empezamos definiendo lo que es un conjunto de entrenamiento $\epsilon$ representativo.
+Empezamos definiendo lo que es un conjunto de entrenamiento $\varepsilon$ representativo.
 
 \begin{definition*}
- Un conjunto de entrenamiento $S$ es $\epsilon$-representativo de una clase de hipótesis $H$ respecto a una
+ Un conjunto de entrenamiento $S$ es $\varepsilon$-representativo de una clase de hipótesis $H$ respecto a una
  distribución $\mathcal{D}$ y una función de pérdida $l$, si $\forall h\in H$ se tiene:
  
- \[|L_S(h) - L_{\dist}(h)| \le \epsilon\]
+ \[|L_S(h) - L_{\dist}(h)| \le \varepsilon\]
 \end{definition*}
 
 Intuitivamente, cualquier $ERM_H$ sobre $S$ sería un buen algoritmo de aprendizaje 
-si $S$ es $\epsilon$ representativo para cualquier $\epsilon \in ]0,1[$ y cualquier distribución. 
+si $S$ es $\varepsilon$ representativo para cualquier $\varepsilon \in ]0,1[$ y cualquier distribución. 
 Lo formalizamos con la siguiente proposición:
 
 \begin{fact}
- Si $S$ es $\epsilon$-representativo de $H$ con respecto a una distribución $\mathcal{D}$ y una función de 
+ Si $S$ es $\varepsilon$-representativo de $H$ con respecto a una distribución $\mathcal{D}$ y una función de 
  pérdida $l$, entonces se tiene:
  
- \[L_{\dist}(ERM(S)) \le \inf_{h\in H} L_{\dist}(h) + 2\epsilon\]
+ \[L_{\dist}(ERM(S)) \le \inf_{h\in H} L_{\dist}(h) + 2\varepsilon\]
  
  \label{fact:epsilon-rep}
 \end{fact}
@@ -25,12 +25,12 @@ Lo formalizamos con la siguiente proposición:
 \begin{proof}
  Sea $A$ un $ERM_H$
  
- $L_{\dist}(A(S)) \le L_S(A(S)) + \epsilon$ por ser $S$ $\epsilon$-representativa. Pero por definición de 
- $ERM_H$, $\inf_{h\in H} L_S(A(S)) + \epsilon \le \inf_{h\in H}L_S(h) + \epsilon$ y aplicando $\epsilon$-representatividad de nuevo:
+ $L_{\dist}(A(S)) \le L_S(A(S)) + \varepsilon$ por ser $S$ $\varepsilon$-representativa. Pero por definición de 
+ $ERM_H$, $\inf_{h\in H} L_S(A(S)) + \varepsilon \le \inf_{h\in H}L_S(h) + \varepsilon$ y aplicando $\varepsilon$-representatividad de nuevo:
  
- \[\inf_{h\in H} L_S(h) + \epsilon \le \inf_{h\in H} L_{\mathcal{D}}(h) + 2\epsilon\]
+ \[\inf_{h\in H} L_S(h) + \varepsilon \le \inf_{h\in H} L_{\mathcal{D}}(h) + 2\varepsilon\]
  
- En resumen: $L_{\dist}(A(S)) \le \inf_{h\in H} L_{\mathcal{D}}(h) + 2\epsilon$, para $A \in ERM_H$ arbitrario.
+ En resumen: $L_{\dist}(A(S)) \le \inf_{h\in H} L_{\mathcal{D}}(h) + 2\varepsilon$, para $A \in ERM_H$ arbitrario.
 \end{proof}
 
 
@@ -38,11 +38,11 @@ Lo formalizamos con la siguiente proposición:
 
 Decimos que una clase de hipótesis $H$ es de Glivenko-Cantelli, respecto a un dominio $Z$, y a 
 una función de pérdida $l$, si existe una función ${m_{H}^{CU}: ]0,1[^2 \rightarrow \mathbb{N}}$ 
-verificando que para todo $0 < \delta, \epsilon < 1$ y para toda distribución $\dist$ sobre $Z$, siendo 
-$S\sim \dist^m$ con $m \ge m_{H}^{CU}(\epsilon, \delta)$, 
+verificando que para todo $0 < \delta, \varepsilon < 1$ y para toda distribución $\dist$ sobre $Z$, siendo 
+$S\sim \dist^m$ con $m \ge m_{H}^{CU}(\varepsilon, \delta)$, 
 entonces:
 
-\[\mprob [\forall h\in H, |L_S(h) - L_{\dist}(h)| \le \epsilon] \ge 1-\delta\]
+\[\mprob [\forall h\in H, |L_S(h) - L_{\dist}(h)| \le \varepsilon] \ge 1-\delta\]
 \end{definition*}
 
 Análogamente a lo que ocurría en la definición \ref{def:pac}, podemos considerar $m_H^{CU}$ única, en el sentido de
@@ -53,24 +53,24 @@ que es la mínima función que satisface las hipótesis.
 \begin{theorem*}
 Sea $H$ una clase de hipótesis de Glivenko-Cantelli, respecto a $\mathcal{D}$ y función de pérdida $l$. 
 Entonces es APAC cognoscible con cualquier algoritmo $ERM_H$ y complejidad muestral
-$m(\epsilon, \delta) \le m_{H}^{UC} \left(\frac{\epsilon}{2}, \delta \right)$ 
+$m(\varepsilon, \delta) \le m_{H}^{UC} \left(\frac{\varepsilon}{2}, \delta \right)$ 
 \end{theorem*}
 
   \begin{proof}
   Sea $A$ un $ERM_H$ arbitrario, y $\dist$ una distribución arbitraria sobre $Z$.
-  Fijamos $m = m_{H}^{UC} \left(\frac{\epsilon}{2}, \delta \right)$.
+  Fijamos $m = m_{H}^{UC} \left(\frac{\varepsilon}{2}, \delta \right)$.
 
   Sea $S = (z_1, \ldots z_m)$ un conjunto de entrenamiento, verificando que: 
 
   \begin{equation}
-    \forall h\in H, |L_{S}(h)-L_{\dist}(h)| \le \frac{\epsilon}{2}
+    \forall h\in H, |L_{S}(h)-L_{\dist}(h)| \le \frac{\varepsilon}{2}
     \label{eq:gc-ineq}
   \end{equation}
 
-  Entonces $S$ es $\epsilon$ representativa para $\dist$ y $l$, y por proposición \ref{fact:epsilon-rep}:
+  Entonces $S$ es $\varepsilon$ representativa para $\dist$ y $l$, y por proposición \ref{fact:epsilon-rep}:
 
   \begin{equation}
-   L_{\dist}(A(S)) \le \inf_{h\in H} L_{\dist}(h) + \epsilon
+   L_{\dist}(A(S)) \le \inf_{h\in H} L_{\dist}(h) + \varepsilon
    \label{eq:gc-result}
   \end{equation}
 
@@ -83,18 +83,18 @@ $m(\epsilon, \delta) \le m_{H}^{UC} \left(\frac{\epsilon}{2}, \delta \right)$
 \begin{fact}
 Sea $H$ una clase de hipótesis finita, $Z$ un dominio y sea $l : H \times Z \rightarrow [a,b]$ una función de pérdida. Entonces $H$ verifica la propiedad de convegencia uniforme con: 
 
-\[m_{H}^{CU}(\epsilon, \delta) \le \left\lfloor \frac{log(2|H|/\delta)(b-a)^2}{2\epsilon^2} \right\rfloor + 1\]
+\[m_{H}^{CU}(\varepsilon, \delta) \le \left\lfloor \frac{log(2|H|/\delta)(b-a)^2}{2\varepsilon^2} \right\rfloor + 1\]
 \end{fact}
   \begin{proof}
   Sea $H$ una clase de hipótesis finita.
 
-  Fijamos $0 < \delta, \epsilon < 1$. Necesitamos encontrar $m\in \mathbb{N}$ verificando:
+  Fijamos $0 < \delta, \varepsilon < 1$. Necesitamos encontrar $m\in \mathbb{N}$ verificando:
 
-  \[P_{S\sim \mathcal{D}^m} [\exists h\in H |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] < \delta\]
+  \[P_{S\sim \mathcal{D}^m} [\exists h\in H |L_S(h) - L_{\mathcal{D}}(h)| > \varepsilon] < \delta\]
 
   Partimos de la siguiente desigualdad, que usaremos más adelante, obtenida por subaditividad:
 
-  \[P [\exists h\in H |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le \sum_{h \in H} P [|L_S(h) - L_{\mathcal{D}}(h)| > \epsilon]\]
+  \[P [\exists h\in H |L_S(h) - L_{\mathcal{D}}(h)| > \varepsilon] \le \sum_{h \in H} P [|L_S(h) - L_{\mathcal{D}}(h)| > \varepsilon]\]
   Fijamos $h \in H$.
 
   Dado un conjunto de entrenamiento $S_z = (z_1, \ldots z_m)$, recordamos que $L_{\mathcal{D}} (h) = \mathbb{E}_{z\sim \mathcal{D}} [l(h,z)]$ y que $L_{S_z}(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i)$
@@ -103,13 +103,13 @@ Sea $H$ una clase de hipótesis finita, $Z$ un dominio y sea $l : H \times Z \ri
 
   Por tanto:
 
-  \[P \left[\left| \frac{1}{m} \sum_{i=1}^m X_i - L_{\mathcal{D}} (h) \right| > \epsilon\right] = P [|L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2}\]
+  \[P \left[\left| \frac{1}{m} \sum_{i=1}^m X_i - L_{\mathcal{D}} (h) \right| > \varepsilon\right] = P [|L_S(h) - L_{\mathcal{D}}(h)| > \varepsilon] \le 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2}\]
 
   Y por tanto:
 
-  \[P [\exists h\in H |L_S(h) - L_{\mathcal{D}}(h)| > \epsilon] \le |H| 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2}\]
+  \[P [\exists h\in H |L_S(h) - L_{\mathcal{D}}(h)| > \varepsilon] \le |H| 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2}\]
 
-  Despejando $m$ para que $|H| 2e^{-2m \left( \frac{\epsilon}{b-a} \right)^2} < \delta$ llegamos al resultado buscado.
+  Despejando $m$ para que $|H| 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2} < \delta$ llegamos al resultado buscado.
   \end{proof}
 
 Recordemos hasta ahora el resultado que habíamos obtenido era su carácter PAC cognoscible, donde 
@@ -122,7 +122,7 @@ generaliza el resultado para cualquier funciones de pérdida acotada.
 
 Sea $H$ una clase de hipótesis finita, $Z$ un dominio y sea $l : H \times Z \rightarrow [a,b]$ una función de pérdida. Entonces $H$ es PAC cognoscible con complejidad muestral:
 
-\[m_{H}( \epsilon, \delta ) \le \left\lceil \frac{2 log(2|H|/\delta)(b-a)^2}{\epsilon^2} \right\rceil\]
+\[m_{H}( \varepsilon, \delta ) \le \left\lceil \frac{2 log(2|H|/\delta)(b-a)^2}{\varepsilon^2} \right\rceil\]
 \end{theorem*}
   \begin{proof}
   Es trivial desde el anterior teorema y el hecho de que convergencia uniforme implica ser agnósticamente PAC cognoscible

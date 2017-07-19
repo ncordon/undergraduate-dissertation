@@ -62,13 +62,14 @@ a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyse
 Damos un ejemplo de semianillo:
 
 \begin{example}
- \begin{definition}
+ \label{ex:rectangulos}
+ \begin{definition*}
   Sean $X_1, X_2$ conjuntos, $\Sigma_i$ $\sigma$-álgebra sobre $A_i$. 
   
   Dados $A_1 \in \Sigma_1, A_2 \in \Sigma_2$ arbitrarios, definimos el rectángulo de lados $A_1$ y $A_2$ como:
   
   \[Rec(A_1, A_2) = A_1 \times A_2\]
- \end{definition}
+ \end{definition*}
  
  
  La clase de rectángulos $Rec = \{Rec(A_1, A_2): A_i \in \Sigma_i\}$ es un semianillo en $X_1 \times X_2$,
@@ -332,22 +333,22 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  la igualdad.
  
  Si $\mu^\ast(T) < +\infty$, tenemos $\mu^\ast(T) \ge \mu^\ast(T\cap \bar{B}_k) = \sum_{n=1}^k \mu^\ast(T\cap B_n)$
- para $k$ arbitrario, y por tanto $\mu^\ast(T) \ge \sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n)$. Fijado $\epsilon > 0$
+ para $k$ arbitrario, y por tanto $\mu^\ast(T) \ge \sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n)$. Fijado $\varepsilon > 0$
  existe $M\in \mathbb{N}$ verificando que para todo $N\ge M$:
  
- \[\sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n) \le \sum_{n=1}^N \mu^\ast(T\cap B_n) + \epsilon = 
-   \mu^\ast(T\cap \bar{B}_N) + \epsilon\]
+ \[\sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n) \le \sum_{n=1}^N \mu^\ast(T\cap B_n) + \varepsilon = 
+   \mu^\ast(T\cap \bar{B}_N) + \varepsilon\]
  
  Es decir, tendríamos:
  
  \begin{align*}
   \mu^\ast(T) &=   \mu^\ast(T\cap B^c + T\cap B) \le \mu^\ast(T\cap B^c) + \mu^\ast(T\cap B) \le \\
               &\le \mu^\ast(T\cap B^c) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n) \le \\
-              &\le \mu^\ast(T\cap \bar{B}_N^c) + \mu^\ast(T\cap \bar{B}_N) + \epsilon
-                =  \mu^\ast(T) + \epsilon
+              &\le \mu^\ast(T\cap \bar{B}_N^c) + \mu^\ast(T\cap \bar{B}_N) + \varepsilon
+                =  \mu^\ast(T) + \varepsilon
  \end{align*}
 
- Pero $\epsilon > 0$ era arbitrario, luego $\mu^\ast(T) = \mu^\ast(T\cap B^c) + \mu^\ast(T\cap B)$ y tomando 
+ Pero $\varepsilon > 0$ era arbitrario, luego $\mu^\ast(T) = \mu^\ast(T\cap B^c) + \mu^\ast(T\cap B)$ y tomando 
  $T=B$, se deduce también que $\mu^\ast(B) = \sum_{n=1}^{+\infty}\mu^\ast(B_n)$.
  
  Es decir, $\Sigma$ es $\sigma$-álgebra. y $\mu|_{\Sigma}$ es medida sobre $\Sigma$.
@@ -391,20 +392,20 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 
  \[\mu^\ast(\cup_{n\ge} A_n) = \sum_{n=1}^{+\infty} \mu^\ast(A_n) = +\infty\]
  
- Caso de que para todo $n$ se tenga $\mu^\ast(A_n) < +\infty$, fijamos $\epsilon > 0$
+ Caso de que para todo $n$ se tenga $\mu^\ast(A_n) < +\infty$, fijamos $\varepsilon > 0$
  
  Dado$n\in \mathbb{N}$, por ser $\mu^\ast(A_n)$ un ínfimo, deben existir $\{A_p^n\}_{p\ge 1}$ con 
  $A_p^n \in R$ para cualquier $p\in\mathbb{N}$ verificando $\cup_{p\ge 1} A_p^n \supseteq A_n$ y
- $\sum_{p=1}^{+\infty} \mu^\ast(A_p^n) \le \mu^\ast(A_n) + \frac{\epsilon}{2^n}$
+ $\sum_{p=1}^{+\infty} \mu^\ast(A_p^n) \le \mu^\ast(A_n) + \frac{\varepsilon}{2^n}$
  
  Es decir, tenemos $\bigcup_{n\ge 1} A_n \subseteq \bigcup_{n\ge 1} \cup_{p\ge 1} A_p^n$ unión numerable
  de conjuntos $A_p^n$ de $S$, luego:
  
  \[\mu^\ast \left(\bigcup_{n\ge 1} A_n \right) \le \sum_{n=1}^{+\infty} \sum_{p=1}^{+\infty} \mu^\ast(A_p^n)
-   \le \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \sum_{n=1}^{+\infty}\frac{\epsilon}{2^n} = 
-   \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \epsilon\]
+   \le \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \sum_{n=1}^{+\infty}\frac{\varepsilon}{2^n} = 
+   \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \varepsilon\]
  
- Pero $\epsilon > 0$ era arbitrario, es decir: 
+ Pero $\varepsilon > 0$ era arbitrario, es decir: 
  \[\mu^\ast \left(\bigcup_{n\ge 1} A_n \right) \le \sum_{n=1}^{+\infty}\mu^\ast(A_n)\]
  
  Es decir $\mu^\ast$ es medida exterior en $X$, y podemos tomar $\widetilde{\mu}$ medida sobre $\Sigma(\mu^\ast)$ por
@@ -424,7 +425,7 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  \[\mu^\ast(T) \le \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c) \le \sum_{n=1}^{+\infty}\mu(T_n \cap A) + 
  \sum_{n=1}^{+\infty} \mu(T_n \cap A^c) = \sum_{n=1}^{+\infty} \mu(T_n)\]
  
- Donde fijado $\epsilon > 0$ podemos buscar $T_n \in R$ verificando $\sum_{n=1}^{+\infty} \mu(T_n) \le \mu^\ast(T) + \epsilon$, 
+ Donde fijado $\varepsilon > 0$ podemos buscar $T_n \in R$ verificando $\sum_{n=1}^{+\infty} \mu(T_n) \le \mu^\ast(T) + \varepsilon$, 
  por estar definido $\mu^\ast$ como un ínfimo.
  
  Luego $\mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c)$ y $A\in \Sigma(\mu^\ast)$
@@ -460,20 +461,54 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 \end{definition}
 
 \begin{definition} \textbf{Espacio probabilístico producto}
- Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios probabilísticos. Entonces decimos que 
- $(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, \bar{P})$ es espacio probalístico 
- producto si verifica:
+ Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios probabilísticos. Entonces decimos que:
+ \[(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, P)\] es
+ espacio probalístico producto si verifica:
  
  \begin{enumerate}[i]
   \item $\Sigma_1 \otimes \ldots \otimes \Sigma_n = \Sigma\left(\{A_1 \times \ldots \times A_n: A_i\in \Sigma_i\}\right)$
-  \item $\bar{P}(A_1 \times \ldots \times A_n) = \prod_{i=1}^n P_i(A_i)$, con $A_i\in \Sigma_i$ arbitrarios.
+  \item $P(A_1 \times \ldots \times A_n) = \prod_{i=1}^n P_i(A_i)$, con $A_i\in \Sigma_i$ arbitrarios.
  \end{enumerate}
 \end{definition}
 
-Siempre existe un espacio probabilístico producto por ser la clase de rectángulos de la forma 
-$A_1 \times A_2 \times \ldots \times A_n$ con $A_i$ conjunto $\Sigma_i$-medible, un semianillo. Lo probamos
-para $n=2$. Una obvia inducción nos dice que para $n$ arbitrario también es un semianillo. Además en virtud del
-teorema de extensión de Caratheodory, \ref{th:caratheodory} podemos definir $\bar{P}$ a partir de $P_i, i=1\ldots n$.
+El siguiente teorema nos dice que siempre podemos definir un espacio probabilístico producto.
+
+\begin{theorem}
+ Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios probabilísticos. Entonces existe un espacio probabilístico
+ producto \[(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, P)\].
+\end{theorem}
+
+\begin{proof}
+ Sea $S$ la clase de rectángulos de la forma $A_1 \times A_2 \times \ldots \times A_n$ con $A_i$ conjunto 
+ $\Sigma_i$-medible, un semianillo. Lo probamos para $n=2$ en la sección \ref{ex:rectangulos} (por inducción es 
+ extensible a $n$ arbitrario). Haremos la demostración para $n=2$. Una obvia inducción en $n$ nos da el 
+ resultado prara $n$ mayor que 2.
+ 
+ Veamos que $P:S \rightarrow [0,+\infty]$ definida como $P(A\times B) = P_1(A) P_2(B)$ es medida sobre $S$.
+ Claramente $P(\emptyset) = P_1(\emptyset)P_2(\emptyset) = 0$
+ 
+ Falta comprobar que dados $A_n \times B_n \in S$ verificando $\sum_{n=1}^{+\infty} A_n\times B_n \in S$,
+ es decir, $\sum_{n=1}^{+\infty} A_n\times B_n = A\times B$, con $A \in \Sigma_1$, $B \in \Sigma_2$, entonces
+ 
+ \[P(A\times B) = \sum_{n=1}^{+\infty} P_1(A_n) P_2(B_n)\]
+ 
+ Para cualquier $(x,y) \in X_1 \times X_2$, se tiene:
+ 
+ \[\mathds{1}_{A\times B}(x,y) = \mathds{1}_{A}(x)\cdot \mathds{1}_B(y) = \sum_{n=1}^{+\infty} 
+ \mathds{1}_{A_n\times B_n}(x,y) = \sum_{n=1}^{+\infty} \mathds{1}_{A_n}(x) \mathds{1}_{B_n}(y) \] 
+ 
+ Fijado $y\in X_2$, como $\left\{\sum_{i=1}^{n} \mathds{1}_{A_i}\mathds{1}_{B_i}(y)\right\}_n \nearrow \mathds{1}_A \mathds{1}_B(y)$ 
+ puntualmente, por el teorema de la convergencia monótona, integrando sobre la $x$ en $X_1$:
+ 
+ \[\sum_{n=1}^{+\infty} P_1(A_n)\mathds{1}_{B_n}(y) = P_1(A) \mathds{1}_B(y)\]
+ 
+ Integrando ahora sobre la $y$ en $X_2$ llegamos a:
+ 
+ \[\sum_{n=1}^{+\infty} P_1(A_n) P_2(B_n) = P(A) P(B)\]
+ 
+ En virtud del teorema \ref{th:caratheodory} de extensión de Caratheodory, como tenemos $S$ semianillo en 
+ $X_1\times X_2$ y $P$ una medida en $S$, existe el espacio probabilístico producto.
+\end{proof}
 
 \section{Desigualdades de concentración}
 Sea $(X,\Sigma,P)$ un espacio probabilístico en lo que sigue.
@@ -550,13 +585,13 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
 \begin{lemma} \textbf{Desigualdad de Hoeffding}
 
  Sean $W_1, \ldots W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
- $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\epsilon > 0$ arbitrario:
+ $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\varepsilon > 0$ arbitrario:
 
- \[P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \epsilon \right] \le 2e^{-2m^2 \frac{\epsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
+ \[P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \varepsilon \right] \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
  
  En el caso particular $a_i = a$ y $b_i = b$ para todo $i=1, \ldots m$:
  
- \[P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \epsilon \right] \le 2e^{-2m \left(\frac{\epsilon}{b-a}\right)^2}\]
+ \[P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \varepsilon \right] \le 2e^{-2m \left(\frac{\varepsilon}{b-a}\right)^2}\]
  
  
  \label{ineq:hoeffding}
@@ -565,10 +600,10 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
 \begin{proof}
  Llamamos $V_i = W_i - \expect(W_i)$. Nótese que $\overline{V} = \overline{W} - \expect(W)$
  Aplicando monotonía de la función exponencial y la desigualdad de Markov \ref{ineq:markov}, tenemos que 
- para todo $\epsilon, \lambda > 0$:
+ para todo $\varepsilon, \lambda > 0$:
  
- \[P[\overline{V} \ge \epsilon] = P[e^{\lambda\overline{V}} \ge e^{\lambda \epsilon}]
- \le e^{-\lambda \epsilon} \expect(e^{\lambda \overline{V}})\]
+ \[P[\overline{V} \ge \varepsilon] = P[e^{\lambda\overline{V}} \ge e^{\lambda \varepsilon}]
+ \le e^{-\lambda \varepsilon} \expect(e^{\lambda \overline{V}})\]
  
  Además como las $W_i$ eran independientes, $e^\lambda V_i$ lo son, y se tiene:
  
@@ -583,22 +618,22 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  
  Aplicando a cada $V_i$ el lema \ref{lemma:hoeffding}, llegamos a:
  
- \[\expect(e^{\lambda V}) \le e^{-\lambda \epsilon} \cdot e^{\frac{\lambda^2 \sum_{i=1}^m(b_i-a_i)^2}{8m^2}} = 
-  e^{\frac{\lambda^2 \sum_{i=1}^m(b_i-a_i)^2}{8m^2} - \lambda\epsilon}\]
+ \[\expect(e^{\lambda V}) \le e^{-\lambda \varepsilon} \cdot e^{\frac{\lambda^2 \sum_{i=1}^m(b_i-a_i)^2}{8m^2}} = 
+  e^{\frac{\lambda^2 \sum_{i=1}^m(b_i-a_i)^2}{8m^2} - \lambda\varepsilon}\]
  
- y el polinomio $q(\lambda)= \frac{\lambda^2}{8m^2} \sum_{i=1}^m(b_i-a_i)^2 - \lambda\epsilon$ se minimiza en 
- $\lambda = \frac{4m^2\epsilon}{\sum_{i=1}^m(b_i-a_i)^2}$ deducimos:
+ y el polinomio $q(\lambda)= \frac{\lambda^2}{8m^2} \sum_{i=1}^m(b_i-a_i)^2 - \lambda\varepsilon$ se minimiza en 
+ $\lambda = \frac{4m^2\varepsilon}{\sum_{i=1}^m(b_i-a_i)^2}$ deducimos:
  
- \[P[\overline{V} \ge \epsilon] \le e^{-2m^2 \frac{\epsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
+ \[P[\overline{V} \ge \varepsilon] \le e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
  
  Análogamente se probaría:
  
- \[P[-\overline{V} \ge \epsilon] \le e^{-2m^2 \frac{\epsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
+ \[P[-\overline{V} \ge \varepsilon] \le e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
  
  
  y por subaditividad: 
  
- \[P[|\overline{V}| > \epsilon] \le P[\overline{V} \ge \epsilon] + P[-\overline{V} \ge \epsilon]
- \le 2e^{-2m^2 \frac{\epsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
+ \[P[|\overline{V}| > \varepsilon] \le P[\overline{V} \ge \varepsilon] + P[-\overline{V} \ge \varepsilon]
+ \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
  
 \end{proof}
