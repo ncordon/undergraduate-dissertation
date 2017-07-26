@@ -5,18 +5,19 @@ siglas PAC derivan de Probablemente Aproximadamente Correcto.
 \begin{definition} \textbf{PAC cognoscible}
 
 Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen una función 
-$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y un algoritmo 
+$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y 
 $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ verificando que para todo
 $0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
-verdadero etiquetado $f\in H$, dados $m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$:
+verdadero etiquetado $f\in H$, dados $m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$, entonces:
 
 \[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta\]
 
 \label{def:pac}
 \end{definition}
 
-Llamamos a $(1-\delta)$ \textbf{confianza} de la predicción y a $(1-\varepsilon)$ \textbf{exactitud}. Estos dos parámetros 
-explican el nombre aproximadamente ($\equiv$ confianza) correcto ($\equiv$ exactitud).
+Llamamos \textbf{algoritmo de aprendizaje} a $A$, a $(1-\delta)$ \textbf{confianza} de la predicción y 
+a $(1-\varepsilon)$ \textbf{exactitud}. Estos dos últimos parámetros explican el nombre aproximadamente 
+($\equiv$ confianza) correcto ($\equiv$ exactitud).
 
 La definición de PAC cognoscibilidad nos exige que exista un algoritmo y una función a la que proporcionándole unos requisitos
 de confianza y exactitud, nos indique un tamaño del conjunto de entrenamiento tal que el algoritmo pueda aproximar cualquier
@@ -31,6 +32,7 @@ verificando las hipótesis del enunciado.
 Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, es PAC cognoscible con:
 
 \[m_H(\varepsilon, \delta) \le \left\lceil \frac{1}{\varepsilon}log \left(\frac{|H|}{\delta} \right) \right\rceil\]
+\label{th:finitas-pac}
 \end{theorem}
 
   \begin{proof}
