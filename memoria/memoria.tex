@@ -68,7 +68,8 @@
 }
 
 % arg min
-\DeclareMathOperator*{\argmin}{arg\,min }
+\DeclareMathOperator*{\argmin}{arg\,\min }
+\DeclareMathOperator*{\argmax}{arg\,\max }
 
 % norma || ||
 \newcommand{\norm}[1]{||{#1}||}
@@ -79,6 +80,8 @@
 \newcommand{\zprob}{\underset{z\sim \mathcal{D}}{P}}
 \newcommand{\dist}{\mathcal{D}}
 \newcommand{\expect}{\mathbb{E}}
+\newcommand{\mexpecti}[1]{\underset{S\sim \mathcal{D}_{#1}^m}{\mathbb{E}}}
+\newcommand{\mexpect}{\underset{S\sim \mathcal{D}^m}{\mathbb{E}}}
 
 % *************************************************************************************************************
 % Otras configuraciones
