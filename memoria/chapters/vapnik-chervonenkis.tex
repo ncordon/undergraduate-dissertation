@@ -62,8 +62,10 @@ Sea $H \subseteq 2^X$. Definimos su dimensión Vapnik-Chervonenkis, que abreviar
 
 Sea $H_{thr} = \{h_a = \mathds{1}_{[-\infty, a]}: a\in \mathbb{R}\}$ clase de hipótesis sobre $\mathbb{R}$. 
 
-Dado un conjunto $C=\{\alpha\}$, podemos tomar $h_{\alpha}$ y $h_{\alpha+1}$, que nos dan todos los posibles etiquetados de $C$.
-Sin embargo, dado un conjunto de tamaño 2, $C=\{\alpha, \beta\}$, donde podemos suponer spg. $\alpha < \beta$. Entonces no podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=0$ y $h_b(\beta) = 1$, ya que esto implicaría que $b > \beta$ y por tanto entraría en contradicción con que $h_b(\alpha) = 0$
+Dado un conjunto $C=\{\alpha\}$, podemos tomar $h_{\alpha}$ y $h_{\alpha+1}$, que nos dan todos los posibles etiquetados de
+$C$. Sin embargo, dado un conjunto de tamaño 2, $C=\{\alpha, \beta\}$, donde podemos suponer spg. $\alpha < \beta$. 
+Entonces no podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=0$ y $h_b(\beta) = 1$, ya que esto implicaría que 
+$b > \beta$ y por tanto entraría en contradicción con que $h_b(\alpha) = 0$.
 
 Hemos probado $VC(H) = 1$.
 
@@ -73,11 +75,33 @@ Hemos probado $VC(H) = 1$.
 
 Sea $H^1_{rec} = \{h_{a,b} = \mathds{1}_{[a,b]}: a,b\in \mathbb{R}\}$ clase de hipótesis sobre $\mathbb{R}$. 
 
-Dado un conjunto $C=\{\alpha\, \beta\}$, con $\alpha < \beta$, las hipótesis $h_{\alpha+\delta_1, \beta + \delta_2}$ con $\delta_i \in \{0,1\}$ nos dan todos los posibles etiquetados de $C$.
-Sin embargo, dado un conjunto de tamaño 3, $C=\{\alpha, \beta\, \theta\}$, donde podemos suponer $\alpha < \beta < \theta$. Entonces no podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=1$ y $h_b(\theta) = 1$ y $h_b(\beta) = 0$
+Dado un conjunto $C=\{\alpha\, \beta\}$, con $\alpha < \beta$, las hipótesis $h_{\alpha+\delta_1, \beta + \delta_2}$ con 
+$\delta_i \in \{0,1\}$ nos dan todos los posibles etiquetados de $C$. Sin embargo, dado un conjunto de tamaño 3, 
+$C=\{\alpha, \beta\, \theta\}$, donde podemos suponer $\alpha < \beta < \theta$. Entonces no podemos encontrar $h_b \in H$ 
+verificando $h_b(\alpha)=1$ y $h_b(\theta) = 1$ y $h_b(\beta) = 0$.
 
 Por tanto $VC(H) = 2$.
 \end{example}
+
+\begin{example}
+
+Sea $H^2_{rec} = \{h_{a,b,c,d} = \mathds{1}_{[a,b]\times [c,d]}: a,b,c,d\in \mathbb{R}\}$ clase de hipótesis sobre 
+$\mathbb{R}^2$.
+
+Podemos fragmentar el conjunto $C = \{(0,1), (0,-1), (1,0), (-1,0)\}$
+
+\img{./imgs/rect-vc.png}{0.7}
+
+Luego $VC(H^2_{rec}) \ge 4$. Veamos que $VC(H^2_{rec}) = 4$.
+
+Sea $C\subseteq \mathbb{R}^2$ con $|C|=5$. Entonces podemos 
+tomar $x_1 \in C$ punto más a la izquierda de $C$ (primera coordenada más pequeña), $x_2 \in C$ punto más a la derecha de 
+$C$, $x_3 \in C$ punto más arriba en $C$ (segunda coordenada más grande), $x_4 \in C$ punto más abajo en $C$. Se podría 
+tener $x_i = x_j$ para algún $i\neq j$. Si tenemos un rectángulo que contiene a dichos puntos, debe necesariamente contenerlos
+a todos.
+\end{example}
+
+
 
 \begin{fact} \textbf{Propiedades de la dimensión VC}
 
@@ -87,8 +111,22 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
  \item $VC(H) \le log_2(|H|)$.
  \item Si $H_1 \subseteq H_2$ entonces $VC(H_1) \le VC(H_2)$.
 \end{enumerate}
-
 \end{fact}
+
+\begin{proof} \\~
+ \begin{enumerate}[i]
+  \item Equivalentemente, veamos $2^{VC(H)} \le |H|$. Si $VC(H) < \infty$, entonces $H$ fragmenta un conjunto de tamaño
+  $VC(H)$, a saber, $A$, y por tanto deben existir tantos elementos en $H$ al menos como subconjuntos de $A$. El número de
+  subconjuntos de $A$ viene dado por $2^{|A|} = 2^{VC(H)}$. 
+  
+  Si $VC(H) = \infty$, entonces $|H| = \infty$, ya que para cada 
+  $n\in \mathbb{N}$ podríamos fragmentar con $H$ un conjunto de tamaño $n$, y por tanto $H$ debería tener al menos $2^n$ 
+  elementos.
+  \item Si $H_1$ fragmenta un conjunto de tamaño $VC(H_1)$, entonces $H_2$ también fragmenta ese mismo conjunto puesto que
+  $H_1 \subseteq H_2$. Por tanto $VC(H_1) \le VC(H_2)$.
+ \end{enumerate}
+\end{proof}
+
 
 \subsubsection{Dimensión VC y número de parámetros}
 
