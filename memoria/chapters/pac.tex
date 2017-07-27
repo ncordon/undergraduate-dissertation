@@ -84,7 +84,7 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$, bajo hipótesis de factibilidad, e
   \end{fact}
 
     \begin{proof}
-    Haremos la prueba tratando los clasificadores como conjuntos, en virtud de la biyección canónica \eqref{sec:hip-con}
+    Haremos la prueba tratando los clasificadores como conjuntos, en virtud de la biyección canónica \eqref{biyeccion-canonica}
     
     Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos del conjunto 
     de entrenamiento $S$.
@@ -251,20 +251,20 @@ $l((c_1, \ldots c_k), z) = \min_{i} \norm{c_i}^2$.
 
 \section{Relación entre APAC y PAC cognoscibilidad}
 
-Puesto que aproximar cualquier distribución cuando se verifica la hipótesis de factibilidad es una condición mucho menos 
-fuerte que poder aproximar el mejor algoritmo de la clase de funciones, aunque pueda parecer contraintuitivo, la clases
-APAC cognoscibles están contenidas en las PAC cognoscibles. De hecho, tenemos una relación tal cual se muestra en la figura
+El hecho de que exista un clasificador cuyo error sea nulo y poder aproximarlo es una condición más fuerte que poder 
+aproximar el mejor clasificador de una clase de funciones. Aunque pueda parecer contraintuitivo, las clases APAC 
+cognoscibles están contenidas en las PAC cognoscibles. De hecho, tenemos una relación tal cual se muestra en la figura
 siguiente:
 
 \img{./imgs/clases-pac.png}{0.75}
 
 \begin{fact}
- Los conceptos de PAC cognoscibilidad para una clase $H$ que verfica hipótesis de factibilidad y de APAC cognoscibilidad 
+ Los conceptos de PAC cognoscibilidad para una clase $H$ que verifica hipótesis de factibilidad y de APAC cognoscibilidad 
  con funciones de pérdida $0-1$ son equivalentes
 \end{fact}
 
 \begin{proof}
- Basta comprobar que coincidirían ambos conceptos de error y que como se verifica la hipótesis de 
- factibilidad, $\inf_{h\in H} L_{\dist}(h) = 0$.
+ Como se verifica la hipótesis de factibilidad, $\inf_{h\in H} L_{\dist}(h) = 0$, y basta comprobar que coincidirían 
+ ambos conceptos de error \[f = \argmin_{h\in H} L_{\dist}(h), \quad L_{\dist,f} = L_{\dist}\]
 \end{proof}
 

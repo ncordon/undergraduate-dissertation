@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70107" creator="Ipe 7.2.4">
-<info created="D:20170727071553" modified="D:20170727073223"/>
+<info created="D:20170727071553" modified="D:20170727080001"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -254,17 +254,17 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<path layer="alpha" matrix="0.833333 0 0 0.764706 24 188.235" stroke="black" fill="lightgreen">
+<path layer="alpha" matrix="0.984848 0 0 0.892157 2.18183 86.2741" stroke="black" fill="lightgreen">
 176 592
 144 784
 464 800
 400 464
 256 592 u
 </path>
-<path matrix="0.833333 0 0 0.764706 40.6379 189.899" stroke="black" fill="pink">
+<path matrix="0.984848 0 0 0.892157 21.8448 88.2154" stroke="black" fill="pink">
 62.482 0 0 62.482 328 704 e
 </path>
-<path matrix="-0.970595 -0.215463 0.165723 -0.746533 555.474 1253.08" stroke="black" fill="1 0.667 0.498" opacity="50%">
+<path matrix="-1.14707 -0.251374 0.195854 -0.870955 630.287 1328.59" stroke="black" fill="1 0.667 0.498" opacity="50%">
 353.911 598.996
 295.109 630.164
 300.25 730.095
@@ -272,8 +272,8 @@ h
 408.536 650.086
 372.548 630.164 u
 </path>
-<text matrix="0.833333 0 0 0.764706 15.6262 175.684" transformations="translations" pos="185.618 664.946" stroke="black" type="label" width="120.873" height="11.954" depth="3.35" valign="baseline" size="LARGE">PAC cognoscibles</text>
-<text matrix="0.833333 0 0 0.764706 23.8463 180.657" transformations="translations" pos="290.123 716.528" stroke="black" type="label" width="98.482" height="8.307" depth="2.32" valign="baseline" size="large">APAC cognoscibles</text>
-<text matrix="1.28058 0 0 0.764706 -136.899 182.546" transformations="translations" pos="319.933 635.805" stroke="black" type="label" width="102.979" height="5.535" depth="1.55" valign="baseline" size="footnote">PAC cognoscibles con ERM</text>
+<text matrix="0.984848 0 0 0.892157 -7.71448 71.6313" transformations="translations" pos="185.618 664.946" stroke="black" type="label" width="120.873" height="11.954" depth="3.35" valign="baseline" size="LARGE">PAC cognoscibles</text>
+<text matrix="0.984848 0 0 0.892157 10.3432 79.6208" transformations="translations" pos="290.123 716.528" stroke="black" type="label" width="98.482" height="8.307" depth="2.32" valign="baseline" size="large">APAC cognoscibles</text>
+<text matrix="1.51341 0 0 0.892157 -177.033 86.2001" transformations="translations" pos="319.933 635.805" stroke="black" type="label" width="102.979" height="5.535" depth="1.55" valign="baseline" size="footnote">PAC cognoscibles con ERM</text>
 </page>
 </ipe>

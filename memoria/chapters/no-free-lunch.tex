@@ -20,13 +20,15 @@ trabajaremos con paradigma PAC.
 \textbf{Teorema de No Free Lunch}
 
 Sea un dominio $X$, un conjunto de etiquetas $Y=\{0,1\}$, $H = 2^X$. 
-Sea $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ un algoritmo. Sea $m \le \frac{|X|}{2}$.
+Sea $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ un algoritmo. Dado $m \le \frac{|X|}{2}$.
 Entonces existe $\dist$ distribución sobre $X\times \{0,1\}$ verificando:
 
 \begin{enumerate}[i]
 \item Existe una función $f: X \rightarrow \{0,1\}$ con $L_{\dist}(f)=0$
 \item $\mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \ge \frac{1}{7}$
 \end{enumerate}
+
+\label{th:nfl}
 \end{theorem}
 
 \begin{proof}
@@ -139,3 +141,19 @@ obtendría con cierta probabilidad un fallo superior a $\frac{1}{8}$.
 \end{proof}
 
 
+\section{Equilibrio error-varianza}
+
+El equilibrio error-varianza (en inglés, \emph{bias-variance tradeoff}) hace referencia a un concepto intuitivo que se 
+desprende de la demostración del teorema \ref{th:nfl}. La clave de dicha demostración ha sido que estabamos considerando
+como conjunto de clasificadores todo el espacio $2^X$. Así, intuitivamente, cuanto más complejo o grande sea el conjunto 
+$H$, mejor aproximaremos el verdadero o mejor clasificador, pero más número de muestras necesitaremos y más varianza 
+respecto al mejor clasificador tendremos.
+
+\begin{definition}
+ Llamamos error de aproximación a $err_{app} := \inf_{h\in H} L_{\dist}(h)$. LLamamos error de estimación a $err_{est,S} := 
+ L_{\dist} (A(S)) - err_{app}$ para un cierto algoritmo $A$ y conjunto de entrenamiento $S$ arbitrario.
+\end{definition}
+
+
+Cuando crece $err_{app}$, decrece $err_{est}$ y viceversa. Por tanto, el \emph{machine learning} intenta buscar un equilibrio
+entre bondad de los clasificadores que se prueban y la complejidad de la clase a la que pertenecen los mismos.
