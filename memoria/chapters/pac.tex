@@ -205,9 +205,6 @@ para cualquier $h\in \mathcal{H}$, cualquier $(x,y) \in Z$
 Consideraremos la función de pérdida $0-1$ en clasificación binaria de ahora en adelante, a no ser que se especifique
 lo opuesto.
 
-Nótese también que PAC cognoscibilidad es equivalente a APAC cognoscibilidad si asumimos hipótesis 
-de factibilidad.
-
 Con estos conceptos revisitados, podríamos asegurar que la hipótesis que menor error comete para 
 clasificación binaria y la función de pérdidad $0-1$ es el llamado \textbf{clasificador de Bayes}:
 
@@ -230,7 +227,7 @@ $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A: \underset{m\in \mathb
 $0 < \varepsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dados 
 $m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$:
 
-\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) > \inf_{h\in H} L_D(h) + \varepsilon] < \delta\]
+\[\mprob \bigg[L_{\dist,f}(A(S)) > \inf_{h\in H} L_D(h) + \varepsilon] < \delta\]
 \end{definition}
 
 \subsubsection{Clasificación multiclase}
@@ -250,3 +247,24 @@ y $l(h,(x,y)) = (h(x)-y)^2$ función de pérdida cuadrática.
 Tenemos un problema de clústering si $Z=\mathbb{R}^d$ y los elementos de $H$ son funciones constantes 
 $h = (c_1, \ldots c_k)$ con $c_i \in \mathbb{R}^d$. Una posible función de pérdida podría ser 
 $l((c_1, \ldots c_k), z) = \min_{i} \norm{c_i}^2$.
+
+
+\section{Relación entre APAC y PAC cognoscibilidad}
+
+Puesto que aproximar cualquier distribución cuando se verifica la hipótesis de factibilidad es una condición mucho menos 
+fuerte que poder aproximar el mejor algoritmo de la clase de funciones, aunque pueda parecer contraintuitivo, la clases
+APAC cognoscibles están contenidas en las PAC cognoscibles. De hecho, tenemos una relación tal cual se muestra en la figura
+siguiente:
+
+\img{./imgs/clases-pac.png}{0.75}
+
+\begin{fact}
+ Los conceptos de PAC cognoscibilidad para una clase $H$ que verfica hipótesis de factibilidad y de APAC cognoscibilidad 
+ con funciones de pérdida $0-1$ son equivalentes
+\end{fact}
+
+\begin{proof}
+ Basta comprobar que coincidirían ambos conceptos de error y que como se verifica la hipótesis de 
+ factibilidad, $\inf_{h\in H} L_{\dist}(h) = 0$.
+\end{proof}
+
