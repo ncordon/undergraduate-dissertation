@@ -2,6 +2,7 @@
 La abreviaremos dimensión VC
 
 \begin{definition} \textbf{Conjunto fragmentado}
+
  Sea $H\subseteq 2^X$ y sea $A\subseteq X$. Decimos que $H$ fragmenta a $A$ si para toda función $g:A\rightarrow \{0,1\}$ 
  existe $h\in H$ verificando $h_{|A} = g$.
 \end{definition}
@@ -10,6 +11,7 @@ Recordando la biyección canónica entre hipótesis y conjuntos \ref{biyeccion-c
 caracterización de fragmentación.
 
 \begin{fact} \textbf{Caracterización de conjunto fragmentado}
+
  Sea $H\subseteq 2^X$ y sea $A\subseteq X$. Decimos que $H$ fragmenta a $A$ si para toda $B\subseteq A$, se tiene que existe
  $h\in H$ verificando $X_h \cap A = B$.
 \end{fact}
@@ -23,8 +25,11 @@ caracterización de fragmentación.
 Sea $H\subseteq 2^X$, y $C \subseteq X$. Llamamos restricción de $H$ a $C$ a:
 
 \[H_{C} := \{h_{|C} : h\in H\}\]
-\end{definition}
 
+En notación conjuntista, existe biyección entre $H_C$ y $C_{H}$ con:
+
+\[C_{H} := \{C_h : h\in H\} \subseteq \mathcal{P}(X)\]
+\end{definition}
 
 Cuando demostrábamos el teorema No Free Lunch \ref{th:nfl}, pedíamos que la clase de clasificadores $H$ fuese todo $2^X$. 
 Observando la demostración, solo asumiamos la existencia de un conjunto $C\subseteq X$ sobre el que pudiéramos definir 
@@ -110,6 +115,7 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 \begin{enumerate}[i]
  \item $VC(H) \le log_2(|H|)$.
  \item Si $H_1 \subseteq H_2$ entonces $VC(H_1) \le VC(H_2)$.
+ \item $VC(H_1 \cup H_2) \le VC(H_1) + VC(H_2)$.
  \item $VC(H)$ no depende del número de parámetros de los clasificadores de $H$.
 \end{enumerate}
 \end{fact}
@@ -128,6 +134,8 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
   
   \item Si $H_1$ fragmenta un conjunto de tamaño $VC(H_1)$, entonces $H_2$ también fragmenta ese mismo conjunto puesto que
   $H_1 \subseteq H_2$. Por tanto $VC(H_1) \le VC(H_2)$.
+ 
+  \item 
  
   \item En los ejemplos anteriores hemos visto como $VC(H)$ coincidía con el número de parámetros de los que dependían los
   clasificadores de $H$: $VC(H_{thr}) = 1$, $VC(H^1_{rec}) = 2$, $VC(H^2_{rec}) = 4$. Veamos un ejemplo donde no se cumple
@@ -178,7 +186,75 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 \end{proof}
 
 
-\subsection{Teorema fundamental de aprendizaje PAC}
+\subsection{Teorema fundamental del aprendizaje automático}
+
+\begin{definition}
+\textbf{Función de crecimiento}
+
+Sea $H$ una clase de hipótesis. Definimos como función de crecimiento de $H$:
+
+\[\tau_{H}: \mathbb{N} \longrightarrow \mathbb{N}, \qquad \tau_{H}(m) = \max_{C \subseteq X, \,\, |C|=m} |H_C|\]
+\end{definition}
+
+Esta función está bien definida puesto que fijado $m \in \mathbb{N}$ y $C\subseteq X$ con $|C| = m$, se tiene siempre 
+que $|H_C| \le 2^C$, identificando elementos de $H_C$ con subconjuntos de $C$.
+
+\begin{lemma} \textbf{Lema de Sauer-Shelah-Perles}
+
+Sea $H \subseteq 2^X$ con $VC(H) \le d < \infty$. Entonces para $m\in \mathbb{N}$ verificando $d\le m$:
+
+\[\tau_{H} (m) \le \sum_{i=0}^d \binom{m}{i} \le m^d + 1\]
+\label{lemma:sauer}
+\end{lemma}
+
+
+\begin{proof}
+Supongamos s.p.g. $VC(H) = d$.
+
+Empezamos probando que una clase de hipótesis $\mathcal{F}$ finita fragmenta al menos $|\mathcal{F}|$ conjuntos. Lo hacemos 
+por inducción sobre el tamaño de $X_\mathcal{F}$ que es un conjunto finito por ser $\mathcal{F}$ clase finita.
+
+\begin{subenv}
+Si su tamaño es 1, parte al conjunto vacío.
+
+Supuesto que se verifica la hipótesis para tamaños menores que $k-1$ y sea $|X_\mathcal{F}| = k$. Escogemos entonces 
+$x\in X$ verificando que $x$ pertenece a algunos conjuntos de $X_\mathcal{F}$ pero no a todos (debe existir, sino 
+tendríamos que $X_\mathcal{F}$ contiene un único conjunto).
+
+Definimos: $\begin{array}{l} 
+	A = \{S \subseteq X_\mathcal{F} : x\in S\} \\
+        A'=\{S\setminus\{x\} : S \in A\} \\ 
+        B= \{S \subseteq X_\mathcal{F} : x\not\in S\}
+     \end{array}$ donde $X_{\mathcal{F}} = A\cup B$.
+
+Claramente $|A| = |A'|$ y por hipótesis de inducción $A'$ fragmenta $k \ge |A|$ conjuntos, y $B$ fragmenta $|B|$ conjuntos. 
+También es trivial ver que los conjuntos $S$ y $S\cup \{x\}$ son fragmentados por $A$ donde $S$ es un conjunto fragmentado 
+por $A'$. 
+
+Hemos probado que $A$ fragmenta $|A'| + k = |A|+k$ conjuntos, y si un conjunto es fragmentado por $A$ y $B$ a la vez, 
+entoces no contiene a $x$, luego es fragmentado por $A'$ y por $B$ a la vez, y podremos tener a lo sumo $k$ conjuntos de
+este tipo.
+\end{subenv}
+
+En definitiva hemos probado que fragmentamos $|A| + k + |B| - k = |A| + |B| = |\mathcal{F}|$ conjuntos. Por tanto, como 
+$VC(H_C) \le VC(H) = d$ y $H_C$ no puede fragmentar ningún subconjunto $C$ de tamaño mayor que $d$ y así: 
+
+\[\tau_{H} (m) \le \sum_{i=0}^d \binom{m}{i}\]
+
+Veamos ahora $\sum_{i=0}^d \binom{m}{i} \le m^d + 1$. La parte izquierda de la desigualdad nos da todos los posibles 
+subconjuntos de un conjunto de tamaño $m$, a saber, $C$. Excepto el conjunto vacío, todos los demás subconjuntos pueden
+obtenerse extrayendo elementos con repetición desde $C$, y hay $m^d$ posibles extracciones de este tipo.
+\end{proof}
+
+\begin{corollary}
+Sea $H \subseteq 2^X$. Si $\exists d\in \mathbb{N}$ tal que $\tau_{H} (m) > \sum_{i=0}^d \binom{m}{i} \le m^d + 1$,
+entonces $VC(H) \ge d+1$.
+\end{corollary}
+
+\begin{proof}
+Por reducción al absurdo desde el lema \ref{lemma:sauer}, si $\tau_{H}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $H$ debe
+fragmentar un conjunto de tamaño $d+1$ al menos.
+\end{proof}
 
 \begin{theorem}
 \textbf{Teorema fundamental de aprendizaje PAC}
@@ -198,43 +274,3 @@ Sea $H$ clase de hipótesis de la forma $h: X \rightarrow \{0,1\}$ y la función
 
 La implicación que nos falta es $6 \implies 1$. El resto de implicaciones se consiguen a partir de teoremas ya probados en temas anteriores.
 
-Daremos una serie de lemas y definiciones previas antes de probarla.
-
-\begin{definition}
-\textbf{Función de crecimiento}
-
-Sea $H$ una clase de hipótesis. Definimos como función de crecimiento de $H$:
-
-\[\begin{array}{ll}
-\tau_{H}: & \mathbb{N} \rightarrow \mathbb{N}\\
-                    & m          \mapsto     \underset{C \subseteq X: |C|=m}{max}{|H_C|}
-\end{array}\]
-
-Esta función está bien definida puesto que fijado $m \in \mathbb{N}$ se tiene siempre que $|H_C| \le 2^C$
-\end{definition}
-
-\begin{lemma}
-\textbf{Lema de Sauer-Shelah}
-
-Sea $H$ clase de hipótesis con $VC(H) \le d < \infty$. Entonces para todo $m\in \mathbb{N}$ se tiene $\tau_{H} (m) \le \sum_{i=0}^d \binom{m}{i}$. Se deduce que si $m > d+1$ entonces $\tau_{H}(m) \le (em/d)^d$.
-\end{lemma}
-
-
-\begin{proof}
-Empezamos probando que una clase de hipótesis $\mathcal{F}$ finita fragmenta al menos $|\mathcal{F}|$ conjuntos.
-
-Lo hacemos por inducción sobre el tamaño de $X_\mathcal{F}$ que es un conjunto finito por ser $\mathcal{F}$ clase finita.
-
-Si su tamaño es 1, parte al conjunto vacío.
-
-Supuesto que se verifica la hipótesis para tamaños menores que $k-1$ y sea $|X_\mathcal{F}| = k$. Escogemos entonces $x\in X$ verificando que $x$ pertenece a algunos conjuntos de $X_\mathcal{F}$ pero no a todos (debe existir, sino tendríamos que $X_\mathcal{F}$ contiene un único conjunto).
-
-Sean $A = \{S \subseteq X_\mathcal{F} : x\in S\}$, $A'=\{S\setminus\{x\} : S \in A\}$, $B= \{S \subseteq X_\mathcal{F} : x\not\in S\}$.
-
-Claramente $|A| = |A'|$ y por hipótesis de inducción $A'$ fragmenta $k \ge |A|$ conjuntos, y $B$ fragmenta $|B|$ conjuntos. También es trivial ver que los conjuntos $S$ y $S\cup \{x\}$ son fragmentados por $A$ donde $S$ es un conjunto fragmentado por $A'$. Hemos probado que $A$ fragmenta $|A| + k$ conjuntos, y si un conjunto es fragmentado por $A$ y $B$ a la vez, entoces no contiene a $x$, luego es fragmentado por $A'$ y por $B$ a la vez, y podremos tener a lo sumo $k$ conjuntos de este tipo.
-
-En definitiva hemos probado que fragmentamos $|A| + k + |B| - k = |A| + |B| = |\mathcal{F}|$ conjuntos.
-Probado esto, si $\tau_{H}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $H$ debe fragmentar un conjunto de tamaño 
-$d+1$ al menos, puesto que el número de subconjuntos de un conjunto finito $C$ menor que  $d+1$ es exactamente
-$\sum_{i=0}^d \binom{|C|}{i}$. Luego tendríamos $VC(H) > d$
-\end{proof}
