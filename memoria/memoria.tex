@@ -75,6 +75,15 @@
 % norma || ||
 \newcommand{\norm}[1]{||{#1}||}
 
+
+% Para hacer el underbrace de columnas de matrices
+% Fuente: https://tex.stackexchange.com/questions/102460/underbraces-in-matrix-divided-in-blocks
+
+\newcommand\undermat[2]{%
+  \makebox[0pt][c]{$\smash{\underbrace{\phantom{%
+    \begin{array}{r} #2 \end{array}}}_{\text{$#1$}}}$}#2}
+
+
 % Abreviaciones para escribir menos
 \newcommand{\mprob}{\underset{S\sim \mathcal{D}^m}{P}}
 \newcommand{\prob}{\underset{x\sim \mathcal{D}}{P}}

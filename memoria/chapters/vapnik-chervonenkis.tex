@@ -67,7 +67,7 @@ $C$. Sin embargo, dado un conjunto de tamaño 2, $C=\{\alpha, \beta\}$, donde po
 Entonces no podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=0$ y $h_b(\beta) = 1$, ya que esto implicaría que 
 $b > \beta$ y por tanto entraría en contradicción con que $h_b(\alpha) = 0$.
 
-Hemos probado $VC(H) = 1$.
+Hemos probado $VC(H_{thr}) = 1$.
 
 \end{example}
 
@@ -80,7 +80,7 @@ $\delta_i \in \{0,1\}$ nos dan todos los posibles etiquetados de $C$. Sin embarg
 $C=\{\alpha, \beta\, \theta\}$, donde podemos suponer $\alpha < \beta < \theta$. Entonces no podemos encontrar $h_b \in H$ 
 verificando $h_b(\alpha)=1$ y $h_b(\theta) = 1$ y $h_b(\beta) = 0$.
 
-Por tanto $VC(H) = 2$.
+Por tanto $VC(H^1_{rec}) = 2$.
 \end{example}
 
 \begin{example}
@@ -110,39 +110,73 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 \begin{enumerate}[i]
  \item $VC(H) \le log_2(|H|)$.
  \item Si $H_1 \subseteq H_2$ entonces $VC(H_1) \le VC(H_2)$.
+ \item $VC(H)$ no depende del número de parámetros de los clasificadores de $H$.
 \end{enumerate}
 \end{fact}
 
-\begin{proof} \\~
+\begin{proof}~
  \begin{enumerate}[i]
-  \item Equivalentemente, veamos $2^{VC(H)} \le |H|$. Si $VC(H) < \infty$, entonces $H$ fragmenta un conjunto de tamaño
+  \item Equivalentemente, veamos $2^{VC(H)} \le |H|$. 
+  
+  Si $VC(H) < \infty$, entonces $H$ fragmenta un conjunto de tamaño
   $VC(H)$, a saber, $A$, y por tanto deben existir tantos elementos en $H$ al menos como subconjuntos de $A$. El número de
   subconjuntos de $A$ viene dado por $2^{|A|} = 2^{VC(H)}$. 
   
   Si $VC(H) = \infty$, entonces $|H| = \infty$, ya que para cada 
   $n\in \mathbb{N}$ podríamos fragmentar con $H$ un conjunto de tamaño $n$, y por tanto $H$ debería tener al menos $2^n$ 
   elementos.
+  
   \item Si $H_1$ fragmenta un conjunto de tamaño $VC(H_1)$, entonces $H_2$ también fragmenta ese mismo conjunto puesto que
   $H_1 \subseteq H_2$. Por tanto $VC(H_1) \le VC(H_2)$.
+ 
+  \item En los ejemplos anteriores hemos visto como $VC(H)$ coincidía con el número de parámetros de los que dependían los
+  clasificadores de $H$: $VC(H_{thr}) = 1$, $VC(H^1_{rec}) = 2$, $VC(H^2_{rec}) = 4$. Veamos un ejemplo donde no se cumple
+  esto.
+  
+  Sea $H_{sin} = \{h_{\theta}: \theta \in \mathbb{R}\}$ donde $h_{\theta}: \mathbb{R} \rightarrow \{0,1\}$ está definida por 
+  $h_\theta (x) = \lceil -0.5sen(\theta x) \rceil$. Cada $h \in H_{sin}$ depende de un único parámetro $\theta$.
+  
+  Sea $d\in \mathbb{N}$. Tomamos $d$ puntos codificados por $x_i = 0.x_{i,1} x_{i,2} \ldots x_{i, 2^d} x_{i, 2^d+1}$ 
+  donde cada $x_{i}, i=1, \ldots d$ viene determinado por una fila de la matriz $\bigg(x_{i,j}\bigg)$
+  donde la columna $j$-ésima codifica el número $j-1$ en binario leído de arriba a abajo, para $j\neq 2^d+1$, y la columna 
+  $2^d+1$-ésima es constantemente $1$.
+  
+% 
+%   \[\left(\begin{array}{ccccc}
+%     \underbrace{\begin{array}{c} 0 \\ 0 \\ \vdots \\0 \end{array}}_{\phantom{0}} &
+%     \underbrace{\begin{array}{c} 0 \\ 0 \\ \vdots \\1 \end{array}}_{1} &
+%     \underbrace{\begin{array}{c} \ldots \\ \ldots \\ \ddots \\ \ldots \end{array}}_{1} &
+%     \underbrace{\begin{array}{c} 1 \\ 1 \\ \vdots \\1 \end{array}}_{2^d-1} &
+%     \underbrace{\begin{array}{c} 1 \\ 1 \\ \vdots \\1 \end{array}}
+%   \end{array}\right)\]
+
+    
+  \[d \left\{\left( 
+    \begin{array}{lcccccccccccc}
+    0 &&& 0 &&& \ldots &&& 1 &&& 1\\
+    0 &&& 0 &&& \ldots &&& 1 &&& 1\\
+    \vdots &&& \vdots &&& \ddots &&& \vdots &&& \vdots\\
+    \undermat{0}{0} &&& \undermat{1}{1} &&& \ldots &&& \undermat{2^d-1}{1} &&& 1
+    \end{array}
+  \right)\right.\]
+  
+  \bigskip
+  
+  
+  Así, dada una asignación de $d$ etiquetas, debe codificar un número en binario entre $0$ y $2^d-1$, a saber, 
+  la columna $k$ ésima de la matriz. Tomamos el clasificador $h(x) = \lceil -0.5 sen(10^k \pi x) \rceil$ que verificará
+  que su asignación de etiquetas es justamente la columna $k$ ésima. 
+  
+  El sentido de la última columna constantemente $1$
+  puede explicarse en que daremos $x_{i,1} \ldots x_{i,k}$ medias vueltas a la circunferencia unidad y recorreremos
+  una fracción $0.x_{i,k+1} \ldots x_{i, 2^d} 1$ no nula de otra media vuelta a la circunferencia. Si 
+  $x_{i,k} = 1$ entonces $h(x_i) = 1$, y si $x_{i,k}=0$ entonces $h(x_i) = 0$. 
+  
+  Como $d\in \mathbb{N}$ era arbitrario, $VC(H_{sin}) = \infty$, y por tanto hemos encontrado una clase de hipótesis 
+  uniparámetrica con dimensión $VC(H_{sin})\neq 1$.
  \end{enumerate}
 \end{proof}
 
-
-\subsubsection{Dimensión VC y número de parámetros}
-
-Puede demostrarse que la dimensión VC de los clasificadores de rectángulo $H = \{h_{a,b,c,d} := \mathds{1}_{[a\le x\le b, c\le y\le d]}\}$ en $\mathbb{R}^2$, que ya mencionamos en un ejemplo en los temas anteriores es 4. Esto, unido a los ejemplos anteriores con intervalos podría hacernos conjeturar que la dimensión VC depende del número de parámetros con el que definimos los clasificadores. El siguiente ejemplo demuestra que esto es falso.
-
-Dada la clase de clasificadores $H = \{h_{\theta}: \theta \in \mathbb{R}\}$ donde 
-$h_{\theta}: X \rightarrow {0,1}$ está definida por $h_\theta (x) = \lceil 0.5 sen(\theta x) \rceil$, y 
-$d\in \mathbb{N}$ arbitrario, podemos tomar $d$ puntos codificados por $x_i = 0.x_{1,j} \ldots x_{2^d,j} x^{2^d + 1,j}$ 
-donde cada $x_{i}$ es una fila de la matriz $(x_{i,j})$ donde la columna $2^{d+1}$ ésima es 1, y la columna 
-$i$ -ésima codifica el número $i-1$ en binario, leído de arriba a abajo. Así dado una asignación de $d$ 
-etiquetas, debe codificar un número en binario entre $1$ y $2^d-1$, a saber, la columna $k$ ésima de la 
-matriz. Tomamos el clasificador $h = \lceil 0.5 sen(10^k \pi x) \rceil$ que verificará que su asignación de 
-etiquetas es justamente la columna $k$ ésima. El sentido de la última columna constantemente $1$ puede 
-explicarse en que daremos $x_{i,1} \ldots x_{i,k}$ medias vueltas a la circunferencia unidad y recorreremos 
-y una fracción $0.x_{i,k+1} \ldots x_{2^d,j} 1$ no nula de otra media vuelta a la circunferencia. Si 
-$x_{i,k} = 1$ entonces $h(x_i) = 1$, y si $x_{i,k}=0$ entonces $h(x_i) = 0$. Luego $VCdim(H) = \infty$.
 
 \subsection{Teorema fundamental de aprendizaje PAC}
 
