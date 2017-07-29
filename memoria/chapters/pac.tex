@@ -155,7 +155,7 @@ Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}
 
   \item \textbf{Generación de instancias}: Tenemos una distribución $\mathcal{D}$ sobre $Z$.
   \item \textbf{Error del clasificador}: Lo redefinimos como:
-  \[L_{\mathcal{D}}(h) :=  \mathbb{E}_{z\sim \mathcal{D}}[l(h,z)]\]
+  \[L_{\mathcal{D}}(h) :=  \expect_{z\sim \dist} [l(h,z)]\]
   
   \item \textbf{Error empírico}: Lo redefinimos como:
   \[L_{S} (h) := \frac{1}{m} \sum_{i=1}^m l(h,z_i)\]
@@ -172,7 +172,7 @@ $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow H$ verificando que si
 $0 < \varepsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ se verifica
 que dado $S\sim \mathcal{D}^m$, con $m\ge m_{H}(\varepsilon, \delta)$ se tiene:
 
-\[P_{S\sim \mathcal{D}^m}[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \varepsilon] \ge 1-\delta\]
+\[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \varepsilon \bigg] \ge 1-\delta\]
 \end{definition}
 
 Nótese que en contraste con nuestra definición de PAC cognoscibilidad, el algoritmo $A$ podía devolver una 
@@ -227,7 +227,7 @@ $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A: \underset{m\in \mathb
 $0 < \varepsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dados 
 $m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$:
 
-\[\mprob \bigg[L_{\dist,f}(A(S)) > \inf_{h\in H} L_D(h) + \varepsilon] < \delta\]
+\[\mprob \bigg[L_{\dist,f}(A(S)) > \inf_{h\in H} L_D(h) + \varepsilon \bigg] < \delta \]
 \end{definition}
 
 \subsubsection{Clasificación multiclase}

@@ -1,25 +1,4 @@
 \section{Conjunto fragmentado}
-La abreviaremos dimensión VC
-
-\begin{definition} \textbf{Conjunto fragmentado}
-
- Sea $H\subseteq 2^X$ y sea $A\subseteq X$. Decimos que $H$ fragmenta a $A$ si para toda función $g:A\rightarrow \{0,1\}$ 
- existe $h\in H$ verificando $h_{|A} = g$.
-\end{definition}
-
-Recordando la biyección canónica entre hipótesis y conjuntos \ref{biyeccion-canonica}, podemos aportar la siguiente 
-caracterización de fragmentación.
-
-\begin{fact} \textbf{Caracterización de conjunto fragmentado}
-
- Sea $H\subseteq 2^X$ y sea $A\subseteq X$. Decimos que $H$ fragmenta a $A$ si para toda $B\subseteq A$, se tiene que existe
- $h\in H$ verificando $X_h \cap A = B$.
-\end{fact}
-
-  \begin{proof}
-  Trivial desde \ref{biyeccion-canonica}
-  \end{proof}
-
 
 \begin{definition}
 Sea $H\subseteq 2^X$, y $C \subseteq X$. Llamamos restricción de $H$ a $C$ a:
@@ -30,6 +9,34 @@ En notación conjuntista, existe biyección entre $H_C$ y $C_{H}$ con:
 
 \[C_{H} := \{C_h : h\in H\} \subseteq \mathcal{P}(X)\]
 \end{definition}
+
+
+\begin{definition} \textbf{Conjunto fragmentado}
+
+ Sea $H\subseteq 2^X$ y sea $A\subseteq X$. Decimos que $H$ fragmenta a $A$ si para toda función $g:A\rightarrow \{0,1\}$ 
+ existe $h\in H$ verificando $h_{|A} = g$.
+\end{definition}
+
+Recordando la biyección canónica entre hipótesis y conjuntos \ref{biyeccion-canonica}, podemos aportar la siguiente 
+caracterización de fragmentación.
+
+\begin{fact} \textbf{Caracterizaciones de conjunto fragmentado}
+
+ Sea $H\subseteq 2^X$ y sea $A\subseteq X$ finito. Entonces equivalen:
+ 
+ \begin{enumerate}[i]
+  \item $H$ fragmenta a $A$.
+  \item Para todo $B\subseteq A$, existe $h\in H$ verificando $X_h \cap A = B$
+  \item $A_H = \mathcal{P}(A)$.
+  \item $|A_H| = 2^{|A|}$
+  \item $|H_A| = 2^{|A|}$
+ \end{enumerate}
+\end{fact}
+
+  \begin{proof}
+  Trivial desde \ref{biyeccion-canonica}
+  \end{proof}
+
 
 Cuando demostrábamos el teorema No Free Lunch \ref{th:nfl}, pedíamos que la clase de clasificadores $H$ fuese todo $2^X$. 
 Observando la demostración, solo asumiamos la existencia de un conjunto $C\subseteq X$ sobre el que pudiéramos definir 
@@ -115,9 +122,9 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 \begin{enumerate}[i]
  \item $VC(H) \le log_2(|H|)$.
  \item Si $H_1 \subseteq H_2$ entonces $VC(H_1) \le VC(H_2)$.
- \item $VC(H_1 \cup H_2) \le VC(H_1) + VC(H_2)$.
  \item $VC(H)$ no depende del número de parámetros de los clasificadores de $H$.
 \end{enumerate}
+\label{fact:props-vc}
 \end{fact}
 
 \begin{proof}~
@@ -134,8 +141,6 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
   
   \item Si $H_1$ fragmenta un conjunto de tamaño $VC(H_1)$, entonces $H_2$ también fragmenta ese mismo conjunto puesto que
   $H_1 \subseteq H_2$. Por tanto $VC(H_1) \le VC(H_2)$.
- 
-  \item 
  
   \item En los ejemplos anteriores hemos visto como $VC(H)$ coincidía con el número de parámetros de los que dependían los
   clasificadores de $H$: $VC(H_{thr}) = 1$, $VC(H^1_{rec}) = 2$, $VC(H^2_{rec}) = 4$. Veamos un ejemplo donde no se cumple
@@ -186,6 +191,23 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 \end{proof}
 
 
+\begin{corollary}
+ Sea $H \subseteq 2^X$. Si $VC(H) = \infty$ entonces $H$ no es PAC cognoscible.
+ \label{cor:vc-finito}
+\end{corollary}
+
+  \begin{proof}
+  Si $X < \infty$, entonces $|H| \le 2^{|X|} < \infty$, y $VC(H) \le log_2(|H|) < \infty$. Luego $|X| = \infty$
+  
+  Por reducción al absurdo. Sea $A$ el algoritmo de aprendizaje. Para todo $m\in \mathbb{N}$ par arbitrario, como 
+  $m\le \frac{|X|}{2}$, existe $C$ con $|C| = m$ fragmentado por $H$, el teorema \ref{th:nfl2} nos diría que existe una 
+  distribución $\dist$ verificando:
+ 
+  \[\mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \ge \frac{1}{7}\]
+ 
+  Luego no puede existir $m_H \left(\frac{1}{8}, \delta\right)$ con $\delta > \frac{6}{7}$.
+  \end{proof}
+  
 \subsection{Teorema fundamental del aprendizaje automático}
 
 \begin{definition}
@@ -193,7 +215,7 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 
 Sea $H$ una clase de hipótesis. Definimos como función de crecimiento de $H$:
 
-\[\tau_{H}: \mathbb{N} \longrightarrow \mathbb{N}, \qquad \tau_{H}(m) = \max_{C \subseteq X, \,\, |C|=m} |H_C|\]
+\[\Pi_{H}: \mathbb{N} \longrightarrow \mathbb{N}, \qquad \Pi_{H}(m) = \max_{C \subseteq X, \,\, |C|=m} |H_C|\]
 \end{definition}
 
 Esta función está bien definida puesto que fijado $m \in \mathbb{N}$ y $C\subseteq X$ con $|C| = m$, se tiene siempre 
@@ -203,7 +225,7 @@ que $|H_C| \le 2^C$, identificando elementos de $H_C$ con subconjuntos de $C$.
 
 Sea $H \subseteq 2^X$ con $VC(H) \le d < \infty$. Entonces para $m\in \mathbb{N}$ verificando $d\le m$:
 
-\[\tau_{H} (m) \le \sum_{i=0}^d \binom{m}{i} \le m^d + 1\]
+\[\Pi_{H} (m) \le \sum_{i=0}^d \binom{m}{i} \le m^d + 1\]
 \label{lemma:sauer}
 \end{lemma}
 
@@ -211,8 +233,8 @@ Sea $H \subseteq 2^X$ con $VC(H) \le d < \infty$. Entonces para $m\in \mathbb{N}
 \begin{proof}
 Supongamos s.p.g. $VC(H) = d$.
 
-Empezamos probando que una clase de hipótesis $\mathcal{F}$ finita fragmenta al menos $|\mathcal{F}|$ conjuntos. Lo hacemos 
-por inducción sobre el tamaño de $X_\mathcal{F}$ que es un conjunto finito por ser $\mathcal{F}$ clase finita.
+Empezamos probando que una clase $\mathcal{F}$, con $|\mathcal{F}| < \infty$, fragmenta al menos $|\mathcal{F}|$ conjuntos. 
+Lo hacemos por inducción sobre el tamaño de $X_\mathcal{F}$ que es un conjunto finito por ser $\mathcal{F}$ clase finita.
 
 \begin{subenv}
 Si su tamaño es 1, parte al conjunto vacío.
@@ -225,7 +247,7 @@ Definimos: $\begin{array}{l}
 	A = \{S \subseteq X_\mathcal{F} : x\in S\} \\
         A'=\{S\setminus\{x\} : S \in A\} \\ 
         B= \{S \subseteq X_\mathcal{F} : x\not\in S\}
-     \end{array}$ donde $X_{\mathcal{F}} = A\cup B$.
+     \end{array}$ donde $X_{\mathcal{F}} = A + B$.
 
 Claramente $|A| = |A'|$ y por hipótesis de inducción $A'$ fragmenta $k \ge |A|$ conjuntos, y $B$ fragmenta $|B|$ conjuntos. 
 También es trivial ver que los conjuntos $S$ y $S\cup \{x\}$ son fragmentados por $A$ donde $S$ es un conjunto fragmentado 
@@ -236,41 +258,57 @@ entoces no contiene a $x$, luego es fragmentado por $A'$ y por $B$ a la vez, y p
 este tipo.
 \end{subenv}
 
-En definitiva hemos probado que fragmentamos $|A| + k + |B| - k = |A| + |B| = |\mathcal{F}|$ conjuntos. Por tanto, como 
-$VC(H_C) \le VC(H) = d$ y $H_C$ no puede fragmentar ningún subconjunto $C$ de tamaño mayor que $d$ y así: 
+Por tanto $F$ fragmenta al menos $|A| + k + |B| - k = |A| + |B| = |\mathcal{F}|$ conjuntos.
 
-\[\tau_{H} (m) \le \sum_{i=0}^d \binom{m}{i}\]
+Fijamos ahora un $C\subseteq X$ con $|C| = m$. Entonces $|H_C| < \infty$. Luego: 
+
+\[|H_C| \le |\{B\subseteq C : H_C \textrm{ fragmenta } B\}| = |\{B\subseteq C : H \textrm{ fragmenta } B\}|\] 
+
+Por tanto: $|\{B\subseteq C : H \textrm{ fragmenta } B\}| \le \sum_{i=0}^d \binom{m}{i}$ puesto que $VC(H)=d$ y el número de 
+subconjuntos de $C$ de cardinal menor o igual a $d$ viene dado por $\sum_{i=0}^d \binom{m}{i}$.
 
 Veamos ahora $\sum_{i=0}^d \binom{m}{i} \le m^d + 1$. La parte izquierda de la desigualdad nos da todos los posibles 
-subconjuntos de un conjunto de tamaño $m$, a saber, $C$. Excepto el conjunto vacío, todos los demás subconjuntos pueden
-obtenerse extrayendo elementos con repetición desde $C$, y hay $m^d$ posibles extracciones de este tipo.
+subconjuntos desde $C$. Excepto el conjunto vacío, todos los demás subconjuntos pueden obtenerse extrayendo elementos con
+repetición desde $C$, y hay $m^d$ posibles extracciones de este tipo.
 \end{proof}
 
 \begin{corollary}
-Sea $H \subseteq 2^X$. Si $\exists d\in \mathbb{N}$ tal que $\tau_{H} (m) > \sum_{i=0}^d \binom{m}{i} \le m^d + 1$,
+Sea $H \subseteq 2^X$. Si $\exists d\in \mathbb{N}$ tal que $\Pi_{H} (m) > \sum_{i=0}^d \binom{m}{i} \le m^d + 1$,
 entonces $VC(H) \ge d+1$.
 \end{corollary}
 
 \begin{proof}
-Por reducción al absurdo desde el lema \ref{lemma:sauer}, si $\tau_{H}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $H$ debe
-fragmentar un conjunto de tamaño $d+1$ al menos.
+Por reducción al absurdo desde el lema \ref{lemma:sauer}, si $\Pi_{H}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $VC(H) > d$.
 \end{proof}
+
+\begin{theorem}
+ 
+\end{theorem}
+
+
 
 \begin{theorem}
 \textbf{Teorema fundamental de aprendizaje PAC}
 
-Sea $H$ clase de hipótesis de la forma $h: X \rightarrow \{0,1\}$ y la función de pérdida 0-1. Entonces equivalen:
+Sea $H\subseteq 2^X$ y consideramos funciones de pérdida $0-1$. Entonces equivalen:
 
-\begin{enumerate}
-\item $H$ tiene la propiedad de convergencia uniforme.
-\item $H$ es agnósticamente PAC cognoscible por cuaquier algoritmo ERM.
-\item $H$ es agnósticamente PAC cognoscible.
-\item $H$ es PAC cognoscible.
-\item $H$ es PAC cognoscible por cualquier algoritmo ERM.
-\item $VC (H) < \infty$.
+\begin{enumerate}[i]
+\item \label{th:fundi} $H$ es de Glivenko-Cantelli.
+\item \label{th:fundii} $H$ es APAC cognoscible por cuaquier algoritmo $ERM_H$.
+\item \label{th:fundiii} $H$ es APAC cognoscible.
+\item \label{th:fundiv} $H$ es PAC cognoscible.
+\item \label{th:fundv} $H$ es PAC cognoscible por cualquier algoritmo $ERM_H$
+\item \label{th:fundvi} $VC (H) < \infty$.
 \end{enumerate}
 \end{theorem}
 
-
-La implicación que nos falta es $6 \implies 1$. El resto de implicaciones se consiguen a partir de teoremas ya probados en temas anteriores.
+\begin{proof}
+ El teorema \ref{th:gc-apac} demuestra $\eqref{th:fundi} \Rightarrow \eqref{th:fundii} \Rightarrow \eqref{th:fundiii}$.
+ 
+ Bajo las condiciones de función de pérdida $0-1$, $\eqref{th:fundiii} \Rightarrow \eqref{th:fundiv}$ y 
+ $\eqref{th:fundii} \Rightarrow \eqref{th:fundv}$. 
+ 
+ Del corolario \ref{cor:vc-finito} deducimos, por contradicción, $\eqref{th:fundiv} \Rightarrow \eqref{th:fundvi}$
+ y $\eqref{th:fundv} \Rightarrow \eqref{th:fundvi}$.
+\end{proof}
 
