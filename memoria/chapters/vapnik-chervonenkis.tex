@@ -310,5 +310,65 @@ Sea $H\subseteq 2^X$ y consideramos funciones de pérdida $0-1$. Entonces equiva
  
  Del corolario \ref{cor:vc-finito} deducimos, por contradicción, $\eqref{th:fundiv} \Rightarrow \eqref{th:fundvi}$
  y $\eqref{th:fundv} \Rightarrow \eqref{th:fundvi}$.
+ 
+ Falta ver $\eqref{th:fundvi} \Rightarrow \eqref{th:fundi}$. Sea $Z = X \times \{0,1\}$.
+ 
+ Llamamos \begin{align*} 
+	   Q = \{S \in Z^m : \exists h\in H \textrm{ con } |L_S(h) - L_{\dist}(h)| \ge \varepsilon\}\\
+           R = \{(S_1, S_2) \in Z^{2m}: \exists h\in H \textrm{ con } |L_{S_1}(h) - L_{S_2}(h)| \ge \frac{\varepsilon}{2}\}\\
+          \end{align*}
+ Entonces para $m\ge \frac{1}{\varepsilon^2}$ se verifica $\mprob(Q) \le 2 \mmprob(R)$
+ 
+ \begin{subenv}
+ Aplicando desigualdad de Hoeffding \ref{ineq:hoeffding}, sabemos que fijado $h\in H$ tenemos 
+
+ \begin{equation}
+  \mdosprob \left[|L_{\dist}(h) - L_{S_2}(h)| \le \frac{\varepsilon}{2} \right] \ge 
+   (1 - 2e^{-2m\varepsilon^2}) \underset{m\ge 1/\varepsilon^2}{\ge} (1 - 2e^{-2}) \ge \frac{1}{2}
+  \tag{\mbox{$\ast$}}\label{eqn:s2bound}
+ \end{equation}
+
+ Dado $h\in H$ verificando $|L_{\dist}(h) - L_{S_1}(h)| \ge, \varepsilon$ $|L_{\dist}(h) - L_{S_2}(h)| \le \frac{\varepsilon}{2}$
+ entonces por desigualdad triangular tenemos $|L_{S_1}(h) - L_{S_2}(h)| \ge \frac{\varepsilon}{2}$. Así:
+ 
+ \begin{align}
+  \mmprob(R) &\ge \mmprob \bigg[ \exists h \in H: |L_{\dist}(h) - L_{S_1}(h)| 
+		 \ge \varepsilon, |L_{\dist}(h) - L_{S_1}(h)| \le \frac{\varepsilon}{2} \bigg] \ge \nonumber\\
+             &\underset{\eqref{eqn:s2bound}}{\ge} \frac{\munoprob(Q)}{2}
+ \end{align} 
+ \end{subenv}
+ 
+ Consideraremos en lo que sigue $S = (S_1, S_2) \sim \dist{2m}$.
+ 
+ Consideramos ahora un conjunto de permutaciones $\Gamma$ sobre $\{1, \ldots, 2m\}$ verificando que para todo $i\in \{1,\ldots, m\}$
+ entonces $\tau(i) = i+m, \tau(i+m) = i$ o bien $\tau(i) = i, \tau(i+m) = i$. Es decir son permutaciones que intercambian
+ (o no) posiciones de $S_1$ y $S_2$. Asignaremos a $\Gamma$ una distribución uniforme $U^{\Gamma}$ y llamaremos 
+ $P_{\tau} := \underset{\tau \sim U^{\Gamma}}{P}$
+ 
+ Entonces se verificará:
+ 
+ \begin{equation}
+  \dosmprob(R) = \dosmexpect \bigg[P_{\tau} [\tau(S) \in R] \bigg] \le \max_{S\in Z^{2m}} P_{\tau}[\tau(S) \in R]  
+  \label{eqn:Rbound}
+ \end{equation}
+
+ Veámoslo. Usando que $S$ es una muestra i.d.d. escogida desde $\dist^{2m}$:
+ 
+ \[\dosmprob(R) = \dosmprob[S \in R] = \mprob[\tau(S) \in R], \quad \forall \tau \in \Gamma\]
+ 
+ \begin{align*}
+ \dosmprob(R) &= \dosmexpect [\mathds{1}_R(S)] = \dosmexpect [\mathds{1}_R(\tau(S))]
+   = \frac{1}{|\Gamma|} \sum_{\tau \in \Gamma} \dosmexpect [\mathds{1}_R(\tau(S))] = \\
+   &\underset{\textrm{(linealidad de $\expect$)}}{=} \dosmexpect \bigg[ \frac{1}{|\Gamma|} 
+   \sum_{\tau \in \Gamma} [\mathds{1}_R(\tau(S))]\bigg] = \dosmexpect \bigg[P_{\tau} [\tau(S) \in R] \bigg]
+ \end{align*}
+
+ Ahora la desigualdad $\dosmexpect \bigg[P_{\tau} [\tau(S) \in R] \bigg] \le \max_{S\in Z^{2m}} P_{\tau}[\tau(S) \in R]$
+ es trivial sin más que asegurar que existe el máximo en $S\in Z^{2m}$ de $P_{\tau}[\tau(S) \in R]$ puesto que $P_{\tau}$
+ toma finitos valores sobre su $\sigma$ álgebra correspondiente.
+  
+ 
+ 
+ 
 \end{proof}
 
