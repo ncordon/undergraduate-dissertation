@@ -319,7 +319,7 @@ Sea $H\subseteq 2^X$ y consideramos funciones de pérdida $0-1$. Entonces equiva
           \end{align*}
  Entonces para $m\ge \frac{1}{\varepsilon^2}$ se verifica $\mprob(Q) \le 2 \mmprob(R)$
  
- \begin{subenv}
+
  Aplicando desigualdad de Hoeffding \ref{ineq:hoeffding}, sabemos que fijado $h\in H$ tenemos 
 
  \begin{equation}
@@ -334,11 +334,11 @@ Sea $H\subseteq 2^X$ y consideramos funciones de pérdida $0-1$. Entonces equiva
  \begin{align}
   \mmprob(R) &\ge \mmprob \bigg[ \exists h \in H: |L_{\dist}(h) - L_{S_1}(h)| 
 		 \ge \varepsilon, |L_{\dist}(h) - L_{S_1}(h)| \le \frac{\varepsilon}{2} \bigg] \ge \nonumber\\
-             &\underset{\eqref{eqn:s2bound}}{\ge} \frac{\munoprob(Q)}{2}
+             &\underset{\eqref{eqn:s2bound}}{\ge} \frac{\munoprob(Q)}{2} \label{eqn:Qbound}
  \end{align} 
- \end{subenv}
+
  
- Consideraremos en lo que sigue $S = (S_1, S_2) \sim \dist{2m}$.
+ Consideraremos en lo que sigue $S = (S_1, S_2) \sim \dist^{2m}$.
  
  Consideramos ahora un conjunto de permutaciones $\Gamma$ sobre $\{1, \ldots, 2m\}$ verificando que para todo $i\in \{1,\ldots, m\}$
  entonces $\tau(i) = i+m, \tau(i+m) = i$ o bien $\tau(i) = i, \tau(i+m) = i$. Es decir son permutaciones que intercambian
@@ -352,23 +352,77 @@ Sea $H\subseteq 2^X$ y consideramos funciones de pérdida $0-1$. Entonces equiva
   \label{eqn:Rbound}
  \end{equation}
 
- Veámoslo. Usando que $S$ es una muestra i.d.d. escogida desde $\dist^{2m}$:
- 
- \[\dosmprob(R) = \dosmprob[S \in R] = \mprob[\tau(S) \in R], \quad \forall \tau \in \Gamma\]
- 
- \begin{align*}
- \dosmprob(R) &= \dosmexpect [\mathds{1}_R(S)] = \dosmexpect [\mathds{1}_R(\tau(S))]
-   = \frac{1}{|\Gamma|} \sum_{\tau \in \Gamma} \dosmexpect [\mathds{1}_R(\tau(S))] = \\
-   &\underset{\textrm{(linealidad de $\expect$)}}{=} \dosmexpect \bigg[ \frac{1}{|\Gamma|} 
-   \sum_{\tau \in \Gamma} [\mathds{1}_R(\tau(S))]\bigg] = \dosmexpect \bigg[P_{\tau} [\tau(S) \in R] \bigg]
- \end{align*}
-
- Ahora la desigualdad $\dosmexpect \bigg[P_{\tau} [\tau(S) \in R] \bigg] \le \max_{S\in Z^{2m}} P_{\tau}[\tau(S) \in R]$
- es trivial sin más que asegurar que existe el máximo en $S\in Z^{2m}$ de $P_{\tau}[\tau(S) \in R]$ puesto que $P_{\tau}$
- toma finitos valores sobre su $\sigma$ álgebra correspondiente.
+  Veámoslo. Usando que $S$ es una muestra i.d.d. escogida desde $\dist^{2m}$:
   
+  \[\dosmprob(R) = \dosmprob[S \in R] = \mprob[\tau(S) \in R], \quad \forall \tau \in \Gamma\]
+  
+  Por otro lado:
+  
+  \begin{align*}
+  \dosmprob(R) &= \dosmexpect [\mathds{1}_R(S)] = \dosmexpect [\mathds{1}_R(\tau(S))]
+    = \frac{1}{|\Gamma|} \sum_{\tau \in \Gamma} \dosmexpect [\mathds{1}_R(\tau(S))] = \\
+    &\underset{\textrm{(linealidad de $\expect$)}}{=} \dosmexpect \bigg[ \frac{1}{|\Gamma|} 
+    \sum_{\tau \in \Gamma} [\mathds{1}_R(\tau(S))]\bigg] = \dosmexpect \bigg[P_{\tau} [\tau(S) \in R] \bigg]
+  \end{align*}
+
+  Ahora la desigualdad $\dosmexpect \bigg[P_{\tau} [\tau(S) \in R] \bigg] \le \max_{S\in Z^{2m}} P_{\tau}[\tau(S) \in R]$
+  es trivial sin más que asegurar que existe el máximo en $S\in Z^{2m}$ de $P_{\tau}[\tau(S) \in R]$ puesto que $P_{\tau}$
+  toma finitos valores sobre su $\sigma$ álgebra correspondiente.
  
+ Veamos por último que:
  
+ \begin{equation}
+  \max_{S\in Z^{2m}} P_{\tau}[\tau(S) \in R] \le 2\Pi_H(2m) e^{\frac{-\varepsilon^2 m}{8}}
+  \label{eqn:permbound}
+ \end{equation}
+
+ 
+  Sea $S = \{(x_1, y_1), \ldots (x_{2m}, y_{2m})\}$ un conjunto de entrenamiento que maximice $P_{\tau}[\tau(S) \in R]$. 
+  Llamando $C=\{x_1, \ldots x_{2m}\}$, entonces $H_C = \{h_1, \ldots, h_t\}$, con $t\le \Pi_H(2m)$ por definición de $\Pi$.
+
+  Dado $\tau \in \Gamma$, entonces $\tau(S) \in R$ sii para algún $h\in H_C$ se tiene (con $l$ función de pérdida $0-1$):
+
+  \[\frac{1}{m} \bigg|\sum_{i=1}^m l\big(h,(x_{\tau(i)}, y_{\tau(i)}) \big) - 
+    \sum_{i=m+1}^{2m} l\big(h,(x_{\tau(i)}, y_{\tau(i)})\big) \bigg| \ge \frac{\varepsilon}{2}\]
+    
+    
+  Fijado $h_j \in H_C$ llamamos $u_k^j = l \big(h_j, (x_k,y_k) \big)$ para $k=1, \ldots, 2m$, $j=1, \ldots t$.
+
+  Se tiene que $u_{\tau(i)}^j - u_{\tau(m+i)}^j$ vale o $u_i^j - u_{m+1}^j$ o $u_{m+1}^j - u_i^j$ con igual probabilidad,
+  por haber asignado sobre $\Gamma$ una distribución uniforme. Por tanto considerando una distribución uniforme $U^{\pm}$ 
+  sobre $\{1,-1\}^m$.
+
+  \[P_{\tau} \left(\frac{1}{m} \bigg|\sum_{i=1}^m (u_{\tau(i)}^j - u_{\tau(i+m)}^j) \bigg| \ge \frac{\varepsilon}{2} \right) = 
+    \underset{(\beta_1, \ldots, \beta_m) \sim U^{\pm}}{P} \left(\frac{1}{m} \bigg|\sum_{i=1}^m (u_i^j - u_{i+m}^j)\beta_i \bigg| \ge 
+    \frac{\varepsilon}{2} \right)\]
+    
+  Dada $\beta \in \{1,-1\}^m$, entonces si $\sum_{i=1}^m (u_i^j - u_{i+m}^j)\beta_i = \alpha$, entonces tomando $\-beta$,
+  se tiene que $\sum_{i=1}^m (u_i^j - u_{i+m}^j)(-\beta_i) = -\alpha$ y podemos agrupar las permutaciones de 2 en 2,
+  con valores opuestos, luego:
+
+  \[\underset{\beta \sim U^{\pm}}{\expect} \left[\frac{1}{m}\sum_{i=1}^m (u_i^j - u_{i+m}^j)\beta_i \right] = 0\]
+
+  Estamos en condiciones de aplicar desigualdad de Hoeffding \ref{ineq:hoeffding}:
+
+  \begin{align*}
+    \underset{\beta \sim U^{\pm}}{P} \left(\frac{1}{m} \bigg|\sum_{i=1}^m (u_{\tau(i)}^j - u_{\tau(i+m)}^j)\beta_i \bigg| \ge 
+    \frac{\varepsilon}{2} \right) &\le \\
+    \le \underset{\beta \sim U^{\pm}}{P} \left(\frac{1}{m} \bigg|\sum_{i=1}^m (u_{\tau(i)}^j - u_{\tau(i+m)}^j)\beta_i \bigg| > 
+    \frac{\varepsilon}{4} \right) &\le 2e^{\frac{-\varepsilon^2m}{8}}
+  \end{align*}
+
+  Como habíamos fijado un $h_j\in H_C$, 
+  \begin{align*}
+  P_{\tau} [\tau(S) \in R] &= P_{\tau} \left[\exists h_j \in H_C: \frac{1}{m} : 
+  \bigg|\sum_{i=1}^m (u_{\tau(i)}^j - u_{\tau(i+m)}^j) \bigg| \ge \frac{\varepsilon}{2} \right] \le \\
+  &\le 2 |H_C| e^{\frac{-\epsilon^2 m}{8}} \le 2\Pi_H(2m) e^{\frac{-\epsilon^2 m}{8}}
+  \end{align*}
+
+  En definitiva, uniendo \eqref{eqn:Qbound}, \eqref{eqn:Rbound} y \eqref{eqn:permbound} hemos probado que:
+  
+  \[\mprob \bigg[|L_S(h) - L_{\dist}(h)| \ge \epsilon \bigg] \le 4 \Pi_H(2m) e^{\frac{-\epsilon^2 m}{8}}\]
+  
+  para $m \ge \frac{1}{m^2}$ que era condición suficiente para que se verificara \eqref{eqn:Qbound}.
  
 \end{proof}
 
