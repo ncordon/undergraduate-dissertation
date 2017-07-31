@@ -120,7 +120,7 @@ a todos.
 Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 
 \begin{enumerate}[i]
- \item $VC(H) \le log_2(|H|)$.
+ \item $VC(H) \le \log_2(|H|)$.
  \item Si $H_1 \subseteq H_2$ entonces $VC(H_1) \le VC(H_2)$.
  \item $VC(H)$ no depende del número de parámetros de los clasificadores de $H$.
 \end{enumerate}
@@ -197,7 +197,7 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 \end{corollary}
 
   \begin{proof}
-  Si $X < \infty$, entonces $|H| \le 2^{|X|} < \infty$, y $VC(H) \le log_2(|H|) < \infty$. Luego $|X| = \infty$
+  Si $X < \infty$, entonces $|H| \le 2^{|X|} < \infty$, y $VC(H) \le \log_2(|H|) < \infty$. Luego $|X| = \infty$
   
   Por reducción al absurdo. Sea $A$ el algoritmo de aprendizaje. Para todo $m\in \mathbb{N}$ par arbitrario, como 
   $m\le \frac{|X|}{2}$, existe $C$ con $|C| = m$ fragmentado por $H$, el teorema \ref{th:nfl2} nos diría que existe una 
@@ -273,24 +273,60 @@ repetición desde $C$, y hay $m^d$ posibles extracciones de este tipo.
 \end{proof}
 
 \begin{corollary}
-Sea $H \subseteq 2^X$. Si $\exists d\in \mathbb{N}$ tal que $\Pi_{H} (m) > \sum_{i=0}^d \binom{m}{i} \le m^d + 1$,
-entonces $VC(H) \ge d+1$.
+Sea $H \subseteq 2^X$. Si $\exists d\in \mathbb{N}$ tal que $\Pi_{H} (m) > \sum_{i=0}^d \binom{m}{i}$,
+entonces $VC(H)$ es al menos $d+1$.
 \end{corollary}
 
 \begin{proof}
 Por reducción al absurdo desde el lema \ref{lemma:sauer}, si $\Pi_{H}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $VC(H) > d$.
 \end{proof}
 
-\begin{theorem}
+\begin{lemma}
+ Sea $a > 0$. Entonces $x \ge 2a \log(a) \Rightarrow x \ge a \log(x)$ para $x > 0$
+ \label{lemma:ineqlog}
+\end{lemma}
+
+\begin{proof}
+ Tomamos $f(x) = x - a\log(x)$. Se tiene $f'(x) = 1 - \frac{a}{x}$ y $f'(x) = 0 \Leftrightarrow x = a$. Como 
+ $\lim_{x\rightarrow +\infty}f(x) = +\infty$, $f$ debe tener un mínimo en $a$.
  
-\end{theorem}
+ Si $a \le e$, entonces dado $f(a) = a-a \log(a) \ge a-a \ge 0$ y la desigualdad se cumple.
+ 
+ Si $a > e$, entonces $2a \log(a) \ge a$ y:
+ 
+ \begin{align*}
+  f(2a \log(a)) &= 2a \log(a) - a \log(2a \log(a)) = \\
+	        &= 2a \log(a) - a \log(a) - a \log(2\log(a)) =\\
+                &= a \log(a) - a \log(2 \log(a)) = a \log \left(\frac{a}{2 \log(a)}\right)
+ \end{align*}
+ 
+ Tomando $g(a) = a - 2\log(a)$, se tiene $g'(a) = 1 - \frac{2}{a} = 0$ sii $a = 2$, y $g(2) = 2 - \log(4) \ge 2 - \log(e^2) = 0$.
+ Luego $g(a) \ge 0$ y $\frac{a}{2 \log(a)} \ge 1$, con lo que $f(2a \log(a)) \ge 0$, y se deduce la igualdad al ser $f$
+ creciente para $x\ge a$.
+\end{proof}
+
+
+\begin{lemma}
+ Sea $a \ge \frac{1}{2}$, $b > 0$. Entonces $x\ge 4a \log(2a) + 2b \Rightarrow x \ge a \log(x) + b$.
+ \label{lemma:boundlog}
+\end{lemma}
+
+\begin{proof}
+ Como $a \ge \frac{1}{2}$, entonces $4a \log(2a) \ge 0$ y $x \ge 2b$.
+ 
+ Por otro lado, como $b > 0$, entonces $2b > 0$ y $x \ge 4a \log(2a)$, lo cual, usando el lema anterior \ref{lemma:ineqlog} 
+ nos dice que $x \ge 2a \log(x)$.
+ 
+ Sumando ambas desigualdades $2x \ge a \log(x) + 2b$.
+\end{proof}
+
 
 
 
 \begin{theorem}
 \textbf{Teorema fundamental de aprendizaje PAC}
 
-Sea $H\subseteq 2^X$ y consideramos funciones de pérdida $0-1$. Entonces equivalen:
+Sea $H\subseteq 2^X$, $H,X \neq \emptyset$ y consideramos funciones de pérdida $0-1$. Entonces equivalen:
 
 \begin{enumerate}[i]
 \item \label{th:fundi} $H$ es de Glivenko-Cantelli.
@@ -415,14 +451,39 @@ Sea $H\subseteq 2^X$ y consideramos funciones de pérdida $0-1$. Entonces equiva
   \begin{align*}
   P_{\tau} [\tau(S) \in R] &= P_{\tau} \left[\exists h_j \in H_C: \frac{1}{m} : 
   \bigg|\sum_{i=1}^m (u_{\tau(i)}^j - u_{\tau(i+m)}^j) \bigg| \ge \frac{\varepsilon}{2} \right] \le \\
-  &\le 2 |H_C| e^{\frac{-\epsilon^2 m}{8}} \le 2\Pi_H(2m) e^{\frac{-\epsilon^2 m}{8}}
+  &\le 2 |H_C| e^{\frac{-\varepsilon^2 m}{8}} \le 2\Pi_H(2m) e^{\frac{-\varepsilon^2 m}{8}}
   \end{align*}
 
   En definitiva, uniendo \eqref{eqn:Qbound}, \eqref{eqn:Rbound} y \eqref{eqn:permbound} hemos probado que:
   
-  \[\mprob \bigg[|L_S(h) - L_{\dist}(h)| \ge \epsilon \bigg] \le 4 \Pi_H(2m) e^{\frac{-\epsilon^2 m}{8}}\]
+  \begin{equation}
+   \mprob \bigg[|L_S(h) - L_{\dist}(h)| \ge \varepsilon \bigg] \le 4 \Pi_H(2m) e^{\frac{-\varepsilon^2 m}{8}}
+   \label{ineq:vcimpliesgc}
+  \end{equation}
   
-  para $m \ge \frac{1}{m^2}$ que era condición suficiente para que se verificara \eqref{eqn:Qbound}.
+  para $m \ge \frac{1}{\varepsilon^2}$ que era condición suficiente para que se verificara \eqref{eqn:Qbound}.
+  
+  Ya estamos en condiciones de probar \ref{th:fundvi} $\Rightarrow$ \ref{th:fundi}. Sea $VC(H) = d < \infty$. Observamos
+  que como $H,X \neq \emptyset$, entonces $d \ge 1$.
+  
+  Entonces como $\Pi_H(2m) \le (2m)^d + 1 \le (4m)^d$, por lema de Sauer \ref{lemma:sauer}, se tiene:
+  
+  \[\mprob \bigg[|L_S(h) - L_{\dist}(h)| \ge \varepsilon \bigg] 
+    \le 4 \Pi_H(2m) e^{\frac{-\varepsilon^2 m}{8}} \le 4 (4m)^d e^{-\frac{\varepsilon^2 m}{8}}\]
+ 
+  Necesitamos $4 (4m)^d e^{-\frac{\varepsilon^2 m}{8}} \le \delta$. Tomando $\log$ en ambos miembros deducimos:
+  
+  \begin{align*}
+    \log(4) + d\log(4m) \le \log(\delta) + \frac{4\varepsilon^2 m}{32} \Leftrightarrow \\
+    \Leftrightarrow \underbrace{\frac{32}{\varepsilon^2} \bigg(log(4) - log(\delta) \bigg)}_b + 
+    \underbrace{\frac{32 d}{\epsilon^2}}_a \log(4m) \le 4m    
+  \end{align*}
+  
+  $a \ge \frac{1}{2}$ por ser $d \ge 1$, y podemos aplicar el lema \ref{lemma:boundlog}, que nos asegura que si 
+  $4m \ge 4a \log(2a) + 2b$, se verifica la anterior desigualdad. Es decir, nos vale:
+  
+  \[m_{H}^{CU}(\epsilon, \delta) \le \left\lceil\frac{32 d}{\epsilon^2} \log\left(\frac{64 d}{\epsilon^2}\right) + 
+    \frac{16}{\epsilon^2} \log\left(\frac{4}{\delta}\right) \right\rceil \]
  
 \end{proof}
 
