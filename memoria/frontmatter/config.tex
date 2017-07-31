@@ -1,0 +1,115 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-lcroman]{babel}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{wasysym}
+\usepackage{dsfont}
+\usepackage{enumerate}
+
+% *************************************************************************************************************
+% Entorno para ejemplos y contraejemplos
+% https://tex.stackexchange.com/questions/5223/command-for-argmin-or-argmax
+% *************************************************************************************************************
+\usepackage{mdframed} % Add easy frames to paragraphs
+\usepackage{lipsum} % For dummy text
+\usepackage{xcolor}
+\usepackage{xparse} % Add support for \NewDocumentEnvironment
+\definecolor{graylight}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+
+\newmdenv[ % Define mdframe settings and store as leftrule
+  linecolor=graylight,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{leftrule}
+
+\NewDocumentEnvironment{example}{O{\textbf{Ejemplo:}}}
+{\begin{leftrule}\noindent\textcolor{black}{#1}\par}
+{\end{leftrule}}
+
+\NewDocumentEnvironment{counterex}{O{\textbf{Contraejemplo:}}}
+{\begin{leftrule}\noindent\textcolor{black}{#1}\par}
+{\end{leftrule}}
+
+% *************************************************************************************************************
+% Entorno para demostraciones dentro de demostraciones
+% *************************************************************************************************************
+\newenvironment{subenv}
+{\setlength\leftskip{-2em}
+\setlength\leftskip{2em}}
+
+% *************************************************************************************************************
+% Definiciones de teoremas, corolarios, lemas
+% *************************************************************************************************************
+\newtheorem{theorem}{Teorema}
+\newtheorem*{theorem*}{Teorema}
+\newtheorem{fact}{Proposición}
+\newtheorem*{fact*}{Proposición}
+\newtheorem{lemma}{Lema}
+\newtheorem*{lemma*}{Lema}
+\newtheorem{corollary}{Corolario}
+\newtheorem*{corollary*}{Corolario}
+\newtheorem{definition}{Definición}
+\newtheorem*{definition*}{Definición}
+
+
+% *************************************************************************************************************
+% Comandos
+% *************************************************************************************************************
+
+% Inserción de imágenes
+\newcommand{\img}[2]{
+  \begin{center}
+  \includegraphics[width=#2\textwidth]{#1}
+  \end{center}
+}
+
+
+% arg min
+\DeclareMathOperator*{\argmin}{arg\,\min }
+\DeclareMathOperator*{\argmax}{arg\,\max }
+
+% norma || ||
+\newcommand{\norm}[1]{||{#1}||}
+
+
+% Para hacer el underbrace de columnas de matrices
+% Fuente: https://tex.stackexchange.com/questions/102460/underbraces-in-matrix-divided-in-blocks
+
+\newcommand\undermat[2]{%
+  \makebox[0pt][c]{$\smash{\underbrace{\phantom{%
+    \begin{array}{r} #2 \end{array}}}_{\text{$#1$}}}$}#2}
+
+
+% Abreviaciones para escribir menos
+\newcommand{\mprob}{\underset{S\sim \mathcal{D}^m}{P}}
+\newcommand{\dosmprob}{\underset{S\sim \mathcal{D}^{2m}}{P}}
+\newcommand{\munoprob}{\underset{S_1\sim \mathcal{D}^m}{P}}
+\newcommand{\mdosprob}{\underset{S_2\sim \mathcal{D}^m}{P}}
+\newcommand{\mmprob}{\underset{\begin{subarray}{c} 
+				S_1 \sim \mathcal{D}^{m} \\ 
+				S_2 \sim\mathcal{D}^m 
+				\end{subarray}}{P}}
+\newcommand{\prob}{\underset{x\sim \mathcal{D}}{P}}
+\newcommand{\zprob}{\underset{z\sim \mathcal{D}}{P}}
+\newcommand{\dist}{\mathcal{D}}
+\newcommand{\expect}{\mathbb{E}}
+\newcommand{\mexpecti}[1]{\underset{S\sim \mathcal{D}_{#1}^m}{\mathbb{E}}}
+\newcommand{\mexpect}{\underset{S\sim \mathcal{D}^m}{\mathbb{E}}}
+\newcommand{\dosmexpect}{\underset{S\sim \mathcal{D}^{2m}}{\mathbb{E}}}
+
+% *************************************************************************************************************
+% Otras configuraciones
+% *************************************************************************************************************
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\everymath{\displaystyle}

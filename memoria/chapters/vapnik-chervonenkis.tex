@@ -1,4 +1,4 @@
-\section{Conjunto fragmentado}
+\section{Fragmentación}
 
 \begin{definition}
 Sea $H\subseteq 2^X$, y $C \subseteq X$. Llamamos restricción de $H$ a $C$ a:
@@ -281,6 +281,8 @@ entonces $VC(H)$ es al menos $d+1$.
 Por reducción al absurdo desde el lema \ref{lemma:sauer}, si $\Pi_{H}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $VC(H) > d$.
 \end{proof}
 
+\section{Teorema fundamental del aprendizaje PAC}
+
 \begin{lemma}
  Sea $a > 0$. Entonces $x \ge 2a \log(a) \Rightarrow x \ge a \log(x)$ para $x > 0$
  \label{lemma:ineqlog}
@@ -319,8 +321,6 @@ Por reducción al absurdo desde el lema \ref{lemma:sauer}, si $\Pi_{H}(m) > \sum
  
  Sumando ambas desigualdades $2x \ge a \log(x) + 2b$.
 \end{proof}
-
-
 
 
 \begin{theorem}
