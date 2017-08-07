@@ -50,15 +50,16 @@
 % *************************************************************************************************************
 % Definiciones de teoremas, corolarios, lemas
 % *************************************************************************************************************
-\newtheorem{theorem}{Teorema}[section]
+\newtheorem{thm}{theorem}[section]
+\newtheorem{theorem}[thm]{Teorema}
 \newtheorem*{theorem*}{Teorema}
-\newtheorem{fact}{Proposición}[section]
+\newtheorem{fact}[thm]{Proposición}
 \newtheorem*{fact*}{Proposición}
-\newtheorem{lemma}{Lema}[section]
+\newtheorem{lemma}[thm]{Lema}
 \newtheorem*{lemma*}{Lema}
-\newtheorem{corollary}{Corolario}[section]
+\newtheorem{corollary}[thm]{Corolario}
 \newtheorem*{corollary*}{Corolario}
-\newtheorem{definition}{Definición}[section]
+\newtheorem{definition}[thm]{Definición}
 \newtheorem*{definition*}{Definición}
 
 
@@ -73,6 +74,15 @@
   \end{center}
 }
 
+\newcommand{\imgcaption}[3]{
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=#2\textwidth]{#1}
+  \end{center}
+  
+  \caption{#3}
+ \end{figure}
+}
 
 % arg min
 \DeclareMathOperator*{\argmin}{arg\,\min }
@@ -106,6 +116,12 @@
 \newcommand{\mexpecti}[1]{\underset{S\sim \mathcal{D}_{#1}^m}{\mathbb{E}}}
 \newcommand{\mexpect}{\underset{S\sim \mathcal{D}^m}{\mathbb{E}}}
 \newcommand{\dosmexpect}{\underset{S\sim \mathcal{D}^{2m}}{\mathbb{E}}}
+\newcommand{\ppos}{P^{+}}
+\newcommand{\pneg}{P^{-}}
+\newcommand{\npos}{N^{+}}
+\newcommand{\nneg}{N^{-}}
+\newcommand{\spos}{S^{+}}
+\newcommand{\sneg}{S^{-}}
 
 % *************************************************************************************************************
 % Pseudocódigo de algoritmos

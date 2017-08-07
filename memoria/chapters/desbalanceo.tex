@@ -7,31 +7,27 @@ probabilidad prefijada pero no conocida por el algoritmo, a saber, $\dist=(\Sigm
 Por simplicidad, podemos considerar siempre $\Sigma = \mathcal{P}(X)$, por lo que identificaremos en lo que sigue $\mathcal{D} \equiv P$.
 El problema de clasificación binaria consiste en buscar, dado $S= \left\{(x_1, y_1), \ldots (x_m, y_m)\right\}$ un 
 conjunto de entrenamiento, un clasificador de alguna clase $H$, $h$, verificando que $L_{P}(h)$ sea lo más pequeño posible.
-Nótese que estamos relajando las hipótesis de \ref{sec:clas-binaria} al considerar la distribución de probabilidad o el conjunto 
-de entrenamiento sin elementos repetidos.
+Nótese que estamos relajando las hipótesis de \ref{sec:clas-binaria} al considerar la distribución de probabilidad como prefijada.
 
 \begin{definition} \textbf{Instancias positivas, negativas}
 
-Llamamos instancias positivas a $Z_{+} = \{(x,y)\in Z: y=1\}$.
+Llamamos instancias positivas a $Z^{+} = \{(x,y)\in Z: y=1\}$.
 
-LLamamos instancias negativas a $Z_{-} = \{(x,y)\in Z: y=-1\}$.
+LLamamos instancias negativas a $Z^{-} = \{(x,y)\in Z: y=-1\}$.
+
+Una notación equivalente se aplica a $S$. Además llamamos $\ppos = P(Z_{+})$ y $\pneg = P(Z_{-})$.
 \end{definition}
 
 
-\begin{definition} \textbf{Problema desbalanceado}
+\begin{definition} \textbf{Desbalanceo entre clases}
 
- Decimos que un problema de clasificación binaria es desbalanceado si se verifica 
- $p=P\left(\{(x,y) \in Z: y =1\}\right) < P\left(\{(x,y) \in Z: y = -1\}\right) = q$.
-
- Suponiendo $p\neq 0$ (puesto que caso opuesto el problema sería trivial), llamamos ratio de balanceo a 
- $r = \frac{q}{p}$.
+ Decimos que un problema de clasificación binaria es desbalanceado (entre clases) si se verifica que tomando 
+ $\nneg = |S^{-}|$ y $\npos = |S^{+}|$, entonces $\npos < \nneg$.
  
- En la práctica, como lo único que conocemos de la distribución es el conjunto de entrenamiento, se aproxima
- $r$ tomando $q = |\{(x,y)\in S: y=-1\}|$ y $p = |\{(x,y)\in S: y=1\}|$.
- 
+ Llamamos ratio de desbalanceo a $r(S)=\frac{\nneg}{\npos}$.
 \end{definition}
 
-Por convención se consideran problemas de desbalanceo donde $r \gg 1$, tal y como se afirma en \cite{he2009}. Asimismo,
+Por convención se consideran problemas de desbalanceo donde $r(S) \gg 1$, tal y como se afirma en \cite{he2009}. Asimismo,
 en estos problemas nos interesa especialmente mejorar el error de los clasificadores sobre la clase minoritaria o positiva.
 
 En muchas ocasiones, al realizar análisis de datos no se tiene en cuenta el desbalanceo existente entre clases, lo
@@ -42,22 +38,30 @@ positiva. Si los datasets empleados representaran enfermedades, por ejemplo, com
 nos interesaría encontrar mecanismos para disminuir el error sobre la clase positiva (la de las instancias correspondientes
 a la enfermedad).
 
-Puede asimismo hacerse una distinción de desbalanceo como desbalanceo relativo y desbalanceo debido a instancias
-raras (/absolute rarity/, pequeñas instancias del conjunto de entrenamiento agrupadas en regiones muy particulares
-del área de búsqueda). El desbalanceo relativo es aquel en que la función de distribución de la clases se conserva 
-al tomar varias muestras aleatorias simples, el desbalanceo debido a instancias raras no, y éste último está
-estrechamente relacionado con el desbalanceo intra-clases (/within-class/) debido a la distribución en distintos
-/clusters/ de instancias de una misma clase en el espacio de exploración. La falta de representatividad de la 
-distribución de clases por parte del clasificador no sólo se debe al desbalanceo de clases, sino que se puede deber
-a un amplio rango de factores que afectan a la complejidad de los datos (/overlapping/, falta de representatividad
-en los datos, /small disjuncts/, etc).
+El desbalanceo puede ser:
 
-El desbalanceo intra-clases se encuentra estrechamente relacionado con el problema de los /small-disjuncts/. En 
-general, los clasificadores intentan aprender a partir de una clase creando reglas disjuntas que afecten a /clusters/ 
-de instancias. Como consecuencia de la infrarrepresentación de instancias en el caso de clases heterogéneas (repartidas 
-en varios /clusters/), podemos tener reglas que cubren una pequeña porción de las instancias de una clase, esto es 
-/small-disjuncts/. Los /small-disjuncts/ no sólo afectan a la clase minoritaria, sino que pueden darse también 
+\begin{enumerate}[i]
+  \item \textbf{Intrínseco}, cuando $\ppos < \pneg$, y por tanto la cantidad de datos de cada clase que extraemos viene 
+  verdaderamente determinada por la distribución real de los datos.
+
+  \item \textbf{Extrínseco}, si $\ppos \ge \pneg$ pero sin embargo para nuestro conjunto de entrenamiento $S$, 
+  tenemos que $\npos < \nneg$. Esto quiere decir que el desbalanceo no viene determinado por la verdadera distribución de
+  los datos, sino por factores como por ejemplo la complejidad para extraer la misma cantidad de datos de la misma clase.
+\end{enumerate}
+
+También podemos decir existe desbalanceo \textbf{intra clases} cuando además la clase minoritaria está repartida en varias 
+regiones no conexas, a saber $\sneg \supset A_1, \ldots A_m$ donde $|A_1| \le \ldots \le |A_m|$, con algún menor o igual estricto.
+Esto dificulta aún más la correcta clasificación de dichas instancias, porque aparecen zonas con instancias positivas 
+pobremente representadas. A estas zonas de baja representación las llamamos instancias raras. Nótese que hay que distinguir
+el concepto de instancia rara de otro concepto que surge en ciencia de datos: el concepto de ruido, instancias aisladas completamente.
+   
+La aparición de instancias raras no sólo se debe al desbalanceo de clases, sino que se puede deber a un amplio rango de factores 
+que afectan a la complejidad de los datos: \textit{overlapping} ($\sneg_x \cap \spos_x \neq \emptyset$), falta de 
+representatividad en los datos, \textit{small disjuncts}, etc. En general, los clasificadores intentan aprender a partir de una clase 
+creando reglas disjuntas que agrupen a instancias. Como consecuencia de la infrarrepresentación de instancias, podemos tener
+reglas que cubran una pequeña porción de las instancias de la clase positiva. Estas instancias conforman lo que llamamos 
+un \textit{small-disjunct}. Los \textit{small-disjuncts} no sólo afectan a la clase minoritaria, sino que pueden darse también 
 dentro de la mayoritaria, aunque la mayor densidad de datos de esta clase hace que el efecto no sea tan agravado o 
-sea una situación menos frecuente. El gran desafío en la identificación de los /small-disjunts/ es identificar todas las
-agrupaciones minoritarias de una clase, sin generar también reglas de clasificación para los datos que representan ruido.
-Por tanto, en problemas con alta dimensionalidad y baja densidad de muestreo, también encontramos /small-disjunts/.
+sea una situación menos frecuente. 
+
+\imgcaption{./imgs/desbalanceo.png}{0.85}{Ejemplo de dataset con desbalanceo}
