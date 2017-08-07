@@ -50,15 +50,15 @@
 % *************************************************************************************************************
 % Definiciones de teoremas, corolarios, lemas
 % *************************************************************************************************************
-\newtheorem{theorem}{Teorema}
+\newtheorem{theorem}{Teorema}[section]
 \newtheorem*{theorem*}{Teorema}
-\newtheorem{fact}{Proposición}
+\newtheorem{fact}{Proposición}[section]
 \newtheorem*{fact*}{Proposición}
-\newtheorem{lemma}{Lema}
+\newtheorem{lemma}{Lema}[section]
 \newtheorem*{lemma*}{Lema}
-\newtheorem{corollary}{Corolario}
+\newtheorem{corollary}{Corolario}[section]
 \newtheorem*{corollary*}{Corolario}
-\newtheorem{definition}{Definición}
+\newtheorem{definition}{Definición}[section]
 \newtheorem*{definition*}{Definición}
 
 
@@ -106,6 +106,12 @@
 \newcommand{\mexpecti}[1]{\underset{S\sim \mathcal{D}_{#1}^m}{\mathbb{E}}}
 \newcommand{\mexpect}{\underset{S\sim \mathcal{D}^m}{\mathbb{E}}}
 \newcommand{\dosmexpect}{\underset{S\sim \mathcal{D}^{2m}}{\mathbb{E}}}
+
+% *************************************************************************************************************
+% Pseudocódigo de algoritmos
+% *************************************************************************************************************
+\usepackage{algpseudocode}
+
 
 % *************************************************************************************************************
 % Otras configuraciones

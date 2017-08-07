@@ -1056,7 +1056,6 @@ Es decir:
 \[P_{S\sim \mathcal{D}^m} \left( L_{\mathcal{D}}(A(S)) \ge \frac{1}{8} \right) \ge \frac{4}{28} = \frac{1}{7}\]
 #+end_proof
 
-
 Como consecuencia del teorema, podemos decir que no hay un algoritmo de aprendizaje óptimo para todas las distribuciones, puesto que para una dada por el resultado del teorema, el algoritmo ERM con $\mathcal{H} = \{f\}$ aprendería mejor.
 
 *** Dimensión Vapnik-Chervonenkis
