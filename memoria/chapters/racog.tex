@@ -12,7 +12,7 @@
   \RETURN{$P(w_1, \ldots w_m)$, construida con $P_{abs}$ y $\bar{P}$}  
 \end{algorithmic}
 \caption{Algoritmo AproximarDistribución}
-\label{multiplicacion}
+\label{alg:aproxdist}
 \end{algorithm}
 
 \begin{algorithm}[H]
@@ -27,13 +27,13 @@
   \RETURN{$S = \{\bar{x}_i=(\bar{w}_1^{(i)}, \ldots \bar{w}_d^{(i)})\}_{i=1}^m$, conjunto de instancias\\ generado desde $S$ y $P$}
 \end{algorithmic}
 \caption{Algoritmo GibbsSampler}
-\label{multiplicacion}
+\label{alg:gibbs}
 \end{algorithm}
 
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos de la clase positiva
+  \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos positivos
   \REQUIRE $\beta$, burnin
   \REQUIRE $\alpha$, lag
   \REQUIRE $T$, número de iteraciones
@@ -41,7 +41,7 @@
   \STATE{$P = \textrm{AproximarDistribución}(S)$}
   \STATE{$S'= \emptyset$}
   \NEWLINE
-  \FOR{$t=1,\ldots T$}
+  \FOR{$t=1,\ldots, T$}
     \STATE{$S = \textrm{GibbsSampler}(S, P)$}
     \NEWLINE
     \IF{$t > \beta$ \AND $t\mod(\alpha) = 0$}
@@ -51,6 +51,38 @@
   \NEWLINE
   \RETURN{$S'$, ejemplos positivos sintéticos}    
 \end{algorithmic}
-\caption{Algoritmo RACOG}
-\label{multiplicacion}
+\caption{Algoritmo de \textit{oversampling} RACOG}
+\label{alg:racog}
 \end{algorithm}
+
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $S_{train} = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, conjunto de \textit{train}
+  \REQUIRE $S_{val} = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, conjunto de validación
+  \REQUIRE $wrapper$, clasificador
+  \REQUIRE $T$, número de iteraciones a considerar
+  \REQUIRE $\alpha$, parámetro de tolerancia
+  \STATE{$S = \spos_{train}$}
+  \STATE{$P = \textrm{AproximarDistribución}(S)$}
+  \STATE{Obetener $modelo$ con $wrapper$ y $S_{train}$}
+  \STATE{Inicializar nuevas muestras $S'= \emptyset$}
+  \STATE{Inicializar $\tau = (\underset{1)}{+\infty}, \ldots, \underset{T)}{+\infty})$}
+  \NEWLINE
+  \WHILE{Desviación estándar de $\tau \ge \alpha$}
+    \STATE{$S = \textrm{GibbsSampler}(S, P)$}
+    \STATE{$S_{misc} =$ instancias mal clasisicadas de $S$ clasificadas por $modelo$}
+    \STATE{Actualizar nuevas instancias, $S' = S' \cup S_{misc}$}
+    \STATE{Actualizar \textit{train}, $S_{train} = S_{train} \cup S_{misc}$}
+    \STATE{Obetener $modelo$ con $wrapper$ y $S_{train}$}
+    \STATE{Hacer $s = $ sensibilidad de la predicción de $modelo$ sobre $S_{val}$}
+    \STATE{Hacer $\tau = (\tau_2, \ldots, \tau_T, s)$}
+  \ENDWHILE
+  \NEWLINE
+  \RETURN{$S'$, ejemplos positivos sintéticos}    
+\end{algorithmic}
+\caption{Algoritmo de \textit{oversampling} wRACOG}
+\label{alg:wracog}
+\end{algorithm}
+
+

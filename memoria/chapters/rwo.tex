@@ -1,0 +1,37 @@
+\section{Algoritmo RWO}
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos positivos
+  \REQUIRE $T$, número de instancias sintéticas deseado
+  \STATE{$S = \spos_x = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$}
+  \STATE{$S'= \emptyset$}
+  \NEWLINE
+  \FOR{Cada atributo atributo $j=1, \ldots, d$}
+    \IF{El atributo $j-$ésimo es numérico}
+      \STATE{Calcular la varianza $\sigma_j = \sqrt{\sum_{i=1}^m \left(w_j^{(i)} - \frac{\sum_{i=1}^m w_j^{(i)}}{m} \right)^2}$}
+    \ENDIF
+  \ENDFOR
+  \NEWLINE
+  \FOR{Hacer $M = \left\lceil T/m \right\rceil$}
+    \FOR{$i=1,\ldots, m$}
+      \FOR{$j=1, \ldots, d$}
+         \IF{El atributo $j-$ésimo es numérico}
+           \STATE{Escoger $x \sim N(0,1)$}
+	   \STATE{$w_j = w_j^{(i)} - \frac{\sigma_j}{\sqrt{m}} \cdot x$}
+	 \ELSE
+	   \STATE{Escoger $w_j$ de manera uniforme sobre $\{w_j^{(1)}, \ldots w_j^{(m)}\}$}
+	 \ENDIF
+      \ENDFOR
+      \STATE{$S' = S' \cup \{(w_1, \ldots w_d)\}$}
+    \ENDFOR
+  \ENDFOR
+  \NEWLINE
+  \STATE{$S'=$ Escoger $T$ instancias aleatorias de entre $S'$}
+  \RETURN{$S'$, ejemplos positivos sintéticos}
+\end{algorithmic}
+\caption{Algoritmo de \textit{oversampling} RWO}
+\label{alg:rwo}
+\end{algorithm}
+
+
