@@ -1,0 +1,56 @@
+\section{Algoritmos RACOG y wRACOG}
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, instancias
+  \STATE{Calcular $G' = (E',V')$ árbol de dependencia según Chow Liu}
+  \STATE{Construir $G$ un grafo no dirigido desde $G'$, $E$ arcos, $r$ raíz}
+  \FOR{$(u,v) \in E$}
+    \STATE{Calcular $\bar{P}(w_v \mid w_u)$}
+    \STATE{Calcular $P_{abs}(w_u)$}
+  \ENDFOR
+  \RETURN{$P(w_1, \ldots w_m)$, construida con $P_{abs}$ y $\bar{P}$}  
+\end{algorithmic}
+\caption{Algoritmo AproximarDistribución}
+\label{multiplicacion}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, instancias
+  \REQUIRE $P(w_1, \ldots w_m)$, distribución conjunta
+  \FOR{$i=1, \ldots, m$}
+    \FOR{$k=1,\ldots, d$}
+      \STATE{$\bar{w}_k^{(i)} \sim P(w_k \mid \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})$}
+    \ENDFOR
+  \ENDFOR
+  \RETURN{$S = \{\bar{x}_i=(\bar{w}_1^{(i)}, \ldots \bar{w}_d^{(i)})\}_{i=1}^m$, conjunto de instancias\\ generado desde $S$ y $P$}
+\end{algorithmic}
+\caption{Algoritmo GibbsSampler}
+\label{multiplicacion}
+\end{algorithm}
+
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos de la clase positiva
+  \REQUIRE $\beta$, burnin
+  \REQUIRE $\alpha$, lag
+  \REQUIRE $T$, número de iteraciones
+  \STATE{$S = \spos_x$}
+  \STATE{$P = \textrm{AproximarDistribución}(S)$}
+  \STATE{$S'= \emptyset$}
+  \NEWLINE
+  \FOR{$t=1,\ldots T$}
+    \STATE{$S = \textrm{GibbsSampler}(S, P)$}
+    \NEWLINE
+    \IF{$t > \beta$ \AND $t\mod(\alpha) = 0$}
+      \STATE{$S' = S' \cup S$}
+    \ENDIF
+  \ENDFOR
+  \NEWLINE
+  \RETURN{$S'$, ejemplos positivos sintéticos}    
+\end{algorithmic}
+\caption{Algoritmo RACOG}
+\label{multiplicacion}
+\end{algorithm}

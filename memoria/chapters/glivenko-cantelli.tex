@@ -2,12 +2,12 @@
 
 Empezamos definiendo lo que es un conjunto de entrenamiento $\varepsilon$ representativo.
 
-\begin{definition*}
+\begin{definition}
  Un conjunto de entrenamiento $S$ es $\varepsilon$-representativo de una clase de hipótesis $H$ respecto a una
  distribución $\dist$ y una función de pérdida $l$, si $\forall h\in H$ se tiene:
  
  \[|L_S(h) - L_{\dist}(h)| \le \varepsilon\]
-\end{definition*}
+\end{definition}
 
 Intuitivamente, cualquier $ERM_H$ sobre $S$ sería un buen algoritmo de aprendizaje 
 si $S$ es $\varepsilon$ representativo para cualquier $\varepsilon \in ]0,1[$ y cualquier distribución. 
@@ -35,7 +35,7 @@ Lo formalizamos con la siguiente proposición:
 \end{proof}
 
 
-\begin{definition*} \textbf{Clase de Glivenko-Cantelli}
+\begin{definition} \textbf{Clase de Glivenko-Cantelli}
 
 Decimos que una clase de hipótesis $H$ es de Glivenko-Cantelli, respecto a un dominio $Z$, y a 
 una función de pérdida $l$, si existe una función ${m_{H}^{CU}: ]0,1[^2 \rightarrow \mathbb{N}}$ 
@@ -44,7 +44,7 @@ $S\sim \dist^m$ con $m \ge m_{H}^{CU}(\varepsilon, \delta)$,
 entonces:
 
 \[\mprob [\forall h\in H, |L_S(h) - L_{\dist}(h)| \le \varepsilon] \ge 1-\delta\]
-\end{definition*}
+\end{definition}
 
 Análogamente a lo que ocurría en la definición \ref{def:pac}, podemos considerar $m_H^{CU}$ única, en el sentido de
 que para cada $0 < \delta, \varepsilon < 1$, $m_{H}^{CU}(\varepsilon, \delta)$ es el mínimo natural que satisface las 

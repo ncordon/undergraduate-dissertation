@@ -3,10 +3,10 @@
 #
 # Script para generar algunas de las gráficas del proyecto de fin de carrera
 ############################################################################
-#devtools::install_github('ncordon/imbalance')
+#devtools::install_github("ncordon/imbalance")
 library(imbalance)
 library(ggplot2)
-data(ecoli1)
+data(ecoli1, package = "imbalance")
 
 colorPalette <-  c("#009E73", "#D55E00", "#CC79A7")
 ggplot(ecoli1, aes_string("Gvh", "Mcg", col = "Class")) + 

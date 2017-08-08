@@ -65,3 +65,19 @@ dentro de la mayoritaria, aunque la mayor densidad de datos de esta clase hace q
 sea una situación menos frecuente. 
 
 \imgcaption{./imgs/desbalanceo.png}{0.85}{Ejemplo de dataset con desbalanceo}
+
+\section{Técnicas para aprendizaje con desbalanceo}
+\subsection{Oversampling/Undersampling}
+El \textit{oversampling} consiste en generar instancias sintéticas etiquetadas como positivas, $E$, normalmente 
+respetando la distribución de $\spos$, intentando generar conexos a partir de instancias raras, etc. Se lleva a cabo la 
+tarea de clasificación usando el conjunto de entrenamiento $S' = S\cup E$. 
+
+El \textit{undersampling} consiste en escoger un subconjuto $E \subseteq \sneg$, de manera que $S' = S\setminus E$ 
+y tenemos un problema de clasificación con el conjunto de entrenamiento $S'$. Normalmente $E$ se genera de manera que se
+intentan eliminar instancias que aportan información redundante dentro del conjunto de instancias negativas.
+
+Suponemos también que tanto el \textit{oversampling} como el \textit{undersampling} se realiza de manera que $r(S') < r(S)$.
+
+\subsubsection{Limpieza de instancias en \textit{oversampling}}
+
+\subsection{Aprendizaje \textit{cost sensitive}}

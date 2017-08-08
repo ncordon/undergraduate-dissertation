@@ -1,4 +1,6 @@
 \documentclass[a4paper,11pt]{report}
+% Change this line for classicthesis
+%\documentclass[dottedtoc, headinclude, footinclude=true]{scrreprt}
 
 \makeatletter
   \def\input@path{{./frontmatter/}}
@@ -67,6 +69,8 @@
 \part{Informática}
   \chapter{Problema del desbalanceo en clasificación binaria}
     \input{desbalanceo}
+  \chapter{Algoritmos implementados}
+    \input{racog}
 
 \bibliography{references}
 %\bibliographystyle{apacite} 
