@@ -1,6 +1,6 @@
-\documentclass[a4paper,11pt]{report}
+%\documentclass[a4paper,11pt]{report}
 % Change this line for classicthesis
-%\documentclass[dottedtoc, headinclude, footinclude=true]{scrreprt}
+\documentclass[dottedtoc, headinclude, footinclude=true]{scrreprt}
 
 \makeatletter
   \def\input@path{{./frontmatter/}}
@@ -35,16 +35,15 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-
 \makeatletter
   \def\input@path{{./chapters/}}
 \makeatother
 
-
-\chapter*{Introducción}
-  El material principal en el que se ha basado la sección de matemáticas ha sido \cite{understanding_ml}, 
-  que proporciona una detallada formalización de los fundamentos matemáticos del Aprendizaje Automático.
-\chapter*{Objetivos}
+% *************************************************************************************************************
+% Introducción y objetivos
+% *************************************************************************************************************
+\input{introduccion}
+\input{objetivos}
 
 % *************************************************************************************************************
 % Parte de matemáticas
@@ -76,8 +75,5 @@
     \input{neater}
 
 \bibliography{references}
-%\bibliographystyle{apacite} 
-%\bibliographystyle{apalike}
-\bibliographystyle{IEEEtran}
 
 \end{document}

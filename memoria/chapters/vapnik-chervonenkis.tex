@@ -1,3 +1,8 @@
+Este capítulo introduce el concepto de fragmentación y de dimensión Vapnik-Chervonenkis (VC), un término muy importante en 
+combinatoria y en geometría computacional. A partir de dichas nociones obtendremos el lema de Sauer-Shelah, la herramienta 
+que nos falta para poder demostrar el teorema fundamental del aprendizaje PAC, que relaciona estadística, a través de 
+clases de Glivenko-Cantelli, teoría PAC y geometría computacional, a través de la dimensión VC.
+
 \section{Fragmentación}
 
 \begin{definition}
@@ -336,6 +341,7 @@ Sea $H\subseteq 2^X$, $H,X \neq \emptyset$ y consideramos funciones de pérdida 
 \item \label{th:fundv} $H$ es PAC cognoscible por cualquier algoritmo $ERM_H$
 \item \label{th:fundvi} $VC (H) < \infty$.
 \end{enumerate}
+\label{th:fundamental}
 \end{theorem}
 
 \begin{proof}
