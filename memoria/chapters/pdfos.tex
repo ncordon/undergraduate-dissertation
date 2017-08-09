@@ -1,0 +1,44 @@
+\section{Algoritmo PDFOS}
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos positivos
+  \REQUIRE $T$, número de instancias sintéticas deseado
+  \STATE{$S = \spos_x = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$}
+  \STATE{$S'= \emptyset$}
+  \STATE{$\sigma =$ búsqueda con GridSearch que minimice $M$}
+  \STATE{Calcular $U$ la matriz de covarianza de $S$}
+  \STATE{Calcular descomposición de Choleski de $U$, donde $U=R^{T} R$, y $R$ triangular superior}
+  \NEWLINE
+  \FOR{$i=1, \ldots, T$}
+    \STATE{Escoger $x\in S$}
+    \STATE{Escoger $r$ siguiendo una normal multivariante, $r \sim N^d(0,1)$}
+    \STATE{$S' = S' \cup \{x + \sigma r R\}$}
+  \ENDFOR
+  \NEWLINE
+  \RETURN{$S'$, ejemplos positivos sintéticos}
+\end{algorithmic}
+\caption{Algoritmo de \textit{oversampling} PDFOS}
+\label{alg:pdfos}
+\end{algorithm}
+
+
+Se comenzó usando el siguiente algoritmo de búsqueda \textit{grid}:
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \STATE{Hacer $M_{best} = \infty$}
+  \FOR{$\tau \in \{0.2, 0.22, 0.24, \ldots 2\}$}
+    \IF{$M(\tau) < M_{best}$}
+      \STATE{$\sigma = \tau, M_{best} = M$}
+    \ENDIF
+  \ENDFOR
+  \RETURN{$\sigma$}
+\end{algorithmic}
+\caption{Algoritmo de búsqueda GridSearch}
+\end{algorithm}
+
+Posteriormente se agregaron también al algoritmo de búsqueda la comprobación con los valores de parámetro propuestos por Scott
+y Silverman (siendo $d$ el tamaño del espacio de atributos, y $m$ el número de instancias pertenecientes a la clase minoritaria):
+
+\[\sigma_{Scoot} = \left(\frac{1}{m}\right)^{\frac{1}{d+4}}, \quad \sigma_{Silverman} = \left(\frac{4}{m(d+2)}\right)^{\frac{1}{d+4}}\]

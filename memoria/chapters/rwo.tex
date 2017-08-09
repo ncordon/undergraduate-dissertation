@@ -17,8 +17,8 @@
     \FOR{$i=1,\ldots, m$}
       \FOR{$j=1, \ldots, d$}
          \IF{El atributo $j-$ésimo es numérico}
-           \STATE{Escoger $x \sim N(0,1)$}
-	   \STATE{$w_j = w_j^{(i)} - \frac{\sigma_j}{\sqrt{m}} \cdot x$}
+           \STATE{Escoger $r \sim N(0,1)$}
+	   \STATE{$w_j = w_j^{(i)} - \frac{\sigma_j}{\sqrt{m}} \cdot r$}
 	 \ELSE
 	   \STATE{Escoger $w_j$ de manera uniforme sobre $\{w_j^{(1)}, \ldots w_j^{(m)}\}$}
 	 \ENDIF

@@ -1,0 +1,46 @@
+\section{Algoritmo NEATER}
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $S = \{z_1 = (x_1, y_1), \ldots z_m = (x_n, y_n)\}$, dataset original
+  \REQUIRE $S' = \{\bar{z}_1=(\bar{x}_1, \bar{y}_1), \ldots \bar{z}_m=(\bar{x}_m, \bar{y}_m)\}$, ejemplos positivos
+  \REQUIRE $k$, número de vecinos más cercano para KNN.
+  \REQUIRE $T$, número de iteraciones deseadas.
+  \REQUIRE $\alpha$, factor de suavizado.
+  \STATE{Inicializar $E = \emptyset$}
+  \STATE{$\forall \bar{z}_i\in S'$ calcular $N(i) = \{s_1, \ldots s_k\}$, sus $k$ vecinos más cercanos}
+  \STATE{Crear una matriz $P$ de tamaño $2\times(n+m)$ donde se inicializa: \\
+    \begin{itemize} 
+    \item $i=1, \ldots |S|$, entonces $P_i = \left\{\begin{array}{ll} 
+                                                    (1,0) & y_i = 1 \\
+                                                    (0,1) & y_i = -1
+                                              \end{array}\right.$
+    \item $i=1, \ldots |S'|$, entonces $P_i = (0.5,0.5)$
+    \end{itemize}}
+  \NEWLINE
+  \FOR{$i=1, \ldots, m$}
+    \FOR{cada $j \in N(i)$}
+      \STATE{$A_{ij} = \frac{1}{1 + ||\bar{x}_i - x_j||_{1}} \cdot \begin{pmatrix}1 & 0\\0 & 1 \end{pmatrix}$}
+    \ENDFOR
+  \ENDFOR
+  \NEWLINE
+  \FOR{$t=1, \ldots, T$}
+    \FOR{$i=1, \ldots, m$}
+      \STATE{Actualizar el peso total $u_i = \sum_{j \in N(i)} P_i A_{ij} P_j^T$}
+      \STATE{Actualizar el peso de la clase positiva $u = \sum_{j \in N(i)} (1,0) A_{ij} P_j^T$}
+      \STATE{Calcular $x = \frac{\alpha + u}{\alpha + u_i}$}
+      \STATE{Actualizar $P_i = (x, 1-x)$}
+    \ENDFOR
+  \ENDFOR
+  \NEWLINE
+  \FOR{$i=1, \ldots, m$}
+    \IF{$P_{i1} > 0.5$}
+      \STATE{$E = E\cup \{(\bar{x},1)\}$}
+    \ENDIF
+  \ENDFOR
+  \NEWLINE
+  \RETURN{$E\subseteq S'$, conjunto de instancias positivas filtrado}
+\end{algorithmic}
+\caption{Algoritmo de limpieza de instancias NEATER}
+\label{alg:neater}
+\end{algorithm}
