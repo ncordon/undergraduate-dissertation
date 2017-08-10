@@ -12,6 +12,7 @@
 \usepackage{wasysym}
 \usepackage{dsfont}
 \usepackage{enumerate}
+\PassOptionsToPackage{usenames,dvipsnames}{xcolor}
 \usepackage{tikz}
 
 % Change this line for classicthesis
@@ -24,7 +25,6 @@
 % *************************************************************************************************************
 \usepackage{mdframed} % Add easy frames to paragraphs
 \usepackage{lipsum} % For dummy text
-\usepackage{xcolor}
 \usepackage{xparse} % Add support for \NewDocumentEnvironment
 \definecolor{graylight}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
 
@@ -138,10 +138,41 @@
 \renewcommand{\algorithmicrequire}{\textbf{Entrada:}}
 \renewcommand{\algorithmicensure}{\textbf{Salida:}}
 
-
 \makeatletter
 \def\NEWLINE{\STATE{}}
 \makeatother
+
+% *************************************************************************************************************
+% Listings de código
+% *************************************************************************************************************
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Código}
+\definecolor{light-gray}{gray}{0.97}
+
+\lstset{
+  language=R,
+  literate={<-}{{\boldmath{$\gets$}}}1,
+  basicstyle=\footnotesize\linespread{1.3}\ttfamily,
+  commentstyle=\ttfamily\color{OliveGreen},
+  stringstyle=\color{Thistle},
+  numbers=left,
+  numberstyle=\scriptsize\ttfamily\color{RoyalBlue},
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{light-gray},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  %frame=single,
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false,
+  %title=\lstname,
+  escapeinside={},
+  keywordstyle={},
+  morekeywords={}
+}
 
 % *************************************************************************************************************
 % Bibliografía
@@ -153,6 +184,7 @@
 %\bibliographystyle{IEEEtran}
 \bibliographystyle{config/custom-dinat}
 \usepackage[sort&compress,square, comma, authoryear]{natbib}
+
 
 % *************************************************************************************************************
 % Otras configuraciones

@@ -63,8 +63,8 @@ Por tanto queda un algoritmo para aproximar la distribución de los ejemplos pos
   \STATE{Calcular $G' = (E',V')$ árbol de dependencia según Chow Liu}
   \STATE{Construir $G$ un grafo no dirigido con \ref{alg:make-directed} desde $G'$, $E$ arcos, $r$ raíz}
   \FOR{$(u,v) \in E$}
-    \STATE{Calcular $\bar{P}(w_v \mid w_u)$}
-    \STATE{Calcular $P_{abs}(w_u)$}
+    \STATE{Calcular $\bar{P}(W_v \mid W_u)$}
+    \STATE{Calcular $P_{abs}(W_u)$}
   \ENDFOR
   \RETURN{$P(w_1, \ldots w_m)$, construida con $P_{abs}$ y $\bar{P}$}  
 \end{algorithmic}
@@ -78,13 +78,14 @@ Carlo llamado GibbsSampler. Se parte de cada ejemplo, y se construye un nuevo ej
 la distribución conjunta aproximada. El método de Monte Carlo con dicho algoritmo consiste en ir construyendo 
 $m$ cadenas de Markov, una para cada instancia, de manera que iteramos una vez cada vez que llamamos al método.
 
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
   \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, instancias
   \REQUIRE $P(w_1, \ldots, w_d)$, distribución conjunta
   \FOR{$i=1, \ldots, m$}
     \FOR{$k=1,\ldots, d$}
-      \STATE{$\bar{w}_k^{(i)} \sim P(w_k \mid \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})$}
+      \STATE{$\bar{w}_k^{(i)} \sim P(W_k \mid \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})$}
     \ENDFOR
   \ENDFOR
   \RETURN{$S = \{\bar{x}_i=(\bar{w}_1^{(i)}, \ldots \bar{w}_d^{(i)})\}_{i=1}^m$, conjunto de instancias\\ generado desde $S$ y $P$}
@@ -94,6 +95,24 @@ $m$ cadenas de Markov, una para cada instancia, de manera que iteramos una vez c
 \end{algorithm}
 
 \imgcaption{imgs/monte-carlo.png}{Cadena de Markov obtenida por GibbsSampler}{0.5}
+
+
+Nótese además que fijado $k\in \{1, \ldots, d\}$, tenemos: 
+
+\[P(W_k \mid \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)}) = 
+ \frac{P(W_k, \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})}
+      {P(\bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})}
+\]
+
+Como el denominador es constante porque $\bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)}$
+son valores fijos para cualquier valor que pueda tomar $W_k$, no nos hace falta calcularlo. Además, como el
+numerador lo calculamos como $\prod_{i=1}^d P(W_i \mid W_{n(i)})$, también encontramos una serie de términos 
+multiplicando que no debemos calcular, todos aquellos que cumplan $i\neq k \wedge n(i) \neq k$.
+
+Una última observación: el cálculo de $P(W_d \mid w_{n(d)})$ es directo. Pero el cálculo de 
+$P(w_i \mid W_{n(i)})$ donde $n(i) = d$ debe hacerse usando el teorema de Bayes:
+
+\[P(w_i \mid W_{n(i)} = a) = \frac{P(W_{n(i)} = a \mid w_i)}{P(W_{n(i)} = a)} \cdot P(w_i)\] 
 
 \subsection{RACOG}
 
@@ -126,6 +145,10 @@ reducir la dependencia en la generación de sucesivas instancias (parámetro $\a
 \caption{Algoritmo de \textit{oversampling} RACOG}
 \label{alg:racog}
 \end{algorithm}
+
+Traducido a código:
+
+\lstinputlisting[language=R, caption = Cuerpo del algoritmo RACOG]{codelst/racog.R}
 
 \subsection{wRACOG}
 El algoritmo RACOG presenta un problema: depende de los parámetros de \textit{burnin}, \textit{lag} y
@@ -165,4 +188,7 @@ se verifica un criterio sobre el conjunto de validación.
 \label{alg:wracog}
 \end{algorithm}
 
+%Traducido a código:
+
+%\lstinputlisting[language=R, caption = Cuerpo del algoritmo wRACOG]{codelst/wracog.R}
 
