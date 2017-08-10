@@ -2,20 +2,20 @@
 % Change this line for classicthesis
 \documentclass[dottedtoc, headinclude, footinclude=true]{scrreprt}
 
-\makeatletter
-  \def\input@path{{./frontmatter/}}
-\makeatother
-
 % *************************************************************************************************************
 % Importa archivo de configuración
 % *************************************************************************************************************
-\input{config}
+\input{config/config}
 
 
 \begin{document}
 % *************************************************************************************************************
 % Frontmatter
 % *************************************************************************************************************
+\makeatletter
+  \def\input@path{{./frontmatter/}}
+\makeatother
+
 \pagenumbering{roman}
 
 \input{titlepage}
@@ -75,5 +75,4 @@
     \input{neater}
 
 \bibliography{references}
-
 \end{document}
