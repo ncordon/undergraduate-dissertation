@@ -1,12 +1,67 @@
 \section{Algoritmos RACOG y wRACOG}
+Sea un subconjunto $\spos$ de ejemplos de clase positiva de un conjunto de entrenamiento, donde cada $(x,y)\in \spos$ 
+verifica que $x = (w_1, \ldots, w_d)$ es $d-$dimensional. Los algoritmos RACOG y wRACOG parten de la base de que lo que vamos
+a aproximar es una distribución discreta, aunque no lo sea y podemos obtener instancias siguiendo una distribución 
+conjunta $P(W_1, \ldots, W_d)$.
 
-\imgcaption{imgs/monte-carlo.png}{Cadena de Markov obtenida por GibbsSampler}{0.5}
+El problema es que calcular la anterior distribución es muy costoso, dado que tendríamos un número de posibles valores para 
+cada instancia de:
+
+\[|\{\textrm{Posibles valores para }W_1\}| \cdots |\{\textrm{Posibles valores para} W_d\}|\]
+
+Si consiguiéramos aproximar $P(W_1, \ldots, W_d)$ como producto de distribuciones marginales, esto es, 
+$P(W_1, \ldots W_d) \approx \prod_{i=1}^d P(W_i \mid W_{n(i)})$ donde cada $n(i) \in \{1, \ldots, d\}$,
+entonces calcular dicha distribución sería menos costoso. Para expresar $P(W_1, \ldots W_d)$ como producto de marginales,
+es decir, para decidir qué valor le damos a cada $n(i)$, se usa el algoritmo \ref{alg:chowliu} de Chow-Liu,
+que minimiza la distancia de Kullback-Leibler entre dos distribuciones. Esta distancia proporciona una medida de la 
+aproximación de una distribución de probabilidad $Q$ a la verdadera distribución $P$, usando teoría de la información. 
+Está definida como la esperanza de la diferencia logarítmica entre ambas distribuciones:
+
+\[D_{KL}(P \parallel Q) = \sum_{i} P(i) \left(\log P(i) - \log Q(i)\right)\]
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+ \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, instancias
+ \FOR{Cada pareja $i, j$}
+   \STATE{Calcular la información mutua $I(w_i, w_j)$}
+ \ENDFOR
+ \STATE{Construir $G$ el árbol generador de peso máximo mediante el algoritmo de Kruskal}
+ \RETURN{$G$}
+\end{algorithmic}
+\caption{Algoritmo de Chow-Liu de construcción de un árbol maximizando la suma de información
+mútua de los arcos}
+\label{alg:chowliu}
+\end{algorithm}
+
+Una vez construido el árbol, es fácil, mediante el siguiente algoritmo obtener un grafo dirigido, en que a
+cada nodo (variable en la distribución), llega un único arco.
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+ \REQUIRE $G = (E,V)$
+ \STATE{Inicializar $visitados = \emptyset$}
+ \STATE{Inicializar $G'=(E',V)$, con $E'=\emptyset$}
+ \FOR{Cada arco $(u,v) \in E$}
+   \IF{$v \notin visitados$}
+     \STATE{$E' = E' \cup \{(u,v)\}$}
+   \ELSE
+     \STATE{$E' = E' \cup \{(v,u)\}$}
+   \ENDIF
+ \ENDFOR
+ \NEWLINE
+ \RETURN{$G'$}
+\end{algorithmic}
+\caption{Construcción del grafo a partir del árbol de Chow-Liu}
+\label{alg:make-directed}
+\end{algorithm}
+
+Por tanto queda un algoritmo para aproximar la distribución de los ejemplos positivos tal que así:
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
   \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, instancias
   \STATE{Calcular $G' = (E',V')$ árbol de dependencia según Chow Liu}
-  \STATE{Construir $G$ un grafo no dirigido desde $G'$, $E$ arcos, $r$ raíz}
+  \STATE{Construir $G$ un grafo no dirigido con \ref{alg:make-directed} desde $G'$, $E$ arcos, $r$ raíz}
   \FOR{$(u,v) \in E$}
     \STATE{Calcular $\bar{P}(w_v \mid w_u)$}
     \STATE{Calcular $P_{abs}(w_u)$}
@@ -17,10 +72,16 @@
 \label{alg:aproxdist}
 \end{algorithm}
 
+Nótese tenemos la distribución almacenada como marginales, y que por tanto necesitamos aún una forma de extraer
+muestras desde ella. Se usará para la construcción de ejemplos mediante dicha distribución un método de Monte 
+Carlo llamado GibbsSampler. Se parte de cada ejemplo, y se construye un nuevo ejemplo basado en el anterior y 
+la distribución conjunta aproximada. El método de Monte Carlo con dicho algoritmo consiste en ir construyendo 
+$m$ cadenas de Markov, una para cada instancia, de manera que iteramos una vez cada vez que llamamos al método.
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
   \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, instancias
-  \REQUIRE $P(w_1, \ldots w_m)$, distribución conjunta
+  \REQUIRE $P(w_1, \ldots, w_d)$, distribución conjunta
   \FOR{$i=1, \ldots, m$}
     \FOR{$k=1,\ldots, d$}
       \STATE{$\bar{w}_k^{(i)} \sim P(w_k \mid \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})$}
@@ -32,6 +93,15 @@
 \label{alg:gibbs}
 \end{algorithm}
 
+\imgcaption{imgs/monte-carlo.png}{Cadena de Markov obtenida por GibbsSampler}{0.5}
+
+\subsection{RACOG}
+
+RACOG consiste en ir construyendo una cadena de Markov para cada una de las $m$ instancias minoritarias, de
+manera que descartamos las $\beta$ primeras instancias producidas para cada ejemplo del conjunto positivo, 
+y a partir de entonces cada $\alpha$ iteraciones se va escogiendo una. Esto permite, según la literatura 
+existente, perder dependencia de los valores iniciales en la cadena (parámetro $\beta$ o burnin), así como 
+reducir la dependencia en la generación de sucesivas instancias (parámetro $\alpha$ o \textit{lag}).
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -57,11 +127,19 @@
 \label{alg:racog}
 \end{algorithm}
 
+\subsection{wRACOG}
+El algoritmo RACOG presenta un problema: depende de los parámetros de \textit{burnin}, \textit{lag} y
+es el usuario quien decide el número de instancias que desea. El algoritmo wRACOG, por el contrario,
+encapsula las iteraciones de GibbsSampler de manera que se proporcionan un conjunto de entrenamiento y otro
+de validación. A cada iteración, se efectúa una iteración del GibbsSampler, se añaden las instancias mal 
+clasificadas por el modelo obtenido por un \textit{wrapper} de entre las muestras sintéticas, se añaden 
+al conjunto de sintéticas, y se genera un nuevo \textit{train} y un nuevo modelo. Se deja de iterar cuando 
+se verifica un criterio sobre el conjunto de validación.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
   \REQUIRE $S_{train} = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, conjunto de \textit{train}
-  \REQUIRE $S_{val} = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, conjunto de validación
+  \REQUIRE $S_{val} = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, validación
   \REQUIRE $wrapper$, clasificador
   \REQUIRE $T$, número de iteraciones a considerar
   \REQUIRE $\alpha$, parámetro de tolerancia
