@@ -115,12 +115,12 @@ $P(w_i \mid W_{n(i)})$ donde $n(i) = d$ debe hacerse usando el teorema de Bayes:
 \[P(w_i \mid W_{n(i)} = a) = \frac{P(W_{n(i)} = a \mid w_i)}{P(W_{n(i)} = a)} \cdot P(w_i)\] 
 
 \subsection{RACOG}
-
-RACOG consiste en ir construyendo una cadena de Markov para cada una de las $m$ instancias minoritarias, de
-manera que descartamos las $\beta$ primeras instancias producidas para cada ejemplo del conjunto positivo, 
-y a partir de entonces cada $\alpha$ iteraciones se va escogiendo una. Esto permite, según la literatura 
-existente, perder dependencia de los valores iniciales en la cadena (parámetro $\beta$ o burnin), así como 
-reducir la dependencia en la generación de sucesivas instancias (parámetro $\alpha$ o \textit{lag}).
+RACOG (\textit{Rapidly Converging Gibbs}) consiste en ir construyendo una cadena de Markov para cada una de 
+las $m$ instancias minoritarias, de manera que descartamos las $\beta$ primeras instancias producidas para 
+cada ejemplo del conjunto positivo, y a partir de entonces cada $\alpha$ iteraciones se va escogiendo una. 
+Esto permite, según la literatura existente, perder dependencia de los valores iniciales en la cadena 
+(parámetro $\beta$ o burnin), así como reducir la dependencia en la generación de sucesivas instancias 
+(parámetro $\alpha$ o \textit{lag}).
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -152,12 +152,12 @@ Traducido a código:
 
 \subsection{wRACOG}
 El algoritmo RACOG presenta un problema: depende de los parámetros de \textit{burnin}, \textit{lag} y
-es el usuario quien decide el número de instancias que desea. El algoritmo wRACOG, por el contrario,
-encapsula las iteraciones de GibbsSampler de manera que se proporcionan un conjunto de entrenamiento y otro
-de validación. A cada iteración, se efectúa una iteración del GibbsSampler, se añaden las instancias mal 
-clasificadas por el modelo obtenido por un \textit{wrapper} de entre las muestras sintéticas, se añaden 
-al conjunto de sintéticas, y se genera un nuevo \textit{train} y un nuevo modelo. Se deja de iterar cuando 
-se verifica un criterio sobre el conjunto de validación.
+es el usuario quien decide el número de instancias que desea. El algoritmo wRACOG (\textit{wrapper-based RACOG}),
+por el contrario, encapsula las iteraciones de GibbsSampler de manera que se proporcionan un conjunto de 
+entrenamiento y otro de validación. A cada iteración, se efectúa una iteración del GibbsSampler, se añaden 
+las instancias mal clasificadas por el modelo obtenido por un \textit{wrapper} de entre las muestras sintéticas, 
+se añaden al conjunto de sintéticas, y se genera un nuevo \textit{train} y un nuevo modelo. Se deja de iterar 
+cuando se verifica un criterio sobre el conjunto de validación.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
