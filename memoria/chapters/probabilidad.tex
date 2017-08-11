@@ -1,24 +1,25 @@
+En este capítulo introducimos el espacio de probabilidad y el espacio de probabilidad producto. El teorema de
+extensión de Caratheodory nos asegurará que siempre es posible definir dicho espacio de probabilidad producto.
+También ofrecemos resultados fundamentales sobre medidas de concentración probabilísticas, que usaremos más
+adelante.
 \section{$\sigma$ álgebras, anillos y semianillos}
-
 Sea en lo que sigue $X$ un conjunto. Dados $A_i \subseteq X$, para $i=1, \ldots n$, notamos $\sum_{i=1}^n A_i$
 a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyset$ cuando $i\neq j$.
 
-\begin{definition} \textbf{Conjunto potencia}
-
+\begin{definition}[Conjunto potencia]
  Definimos el conjunto potencia de $X$ como $\mathcal{P}(X):= \{A: A\subseteq X\}$.
  
  Como notación para $\mathcal{P}(X)$ usaremos frecuentemente $2^X$.
 \end{definition}
 
 
-\begin{definition} \textbf{$\sigma$-álgebra}
-
+\begin{definition}[$\sigma$-álgebra]
  $\Sigma \subseteq 2^X$ es $\sigma$-álgebra de conjuntos sobre $X$ si se verifica:
  
  \begin{enumerate}[i]
   \item $X \in \Sigma$
-  \item $\Sigma$ es cerrada para complementarios: Sea $A\in \Sigma$, entonces $A^c = X\setminus A \in \Sigma$
-  \item $\Sigma$ es cerrada para uniones numerables: Sean $\{A_n\}_{n\in\mathbb{N}} \subseteq \Sigma$, entonces: 
+  \item Es cerrada para complementarios: sea $A\in \Sigma$, entonces $A^c = X\setminus A \in \Sigma$
+  \item $\Sigma$ es cerrada para uniones numerables: sean $\{A_n\}_{n\in\mathbb{N}} \subseteq \Sigma$, entonces: 
   \[\underset{n \ge 1}{\bigcup} A_n \in \Sigma\]
  \end{enumerate}
 \end{definition}
@@ -48,9 +49,9 @@ a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyse
    \bigcap_{\begin{array}{c}\Sigma, \sigma\textrm{álgebra en } X\\ \mathcal{A}\subseteq \Sigma \end{array}} \Sigma\]
 \end{definition}
 
-\begin{definition} \textbf{Semianillo en $X$}
+\begin{definition}[Semianillo en $X$]
 
- $S\subseteq 2^X$ es subanillo si verifica:
+ $S\subseteq 2^X$ es semianillo si verifica:
  
  \begin{enumerate}[i]
   \item $\emptyset \in S$
@@ -64,7 +65,7 @@ Damos un ejemplo de semianillo:
 \begin{example}
  \label{ex:rectangulos}
  \begin{definition*}
-  Sean $X_1, X_2$ conjuntos, $\Sigma_i$ $\sigma$-álgebra sobre $A_i$. 
+  Sean $X_1, X_2$ conjuntos, $\Sigma_i$ $\sigma$-álgebra sobre $X_i$. 
   
   Dados $A_1 \in \Sigma_1, A_2 \in \Sigma_2$ arbitrarios, definimos el rectángulo de lados $A_1$ y $A_2$ como:
   
@@ -81,15 +82,14 @@ Damos un ejemplo de semianillo:
   $\Sigma_i$ cerrada bajo intersecciones.
   \item $R_1 \setminus R_2 = \{(x,y): (x,y) \in A_1 \times A_2, (x,y) \notin B_1 \times B_2)\}$
   
-  Es decir $R_1 \setminus R_2 = Rec(A_1\setminus B_1, A_2) \cup Rec(B_1, A_2\setminus B_2)$ y 
+  Es decir $R_1 \setminus R_2 = Rec(A_1\setminus B_1, A_2) \cup Rec(B_1, A_2\setminus B_2)$. Además
   $A_i \setminus B_i \in \Sigma_i$ por ser $\Sigma_i$ cerrada bajo diferencias.
  \end{enumerate}
 
 \end{example}
 
 
-\begin{definition} \textbf{Anillo en $X$}
-
+\begin{definition}[Anillo en $X$]
  $R\subseteq 2^X$ es anillo si verifica:
  
  \begin{enumerate}[i]
@@ -150,13 +150,17 @@ intersección es no vacía, porque $2^X \supseteq \mathcal{A}$ y $2^X$ es anillo
 \begin{proof}
  Sea $R= \left\{\sum_{i=1}^n A_i:  n\ge 1, A_i \in S\right\}$. Es claro que $S\subseteq R$.
  
- Sean $A = \sum_{i=1}^n A_i, B = \sum_{i=1}^k B_i \in R$ no nulos. Entonces $A\cap B = \sum_{i,j} (A_i \cap B_j)$ 
- y $R$, con $A_i\cap B_j \in S$ y $R$ es cerrado para intersección de elementos. Además:
+ Sean $A = \sum_{i=1}^n A_i, B = \sum_{j=1}^p B_j \in R$ no nulos. Entonces se cumple 
+ $A\cap B = \sum_{i,j} (A_i \cap B_j)$ y $R$, con $A_i\cap B_j \in S$ y $R$ es cerrado para intersección de 
+ elementos. Además:
  
  \[A\setminus B = \cup_{i=1}^n A_i \bigcap \cap_{j=1}^p B_j^c = \bigcap_{j=1}^p 
-                  \left(\sum_{i=1}^n (A_i \cap B_j^c)\right)\]
+                  \left(\sum_{i=1}^n (A_i \cap B_j^c)\right) = 
+                  \bigcap_{j=1}^p \left(\sum_{i=1}^n \sum_{k=1}^{k(i,j)} C_{ij,k(i,j)} \right)\]
  
- Luego aplicando que $R$ es cerrado para intersecciones, llegamos también a que lo es para diferencias.
+ Donde se ha aplicado que si $A_i, B_j \in S$ existen $C_{ij,1}, \ldots, C_{ij,k(i,j)} \in S$ verificando
+ $A\setminus B_j =\sum_{k=1}^{k(i,j)} C_{ij,k(i,j)}$. Luego aplicando que $R$ es cerrado para intersecciones, 
+ llegamos también a que lo es para diferencias.
  
  Por último, como $A\cup B = A \setminus B + B$, entonces $A \cup B \in R$, y $R$ es anillo, con $(S) \subseteq R$.
  Por otro lado, $(S)$ debe contener por definición de anillo las uniones de elementos de $S$, en particular
@@ -166,7 +170,6 @@ intersección es no vacía, porque $2^X \supseteq \mathcal{A}$ y $2^X$ es anillo
 
 \begin{fact}
  Sea $S$ un semianillo en $X$. Entonces:
- 
  \[\Sigma(S) = \Sigma((S))\]
 \end{fact}
 
@@ -181,19 +184,18 @@ intersección es no vacía, porque $2^X \supseteq \mathcal{A}$ y $2^X$ es anillo
 
 \section{Medidas y extensión de medidas}
 
-\begin{definition} \textbf{Medida}
-
+\begin{definition}[Medida]
  Sea $\mathcal{A} \subseteq 2^X$. Llamamos medida sobre $\mathcal{A}$ a cualquier función 
  $\mu: \mathcal{A} \rightarrow [0, +\infty]$ verificando:
 
  \begin{enumerate}[i]
   \item $\mu(\emptyset) = 0$
-  \item $\mu$ es $\sigma$-aditiva: Dados $A_n \in \mathcal{A}$ disjuntos tales que $\sum_{i=1}^n A_i \in \mathcal{A}$, 
+  \item $\mu$ es $\sigma$-aditiva: dados $A_n \in \mathcal{A}$ disjuntos tales que $\sum_{i=1}^n A_i \in \mathcal{A}$, 
   entonces \[\mu\left(\sum_{i=n}^{+\infty} A_n \right)= \sum_{i=n}^{+\infty} \mu(A_n)\]
  \end{enumerate}
 \end{definition}
 
-Nótese que la $\sigma$-aditividad implica aditividad finita, esto es, dados $A_i \in \mathcal{A}$ $i=1, \ldots n$,
+Nótese que la $\sigma$-aditividad implica aditividad finita, esto es, dados $A_i \in \mathcal{A}, i=1, \ldots, n$,
 disjuntos, tales que $\sum_{i=1}^n A_i \in \mathcal{A}$, entonces $\mu\left(\sum_{i=1}^{n} A_i \right)= \sum_{i=1}^{n} \mu(A_i)$.
 
 \begin{theorem}
@@ -222,22 +224,20 @@ disjuntos, tales que $\sum_{i=1}^n A_i \in \mathcal{A}$, entonces $\mu\left(\sum
               \sum_{i=1}^n \sum_{j=1}^k \mu(A_i \cap B_j)\]
  
  Análogamente podemos probar:
- 
  \[\sum_{j=1}^k \mu(B_j) = \sum_{i=1}^n \sum_{j=1}^k \mu(A_i \cap B_j)\]
  
  Luego $\bar{\mu}$ está bien definida. Además $\bar{\mu} (\emptyset) = 0$ por ser $\mu(\emptyset) = 0$.
  
  Falta probar la $\sigma$-aditividad de $\bar{\mu}$ y por construcción, habríamos llegado al resultado buscado.
  
- Sean $A_n = \sum_{i=1}^{k_n} A_i^n \in (S)$ disjuntos tal que $A_i^n \in S$ y $A = \sum_{i=1}^{+\infty} A_n \in (S)$. 
+ Sean $A_n = \sum_{i=1}^{k_n} A_i^n \in (S)$ disjuntos tal que $A_i^n \in S$ y $A = \sum_{n=1}^{+\infty} A_n \in (S)$. 
  Por ser $A \in (S)$, tendríamos que podemos reescribir $A = \sum_{j=1}^k B_j$ con $B_j \in S$.
  
  Fijamos un $B_p$ y tenemos:
- 
  \[B_p = A \cap B_p = \bigcup_{n=1}^{+\infty} \left(\bigcup_{i=1}^{k_n} A_i^n \cap B_p\right) = 
          \bigcup_{n=1}^{+\infty} \bigcup_{i=1}^{k_n} \left(A_i^n \cap B_p\right)\]
  
- Es decir, hemos reescrito $B_p$ como una unión numerable de $A_i^n \cap B_p \in S$, disjuntos, por serlo los $A_i$. 
+ Es decir, hemos reescrito $B_p$ como una unión numerable disjunta de $A_i^n \cap B_p \in S$.
  
  Aplicando $\sigma$-aditividad en $S$, llegamos a $\mu(B_p) = \sum_{n=1}^{+\infty} \sum_{i=1}^{k_n} \mu(A_i^n \cap B_p)$
  
@@ -252,7 +252,7 @@ disjuntos, tales que $\sum_{i=1}^n A_i \in \mathcal{A}$, entonces $\mu\left(\sum
  \end{align*}
 \end{proof}
 
-\begin{definition} \textbf{Medida exterior}
+\begin{definition}[Medida exterior]
  Sea $\mu^\ast : 2^X \rightarrow [0, +\infty]$ verificando:
  
  \begin{enumerate}[i]
@@ -266,7 +266,6 @@ disjuntos, tales que $\sum_{i=1}^n A_i \in \mathcal{A}$, entonces $\mu\left(\sum
 
 \begin{definition}
  Sea $\mu^\ast$ una medida exterior sobre $X$. Definimos la $\sigma$-álgebra asociada a $\mu^\ast$ como:
- 
  \[\Sigma(\mu^\ast) = \{A\subseteq X: \mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c), \forall T\subseteq X\}\]
 \end{definition}
 
@@ -281,13 +280,12 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 
 \begin{proof}
  Empezamos viendo que $\Sigma = \Sigma(\mu^\ast)$ es una $\sigma$-álgebra.
- 
+
  \[\mu^\ast(T) = \mu^\ast(T\cap X) + \mu^\ast(T\cap \emptyset) = \mu^\ast(T), \quad \forall T\subseteq X\]
  
  Luego $X,\emptyset \in \Sigma$. También es trivial ver que dado $A\in \Sigma$, entonces $A^c \in \Sigma$.
  
  Veamos que $\Sigma$ es cerrada para intersecciones. Sean $A, B\in \Sigma$. Usaremos:
- 
  \begin{align}
   T\cap A^c = T\cap (A\cap B)^c \cap A^c \nonumber\\
   T\cap A \cap B^c = T \cap (A\cap B)^c \cap A
@@ -299,7 +297,6 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  Por otro lado, como $B\in \Sigma$, tenemos $\mu^\ast(T\cap A) = \mu^\ast(T\cap A\cap B) + \mu^\ast(T\cap A \cap B^c)$
  
  Es decir:
- 
  \begin{align*}
   \mu^\ast(T) &= \mu^\ast(T\cap A^c) + \mu^\ast(T\cap A \cap B) + \mu^\ast(T\cap A \cap B^c) = \\
   & \underset{\eqref{eqn:set-eqs}}{=} \mu^\ast(T\cap (A\cap B)^c \cap A^c) + \mu^\ast(T \cap (A\cap B)^c \cap A) +\\
@@ -317,7 +314,6 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  podemos limitarnos a estudiar uniones disjuntas.
  
  De hecho, dados $B,C \in \Sigma$ disjuntos:
- 
  \begin{align*}
   \mu^\ast(T \cap (B\cup C)) &= \mu^\ast(T \cap(B\cup C) \cap B) + \mu^\ast(T \cap(B\cup C) \cap B^c) =\\
                              &= \mu^\ast(T \cap B) + \mu^\ast(T \cap C)
@@ -327,10 +323,9 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  
  Hemos visto que $\Sigma$ es cerrada para uniones finitas, luego $\bar{B}_k \in \Sigma$ para todo $k\in \mathbb{N}$.
  Vamos a ver que también lo es para uniones numerables. Sea $T\in 2^X$.
- 
 
- Si $\mu^\ast(T) = +\infty$, entonces $\mu^\ast(T) \le \mu^\ast(T\cap B ) + \mu^\ast(T\cap B^c) = +\infty$, y se da
- la igualdad.
+ Si $\mu^\ast(T) = +\infty$, entonces $\mu^\ast(T) \le \mu^\ast(T\cap B ) + \mu^\ast(T\cap B^c) = +\infty$, usando 
+ monotonía. Se da la igualdad.
  
  Si $\mu^\ast(T) < +\infty$, tenemos $\mu^\ast(T) \ge \mu^\ast(T\cap \bar{B}_k) = \sum_{n=1}^k \mu^\ast(T\cap B_n)$
  para $k$ arbitrario, y por tanto $\mu^\ast(T) \ge \sum_{n=1}^{+\infty} \mu^\ast(T\cap B_n)$. Fijado $\varepsilon > 0$
@@ -340,7 +335,6 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
    \mu^\ast(T\cap \bar{B}_N) + \varepsilon\]
  
  Es decir, tendríamos:
- 
  \begin{align*}
   \mu^\ast(T) &=   \mu^\ast(T\cap B^c + T\cap B) \le \mu^\ast(T\cap B^c) + \mu^\ast(T\cap B) \le \\
               &\le \mu^\ast(T\cap B^c) + \sum_{n=1}^{+\infty}\mu^\ast(T\cap B_n) \le \\
@@ -356,11 +350,9 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 \end{proof}
 
 
-\begin{theorem} \textbf{Teorema de extensión de Caratheodory}
-
+\begin{theorem}[Teorema de extensión de Caratheodory]
  Sea $S \subseteq 2^X$ un semianillo, $\mu:S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe
  una medida $\bar{\mu}:\Sigma(S) \rightarrow [0,+\infty]$ verificando $\bar{\mu}_{|S} = \mu$
- 
  \label{th:caratheodory}
 \end{theorem}
 
@@ -389,7 +381,6 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  
  Si existe $A_k$ tal que $\mu^\ast(A_k) = +\infty$, entonces $\mu^\ast(\cup_{n\ge} A_n) \ge \mu^\ast(A_k) = +\infty$, 
  por monotonía, y por otro lado $\sum_{n=1}^{+\infty} \mu^\ast(A_n) \ge \mu^\ast(A_k) = +\infty$. Es decir:
-
  \[\mu^\ast(\cup_{n\ge} A_n) = \sum_{n=1}^{+\infty} \mu^\ast(A_n) = +\infty\]
  
  Caso de que para todo $n$ se tenga $\mu^\ast(A_n) < +\infty$, fijamos $\varepsilon > 0$
@@ -415,15 +406,18 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  y tendríamos $\Sigma(S) \subseteq \Sigma(\mu^\ast)$.
  
  Dado $A\in R$, para todo $T\in 2^X$ arbitrario tenemos:
- 
+
  \[\mu^\ast(T) \le \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c)\]
  
  Sea ahora $T_n \in R$ verificando $T\subseteq \bigcup_{n\ge 1} T_n$, entonces 
  $T\cap A \subseteq \bigcup_{n\ge 1} T_n \cap A$ y $T\cap A \subseteq \bigcup_{n\ge 1} T_n \cap A^c$ con 
  $A\cap T_n, A^c \cap T_n \in R$. Nótese que aquí estamos usando explícitamente que $R$ es anillo. Así:
  
- \[\mu^\ast(T) \le \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c) \le \sum_{n=1}^{+\infty}\mu(T_n \cap A) + 
- \sum_{n=1}^{+\infty} \mu(T_n \cap A^c) = \sum_{n=1}^{+\infty} \mu(T_n)\]
+ \begin{align*}
+ \mu^\ast(T) &\le \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c) \le \\ 
+             &\le \sum_{n=1}^{+\infty}\mu(T_n \cap A) + \sum_{n=1}^{+\infty} \mu(T_n \cap A^c) = 
+               \sum_{n=1}^{+\infty} \mu(T_n)  
+ \end{align*}
  
  Donde fijado $\varepsilon > 0$ podemos buscar $T_n \in R$ verificando $\sum_{n=1}^{+\infty} \mu(T_n) \le \mu^\ast(T) + \varepsilon$, 
  por estar definido $\mu^\ast$ como un ínfimo.
@@ -435,32 +429,29 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 
 \section{Espacio probabilístico}
 
-\begin{definition} \textbf{Espacio medible}
-
+\begin{definition}[Espacio medible]
  Sea $X$ un conjunto, $\Sigma$ una $\sigma$-álgebra sobre $X$. A la tupla $(X,\Sigma)$ la llamamos
  espacio medible. A los elementos de $\Sigma$ los llamamos conjuntos $\Sigma$-medibles.
 \end{definition}
 
 
-\begin{definition} \textbf{Espacio de medida}
-
+\begin{definition}[Espacio de medida]
  Sea $(X, \Sigma)$ espacio medible, y $\mu: \Sigma \rightarrow [0,+\infty]$ medida. A la tupla $(X, \Sigma, P)$ 
  la llamamos espacio de medida.
 \end{definition}
 
 
-\begin{definition} \textbf{Espacio probabilístico}
+\begin{definition}[Espacio probabilístico]
  Sea $(X, \Sigma, P)$ espacio de medida. Entonces lo llamamos espacio de probabilidad si $P(\Sigma)\subseteq [0,1]$
 \end{definition}
 
 
-\begin{definition} \textbf{Distribución de probabilidad}
-
+\begin{definition}[Distribución de probabilidad]
  Sea $(X, \Sigma, P)$ espacio de probabilidad. Llamamos a la tupla $\dist = (\Sigma,P)$ distribución sobre $X$. 
  Si $\dist$ es distribución sobre $X$, lo notamos $x\sim \mathcal{D}$
 \end{definition}
 
-\begin{definition} \textbf{Espacio probabilístico producto}
+\begin{definition}[Espacio probabilístico producto]
  Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios probabilísticos. Entonces decimos que:
  \[(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, P)\] es
  espacio probalístico producto si verifica:
@@ -513,8 +504,7 @@ El siguiente teorema nos dice que siempre podemos definir un espacio probabilís
 \section{Desigualdades de concentración}
 Sea $(X,\Sigma,P)$ un espacio probabilístico en lo que sigue.
 
-\begin{lemma} \textbf{Desigualdad de Markov}
-
+\begin{lemma}[Desigualdad de Markov]
 Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
 \[P[W \ge a] \le \frac{\expect(W)}{a}\]
 
@@ -530,8 +520,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  de donde se deduce el resultado, dividiendo ambos miembros por $a$.
 \end{proof}
 
-\begin{lemma} \textbf{Lema de Hoeffding}
-
+\begin{lemma}[Lema de Hoeffding]
  Sea $W$ una variable aleatoria con $a\le W \le b$ con $\expect(W) = 0$. Entonces para todo $\lambda > 0$:
  
  \[\expect(e^{\lambda W}) \le e^{\frac{\lambda^2(b-a)^2}{8}}\]
@@ -582,8 +571,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  \end{proof}
 
 
-\begin{lemma} \textbf{Desigualdad de Hoeffding}
-
+\begin{lemma}[Desigualdad de Hoeffding]
  Sean $W_1, \ldots W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
  $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\varepsilon > 0$ arbitrario:
 

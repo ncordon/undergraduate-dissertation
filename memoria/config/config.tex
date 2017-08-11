@@ -55,6 +55,19 @@
 % *************************************************************************************************************
 % Definiciones de teoremas, corolarios, lemas
 % *************************************************************************************************************
+% https://tex.stackexchange.com/questions/43966/how-to-make-the-optional-title-of-a-theorem-bold-with-amsthm
+\newtheoremstyle{mythm}%                  % Name
+  {}%                                     % Space above
+  {}%                                     % Space below
+  {\itshape}%                             % Body font
+  {}%                                     % Indent amount
+  {\bfseries}%                            % Theorem head font
+  {.}%                                    % Punctuation after theorem head
+  { }%                                    % Space after theorem head, ' ', or \newline
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}%    
+  
+\theoremstyle{mythm}
+
 \newtheorem{thm}{theorem}[section]
 \newtheorem{theorem}[thm]{Teorema}
 \newtheorem*{theorem*}{Teorema}
