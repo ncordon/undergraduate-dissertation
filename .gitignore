@@ -262,3 +262,6 @@ old/ltxpng/*
 
 # Geogebra files
 *.ggb
+
+# File to generate doc of R package
+genRdocs.sh

@@ -78,9 +78,9 @@ obtenemos:
   \STATE{Hacer $M = \left\lceil T/m \right\rceil$}
   \FOR{$t=1, \ldots, M$}
     \FOR{$i=1,\ldots, m$}
+      \STATE{Escoger $r \sim N(0,1)$}
       \FOR{$j=1, \ldots, d$}
          \IF{El atributo $j-$ésimo es numérico}
-           \STATE{Escoger $r \sim N(0,1)$}
 	   \STATE{$w_j = w_j^{(i)} - \frac{\sigma_j'}{\sqrt{m}} \cdot r$}
 	 \ELSE
 	   \STATE{Escoger $w_j$ de manera uniforme sobre $\{w_j^{(1)}, \ldots w_j^{(m)}\}$}

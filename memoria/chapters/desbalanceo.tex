@@ -80,4 +80,69 @@ Suponemos también que tanto el \textit{oversampling} como el \textit{undersampl
 
 \subsubsection{Limpieza de instancias en \textit{oversampling}}
 
+Estas técnicas se emplean para limpiar los bordes de las zonas que conectan a ambas clases. El método más reseñable son los
+\textit{enlaces Tomek}. Se dice que dos instancias $x_i, x_j$ forman un \textit{enlace Tomek} si 
+$d(x_i, x_j) = \argmin_{x_p, x_q} d(x_p, x_q)$. Por tanto si dos instancias corresponden a un \textit{enlace Tomek} significará,
+a no ser que correspondan a ruido, que están en la frontera entre las dos clases. Por tanto dichos enlaces pueden usarse para
+una vez se ha hecho \textit{oversampling} de la clase minoritaria, ir eliminando iterativamente todos los \textit{enlaces Tomek}
+cuyas dos instancias pertenezcan a clases distintas, hasta que los únicos enlaces que resten pertenezcan a la misma clase.
+
+También destaca el método ENN (\textit{Edited Nearest Neighbour}), que consiste en eliminar todas aquellas instancias tales
+que al calcular sus $k$ vecinos más cercanos, haya una mayoría pertenecientes a la otra clase de entre los mismos.
+
 \subsection{Aprendizaje \textit{cost sensitive}}
+
+El \textit{framework} de aprendizaje \textit{cost sensitive} implica que no a todas las instancias le asignamos el mismo error
+al aprender (como podría ser una función de pérdida $0-1$ como las descritas en \ref{def:zero-one-loss}). Una técnica para usar
+funciones de pérdida aplicadas al problema de desbalanceo consiste en usar una matriz $\{C_{i,j}\}_{i,j\in \{-1,1\}}$, 
+donde $C_{i,j}$ reprensenta el coste de asignar a la una instancia de clase $i$, la clase $j$, siendo $C_{i,i} = 0$; es habitual
+tomar $C_{1,-1} > C_{-1,1}$ para dar más importancia a la clase positiva.
+
+Dentro de este paradigma destacan métodos de \textit{boosting} y de \textit{ensamble} de clasificadores. También es habitual
+encontrarnos algoritmos clásicos modificados para implementar \textit{cost sensitive} hacia la clase minoritaria.
+
+\section{Medidas de la bondad del aprendizaje}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{C{3cm}|C{3cm}}
+  $VP$ & $FP$\\
+  \hline
+  $FN$ & $VN$\\
+  \end{tabular}
+  \caption{Matriz de confusión}
+\end{table}
+
+Para definir medidas de bondad necesitaremos tener en cuenta la matriz de confusión, donde $VP$ (verdaderos positivos) 
+representará el número de instancias positivas clasificadas como positivas; $FP$ (falsos positivos) representará las instancias
+verdaderamente negativas pero que han sido clasificadas como positivas; $FN$ (falsos negativos) reprensetará instancias 
+positivas que han sido clasificadas como negativas; y $VN$ (verdaderos negativos) reprensentará instancias negativas
+correctamente clasificadas como negativas. Obsérvese además $\npos = VP + FN$ y $\nneg = FP + VN$, con $N = \npos + \nneg$.
+
+La medida de bondad habitual en clasificación es el acierto o exactitud: $e = \frac{VP + VN}{N}$. Esta medida presenta el
+problema en clasificación desbalanceada de que podríamos tener una exactitud muy alta, pero un acierto nulo sobre la clase 
+minoritaria. Necesitamos medidas que prioricen el acierto o al menos lo ponderen más en clasificación desbalanceada.
+
+A tal efecto, podemos definir la precisión como $p = \frac{VP}{VP + FP}$, esto es, el nivel de acierto sobre las instancias 
+clasificadas como positivas. También tenemos en cuenta la sensibilidad, $s = \frac{VP}{\npos}$ que cuantifica las instancias
+positivas verdaderamente etiquetadas como tales, es decir, lo completa que ha sido la clasificación en términos de la clase
+minoritaria, reteniendo la información necesaria para clasificar las instancias positivas como tales.
+
+También se define el $F$-score como $F_{\beta} = \frac{1 + \beta^2}{\frac{\beta^2}{s} + \frac{1}{p}}$ como una media 
+ponderada de la sensibilidad y la precisión, donde cuantificamos la precisión con un factor $\beta$ de importancia sobre 
+la sensibilidad. De hecho en el caso $\beta = 1$ tenemos una media armónica de precisión y sensibilidad. También puede 
+expresarse como $F_{\beta} = \frac{(1+\beta^2) VP}{(1+\beta^2) VP + \beta^2 FN + FP}$.
+
+Análogamente al $F$-score podemos definir la media geométrica de la precisión y la sensibilidad $G = \sqrt{s\cdot p}$, que
+cuantificaría ambas medidas por igual, siendo menos sensible a que una de ellas sea exageradamente buena y la otra no.
+
+Como última medida que vamos a considerar, tenemos el $AUC$ (\textit{area under the curve}). Para entender lo que es el $AUC$
+necesitamos antes definir la curva $ROC$ (\textit{receiver operating characteristic curve}), que se obtiene al representar en el eje
+de abcisas la tasa de falsos positivos o (1-especificidad) $\frac{VP}{\npos}$ , y en el eje de ordenadas la tasa de verdaderos positivos
+o sensibilidad del clasificador, de manera que nos queda un punto en el espacio $[0,1]\times [0,1]$. La curva $ROC$ se obtiene al unir 
+todos los puntos de los que dispongamos para un clasificador (por ejemplo si hacemos una validación cruzada, o si consideramos distribuciones
+acumuladas sobre los datos). Intuitivamente, cuanto más cerca del punto $(0,1)$ (acertamos todos los ejemplos verdaderamente positivos,
+sin ningún falso positivo), mucho mejor $AUC$ obtendremos. La bisectriz $y=x$ marca el clasificador aleatorio (equivalente a lanzar 
+una moneda al aire) que asigna la mitad de instancias a cada clase.
+
+\imgcaption{./imgs/ROC.png}{Curva ROC}{0.85}

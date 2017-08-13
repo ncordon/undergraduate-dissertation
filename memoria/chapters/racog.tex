@@ -38,16 +38,17 @@ cada nodo (variable en la distribución), llega un único arco.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
- \REQUIRE $G = (E,V)$
+ \REQUIRE $G = (E,V)$ grafo no dirigido
  \STATE{Inicializar $visitados = \emptyset$}
- \STATE{Inicializar $G'=(E',V)$, con $E'=\emptyset$}
- \FOR{Cada arco $(u,v) \in E$}
-   \IF{$v \notin visitados$}
-     \STATE{$E' = E' \cup \{(u,v)\}$}
-   \ELSE
-     \STATE{$E' = E' \cup \{(v,u)\}$}
-   \ENDIF
- \ENDFOR
+ \STATE{Inicializar $G'=(E',V)$, con $E'=\{(p,q)\}$ con $(p,q) \in E$ arbitrario. $p$ será la raíz del árbol}
+ \STATE{Hacer $E = E\setminus\{(p,q)\}$ y $H=\{p,q\}$ conjunto de padres}
+ \WHILE{Mientras $E\neq \emptyset$ y $H\neq \emptyset$}
+   \STATE{Toma $h\in H$, y actualiza $H = H\setminus \{h\}$}
+   \STATE{Calcula $J = \{(u,v)\in E: u=h \vee v=h\}$}
+   \STATE{Calcula $J' = \{(u,v) : [(u,v)\in J, u=h] \vee [((v,u)\in J, v=h]\}$}
+   \STATE{$E = E\setminus J$}
+   \STATE{$E'= E'\cup J'$}
+ \ENDWHILE
  \NEWLINE
  \RETURN{$G'$}
 \end{algorithmic}
