@@ -1,5 +1,4 @@
 \section{Algoritmo PDFOS}
-
 \subsection{Motivación}
 Dada una función de distribución de $X$ variable aleatoria, $F(x)$, si esta función es derivable casi seguramente entonces
 podemos tomar la función de densidad como la derivada de la función de distribución, casi seguramente, es decir:
@@ -32,6 +31,10 @@ $x\in \Omega$.
 El estimador que se suele usar para evaluar la bondad de $\widehat{f}$ es el error cuadrático medio integrado (MISE):
 
 \[MISE(h) = \underset{x_1, \ldots, x_n}{\expect} \int (\widehat{f}(x) - f(x))^2 dx\]
+
+\imgcaption{./imgs/kernel-estimation.png}{Ejemplo de estimación de densidad con funciones kernel \footnotemark}{0.9}
+
+\footnotetext{Imagen de dominio público tomada de Wikimedia Commons}
 
 \subsection{Funciones kernel Gaussianas multivariantes}
 El algoritmo PDFOS (\textit{Probability Distribution Oversampling}) se basa en tomar funciones kernel Gaussianas multivariantes.
