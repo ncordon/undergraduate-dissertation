@@ -58,11 +58,13 @@ el concepto de instancia rara de otro concepto que surge en ciencia de datos: el
 La aparición de instancias raras no sólo se debe al desbalanceo de clases, sino que se puede deber a un amplio rango de factores 
 que afectan a la complejidad de los datos: \textit{overlapping} ($\sneg_x \cap \spos_x \neq \emptyset$), falta de 
 representatividad en los datos, \textit{small disjuncts}, etc. En general, los clasificadores intentan aprender a partir de una clase 
-creando reglas disjuntas que agrupen a instancias. Como consecuencia de la infrarrepresentación de instancias, podemos tener
-reglas que cubran una pequeña porción de las instancias de la clase positiva. Estas instancias conforman lo que llamamos 
+creando reglas (conceptos) disjuntas que agrupen a instancias. Como consecuencia de la infrarrepresentación de instancias, podemos 
+tener reglas que cubran una pequeña porción de las instancias de la clase positiva. Estas instancias conforman lo que llamamos 
 un \textit{small-disjunct}. Los \textit{small-disjuncts} no sólo afectan a la clase minoritaria, sino que pueden darse también 
 dentro de la mayoritaria, aunque la mayor densidad de datos de esta clase hace que el efecto no sea tan agravado o 
-sea una situación menos frecuente. 
+sea una situación menos frecuente. De hecho hay estudios como \cite{jo2004} que sostienen que no sólo el desbalanceo de clases
+es el responsable de la pérdida de acierto de los clasificadores, sino que los \textit{small disjuncts} son un factor muy a tener en
+cuenta en la degradación del rendimiento de los mismos.
 
 \imgcaption{./imgs/desbalanceo.png}{Ejemplo de dataset con desbalanceo}{0.85}
 
@@ -77,6 +79,9 @@ y tenemos un problema de clasificación con el conjunto de entrenamiento $S'$. N
 intentan eliminar instancias que aportan información redundante dentro del conjunto de instancias negativas.
 
 Suponemos también que tanto el \textit{oversampling} como el \textit{undersampling} se realiza de manera que $r(S') < r(S)$.
+
+La gran ventaja de los métodos de \textit{sampling} respecto a otros como \textit{cost-sensitive} es su flexibilidad, puesto
+que podemos aplicárselos a cualquier clasificador.
 
 \subsubsection{Limpieza de instancias en \textit{oversampling}}
 
@@ -146,3 +151,33 @@ sin ningún falso positivo), mucho mejor $AUC$ obtendremos. La bisectriz $y=x$ m
 una moneda al aire) que asigna la mitad de instancias a cada clase.
 
 \imgcaption{./imgs/ROC.png}{Curva ROC}{0.85}
+
+\section{Estado del arte del \textit{oversampling}}
+A día de hoy, el algoritmo SMOTE, propuesto por \citealt{chawla02} sigue siendo una de las referencias en el campo del 
+\textit{oversampling} para clasificación desbalanceada, dada su idea simple pero eficaz de rellenar zonas visuales no 
+cubiertas con instancias a partir de instancias generadas en la recta que une otras dos. Damos una breve descripción
+del algoritmo.
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $S = \{z_1 = (x_1,y_1), \ldots z_m = (x_m,y_m)\}$, instancias
+  \REQUIRE $T$, número de instancias sintéticas deseado
+  \REQUIRE $k$, parámetro de KNN para crear instancias sintéticas
+  \STATE{Inicializar $S' = \emptyset$, instancias sintéticas}
+  \STATE{Calcular los $k$ vecinos más cercanos en $S$ para cada de $x\in \spos$} 
+  \STATE{Toma $M = \left\lceil T/|\spos| \right\rceil$}
+  \NEWLINE
+  \FOR{$x\in \spos$}
+    \FOR{$m=1, \ldots, M$}
+      \STATE{Escoger un vecino más cercano para $x$, a saber, $y$}
+      \STATE{Seleccionar $r$ en $[0,1]$ de manera uniforme}
+      \STATE{$S' = S'\cup \{x + r(y-x)\}$}
+    \ENDFOR
+  \ENDFOR
+  \STATE{Hacer $S' = T$ instancias escogidas aleatoriamente desde $S'$} 
+  \NEWLINE
+  \RETURN{$S'$, ejemplos positivos sintéticos}
+\end{algorithmic}
+\caption{Algoritmo de \textit{oversampling} SMOTE}
+\label{alg:smote}
+\end{algorithm}

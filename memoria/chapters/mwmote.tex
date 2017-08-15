@@ -1,0 +1,42 @@
+\section{Algoritmo MWMOTE}
+El algoritmo MWMOTE (\textit{Majority Weighted Minority Oversampling Technique}) es \ldots
+
+Sea $\spos = \{x_1, \ldots x_m\}$, clase minoritaria y $\sneg = \{y_1, \ldots y_m\}$, clase mayoritaria, con $S= \spos \cup \sneg$
+el conjunto de entrenamiento. Se usará KNN con distancia euclídea. Notaremos para una instancia $x\in S$, $NN^{k}(x)$ a su 
+$k$-KNN vecindario, esto es, el conjunto de las $k$ más cercanas (con distancia euclídea) a $x$. Notaremos $NN_{+}^k(x)$
+a su $k$-KNN vecindario positivo, esto es las $k$ instancias más cercanas pertenecientes a $\spos$. Análogamente definimos 
+$NN_{-}^k(x) \subseteq \sneg$ como el $k$-vecindario negativo de una instancia.
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $\spos = \{x_1, \ldots x_m\}$, clase minoritaria
+  \REQUIRE $\sneg = \{y_1, \ldots y_m\}$, clase mayoritaria
+  \REQUIRE $T$, número de instancias sintéticas deseado
+  \REQUIRE $k_{1}$, parámetro de KNN para filtrar ruido de $\spos$
+  \REQUIRE $k_{2}$, parámetro de KNN para calcular frontera $U \subseteq \sneg$
+  \REQUIRE $K_{3}$, parámetro de KNN para calcular frontera $V \subseteq \spos$
+  \REQUIRE $\alpha$, umbral de tolerancia en la cercanía a la frontera.
+  \REQUIRE $C_{I}$, ponderación de la cercanía a la frontera.
+  \REQUIRE $C_{clust}$, parámetro del \textit{clustering} para determinar número de clústers.
+  \STATE{Inicializar $S' = \emptyset$, instancias sintéticas}
+  \STATE{Para cada $x\in \spos$, calcular su $k_{1}$ KNN vecindario, $NN^{k_1}(x)$}
+  \STATE{Hacer $\sneg_f = \sneg - \{x\in \sneg : NN(x) \cap \spos = \emptyset\}$}
+  \STATE{Calcular frontera negativa $U = \underset{x\in \sneg_f}{\bigcup} NN_{-}^{k_2}(x)$}
+  \STATE{Calcular frontera positiva $V = \underset{x\in U}{\bigcup} NN_{+}^{k_3}(x)$}
+  \STATE{Para cada $x\in V$, calcular $P(x) = \sum_{y\in U} I_w(x,y)$}
+  \STATE{Normalizar para cada $x\in V$, $P(x) = \frac{P(x)}{\sum_{z\in V} P(z)}$}
+  \STATE{Calcular $T_{clust} = C_{clust} \cdot \frac{1}{|\spos_f|} \sum_{x\in \spos_f} \min_{y\in \spos_f, y\neq x} d(x,y)$}
+  \STATE{Calcular $L_1, \ldots L_M\subseteq \spos$ clústers para $\spos$, con umbral $T_{clust}$}
+  \NEWLINE
+  \FOR{$t=1, \ldots, T$}
+    \STATE{Escoger $x\in V$ de acuerdo a la probabilidad $P(x)$}
+    \STATE{Seleccionar $y\in L_k$ uniformemente donde $L_k \ni x$ ($L_k$ es el clúster de $x$)}
+    \STATE{Seleccionar $r$ en $[0,1]$ de manera uniforme}
+    \STATE{$S' = S'\cup \{x + r(y-x)\}$}
+  \ENDFOR
+  \NEWLINE
+  \RETURN{$S'$, ejemplos positivos sintéticos}
+\end{algorithmic}
+\caption{Algoritmo de \textit{oversampling} MWMOTE}
+\label{alg:mwmote}
+\end{algorithm}
