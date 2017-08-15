@@ -1,5 +1,62 @@
 \section{Algoritmo PDFOS}
 
+\subsection{Motivación}
+Dada una función de distribución de $X$ variable aleatoria, $F(x)$, si esta función es derivable casi seguramente entonces
+podemos tomar la función de densidad como la derivada de la función de distribución, casi seguramente, es decir:
+\[f(x) = \lim_{h\rightarrow 0} \frac{F(x+h) - F(x-h)}{2h} = \lim_{h\rightarrow 0} \frac{P(x-h < X \le x+h)}{2h}\]
+
+Si tenemos muestras aleatorias de $X$, a saber, $X_1, \ldots X_n$ y $x_1, \ldots x_n$ una realización muestral, entonces un 
+estimador para $f$ sería:
+\[\widehat{f}(x) = \frac{1}{2hn} \bigg[\textrm{Número de } x_1, \ldots, x_n \textrm{ que se quedan en ]x-h, x+h[}\bigg]\]
+
+Es decir, definiendo $\omega(x) = \left\{\begin{array}{ll} 
+                                \frac{1}{2} &, |x| < 1\\
+                                0 & \textrm{en otro caso}
+                                \end{array}\right.$
+                                
+                                
+y $w_h(x) = w\left(\left|\frac{x}{h}\right|\right)$, podríamos reformular $\widehat{f}$ como:
+\[\widehat{f}(x) = \frac{1}{nh} \sum_{i=1}^n \omega_h(x-x_i)\]
+
+Es decir, supuestas que las observaciones $x_1, \ldots, x_n$ se distancian múltiplos de $2h$ (caen en el centro de intervalos
+de longitud $2h$, habríamos construido $\widehat{f}$ a base de un histograma donde cada barra tiene ancho $2h$ y altura 
+$\frac{1}{2nh} \cdot \bigg[[\textrm{Número de muestras } x_1, \ldots, x_n \textrm{ en el intervalo}]\bigg]$. Al parámetro $h$
+se le llama parámetro de \textit{bandwidth}, por referencia al significado que tiene en el caso de los histogramas.
+
+\subsection{Generalización a funciones kernel}
+Tomar $w = \frac{1}{2} \mathds{1}_{]-1,1[}$ presenta el problema de que $\widehat{f}$ será una función a saltos, y no
+será continua. Surge una generalización al tomar $\omega$ como funciones verificando $\int_{\Omega} \omega(x) dx = 1$, 
+siendo $\Omega$ el dominio de $X$. Se suelen considerar además funciones simétricas $w(x) = w(-x)$ para cualquier 
+$x\in \Omega$.
+
+El estimador que se suele usar para evaluar la bondad de $\widehat{f}$ es el error cuadrático medio integrado (MISE):
+
+\[MISE(h) = \underset{x_1, \ldots, x_n}{\expect} \int (\widehat{f}(x) - f(x))^2 dx\]
+
+\subsection{Funciones kernel gaussianas multivariantes}
+El algoritmo PDFOS (\textit{Probability Distribution Oversampling}) se basa en tomar funciones kernel gaussianas multivariantes.
+Recordamos la definición de la función de densidad de la distribución Gaussiana multivariante de media $0$ y covarianza $\Psi$:
+
+\[\phi^{\Psi}(x) = \frac{1}{\sqrt{2\pi \cdot det(\Psi)}} exp\left(\frac{1}{2} x \Psi^{-1} x^T \right)\]
+
+Dada $\spos = \{x_1, \ldots, x_m\}$, la clase minoritaria, calcularemos el estimador no sesgado para la covarianza:
+
+\[U = \frac{1}{m-1} \sum_{i=1}^m (x_i - \overline{x})(x_i - \overline{x})^T, 
+  \qquad \textrm{siendo } \overline{x} = \frac{1}{M}\sum_{i=1}^M x_i\]
+  
+Las funciones kernel que tomaremos serán de la forma: $\phi = \phi^{U}$, y tendremos que ajustar el \textit{bandwidth} $h$ de
+$\phi_h(x) = \phi^U\left(\frac{x}{h}\right)$ para minimizar el MISE. A tales efectos, hay que minimizar la función de validación
+cruzada:
+\[M(h) = \frac{1}{m^2} \sum_{i=1}^m \sum_{j=1}^m \phi_h^{\ast} (x_i - x_j) + \frac{2}{m} \phi_h(0)\]
+
+donde se toma la aproximación:
+\[\phi_h^{\ast} \approx \phi_{h\sqrt{2}} - 2\phi_h\]
+
+Una vez minimizada la función de validación cruzada $M$, el esquema de generación de instancias se basará en dada una instancia
+$x_i \in \spos$, tomar $x_i + h R r$, donde $r\sim N^m(0,1)$ y $R$ es la matriz triangular superior resultante de la descomposición
+de Choleski. Análogamente al caso unidimensional, donde se pueden generar instancias desde $N(\mu, \sigma)$ tomando $\mu + \sigma + r$
+con $r\sim N(0,1)$, en el caso multivariante dada $\Psi =  A \cdot A^T$
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
   \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos positivos
