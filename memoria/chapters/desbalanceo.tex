@@ -160,11 +160,11 @@ del algoritmo.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $S = \{z_1 = (x_1,y_1), \ldots z_m = (x_m,y_m)\}$, instancias
+  \REQUIRE $\spos = \{x_1, \ldots, x_m\}$, instancias positivas
   \REQUIRE $T$, número de instancias sintéticas deseado
   \REQUIRE $k$, parámetro de KNN para crear instancias sintéticas
   \STATE{Inicializar $S' = \emptyset$, instancias sintéticas}
-  \STATE{Calcular los $k$ vecinos más cercanos en $S$ para cada de $x\in \spos$} 
+  \STATE{Calcular los $k$ vecinos más cercanos en $\spos$ para cada de $x\in \spos$} 
   \STATE{Toma $M = \left\lceil T/|\spos| \right\rceil$}
   \NEWLINE
   \FOR{$x\in \spos$}

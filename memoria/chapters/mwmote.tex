@@ -1,11 +1,24 @@
 \section{Algoritmo MWMOTE}
-El algoritmo MWMOTE (\textit{Majority Weighted Minority Oversampling Technique}) es \ldots
+El algoritmo SMOTE presentado anteriormente en \ref{alg:smote} presenta el problema de que no incluye detección de
+las instancias en la frontera entre ambas clases, que son en muchas ocasiones las más complicadas de aprender y las que más
+información aportan, debido a la habitual existencia de \textit{overlaping} entre clases en dichas zonas. Tras SMOTE surgió
+Borderline-SMOTE que detectaba instancias en la frontera bajo la tesis de que para una instancia minoritaria en la frontera,
+al efectuar el cálculo de sus $k$ vecinos más cercanos, más de la mitad sería mayor o igual que la mitad (dado que la
+clase mayoritaria tiene mayor representación en los datos).
 
-Sea $\spos = \{x_1, \ldots x_m\}$, clase minoritaria y $\sneg = \{y_1, \ldots y_m\}$, clase mayoritaria, con $S= \spos \cup \sneg$
-el conjunto de entrenamiento. Se usará KNN con distancia euclídea. Notaremos para una instancia $x\in S$, $NN^{k}(x)$ a su 
-$k$-KNN vecindario, esto es, el conjunto de las $k$ más cercanas (con distancia euclídea) a $x$. Notaremos $NN_{+}^k(x)$
-a su $k$-KNN vecindario positivo, esto es las $k$ instancias más cercanas pertenecientes a $\spos$. Análogamente definimos 
-$NN_{-}^k(x) \subseteq \sneg$ como el $k$-vecindario negativo de una instancia.
+La última afirmación presenta problemas básicos como que instancias ruidosas podrían ser consideradas como fronterizas, o que
+el valor de $k$ no puede ser el mismo para todas las zonas del espacio, puesto que habrá zonas mucho más infrarrepresentadas
+que otras. También podemos añadir que si generamos instancias minoritarias entre dos clústers de instancias positivas (esto 
+podría pasar para dos clústeres muy infrarrepresentados y un $k$ alto), la instancia que se generaría quedaría fuera del 
+espacio de dichas regiones, podiendo ocasionar ruido en regiones de instancias negativas.
+
+El algoritmo MWMOTE (\textit{Majority Weighted Minority Oversampling Technique}) surge como una modificación de SMOTE para poner 
+solución a los anteriores problemas. Sea $\spos = \{x_1, \ldots x_m\}$, clase minoritaria y $\sneg = \{y_1, \ldots y_m\}$, 
+clase mayoritaria, con $S= \spos \cup \sneg$ el conjunto de entrenamiento. Se usará KNN con distancia euclídea, donde notaremos
+$d(x,y)$ a la distancia euclídea entre $x$ e $y$. Notaremos para una instancia $x\in S$, $NN^{k}(x)$ a su $k$-KNN vecindario, 
+esto es, el conjunto de las $k$ más cercanas (con distancia euclídea) a $x$. Notaremos $NN_{+}^k(x)$ a su $k$-KNN vecindario 
+positivo, esto es las $k$ instancias más cercanas pertenecientes a $\spos$. Análogamente definimos $NN_{-}^k(x) \subseteq \sneg$ 
+como el $k$-vecindario negativo de una instancia.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -16,14 +29,14 @@ $NN_{-}^k(x) \subseteq \sneg$ como el $k$-vecindario negativo de una instancia.
   \REQUIRE $k_{2}$, parámetro de KNN para calcular frontera $U \subseteq \sneg$
   \REQUIRE $K_{3}$, parámetro de KNN para calcular frontera $V \subseteq \spos$
   \REQUIRE $\alpha$, umbral de tolerancia en la cercanía a la frontera.
-  \REQUIRE $C_{I}$, ponderación de la cercanía a la frontera.
+  \REQUIRE $C$, ponderación de la cercanía a la frontera.
   \REQUIRE $C_{clust}$, parámetro del \textit{clustering} para determinar número de clústers.
   \STATE{Inicializar $S' = \emptyset$, instancias sintéticas}
   \STATE{Para cada $x\in \spos$, calcular su $k_{1}$ KNN vecindario, $NN^{k_1}(x)$}
-  \STATE{Hacer $\sneg_f = \sneg - \{x\in \sneg : NN(x) \cap \spos = \emptyset\}$}
-  \STATE{Calcular frontera negativa $U = \underset{x\in \sneg_f}{\bigcup} NN_{-}^{k_2}(x)$}
+  \STATE{Hacer $\spos_f = \spos - \{x\in \spos : NN(x) \cap \spos = \emptyset\}$}
+  \STATE{Calcular frontera negativa $U = \underset{x\in \spos_f}{\bigcup} NN_{-}^{k_2}(x)$}
   \STATE{Calcular frontera positiva $V = \underset{x\in U}{\bigcup} NN_{+}^{k_3}(x)$}
-  \STATE{Para cada $x\in V$, calcular $P(x) = \sum_{y\in U} I_w(x,y)$}
+  \STATE{Para cada $x\in V$, calcular $P(x) = \sum_{y\in U} I_{\alpha,C}(x,y)$}
   \STATE{Normalizar para cada $x\in V$, $P(x) = \frac{P(x)}{\sum_{z\in V} P(z)}$}
   \STATE{Calcular $T_{clust} = C_{clust} \cdot \frac{1}{|\spos_f|} \sum_{x\in \spos_f} \min_{y\in \spos_f, y\neq x} d(x,y)$}
   \STATE{Calcular $L_1, \ldots L_M\subseteq \spos$ clústers para $\spos$, con umbral $T_{clust}$}
@@ -40,3 +53,48 @@ $NN_{-}^k(x) \subseteq \sneg$ como el $k$-vecindario negativo de una instancia.
 \caption{Algoritmo de \textit{oversampling} MWMOTE}
 \label{alg:mwmote}
 \end{algorithm}
+
+
+El conjunto $\spos_f \subseteq \spos$ se construye para filtrar instancias ruidosas (aquellas que no tienen ninguna otra 
+de la clase positiva alrededor suyo). $U$ representa la frontera de instancias negativas (habrá que tomar preferiblemente
+un $k_2$ pequeño, ya que la densidad de representación de la clase negativa es mucho mayor que la de la positiva). La 
+construcción de $V$, o frontera de instancias positivas, debe hacerse con un $k_3$ grande por un motivo antagónico al 
+ya expresado para $U$.
+
+MWMOTE tiene 3 objetivos fundamentales: dar mayor peso a instancias minoritarias fronterizas, a instancias pertenecientes
+a clústeres de baja representación, y a instancias minoritarias muy cerca de zonas con muchas instancias mayoritarias.
+
+Definimos el peso informativo de $x$ respecto a $y$ como $I_{\alpha,C}(x,y) = C_f(x,y) \cdot D_f(x,y)$, donde si $x \notin NN_{+}(y)$,
+entonces $I_w(x,y) = 0$. Caso opuesto, se toma:
+
+\[f(x) = \left\{\begin{array}{ll} 
+                x &, x\le \alpha \\
+                C & \textrm{en otro caso}
+               \end{array}\right.,\qquad C_f(x,y) = \frac{C}{\alpha} \cdot f\left(\frac{d}{d(x,y)}\right)\]
+
+$C_f$ es un factor que mide la cercanía a $y$, es decir, mide la cercanía entre dos instancias fronterizas. Se toma 
+$D_f(x,y) = \frac{C_f(x,y)}{\sum_{z\in V} C_f(z,y)}$, factor de densidad, de manera que una instancia perteneciente
+a un clúster más compacto tendrá mayor $\sum C_f(z,y)$ que una perteneciente a un clúster muy disperso. El último de los
+objetivos de detección de instancias de MWMOTE se cumple al ponderar cada instancia $x$ por la suma 
+$\sum_{y\in U} I_{\alpha, C}(x,y)$.
+
+Por último queda explicar el algoritmo de \textit{clustering} que se usa: un algoritmo de \textit{clustering} jerárquico
+aglomerativo con enlace medio (esto es, se define $dist(L_i, L_j) = \frac{1}{|L_i||L_j|} \sum_{x\in L_i} \sum_{y\in L_j} d(x,y)$).
+
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+  \REQUIRE $\spos = \{x_1, \ldots x_m\}$, clase minoritaria
+  \STATE{Inicializar $L_i = \{x_i\}, i=1, \ldots, m$}
+  \WHILE{$\inf_{i,j, i\neq j} dist(L_i, L_j) \le T_{clust}$, y quede más de un clúster}
+    \STATE{Sean $(i,j) = \argmin_{i,j, i\neq j} dist(L_i, L_j)$}
+    \STATE{$L_i = L_i \cup L_j$. Elimina $L_j$}
+  \ENDWHILE
+  \RETURN{Clústeres $L_1, \ldots L_k, k\le m$}
+\end{algorithmic}
+\caption{Algoritmo de \textit{clustering} jerárquico}
+\label{alg:hclust}
+\end{algorithm}
+
+Nótese que a mayor valor del parámetro $C_{clust}$ menor número de clústeres tendremos, y mayor número de instancias tendrán
+cada uno.
