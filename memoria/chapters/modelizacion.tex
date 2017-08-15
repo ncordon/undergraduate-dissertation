@@ -138,6 +138,24 @@ Definimos el riesgo empírico o error empírico como:
 
 Es decir, es el error del clasificador $h$ sobre el conjunto de entrenamiento $S$. 
 
+\begin{fact}
+Sea $H\subseteq 2^X$. Sea $\mathcal{D}$ distribución sobre $\mathcal{X}$. Sea $f \in mathcal{H}$ fija. Entonces para
+cualquier $h\in H$:
+\[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\dist,f}(h)\]
+
+\end{fact}
+
+\begin{proof}
+  Llamamos $p= \prob [f\neq h]$
+
+  \begin{align*}
+  \expect_{S\sim \dist} [L_S(h)] = \sum_{k=0}^m \frac{k}{m} \binom{m}{k} P^k(1-p)^{m-k} = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} =\\
+  = \sum_{k=1}^m \binom{m-1}{k-1} p^k(1-p)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k+1}(1-p)^{m-1-k} = \\
+  = p\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k}(1-p)^{m-1-k} = p(1+(1-p))^{m-1} = p
+  \end{align*}
+\end{proof}
+
+
 \begin{definition} \textbf{Minimizador del riesgo empírico, ERM}
 
 Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un $ERM$ 
