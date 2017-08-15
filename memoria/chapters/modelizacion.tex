@@ -149,7 +149,7 @@ cualquier $h\in H$:
   Llamamos $p= \prob [f\neq h]$
 
   \begin{align*}
-  \expect_{S\sim \dist} [L_S(h)] = \sum_{k=0}^m \frac{k}{m} \binom{m}{k} P^k(1-p)^{m-k} = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} =\\
+  \expect_{S\sim \dist} [L_S(h)] = \sum_{k=0}^m \frac{k}{m} \binom{m}{k} P^k(1-p)^{m-k} & = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} =\\
   = \sum_{k=1}^m \binom{m-1}{k-1} p^k(1-p)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k+1}(1-p)^{m-1-k} = \\
   = p\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k}(1-p)^{m-1-k} = p(1+(1-p))^{m-1} = p
   \end{align*}

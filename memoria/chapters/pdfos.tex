@@ -33,13 +33,14 @@ El estimador que se suele usar para evaluar la bondad de $\widehat{f}$ es el err
 
 \[MISE(h) = \underset{x_1, \ldots, x_n}{\expect} \int (\widehat{f}(x) - f(x))^2 dx\]
 
-\subsection{Funciones kernel gaussianas multivariantes}
-El algoritmo PDFOS (\textit{Probability Distribution Oversampling}) se basa en tomar funciones kernel gaussianas multivariantes.
+\subsection{Funciones kernel Gaussianas multivariantes}
+El algoritmo PDFOS (\textit{Probability Distribution Oversampling}) se basa en tomar funciones kernel Gaussianas multivariantes.
 Recordamos la definición de la función de densidad de la distribución Gaussiana multivariante de media $0$ y covarianza $\Psi$:
 
 \[\phi^{\Psi}(x) = \frac{1}{\sqrt{2\pi \cdot det(\Psi)}} exp\left(\frac{1}{2} x \Psi^{-1} x^T \right)\]
 
-Dada $\spos = \{x_1, \ldots, x_m\}$, la clase minoritaria, calcularemos el estimador no sesgado para la covarianza:
+Dada $\spos = \{x_i = (w_1^{(i)}, \ldots, w_d^{(i)})\}_{i=1}^m$, la clase minoritaria, calcularemos el estimador no sesgado 
+para la covarianza:
 
 \[U = \frac{1}{m-1} \sum_{i=1}^m (x_i - \overline{x})(x_i - \overline{x})^T, 
   \qquad \textrm{siendo } \overline{x} = \frac{1}{M}\sum_{i=1}^M x_i\]
@@ -52,10 +53,33 @@ cruzada:
 donde se toma la aproximación:
 \[\phi_h^{\ast} \approx \phi_{h\sqrt{2}} - 2\phi_h\]
 
+Nótese que $x\mapsto \phi_h(x-x_i)$ es la función de densidad de una normal con matriz de covarianza $h^2 U$ y centrada en $x_i$.
+
 Una vez minimizada la función de validación cruzada $M$, el esquema de generación de instancias se basará en dada una instancia
-$x_i \in \spos$, tomar $x_i + h R r$, donde $r\sim N^m(0,1)$ y $R$ es la matriz triangular superior resultante de la descomposición
-de Choleski. Análogamente al caso unidimensional, donde se pueden generar instancias desde $N(\mu, \sigma)$ tomando $\mu + \sigma + r$
-con $r\sim N(0,1)$, en el caso multivariante dada $\Psi =  A \cdot A^T$
+$x_i \in \spos$, tomar $x_i + h R r$, donde $r\sim N^m(0,1)$ y$R$ es la matriz triangular superior resultante de la descomposición
+de Choleski. Análogamente al caso unidimensional, donde se pueden generar instancias desde $N(\mu, \sigma)$ tomando $\mu + \sigma r$
+con $r\sim N(0,1)$, en el caso multivariante dada $U =  R \cdot R^T$, se pueden generar instancias siguiendo una distribución $N^m(\mu, U)$,
+tomando $\mu + R \cdot r$, donde $r\sim N^m(0,1)$.
+
+En \cite{gao2014} se usa para descomponer $U = R\cdot R^T$ la descomposición de Choleski 
+\footnote{\url{https://en.wikipedia.org/wiki/Cholesky_decomposition}}, que sólo sirve para matrices definidas positivas.
+
+\begin{lemma}
+ $\sum_{i=1}^m (x_i - \overline{x})(x_i - \overline{x})^T$ es una matriz semi-definida positiva.
+\end{lemma}
+\begin{proof}
+ Dado $y \in \mathbb{R}^d$, se tiene:
+ 
+ \begin{align*}
+ y^T \left(\sum_{i=1}^m (x_i - \overline{x})(x_i - \overline{x})^T\right) y &=
+ \sum_{i=1}^m ( \underbrace{(x_i - \overline{x})^T y}_z)^T ((x_i - \overline{x})^T y) = \\
+ &\underset{z \textrm{ es un vector}}{=} \sum_{i=1}^m ((x_i - \overline{x})^T y)^2 \ge 0
+ \end{align*}
+\end{proof}
+
+Luego al estimador $S$ que calculamos para la varianza le podemos calcular la descomposición de Choleski cuando sea 
+definido positivo ($y^T \cdot S y > 0$ de manera estricta para todo $0 \neq y\in \mathbb{R}^d$. Pero no está garantizado 
+que siempre sea definido positivo.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -99,3 +123,20 @@ Posteriormente se agregaron también al algoritmo de búsqueda la comprobación 
 y Silverman (siendo $d$ el tamaño del espacio de atributos, y $m$ el número de instancias pertenecientes a la clase minoritaria):
 
 \[\sigma_{Scoot} = \left(\frac{1}{m}\right)^{\frac{1}{d+4}}, \quad \sigma_{Silverman} = \left(\frac{4}{m(d+2)}\right)^{\frac{1}{d+4}}\]
+
+\subsection{Críticas al algoritmo}
+Podemos efectuar dos críticas principales al algoritmo, no estando reflejadas las siguientes consideraciones en el \textit{paper}
+de sus autores:
+
+\begin{itemize} 
+ \item No toda matriz $S$ es invertible, siendo el caso del dataset \texttt{ecoli1} incluido en el paquete de software 
+ desarrollado, por ejemplo, una matriz de covarianza no invertible. En el caso de nuestro software se ha decidido interrumpir
+ el proceso en caso de que se encuentre una matriz no invertible, avisándolo a tales efectos. Podría estudiarse cómo encajaría
+ dentro del algoritmo sustituir la inversa convencional por la inversa generalizada 
+ \footnote{\url{https://en.wikipedia.org/wiki/Multivariate_normal_distribution\#Degenerate_case}}.
+
+ \item El método de Choleski sólo se puede aplicar en los casos en los que la matriz es definida positiva, por lo que 
+ al implementarse el algoritmo nos hemos preocupado de usar el método de Choleski con pivotado (lo usa la función \texttt{rmvnorm}
+ de \texttt{mvtnorm} para generar las instancias, para lo cual hubo que revisar el código de dicha función). El método
+ de Choleski con pivotado sí que puede emplearse en el caso de matrices semidefinidas positivas no definidas positivas.
+\end{itemize}
