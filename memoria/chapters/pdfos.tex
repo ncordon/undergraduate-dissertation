@@ -40,7 +40,7 @@ El estimador que se suele usar para evaluar la bondad de $\widehat{f}$ es el err
 El algoritmo PDFOS (\textit{Probability Distribution Oversampling}) se basa en tomar funciones kernel Gaussianas multivariantes.
 Recordamos la definición de la función de densidad de la distribución $d$-Gaussiana multivariante de media $0$ y covarianza $\Psi$:
 
-\[\phi^{\Psi}(x) = \frac{1}{\sqrt[d]{2\pi \cdot det(\Psi)}} exp\left(\frac{1}{2} x \Psi^{-1} x^T \right)\]
+\[\phi^{\Psi}(x) = \frac{1}{\sqrt{(2\pi \cdot det(\Psi))^d}} exp\left(\frac{1}{2} x \Psi^{-1} x^T \right)\]
 
 Dada $\spos = \{x_i = (w_1^{(i)}, \ldots, w_d^{(i)})\}_{i=1}^m$, la clase minoritaria, calcularemos el estimador no sesgado 
 para la covarianza:

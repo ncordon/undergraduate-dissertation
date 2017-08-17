@@ -1,4 +1,53 @@
 \section{Algoritmo NEATER}
+El algoritmo NEATER (\textit{filteriNg of ovErsampled dAta using non cooperaTive gamE theoRy}) es un algoritmo de filtrado 
+de instancias no representativas basado en teoría de juegos. Daremos a continuación unos preliminares de teoría de juegos
+para poder comprender mejor el algoritmo.
+
+\subsection{Teoría de juegos}
+Sea una tupla $(P, S, f)$, donde $P=\{1, \ldots, n\}$, conjunto de jugadores. Tendremos $S_i=\{1, \ldots, k_i\}$ conjunto
+de posibles estrategias para el jugador $i$-ésimo, donde $S = S_1 \times \ldots \times S_n$, y dado $s = (s_1, \ldots s_n) \in S$
+arbitrario, podremos asignarle una recompensa a cada jugador que dependerá de la estrategia que ha seguido y de la estrategia del
+resto de jugadores por lo que tendremos:
+
+\[\begin{array}{rll}
+   f: S &\longrightarrow& \mathbb{R}^n\\
+   s &\longmapsto& (f_1(s), \ldots, f_n(s))
+  \end{array}\]
+  
+Notaremos $s_{-i} = (s_1, \ldots, s_{i-1}, s_{i+1}, \ldots s_n)$ y $f_i(s_i, s_{-i}):= f_i(s)$.
+
+\begin{definition}
+Un equilibrio de Nash estratégico es una tupla $s = (s_1, \ldots s_n)$ que verifica $f_i(s_i, s_{-i}) \ge f(s'_{i}, s_{-i})$ 
+para cualquier otra $s'\in S$.
+\end{definition}
+
+Es decir, una estrategia de Nash maximiza la recompensa para todos los jugadores.
+
+Tendremos probabilidades para escoger estrategias para cada jugador, esto es 
+$x_i \in \Delta_i = \{(x_i^{(1)}, \ldots, x_i^{(k_i)}) \in (R^{+})^k_i : \sum_{j=1}^{k_i} x_i^{(j)} = 1\}$. A un vector 
+$x = (x_1, \ldots, x_n) \in \Delta_1 \times \ldots \Delta_n = \Delta$ lo llamaremos perfil de estrategia. Asociado a un perfil de
+estrategia $x$, notaremos a la recompensa total esperada para el jugador $i$-ésimo como:
+
+\[u_i(x) = \sum_{(s\in S} x_i^{(s_1)} f_i(s)\]
+
+A $u_i$ lo llamaremos recompensa asociada al perfil de estrategia $x$ para el jugador $i$-ésimo, y dada $x\in \Delta$ notaremos
+$x_{-i} = (x_1, \ldots, x_{i-1}, x_{i+1}, \ldots x_n)$, y $u_i(x_i, x_{-i}):= u_i(x)$.
+
+\begin{definition}
+Un equilibrio probabilístico de Nash es un perfil de estrategia $x = (x_1, \ldots x_n)$ que verifica $u_i(x_i, x_{-i}) \ge u_i(x'_{i}, x_{-i})$
+para cualquier otra $x'\in \Delta$.
+\end{definition}
+
+\begin{theorem}
+ Todo juego $(P,S,f)$ con $|P| < \infty$ y $|S| < \infty$ tiene un equilibrio probabilístico de Nash.
+\end{theorem}
+
+\subsection{Aplicación al problema de clasificación desbalanceada}
+En nuestro caso los jugadores serán todos los posibles puntos del conjunto de entrenamiento unido a las instancias sintéticas $S \cup S'$. Cada
+jugador podrá escoger entre dos estrategias $\{0,1\}$ donde $0$ será pertenencia a la clase mayoritaria y $1$ pertenencia a la clase minoritaria.
+Habrá dos clases de jugadores, aquellos cuya estrategia ya es fija (es decir, conocemos su clase), que serán los de $S$, donde un jugador $k$ de 
+$S$ siempre jugará a la estrategia $0$, esto es $x_k = (1,0)$ siempre si es una instancia de la clase negativa; y jugará a la estrategia $1$, esto es 
+$x_k = (0,1)$ siempre, si es una instancia de la clase positiva.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
