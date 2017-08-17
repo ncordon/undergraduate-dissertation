@@ -38,9 +38,9 @@ El estimador que se suele usar para evaluar la bondad de $\widehat{f}$ es el err
 
 \subsection{Funciones kernel Gaussianas multivariantes}
 El algoritmo PDFOS (\textit{Probability Distribution Oversampling}) se basa en tomar funciones kernel Gaussianas multivariantes.
-Recordamos la definición de la función de densidad de la distribución Gaussiana multivariante de media $0$ y covarianza $\Psi$:
+Recordamos la definición de la función de densidad de la distribución $d$-Gaussiana multivariante de media $0$ y covarianza $\Psi$:
 
-\[\phi^{\Psi}(x) = \frac{1}{\sqrt{2\pi \cdot det(\Psi)}} exp\left(\frac{1}{2} x \Psi^{-1} x^T \right)\]
+\[\phi^{\Psi}(x) = \frac{1}{\sqrt[d]{2\pi \cdot det(\Psi)}} exp\left(\frac{1}{2} x \Psi^{-1} x^T \right)\]
 
 Dada $\spos = \{x_i = (w_1^{(i)}, \ldots, w_d^{(i)})\}_{i=1}^m$, la clase minoritaria, calcularemos el estimador no sesgado 
 para la covarianza:
@@ -51,7 +51,10 @@ para la covarianza:
 Las funciones kernel que tomaremos serán de la forma: $\phi = \phi^{U}$, y tendremos que ajustar el \textit{bandwidth} $h$ de
 $\phi_h(x) = \phi^U\left(\frac{x}{h}\right)$ para minimizar el MISE. A tales efectos, hay que minimizar la función de validación
 cruzada:
-\[M(h) = \frac{1}{m^2} \sum_{i=1}^m \sum_{j=1}^m \phi_h^{\ast} (x_i - x_j) + \frac{2}{m} \phi_h(0)\]
+\begin{equation}
+ M(h) = \frac{1}{m^2} \sum_{i=1}^m \sum_{j=1}^m \phi_h^{\ast} (x_i - x_j) + \frac{2}{m} \phi_h(0)
+ \label{eq:cross-val}
+\end{equation}
 
 donde se toma la aproximación:
 \[\phi_h^{\ast} \approx \phi_{h\sqrt{2}} - 2\phi_h\]
@@ -107,25 +110,52 @@ que siempre sea definido positivo.
 \end{algorithm}
 
 
-Se comenzó usando el siguiente algoritmo de búsqueda \textit{grid}:
+En \cite{gao2014} se hacía referencia a emplear un algoritmo \textit{grid} (dividir un intervalo plausible en valores
+y buscar el que más pequeña hace la función de validación cruzada) para extraer el mejor valor de $h$. Se ha preferido
+tomar como primera aproximación el valor propuesto por \citeauthor{silverman}:
+
+\[h_{Silverman} = \left(\frac{4}{m(d+2)}\right)^{\frac{1}{d+4}}\]
+
+donde $d$ es la dimensión de los datos, y $m$ el número de instancias minoritarias. A partir de dicho valor se ha seguido un
+algoritmo de gradiente descendente para intentar buscar un mínimo local. Para ello se ha reformulado \ref{eq:cross-val} y
+se ha derivado, pudiéndose comprobar como tanto \ref{eq:cross-val} y \ref{eq:cross-val-df} serían calculables en una función:
+\begin{align*}
+M(h) &= \frac{1}{m^2} \sum_{i=1}^m \sum_{j=1}^m \phi_h^{\ast} (x_i - x_j) + \frac{2}{m} \phi_h(0) = \\
+     &= \frac{1}{m^2} \sum_{i=1}^m \sum_{j=1, j\neq i}^m \phi_h^{\ast} (x_i - x_j) + m \phi_{h\sqrt{2}}(0)
+\end{align*}
+
+\begin{align}
+\frac{\partial M}{\partial h} = \frac{1}{m^2} \sum_{i} \sum_{j\neq i} \bigg[\left(-d h^{-1} + 
+  \frac{1}{2} h^{-3} (x_i-x_j)^T U (x_i-x_j) \right) \phi_{h\sqrt{2}}(x_i-x_j) + \nonumber \\ 
+  + 2 \left(d h^{-1} - h^{-3}(x_i-x_j)^T U (x_i-x_j) \right) \phi_{h}(x_i-x_j)\bigg] - \frac{dh^{-1}}{m} \phi_{h\sqrt{2}}(0)
+ \label{eq:cross-val-df}
+\end{align}
+
+El algoritmo de gradiente descendente dirigirá la búsqueda del valor de $h$ hacia mínimos locales.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
   \STATE{Hacer $M_{best} = \infty$}
-  \FOR{$\tau \in \{0.2, 0.22, 0.24, \ldots 2\}$}
-    \IF{$M(\tau) < M_{best}$}
-      \STATE{$\sigma = \tau, M_{best} = M$}
+  \STATE{Hacer $h = h_{Silverman}$}
+  \STATE{Hacer $h_{best} = h$}
+  \STATE{Hacer $\delta = h$}
+  \STATE{Hacer $\alpha = 0.001$}
+  \STATE{Sea $\gamma$ una constante suficientemente pequeña}
+  \NEWLINE
+  \WHILE{$\delta > \alpha$ y Número de iteraciones menor que $m^2$}
+    \IF{$M(h) < M_{best}$}
+      \STATE{$M_{best} = M(h)$ y $h_{best} = h$}
     \ENDIF
-  \ENDFOR
-  \RETURN{$\sigma$}
+    \STATE{$h_{-1} = h$}
+    \STATE{$h = \gamma \cdot M'(h)$}
+    \STATE{$\delta = h - h_{-1}$}
+  \ENDWHILE
+  \RETURN{$h$}
 \end{algorithmic}
-\caption{Algoritmo de búsqueda GridSearch}
+\caption{Algoritmo de búsqueda con gradiente descendente}
 \end{algorithm}
 
-Posteriormente se agregaron también al algoritmo de búsqueda la comprobación con los valores de parámetro propuestos por Scott
-y Silverman (siendo $d$ el tamaño del espacio de atributos, y $m$ el número de instancias pertenecientes a la clase minoritaria):
 
-\[\sigma_{Scoot} = \left(\frac{1}{m}\right)^{\frac{1}{d+4}}, \quad \sigma_{Silverman} = \left(\frac{4}{m(d+2)}\right)^{\frac{1}{d+4}}\]
 
 \subsection{Críticas al algoritmo}
 Podemos efectuar dos críticas principales al algoritmo, no estando reflejadas las siguientes consideraciones en el \textit{paper}
@@ -143,3 +173,4 @@ de sus autores:
  de \texttt{mvtnorm} para generar las instancias, para lo cual hubo que revisar el código de dicha función). El método
  de Choleski con pivotado sí que puede emplearse en el caso de matrices semidefinidas positivas no definidas positivas.
 \end{itemize}
+
