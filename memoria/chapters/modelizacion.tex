@@ -134,7 +134,7 @@ $h:X \rightarrow Y$ o con su conjunto asociado.
 \subsection{Minimización del riesgo empírico}
 
 \begin{definition}[Riesgo empírico]
-Definimos el riesgo empírico o error empírico de un clasificador $h$ como:
+Definimos el riesgo empírico o error empírico de un clasificador $h:X \rightarrow Y$ como:
 
 \[L_S(h) = \frac{|\{i\in {1,\ldots, m}: h(x_i) \neq y_i\}|}{m}\]
 
@@ -173,8 +173,8 @@ Definimos $ERM(S)$ como todas las hipótesis producidas por algoritmos que son E
 sobre el conjunto $S$. Cuando notemos $\mathcal{Q}(ERM(S))$ con $\mathcal{Q}$ un predicado sobre elementos 
 de $2^X$ nos refereriremos a que la propiedad se verifica para todos los elementos de $ERM(S)$.
 
-Trivialmente $L_S(f) = 0$ para cualquier $S \in (X \times Y)^m$ conjunto de entrenamiento, por la hipótesis de que existe una
-verdadera función de etiquetado. Esto implica que $A(S) = 0$ para $A$ un algoritmo ERM.
+Trivialmente $L_{\mathcal{D},f}(f) = 0$ y $L_S(f) = 0$ para cualquier $S \in (X \times Y)^m$ conjunto de entrenamiento.
+Esto último implica que $A(S) = 0$ para $A$ un algoritmo ERM.
 
 Aunque $A(S)$ minimice el error sobre el conjunto de entrenamiento, esto no significa que el error $L_{\mathcal{D},f} (A(S))$ 
 sea mínimo. Lo ilustramos en el siguiente ejemplo:
@@ -192,13 +192,13 @@ y_i & \textrm{si } \exists i\in \{1\ldots m\} : x=x_i\\
 0   & \textrm{si } \nexists i\in \{1\ldots m\} : x=x_i
 \end{array}\right.\]
 
-Este clasificador es un ERM, pero $\prob[h_S(x)] = 1/2$ y tiene el mismo nivel de acierto que el 
-clasificador idénticamente $1$. A este fenómeno lo denominamos \textit{overfitting}.
+No es difícil ver tomando $A(S) = h_S$, $A$ es un ERM. Pero se verifica $\prob[h_S \neq f] = 1/2$. $A(S)$ tiene el 
+mismo nivel de acierto que el clasificador idénticamente $1$. A este fenómeno lo denominamos \textit{overfitting}.
 \end{example}
 
 \begin{definition}[Overfitting]
 
- Decimos que un clasificador $h: X\rightarrow Y$ produce overfitting sobre el conjunto de entrenamiento 
+ Dado $h: X\rightarrow Y$ clasificador, diremos que produce overfitting sobre el conjunto de entrenamiento 
  $S$ si se cumple $L_S(h) << L_{\mathcal{D},f}(h)$.
 \end{definition}
 
@@ -221,31 +221,46 @@ sea mínimo, es decir:
 
 Se define $ERM_H$ y $ERM_H(S)$ de manera análoga a $ERM$ y $ERM(S)$.
 
-\begin{definition} \textbf{Hipótesis de factibilidad}
+Dada $H\in 2^X$, podemos tomar la clase de funciones iguales probabilístamente a $f$:
+$\Hclass = \{f\in 2^X: \exists h\in H \textrm{ verificando }\prob[f\neq h] = 0\}$.
 
-Diremos que $H$ verifica hipótesis de factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, si 
-$\exists {\bar{h}} \in H$ verificando $L_{D,f}(\bar{h}) = 0$.
+\begin{definition}[Hipótesis de factibilidad]
+
+Diremos que $H$ verifica hipótesis de factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre 
+$X$ si $f\in \Hclass$. 
 \end{definition}
+
+Por definición: $\prob[f\neq h]=0$ sii $L_{D,f}(h) = 0$ sii $L_{D,h}(f) = 0$. También es inmediato afirmar que
+$H \subseteq \Hclass$ para cualquier $\dist$.
 
 \begin{fact}
 Dada $H$ verificando factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, entonces siendo 
-${\bar{h}} \in H$ tal que $L_{D,f}(\bar{h}) = 0$, se verifica:
-\[\mprob \bigg[L_S(\bar{h}) = 0 \bigg] = 1\]
-
-En particular: $\mprob \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$
-\label{fact:ermh}
+${\bar{h}} \in H$ tal que $L_{D,f}(\bar{h}) = 0$, se verifica, con $A$ algoritmo arbitrario:
+\begin{enumerate}[i.]
+\item $\mprob \bigg[L_S(\bar{h}) = 0 \bigg] = 1$.
+\item $\mprob \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$.
+\item $L_{\dist,f}(A(S)) = L_{\dist,\bar{h}}(A(S))$ para un algoritmo $A$ arbitrario.
+\end{enumerate}
+\label{fact:factibilidad}
 \end{fact}
 
-  \begin{proof}
-  Fijamos $A$ un $ERM_H$. Sabemos que por hipótesis de factibilidad existe $\bar{h} \in H$ tal que
-  $L_{\mathcal{D},f}(\bar{h}) = \prob[\bar{h}\neq f] = 0$
+\begin{proof}
+Fijamos $A$ un $ERM_H$. Sabemos que por hipótesis de factibilidad existe $\bar{h} \in H$ tal que
+$L_{\mathcal{D},f}(\bar{h}) = \prob[\bar{h}\neq f] = 0$
 
-  Entonces: \[\mprob[L_S(\bar{h}) > 0] = \mprob
-  [\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \prob[h\neq f] = 0\]
+Entonces: \[\mprob[L_S(\bar{h}) > 0] = \mprob
+[\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \prob[h\neq f] = 0\]
 
-  Y como $[L_S(\bar{h}) = 0] \subseteq [L_S(A(S)) = 0]$ por ser $A(S) = \argmin_{h\in \mathcal{H}} L_S(h)$, deducimos:
-  \[1 = \mprob[L_S(\bar{h}) = 0] \le \mprob[L_S(A(S)) = 0] \le 1\]
-  \end{proof}
+Y como $[L_S(\bar{h}) = 0] \subseteq [L_S(A(S)) = 0]$ por ser $A(S) = \argmin_{h\in \mathcal{H}} L_S(h)$, deducimos:
+\[1 = \mprob[L_S(\bar{h}) = 0] \le \mprob[L_S(A(S)) = 0] \le 1\]
+
+Fijamos ahora $A$ un algoritmo. Veamos $L_{\dist,f}(A(S)) = L_{\dist,\bar{h}}(A(S))$:
+  \begin{align*}
+  \prob[A(S) \neq f] &= \prob\bigg([A(S) \neq f \wedge f=h] \cup[A(S) \neq f \wedge f\neq h]\bigg) = \\
+  &= \prob[A(S) \neq f \wedge f=h] + \prob[A(S) \neq f \wedge f\neq h] = \\
+  &= \prob[A(S) \neq h \wedge f=h] + 0 = \prob[A(S)\neq h]
+  \end{align*}
+\end{proof}
 
 Nótese que para definir $ERM$ y $ERM_H$ necesitamos poder tomar $\argmin$ siempre. Parece una condición fuerte,
 pero en nuestro caso, como $L_{S}(f)$ siendo $S$ de tamaño $m$ puede tomar finitos valores $0, \frac{1}{m}, \ldots, \frac{m-1}{m},1$,

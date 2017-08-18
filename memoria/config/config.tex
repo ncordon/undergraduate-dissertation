@@ -80,7 +80,8 @@
 \newtheorem*{corollary*}{Corolario}
 \newtheorem{definition}[thm]{Definición}
 \newtheorem*{definition*}{Definición}
-
+\newtheorem{charact}[thm]{Caracterización}
+\newtheorem*{charact*}{Caracterización}
 
 % *************************************************************************************************************
 % Comandos
@@ -141,6 +142,7 @@
 \newcommand{\nneg}{N^{-}}
 \newcommand{\spos}{S^{+}}
 \newcommand{\sneg}{S^{-}}
+\newcommand{\Hclass}{\lfloor H \rfloor_{\dist}}
 
 % *************************************************************************************************************
 % Pseudocódigo de algoritmos
@@ -201,7 +203,11 @@
 %\bibliographystyle{IEEEtran}
 \bibliographystyle{config/custom-dinat}
 \usepackage[sort&compress,square, comma, authoryear]{natbib}
-
+\def\R{\texttt{R} }
+\defcitealias{rlang}{\R}
+\defcitealias{rsmote}{\texttt{smotefamily}}
+\defcitealias{rrose}{\texttt{ROSE}}
+\defcitealias{scikit}{\texttt{scikit-learn}}
 
 % *************************************************************************************************************
 % Otras configuraciones

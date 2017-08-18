@@ -1,0 +1,49 @@
+En este capítulo presentamos el paquete de \R desarrollado: \texttt{imbalance}, así como las tecnologías y 
+metodologías empleadas en su desarrollo.
+
+\section{¿Qué es R? ¿Por qué R?}
+\citetalias{rlang} es un lenguaje pensado para estadística computacional y todo lo que ello implica: 
+manipulación de datos, visualización, variedad de modelos estadísticos, etc. \R puede ser considerado una 
+implementación renovada del antiguo lenguaje S, para estadística. Destaca sobretodo por su amplia gama de
+paquetes, disponible en repositorios como CRAN \footnote{\url{https://cran.r-project.org/}} o 
+Bioconductor \footnote{\url{https://www.bioconductor.org}}, este último orientado a bioinformática.
+
+\R destaca por su extensibilidad, su facilidad de uso, su extensa documentación (para que un paquete pueda ser
+publicado en CRAN tiene como requisito fundamental estar bien documentado), su fácil acceso a la documentación,
+y su heterogénea comunidad de usuarios, siendo empleado por estadistas, bioinformáticos, científicos
+de datos, informáticos o incluso investigadores asociados a medicina o biología.
+
+\R no debe ser visto sólo como un lenguaje, sino también como la propia implementación, puesto que lo que se
+asume como estándar del lenguaje es la implementación GNU-R (implementación libre), a pesar de existir otras 
+como \texttt{pqR} \footnote{\url{www.pqr-project.org}} (\textit{Pretty Quick R}) o 
+\texttt{FastR} \footnote{\url{https://github.com/allr/purdue-fastr}}. \R no es rápido, puesto que es un 
+lenguaje interpretado y el \textit{core} de GNU-R no tiene como objetivo fundamental hacerlo más rápido, sino
+proporcionar un lenguaje estable. 
+
+La filosofía principal de la programación en R es:
+
+\begin{itemize}
+  \item \textbf{Programación funcional}: los paquetes desarrollados sólo pueden exportar funciones (técnicamente
+  también ojetos \texttt{S3}, \texttt{S4} o \texttt{RC}, pero incluso los mismos trabajan con un tipo de orientación
+  a objetos peculiar, donde la función recibe al objeto, y este sólo se usa para resolver sobre qué método concreto
+  de los que concretan la función \textit{despacha} el objeto).
+  \item \textbf{Inmutabilidad}: cualquier función del lenguaje no puede modificar un objeto que existe en
+  un entorno o capa superior desde donde ha sido llamada la función (técnicamente puede hacerlo, pero con metaprogramación,
+  no con evaluación convencional).
+  \item \textbf{Vectorización}: \R incluye una serie de funcionales (funciones que toman otras como entrada) 
+  que vectorizan operaciones (hacen que se ejecuten de manera más eficiente, aprovechando la estructura del objeto)
+  sobre matrices, vectores, \textit{datasets}, listas, etc. Cuando puede usarse vectorización, es mucho más
+  rápida que los bucles convencionales.
+\end{itemize}
+
+Se ha escogido \R como herramienta para desarrollar el software dada su arraigado uso en estadística y en ciencia
+de datos. Aunque otros lenguajes como \texttt{Python} proporcionan herramientas tremendamente potentes para
+hacer ciencia de datos, \R está menos orientado a programadores puros a mi parecer y más a obtener resultados
+científicos a partir de lo programado. Se quería proporcionar una implementación de los algoritmos que 
+ofreciera un balance entre eficiencia y facilidad de uso, y \R parecía la mejor opción para alcanzar dicho
+objetivo. Además, la diseminación de los algoritmos principales (no únicamente en preprocesamiento de datos,
+sino en ciencia de datos en general) en varios paquetes (entre los de tratatamiento de datos no balanceados cabe
+citar a \citetalias{rsmote} o \citetalias{rrose} en \R) hace que no haya una fuerte dependencia de un 
+único paquete de software, como ocurriría con \citetalias{scikit} en \texttt{python}.
+
+  
