@@ -7,7 +7,11 @@
 \usepackage{float}
 \usepackage{wrapfig}
 \usepackage{amssymb}
-\usepackage{hyperref}
+\usepackage[colorlinks=true, 
+            pagebackref=true, 
+            citecolor=magenta, 
+            urlcolor=RoyalBlue, 
+            linktocpage=true]{hyperref}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{wasysym}
@@ -27,10 +31,11 @@
 \usepackage{mdframed} % Add easy frames to paragraphs
 \usepackage{lipsum} % For dummy text
 \usepackage{xparse} % Add support for \NewDocumentEnvironment
-\definecolor{graylight}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+\definecolor{lightgray}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+\definecolor{midgray}{gray}{0.40}
 
 \newmdenv[ % Define mdframe settings and store as leftrule
-  linecolor=graylight,
+  linecolor=lightgray,
   topline=false,
   bottomline=false,
   rightline=false,
@@ -203,11 +208,13 @@
 %\bibliographystyle{IEEEtran}
 \bibliographystyle{config/custom-dinat}
 \usepackage[sort&compress,square, comma, authoryear]{natbib}
+% Alias in monospace letter for R packages or other programming resources
 \def\R{\texttt{R} }
-\defcitealias{rlang}{\R}
+\defcitealias{rlang}{\texttt{R}}
 \defcitealias{rsmote}{\texttt{smotefamily}}
 \defcitealias{rrose}{\texttt{ROSE}}
 \defcitealias{scikit}{\texttt{scikit-learn}}
+\defcitealias{rdevtools}{\texttt{devtools}}
 
 % *************************************************************************************************************
 % Otras configuraciones

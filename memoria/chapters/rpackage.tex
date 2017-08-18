@@ -2,7 +2,7 @@ En este capítulo presentamos el paquete de \R desarrollado: \texttt{imbalance},
 metodologías empleadas en su desarrollo.
 
 \section{¿Qué es R? ¿Por qué R?}
-\citetalias{rlang} es un lenguaje pensado para estadística computacional y todo lo que ello implica: 
+\citepalias{rlang} es un lenguaje pensado para estadística computacional y todo lo que ello implica: 
 manipulación de datos, visualización, variedad de modelos estadísticos, etc. \R puede ser considerado una 
 implementación renovada del antiguo lenguaje S, para estadística. Destaca sobretodo por su amplia gama de
 paquetes, disponible en repositorios como CRAN \footnote{\url{https://cran.r-project.org/}} o 
@@ -43,7 +43,31 @@ científicos a partir de lo programado. Se quería proporcionar una implementaci
 ofreciera un balance entre eficiencia y facilidad de uso, y \R parecía la mejor opción para alcanzar dicho
 objetivo. Además, la diseminación de los algoritmos principales (no únicamente en preprocesamiento de datos,
 sino en ciencia de datos en general) en varios paquetes (entre los de tratatamiento de datos no balanceados cabe
-citar a \citetalias{rsmote} o \citetalias{rrose} en \R) hace que no haya una fuerte dependencia de un 
-único paquete de software, como ocurriría con \citetalias{scikit} en \texttt{python}.
+citar a \citepalias{rsmote} o \citepalias{rrose} en \R) hace que no haya una fuerte dependencia de un 
+único paquete de software, como ocurriría con \citepalias{scikit} en \texttt{python}.
+
+\section{Instalación}
+\subsection{Instalación de \R}
+La instalación de \R en distribuciones Linux basadas en \texttt{Debian} puede efectuarse de la forma:
+\begin{lstlisting}
+sudo apt install r-base rbase-dev
+\end{lstlisting}
+
+En distribuciones basadas en \texttt{Arch Linux}:
+\begin{lstlisting}
+sudo pacman -S r
+\end{lstlisting}
+
+También es recomendable, aunque no necesario, instalar \texttt{RStudio} \footnote{\url{https://www.rstudio.com}}
+
+
+La instalación del software se puede llevar a cabo usando el paquete \citepalias{rdevtools}:
+\begin{lstlisting}
+install.packages("devtools")
+devtools::install_github("ncordon/imbalance")
+\end{lstlisting}
+
+La instalación del paquete \texttt{devtools} (primera línea) no es necesaria si ya se tiene instalado.
+
 
   
