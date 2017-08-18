@@ -1,9 +1,12 @@
-\section{Motivación}
+En este capítulo proporcionamos una introducción y una motivación al \textit{framework} teórico que usaremos
+posteriormente. Daremos definiciones básicas como dominio, conjunto de etiquetas, error empírico, etc. que
+usaremos asiduamente en los capítulos posteriores.
 
+\section{Motivación}
 El objetivo del aprendizaje automático es convertir datos en conocimiento a través de un razonamiento inductivo, de manera que
 proporcionándole datos a una máquina seamos capaces de extraer un conocimiento (una generalización de los datos que nos permita
-inferir información a partir de nuevos datos). Surge la pregunta de por qué es necesario el aprendizaje automático o 
-\textit{machine learning}, si la estadística también se encarga de obtener conocimiento a partir de unos datos.
+inferir información). Surge la pregunta de por qué es necesario el aprendizaje automático o \textit{machine learning}, si la
+estadística también se encarga de obtener conocimiento a partir de unos datos.
 
 \subsection{¿Por qué necesitamos \textit{machine learning}?}
 \begin{enumerate}[i]
@@ -15,7 +18,7 @@ inferir información a partir de nuevos datos). Surge la pregunta de por qué es
  en el segundo, se hace necsario el uso de una máquina para poder extraer conocimiento de todos los datos.
  
  \item \textbf{Tareas que requieren adaptatividad}: si cambian los datos de entrada, necesitamos que los algoritmos se readapten
- a ellos, y no tengamos un conocimiento rígido, sino que pueda cambiar/mejorar en función de la entrada.
+ a ellos, y no tengamos un conocimiento rígido, sino que pueda variar/mejorar en función de la entrada.
 \end{enumerate}
 
 \subsection{Áreas relacionadas con el aprendizaje}
@@ -30,30 +33,31 @@ Entre las áreas relacionadas con el aprendizaje automático, cabe mencionar:
  determinada sobre los datos). La principal diferencia del aprendizaje automático respecto a la inferencia es que la inferencia
  se encarga de comprobar la validez de las hipótesis que propone el estadista, mientras que el algoritmo de 
  \textit{machine learning} genera hipótesis para unos datos determinados, con unas ciertas condiciones de aproximación y error.
- \item \textbf{Álgebra lineal}
+ \item \textbf{Álgebra lineal}: algoritmos como los SVM (máquinas de soporte vectorial) basados en álgebra lineal siguen
+ siendo hoy día muy importantes, a pesar de haber sido desarrollados en los años 60.
  \item \textbf{Optimización de algoritmos}
 \end{enumerate}
 
 \subsection{Ejemplo práctico}\label{sec:first-ex}
 Pensemos en un ejemplo: tenemos clientes de un banco que quieren solicitar un préstamo, y a todos se les categoriza
 el tamaño del préstamo que quieren solicitar(cómo de grande es su importe) y su nivel de ingresos. Estas variables se miden 
-en una escala de $0$ a $1$ donde $1$ es el nivel máximo. Queremos etiquetar a cada cliente como $1$:conceder préstamo o 
-$0$:no conceder préstamo.
+en una escala de $0$ a $1$ donde $1$ es el nivel máximo. Queremos etiquetar a cada cliente como $1\equiv$ conceder préstamo o 
+$0\equiv$ no concederlo.
 
 Dado un histórico de $m\in \mathbb{N}$ clientes a los que se les concedieron y devolvieron o no préstamos, tenemos una tupla 
-$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = ((x_i)_1, (x_i)_2) \in [0,1]^2, y_i \in \{0,1\}$. Asimismo $(x_i)_1$ representa el 
-tamaño del préstamo solicitado y $(x_i)_2$ representa el nivel ingresos mensuales. Tenemos a los clientes clasificados en 
+$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = (x_i^{(1)}, x_i^{(2)}) \in [0,1]^2, y_i \in \{0,1\}$. Asimismo $x_i^{(1)}$ representa el 
+tamaño del préstamo solicitado y $x_i^{(2)}$ representa el nivel ingresos mensuales. Tenemos a los clientes clasificados en 
 función de si devolvieron los préstamos o no.
 
 Queremos encontrar una función que ofrezca una predicción sobre cualquier cliente, para minimizar posibles pérdidas del banco, es
 decir, buscamos una $f:[0,1]^2 \rightarrow \{0,1\}$ que llamaremos predicción.
 
 Asumimos que los datos de los clientes de que disponemos no van a tener una distribución determinada y
-van a ser idéntica e independientemente distribuidos (i.i.d.). El histórico siempre va a crecer, y no sabemos cómo va a hacerlo, queriendo aprovechar
-al máximo la información del mismo.
+van a ser idéntica e independientemente distribuidos (i.i.d.). El histórico siempre va a crecer, y no sabemos cómo va a hacerlo, 
+queriendo aprovechar al máximo la información del mismo.
 
 También asumiremos que tenemos una clase de predicciones $H \subseteq \{0,1\}^{[0,1]^2}$, de entre las que existe
-una óptima. Podríamos limitar la clase de predicciones sobre la que buscamos como subrectángulos de $[0,1]^2$ por ejemplo, 
+una óptima. Por ejemplo, podríamos limitar la clase de predicciones sobre la que buscamos como subrectángulos de $[0,1]^2$, 
 esto es, funciones:
 
 \[h_{a,b,c,d} = \mathds{1}_{[a,b]\times[c,d]}, \qquad [a,b]\times [c,d] \subseteq [0,1]^2\]
@@ -70,7 +74,7 @@ Damos unas notaciones/definiciones básicas que utilizaremos de aquí en adelant
 \begin{itemize}
 \item \textbf{Dominio}: $X$. Llamamos \textbf{instancia} a $x\in X$
 
-\item \textbf{Conjunto de etiquetas}: $Y$ consideramos $\{0,1\}$, lo que nos restringe de momento al paradigma de clasificación binaria. 
+\item \textbf{Conjunto de etiquetas}: $Y$. Consideramos $Y = \{0,1\}$, lo que nos restringe de momento al paradigma de clasificación binaria. 
 En ocasiones también usaremos $Y = \{-1,1\}$ para las etiquetas. Al $1$ se le llama clase positiva, y al $0$ o $-1$ clase negativa.
 
 \item \textbf{Verdadero etiquetado}: \sloppy Asumimos la existencia de una función ${f: X \rightarrow Y}$ 
@@ -79,15 +83,16 @@ que proporciona la verdadera etiqueta de todas las instancias.
 \item \textbf{Generación de instancias}: \fussy Se tiene $x\sim \mathcal{D} = (\Sigma, \prob)$. La distribución de probabilidad nos da 
 información sobre la probabilidad de extraer cada posible instancia desde  $x \in X$. 
 
-\item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1) \ldots (x_m,y_m)) \in (X \times Y)^m$ 
+\item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1), \ldots, (x_m,y_m)) \in (X \times Y)^m$ 
 Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. Notaremos 
-$S_x = (x_1, \ldots x_m)$
+$S_x = (x_1, \ldots x_m)$.
 
 De momento asumiremos que las etiquetas del conjunto de entrenamiento se corresponden con el verdadero etiquetado: 
 $y_i = f(x_i)$, por lo que no podemos tener una instancia con etiquetas diferentes.
 
 La elección de $S_x$ es idéntica e independientemente distribuida, esto es $x_i \sim \mathcal{D}$ para todo $i=1, \ldots, m$.
-Lo notamos $S_x \sim \mathcal{D}^m$, o $S \sim \mathcal{D}^m$, por abuso de notación.
+Lo notamos $S_x \sim \mathcal{D}^m$, o $S \sim \mathcal{D}^m$, por abuso de notación. Por lo visto en el capítulo
+anterior, en \ref{sec:prob-space}, dicha probabilidad existe.
 
 \item \textbf{Hipótesis/clasificador/predicción}: cada posible aplicación perteneciente a 
 $\{h, h:X \rightarrow Y\} := 2^{X}$. 
@@ -111,113 +116,110 @@ el conjunto de entrenamiento), \emph{batch} (recibimos todo el conjunto de entre
 contraposición al aprendizaje por lotes) y pasivo (el algoritmo no tiene interacción con el usuario).
 
 \subsection{Relación entre hipótesis y conjuntos}
+\label{biyeccion-canonica} 
 En clasificación binaria, existe una biyección canónica entre la clase de hipótesis y el conjunto potencia de $X$, donde
 a cada hipótesis se le asigna su clase positiva:
 
-\begin{equation}
+\begin{equation*}
  \begin{array}{rcl} 
   \{h, h:X \rightarrow Y\} & \longrightarrow & \mathcal{P}(X) \\
   h & \longmapsto & X_h := \{x\in X: h(x) = 1\}
  \end{array}
- \label{biyeccion-canonica} 
-\end{equation}
+\end{equation*}
 
-Es biyección claramente, lo que justifica que identifiquemos $\{h, h:X \rightarrow Y\}$ con $2^X$, donde $2^X$ suele ser una notación
-empleada para referirse a $\mathcal{P}(X)$. Esta biyección nos permitirá trabajar refiriéndonos a $h:X \rightarrow Y$ 
-como hipótesis o conjunto.
+Esta relación es biyección claramente, lo que justifica que identifiquemos $\{h, h:X \rightarrow Y\}$ con $2^X$, donde $2^X$ 
+suele ser una notación empleada para referirse a $\mathcal{P}(X)$. Esto nos permite trabajar con una aplicación
+$h:X \rightarrow Y$ o con su conjunto asociado.
 
 \subsection{Minimización del riesgo empírico}
 
-\begin{definition} \textbf{Riesgo empírico}
+\begin{definition}[Riesgo empírico]
+Definimos el riesgo empírico o error empírico de un clasificador $h$ como:
 
-Definimos el riesgo empírico o error empírico como:
-
-\[L_S(h) = \frac{|i\in {1,\ldots, m}: h(x_i) \neq y_i|}{m}\]
+\[L_S(h) = \frac{|\{i\in {1,\ldots, m}: h(x_i) \neq y_i\}|}{m}\]
 
 \end{definition}
 
 Es decir, es el error del clasificador $h$ sobre el conjunto de entrenamiento $S$. 
 
 \begin{fact}
-Sea $H\subseteq 2^X$. Sea $\mathcal{D}$ distribución sobre $\mathcal{X}$. Sea $f \in mathcal{H}$ fija. Entonces para
+Sea $H\subseteq 2^X$. Sea $\mathcal{D}$ distribución sobre $\mathcal{X}$. Sea $f \in H$ fija. Entonces para
 cualquier $h\in H$:
-\[\mathbb{E}_{S\sim \mathcal{D}} [L_S(h)] = L_{\dist,f}(h)\]
+\[\mexpect(L_S(h)) = L_{\dist,f}(h)\]
 
 \end{fact}
 
 \begin{proof}
   Llamamos $p= \prob [f\neq h]$
 
+  Nótese que $h$ puede cometer como mucho $m$ errores.
+  
   \begin{align*}
-  \expect_{S\sim \dist} [L_S(h)] = \sum_{k=0}^m \frac{k}{m} \binom{m}{k} P^k(1-p)^{m-k} & = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} =\\
-  = \sum_{k=1}^m \binom{m-1}{k-1} p^k(1-p)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k+1}(1-p)^{m-1-k} = \\
-  = p\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k}(1-p)^{m-1-k} = p(1+(1-p))^{m-1} = p
+  & \mexpect(L_S(h)) = \sum_{k=0}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} =\\
+  & = \sum_{k=1}^m \binom{m-1}{k-1} p^k(1-p)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k+1}(1-p)^{m-1-k} = \\
+  & = p\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k}(1-p)^{m-1-k} = p(1+(1-p))^{m-1} = p
   \end{align*}
 \end{proof}
 
 
-\begin{definition} \textbf{Minimizador del riesgo empírico, ERM}
-
+\begin{definition}[Minimizador del riesgo empírico, ERM]
 Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un $ERM$ 
-(\emph{Empirical Risk Minimizer}) si busca una hipótesis cuyo error empírico sea mínimo:
+(\textit{Empirical Risk Minimizer}) si busca una hipótesis cuyo error empírico sea mínimo:
 
 \[A(S) = \argmin_{h\in 2^X} L_S(h)\]
 \end{definition}
 
-Cuando notemos $ERM(S)$ nos refereriremos a una propiedad que se verifica para toda la clase de algoritmos que son ERM.
+Definimos $ERM(S)$ como todas las hipótesis producidas por algoritmos que son ERM
+sobre el conjunto $S$. Cuando notemos $\mathcal{Q}(ERM(S))$ con $\mathcal{Q}$ un predicado sobre elementos 
+de $2^X$ nos refereriremos a que la propiedad se verifica para todos los elementos de $ERM(S)$.
 
 Trivialmente $L_S(f) = 0$ para cualquier $S \in (X \times Y)^m$ conjunto de entrenamiento, por la hipótesis de que existe una
 verdadera función de etiquetado. Esto implica que $A(S) = 0$ para $A$ un algoritmo ERM.
 
 Aunque $A(S)$ minimice el error sobre el conjunto de entrenamiento, esto no significa que el error $L_{\mathcal{D},f} (A(S))$ 
-sea mínimo. Pensemos en el siguiente ejemplo:
+sea mínimo. Lo ilustramos en el siguiente ejemplo:
 
 \begin{example}
-Sea $X = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[0,2]\subset \mathbb{R}$, y la siguiente función:
+Sea $X = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[0,2]\subset \mathbb{R}$, y la función
+$f= \mathds{1}_{[0,1]}$.
 
-\[f(x) = \left\{\begin{array}{lcl}
-1 && x\in [0,1]\\
-0 && x\in \mathbb{R}\setminus [0,1]
+
+Sea $S = ((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ sin elementos repetidos 
+y el clasificador:
+
+\[h_S(x) = \left\{\begin{array}{ll}
+y_i & \textrm{si } \exists i\in \{1\ldots m\} : x=x_i\\
+0   & \textrm{si } \nexists i\in \{1\ldots m\} : x=x_i
 \end{array}\right.\]
 
-
-Sea $S = ((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ sin elementos repetidos y el clasificador:
-
-\[h_S(x) = \left\{\begin{array}{lcl}
-y_i && \exists i\in \{1\ldots m\} : x=x_i\\
-0 && \nexists i\in \{1\ldots m\} : x=x_i
-\end{array}\right.\]
-
-Este clasificador es un ERM, pero $\prob[h_S(x)] = 1/2$, es decir, tiene el mismo nivel de acierto que el 
-clasificador idénticamente 1. A este fenómeno lo denominamos \textbf{overfitting}.
+Este clasificador es un ERM, pero $\prob[h_S(x)] = 1/2$ y tiene el mismo nivel de acierto que el 
+clasificador idénticamente $1$. A este fenómeno lo denominamos \textit{overfitting}.
 \end{example}
 
-\begin{definition} \textbf{Overfitting}
+\begin{definition}[Overfitting]
 
  Decimos que un clasificador $h: X\rightarrow Y$ produce overfitting sobre el conjunto de entrenamiento 
- $S$ si $L_S(h) << L_{\mathcal{D},f}(h)$.
+ $S$ si se cumple $L_S(h) << L_{\mathcal{D},f}(h)$.
 \end{definition}
 
-Necesitamos incorporar por tanto \textbf{conocimiento previo} al problema, de manera que revisitamos la definición de riesgo
+Necesitamos incorporar, por tanto, \textbf{conocimiento previo} al problema, de manera que revisitamos la definición de riesgo
 empírico.
 
 \subsection{ERM con sesgo inductivo}
 Se intenta corregir el riesgo de producir \emph{overfitting} restringiendo el espacio de búsqueda, esto es, la clase de 
 hipótesis $H \subseteq 2^X$ desde la que el algoritmo puede escoger un $h: X\rightarrow Y$. Llamamos a esto 
-\emph{sesgo inductivo}, puesto que se asume una determinada clase de funciones $H$ en función de las 
+\emph{sesgo inductivo}, puesto que se asume una determinada clase de funciones en función de las 
 características del problema y del conocimiento previo que tenemos del mismo.
 
-\begin{definition} \textbf{ERM con sesgo inductivo}
-
+\begin{definition}[ERM con sesgo inductivo]
 Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un $ERM$ con sesgo 
-inductivo hacia $H$ y lo notamos $ERM_H$, si busca una hipótesis en $H$ cuyo error empírico 
+inductivo hacia $H$ y lo abreviamos $ERM_H$, si busca una hipótesis en $H$ cuyo error empírico 
 sea mínimo, es decir:
 
 \[A(S) = \argmin_{h\in H} L_S(h)\]
 \end{definition}
 
-Cuando notemos $ERM_H(S)$ nos refereriremos a una propiedad que se verifica para toda la clase de algoritmos que 
-son $ERM_H$.
+Se define $ERM_H$ y $ERM_H(S)$ de manera análoga a $ERM$ y $ERM(S)$.
 
 \begin{definition} \textbf{Hipótesis de factibilidad}
 
@@ -228,7 +230,6 @@ $\exists {\bar{h}} \in H$ verificando $L_{D,f}(\bar{h}) = 0$.
 \begin{fact}
 Dada $H$ verificando factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, entonces siendo 
 ${\bar{h}} \in H$ tal que $L_{D,f}(\bar{h}) = 0$, se verifica:
-
 \[\mprob \bigg[L_S(\bar{h}) = 0 \bigg] = 1\]
 
 En particular: $\mprob \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$
@@ -236,7 +237,7 @@ En particular: $\mprob \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$
 \end{fact}
 
   \begin{proof}
-  Sea $A$ un $ERM_H$, y además sabemos que por hipótesis de factibilidad existe $\bar{h} \in H$ tal que
+  Fijamos $A$ un $ERM_H$. Sabemos que por hipótesis de factibilidad existe $\bar{h} \in H$ tal que
   $L_{\mathcal{D},f}(\bar{h}) = \prob[\bar{h}\neq f] = 0$
 
   Entonces: \[\mprob[L_S(\bar{h}) > 0] = \mprob
@@ -246,7 +247,7 @@ En particular: $\mprob \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$
   \[1 = \mprob[L_S(\bar{h}) = 0] \le \mprob[L_S(A(S)) = 0] \le 1\]
   \end{proof}
 
-El valor $L_{\mathcal{D},f}(ERM_H(S))$ dependerá por tanto del conjunto de entrenamiento $S$, y la elección del
-mismo está sometida al azar. 
-
-%Además, necesitamos definir cómo de buena será la predicción.
+Nótese que para definir $ERM$ y $ERM_H$ necesitamos poder tomar $\argmin$ siempre. Parece una condición fuerte,
+pero en nuestro caso, como $L_{S}(f)$ siendo $S$ de tamaño $m$ puede tomar finitos valores $0, \frac{1}{m}, \ldots, \frac{m-1}{m},1$,
+el mínimo se alcanza. El valor $L_{\mathcal{D},f}(ERM_H(S))$ depende por tanto del conjunto de entrenamiento $S$, y la elección del
+mismo está sometida al azar. Ahí entrará nuestra definición de aprendizaje PAC, midiendo conjuntos probabilísticamente.

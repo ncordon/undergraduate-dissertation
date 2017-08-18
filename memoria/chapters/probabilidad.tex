@@ -360,7 +360,7 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  Si existiese $\bar{\mu}$ debería verificar, por monotonía, $\bar{\mu}(T) \le \sum_{n=1}^{+\infty} \bar{\mu}(A_n)$, 
  donde $T \subseteq \bigcup_{n\ge 1} A_n$. Esto nos da una idea de la prueba.
  
- Por el teorema \ref{th:ext-semitoring}, podemos considerar $\mu$ como la extensión a $R(S)=R$.
+ Por el teorema \ref{th:ext-semitoring}, podemos considerar $\mu$ como la extensión al anillo $R=(S)$.
  
  Definimos, para cualquier $T\in 2^X$:
  
@@ -379,33 +379,31 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  
  Sean ahora $A_n \subseteq X$, con $n\in \mathbb{N}$.
  
- Si existe $A_k$ tal que $\mu^\ast(A_k) = +\infty$, entonces $\mu^\ast(\cup_{n\ge} A_n) \ge \mu^\ast(A_k) = +\infty$, 
+ Si existe $A_k$ tal que $\mu^\ast(A_k) = +\infty$, entonces $\mu^\ast\left(\bigcup_{n\ge 1} A_n\right) \ge \mu^\ast(A_k) = +\infty$, 
  por monotonía, y por otro lado $\sum_{n=1}^{+\infty} \mu^\ast(A_n) \ge \mu^\ast(A_k) = +\infty$. Es decir:
- \[\mu^\ast(\cup_{n\ge} A_n) = \sum_{n=1}^{+\infty} \mu^\ast(A_n) = +\infty\]
+ \[\mu^\ast\left(\bigcup_{n\ge 1} A_n\right) = \sum_{n=1}^{+\infty} \mu^\ast(A_n) = +\infty\]
  
- Caso de que para todo $n$ se tenga $\mu^\ast(A_n) < +\infty$, fijamos $\varepsilon > 0$
+ Caso de que para todo $n$ se tenga $\mu^\ast(A_n) < +\infty$, fijamos $\varepsilon > 0$.
+ Dado $n\in \mathbb{N}$, por ser $\mu^\ast(A_n)$ un ínfimo, debe existir $\{A_p^n\}_{p\ge 1}\subseteq R$
+ verificando $\cup_{p\ge 1} A_p^n \supseteq A_n$ y $\sum_{p=1}^{+\infty} \mu^\ast(A_p^n) \le \mu^\ast(A_n) + \frac{\varepsilon}{2^n}$.
  
- Dado$n\in \mathbb{N}$, por ser $\mu^\ast(A_n)$ un ínfimo, deben existir $\{A_p^n\}_{p\ge 1}$ con 
- $A_p^n \in R$ para cualquier $p\in\mathbb{N}$ verificando $\cup_{p\ge 1} A_p^n \supseteq A_n$ y
- $\sum_{p=1}^{+\infty} \mu^\ast(A_p^n) \le \mu^\ast(A_n) + \frac{\varepsilon}{2^n}$
- 
- Es decir, tenemos $\bigcup_{n\ge 1} A_n \subseteq \bigcup_{n\ge 1} \cup_{p\ge 1} A_p^n$ unión numerable
+ Así, tenemos $\bigcup_{n\ge 1} A_n \subseteq \bigcup_{n\ge 1} \cup_{p\ge 1} A_p^n$ unión numerable
  de conjuntos $A_p^n$ de $S$, luego:
  
  \[\mu^\ast \left(\bigcup_{n\ge 1} A_n \right) \le \sum_{n=1}^{+\infty} \sum_{p=1}^{+\infty} \mu^\ast(A_p^n)
    \le \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \sum_{n=1}^{+\infty}\frac{\varepsilon}{2^n} = 
    \sum_{n=1}^{+\infty}\mu^\ast(A_n) + \varepsilon\]
  
- Pero $\varepsilon > 0$ era arbitrario, es decir: 
+ Pero como $\varepsilon > 0$ era arbitrario: 
  \[\mu^\ast \left(\bigcup_{n\ge 1} A_n \right) \le \sum_{n=1}^{+\infty}\mu^\ast(A_n)\]
  
- Es decir $\mu^\ast$ es medida exterior en $X$, y podemos tomar $\widetilde{\mu}$ medida sobre $\Sigma(\mu^\ast)$ por
- el teorema \ref{th:outer-to-measure}.
+ Esto prueba la subaditividad, por lo que $\mu^\ast$ es medida exterior en $X$, y podemos tomar $\widetilde{\mu}$ medida 
+ sobre $\Sigma(\mu^\ast)$ por el teorema \ref{th:outer-to-measure}.
  
- Falta comprobar que $\bar{\mu} = \widetilde{\mu}_{|\Sigma(S)}$ es medida sobre $\Sigma(S)$. Basta ver que $S\in \Sigma(\mu^\ast)$,
- y tendríamos $\Sigma(S) \subseteq \Sigma(\mu^\ast)$.
+ Falta comprobar que $\bar{\mu} = \widetilde{\mu}_{|\Sigma(S)}$ es medida sobre $\Sigma(S)$. Basta ver que 
+ $S\subseteq \Sigma(\mu^\ast)$, y tendríamos $\Sigma(S) \subseteq \Sigma(\mu^\ast)$.
  
- Dado $A\in R$, para todo $T\in 2^X$ arbitrario tenemos:
+ Fiajmos $A\in R$. Se cumple que para todo $T\in 2^X$ arbitrario, por subaditividad:
 
  \[\mu^\ast(T) \le \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c)\]
  
@@ -415,20 +413,21 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  
  \begin{align*}
  \mu^\ast(T) &\le \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c) \le \\ 
-             &\le \sum_{n=1}^{+\infty}\mu(T_n \cap A) + \sum_{n=1}^{+\infty} \mu(T_n \cap A^c) = 
-               \sum_{n=1}^{+\infty} \mu(T_n)  
+             &\le \sum_{n=1}^{+\infty}\mu(T_n \cap A) + \sum_{n=1}^{+\infty} \mu(T_n \cap A^c) = \\
+             &= \sum_{n=1}^{+\infty}\mu(T_n \cap A) + \mu(T_n \cap A^c) = \sum_{n=1}^{+\infty} \mu(T_n)  
  \end{align*}
  
  Donde fijado $\varepsilon > 0$ podemos buscar $T_n \in R$ verificando $\sum_{n=1}^{+\infty} \mu(T_n) \le \mu^\ast(T) + \varepsilon$, 
  por estar definido $\mu^\ast$ como un ínfimo.
  
- Luego $\mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c)$ y $A\in \Sigma(\mu^\ast)$
+ Por ser $\varepsilon > 0$ arbitrario, hemos llegado a: 
+ \[\mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c) \Rightarrow A\in \Sigma(\mu^\ast)\]
 \end{proof}
 
 
 
 \section{Espacio probabilístico}
-
+\label{sec:prob-space}
 \begin{definition}[Espacio medible]
  Sea $X$ un conjunto, $\Sigma$ una $\sigma$-álgebra sobre $X$. A la tupla $(X,\Sigma)$ la llamamos
  espacio medible. A los elementos de $\Sigma$ los llamamos conjuntos $\Sigma$-medibles.
@@ -436,13 +435,13 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
 
 
 \begin{definition}[Espacio de medida]
- Sea $(X, \Sigma)$ espacio medible, y $\mu: \Sigma \rightarrow [0,+\infty]$ medida. A la tupla $(X, \Sigma, P)$ 
+ Sea $(X, \Sigma)$ espacio medible, y $\mu: \Sigma \rightarrow [0,+\infty]$ medida. A la tupla $(X, \Sigma, \mu)$ 
  la llamamos espacio de medida.
 \end{definition}
 
 
-\begin{definition}[Espacio probabilístico]
- Sea $(X, \Sigma, P)$ espacio de medida. Entonces lo llamamos espacio de probabilidad si $P(\Sigma)\subseteq [0,1]$
+\begin{definition}[Espacio de probabilidad]
+ Sea $(X, \Sigma, P)$ espacio de medida. Entonces lo llamamos espacio de probabilidad sii $P(\Sigma)\subseteq [0,1]$.
 \end{definition}
 
 
@@ -451,27 +450,30 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  Si $\dist$ es distribución sobre $X$, lo notamos $x\sim \mathcal{D}$
 \end{definition}
 
-\begin{definition}[Espacio probabilístico producto]
- Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios probabilísticos. Entonces decimos que:
+\begin{definition}[Espacio de probabilidad producto]
+ Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios de probabilidad. Entonces decimos que:
  \[(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, P)\] es
- espacio probalístico producto si verifica:
+ espacio de probabilidad producto asociado a $\Sigma_i$ y a $P_i$, $i=1, \ldots n$, si verifica:
  
  \begin{enumerate}[i]
   \item $\Sigma_1 \otimes \ldots \otimes \Sigma_n = \Sigma\left(\{A_1 \times \ldots \times A_n: A_i\in \Sigma_i\}\right)$
   \item $P(A_1 \times \ldots \times A_n) = \prod_{i=1}^n P_i(A_i)$, con $A_i\in \Sigma_i$ arbitrarios.
  \end{enumerate}
+ 
+ $\mathcal{D}_1 \otimes \ldots \otimes \mathcal{D}_n := (\Sigma_1 \otimes \ldots \otimes \Sigma_n, P)$ recibe 
+ el nombre de distribución de probabilidad producto.
 \end{definition}
 
-El siguiente teorema nos dice que siempre podemos definir un espacio probabilístico producto.
+El siguiente teorema nos dice que siempre podemos definir un espacio de probabilidad producto.
 
 \begin{theorem}
- Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios probabilísticos. Entonces existe un espacio probabilístico
- producto \[(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, P)\].
+ Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots n$ espacios de probabilidad. Entonces existe un espacio probabilidad
+ producto.
+ \[(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, P)\]
 \end{theorem}
-
 \begin{proof}
  Sea $S$ la clase de rectángulos de la forma $A_1 \times A_2 \times \ldots \times A_n$ con $A_i$ conjunto 
- $\Sigma_i$-medible, un semianillo. Lo probamos para $n=2$ en la sección \ref{ex:rectangulos} (por inducción es 
+ $\Sigma_i$-medible. $S$ es semianillo. Lo probamos para $n=2$ en la sección \ref{ex:rectangulos} (por inducción es 
  extensible a $n$ arbitrario). Haremos la demostración para $n=2$. Una obvia inducción en $n$ nos da el 
  resultado prara $n$ mayor que 2.
  
@@ -480,7 +482,6 @@ El siguiente teorema nos dice que siempre podemos definir un espacio probabilís
  
  Falta comprobar que dados $A_n \times B_n \in S$ verificando $\sum_{n=1}^{+\infty} A_n\times B_n \in S$,
  es decir, $\sum_{n=1}^{+\infty} A_n\times B_n = A\times B$, con $A \in \Sigma_1$, $B \in \Sigma_2$, entonces
- 
  \[P(A\times B) = \sum_{n=1}^{+\infty} P_1(A_n) P_2(B_n)\]
  
  Para cualquier $(x,y) \in X_1 \times X_2$, se tiene:
@@ -488,21 +489,28 @@ El siguiente teorema nos dice que siempre podemos definir un espacio probabilís
  \[\mathds{1}_{A\times B}(x,y) = \mathds{1}_{A}(x)\cdot \mathds{1}_B(y) = \sum_{n=1}^{+\infty} 
  \mathds{1}_{A_n\times B_n}(x,y) = \sum_{n=1}^{+\infty} \mathds{1}_{A_n}(x) \mathds{1}_{B_n}(y) \] 
  
- Fijado $y\in X_2$, como $\left\{\sum_{i=1}^{n} \mathds{1}_{A_i}\mathds{1}_{B_i}(y)\right\}_n \nearrow \mathds{1}_A \mathds{1}_B(y)$ 
- puntualmente, por el teorema de la convergencia monótona, integrando sobre la $x$ en $X_1$:
- 
+ Fijado $y\in X_2$ $\left\{\sum_{i=1}^{n} \mathds{1}_{A_i}\mathds{1}_{B_i}(y)\right\}_n \nearrow \mathds{1}_A \mathds{1}_B(y)$ 
+ puntualmente en $X_1$. Por el teorema de la convergencia monótona, integrando en $X_1$:
  \[\sum_{n=1}^{+\infty} P_1(A_n)\mathds{1}_{B_n}(y) = P_1(A) \mathds{1}_B(y)\]
  
- Integrando ahora sobre la $y$ en $X_2$ llegamos a:
- 
+ Como $\left\{\sum_{i=1}^{n} P_1(A_i)\mathds{1}_{B_i}\right\} \nearrow P_1(A) \mathds{1}_B$ puntualmente en $y\in X_2$, 
+ integrando ahora en $X_2$ y aplicando teorema de convergencia monótona de nuevo, llegamos a:
  \[\sum_{n=1}^{+\infty} P_1(A_n) P_2(B_n) = P(A) P(B)\]
  
  En virtud del teorema \ref{th:caratheodory} de extensión de Caratheodory, como tenemos $S$ semianillo en 
- $X_1\times X_2$ y $P$ una medida en $S$, existe el espacio probabilístico producto.
+ $X_1\times X_2$ y $P$ una medida en $S$, existe el espacio de probabilidad producto.
 \end{proof}
 
+Se puede probar que el espacio probabilístico producto sólo hay uno, pero no usaremos este hecho. Nótese que cuando 
+tengamos un espacio de probabilidad $(\Sigma, X)$ y consideramos que podemos extraer $m$ muestras del mismo
+de manera independiente, estaremos sólo midiendo conjunto $A=A_1 \times A_2 \times \ldots \times A_m$, con $A_i \in\Sigma_i$.
+Para estos sucesos siempre tendremos $\overline{P}(A) = \prod_{i=1}^m P(A_i)$ sea cual sea la distribución producto
+$(\underset{1)}{\Sigma} \otimes \ldots \otimes \underset{m)}{\Sigma}, \overline{P})$, pero conviene ser consciente de que
+de que es única.
+
 \section{Desigualdades de concentración}
-Sea $(X,\Sigma,P)$ un espacio probabilístico en lo que sigue.
+Para esta sección supondremos conocimiento previo de variables aleatorias. Sea $(X,\Sigma,P)$ un espacio 
+de probabilidad en lo que sigue.
 
 \begin{lemma}[Desigualdad de Markov]
 Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
@@ -515,13 +523,13 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  Se verifica $a\mathds{1}_{[W\ge a]} \le W$. Tomando esperanzas en ambos lados (ya que la esperanza es no 
  decreciente):
  
- \[aP[W\ge a] = a\expect(\mathds{1}_{[W\ge a]}) \le \expect(a\mathds{1}_{[W\ge a]}) \le \expect(W)\]
+ \[aP[W\ge a] = a\expect(\mathds{1}_{[W\ge a]}) = \expect(a\mathds{1}_{[W\ge a]}) \le \expect(W)\]
  
- de donde se deduce el resultado, dividiendo ambos miembros por $a$.
+ de donde se deduce el resultado, dividiendo por $a$.
 \end{proof}
 
 \begin{lemma}[Lema de Hoeffding]
- Sea $W$ una variable aleatoria con $a\le W \le b$ con $\expect(W) = 0$. Entonces para todo $\lambda > 0$:
+ Sea $W$ una variable aleatoria con $a\le W \le b$ y $\expect(W) = 0$. Entonces para todo $\lambda > 0$:
  
  \[\expect(e^{\lambda W}) \le e^{\frac{\lambda^2(b-a)^2}{8}}\]
  
@@ -536,7 +544,8 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  Con $a=0$ o $b=0$, tendríamos así $\expect(e^{\lambda W}) = \expect(1) = 1 = e^0 \le e^{\frac{\lambda^2 (b-a)^2}{8}}$, 
  por ser la exponencial monótona. 
  
- Supongamos pues en lo que sigue $a, b\neq 0$ (por tanto deberá ser $a < b$)
+ Supongamos pues en lo que sigue $a, b\neq 0$. Por tanto deberá ser $a < 0 < b$ por un argumento similar al
+ primer caso.
  
  Por convexidad de $x\mapsto e^{\lambda x}$ con $a\le x \le b$, tenemos que:
  
@@ -555,7 +564,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  Basta por tanto probar que $e^{\varphi(t)} \le e^{t^2/8}$
  
  Se tiene $1-s+se^t = 1 + \frac{a}{b-a} - \frac{a}{b-a} e^t = \frac{b}{a-b} - \frac{a}{b-a} e^t > 0$, por
- ser $a< 0 < b$. Luego $\varphi\in \mathcal{C}^{\infty}$.
+ ser $a< 0 < b$. Luego $\varphi\in \mathcal{C}^{\infty}$. Asimismo:
  
  \begin{align*}
   &\varphi(0) = 0 \\  
@@ -563,7 +572,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
   & \varphi''(t) = \frac{se^t}{1-s+se^t} \left(1-\frac{se^t}{1-s+se^t}\right) = x(1-x) \le \frac{1}{4}
  \end{align*}
  
- Donde en la última desigualdad hemos usado que el polinomio $x-x^2$ un máximo en $x=\frac{1}{2}$.
+ Donde en la última desigualdad hemos usado que el polinomio $x-x^2$ tiene un máximo en $x=\frac{1}{2}$.
  
  Así, tomando $f(t) = \varphi(t) - \frac{1}{8}t^2$, tenemos que $f(0) = 0 = f'(0)$ y $f''(t) \le 0$. Es decir, 
  $f'(t) \ge 0$ para todo $t<0$ y $f'(t) \le 0$ para todo $t > 0$, luego $f$ tiene un máximo en $t=0$. Por tanto
@@ -575,7 +584,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  Sean $W_1, \ldots W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
  $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\varepsilon > 0$ arbitrario:
 
- \[P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \varepsilon \right] \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}\]
+ \[P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \varepsilon \right] \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^m (b_i-a_i)^2}}\]
  
  En el caso particular $a_i = a$ y $b_i = b$ para todo $i=1, \ldots m$:
  
@@ -590,21 +599,26 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  Aplicando monotonía de la función exponencial y la desigualdad de Markov \ref{ineq:markov}, tenemos que 
  para todo $\varepsilon, \lambda > 0$:
  
- \[P[\overline{V} \ge \varepsilon] = P[e^{\lambda\overline{V}} \ge e^{\lambda \varepsilon}]
- \le e^{-\lambda \varepsilon} \expect(e^{\lambda \overline{V}})\]
+ \begin{equation}
+ P[\overline{V} \ge \varepsilon] = P[e^{\lambda\overline{V}} \ge e^{\lambda \varepsilon}]
+ \le e^{-\lambda \varepsilon} \expect(e^{\lambda \overline{V}})
+ \label{eq:markov-hoeff}\tag{$\ast$}
+ \end{equation}
  
- Además como las $W_i$ eran independientes, $e^\lambda V_i$ lo son, y se tiene:
+ Además como las $W_i$ eran independientes, $e^{\lambda V_i}$ lo son, y se tiene:
  
  \[\expect(e^{\lambda V}) = \expect\left(\prod_{i=1}^m e^{\lambda V_i / m}\right) = \prod_{i=1}^m \expect(e^{\lambda V_i/m})\]
  
  Además tenemos:
  
- \begin{align*}
-  & \expect(V_i) = \expect(W_i) - \expect(\expect(W_i)) = \expect(W_i) - \expect(W_i) = 0  \\
+ \begin{align}
+  & \expect(V_i) = \expect(W_i) - \expect(\expect(W_i)) = \expect(W_i) - \expect(W_i) = 0 \nonumber \\
   & a_i-\expect(W_i) \le V_i \le b_i-\expect(W_i)
- \end{align*}
+  \label{eq:prod-hoeff}\tag{$\ast\ast$}
+ \end{align}
  
- Aplicando a cada $V_i$ el lema \ref{lemma:hoeffding}, llegamos a:
+ Aplicando a cada $V_i/m$ el lema \ref{lemma:hoeffding}, desde \eqref{eq:markov-hoeff} y \eqref{eq:prod-hoeff} 
+ llegamos a:
  
  \[\expect(e^{\lambda V}) \le e^{-\lambda \varepsilon} \cdot e^{\frac{\lambda^2 \sum_{i=1}^m(b_i-a_i)^2}{8m^2}} = 
   e^{\frac{\lambda^2 \sum_{i=1}^m(b_i-a_i)^2}{8m^2} - \lambda\varepsilon}\]
