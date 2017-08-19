@@ -462,6 +462,8 @@ Queda comprobar $\Sigma(\mu^\ast)$ es efectivamente una $\sigma$-álgebra.
  
  $\mathcal{D}_1 \otimes \ldots \otimes \mathcal{D}_n := (\Sigma_1 \otimes \ldots \otimes \Sigma_n, P)$ recibe 
  el nombre de distribución de probabilidad producto.
+ 
+ En el caso de $\Sigma_1 = \ldots = \Sigma_n$, notaremos $\Sigma^n$ a la $\sigma$-álgebra producto.
 \end{definition}
 
 El siguiente teorema nos dice que siempre podemos definir un espacio de probabilidad producto.
@@ -501,12 +503,11 @@ El siguiente teorema nos dice que siempre podemos definir un espacio de probabil
  $X_1\times X_2$ y $P$ una medida en $S$, existe el espacio de probabilidad producto.
 \end{proof}
 
-Se puede probar que el espacio probabilístico producto sólo hay uno, pero no usaremos este hecho. Nótese que cuando 
+Se puede probar que el espacio probabilístico producto sólo hay uno, pero no usaremos este hecho. Obsérvese que cuando 
 tengamos un espacio de probabilidad $(\Sigma, X)$ y consideramos que podemos extraer $m$ muestras del mismo
-de manera independiente, estaremos sólo midiendo conjunto $A=A_1 \times A_2 \times \ldots \times A_m$, con $A_i \in\Sigma_i$.
-Para estos sucesos siempre tendremos $\overline{P}(A) = \prod_{i=1}^m P(A_i)$ sea cual sea la distribución producto
-$(\underset{1)}{\Sigma} \otimes \ldots \otimes \underset{m)}{\Sigma}, \overline{P})$, pero conviene ser consciente de que
-de que es única.
+de manera independiente, estaremos sólo midiendo conjunto $A=A_1 \times A_2 \times \ldots \times A_n$, con $A_i \in\Sigma_i$.
+Para estos sucesos siempre tendremos $\overline{P}(A) = \prod_{i=1}^n P(A_i)$ sea cual sea la distribución producto
+$(\Sigma^n, \overline{P})$, pero conviene tener presente que es única.
 
 \section{Desigualdades de concentración}
 Para esta sección supondremos conocimiento previo de variables aleatorias. Sea $(X,\Sigma,P)$ un espacio 

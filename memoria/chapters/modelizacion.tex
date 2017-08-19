@@ -140,7 +140,9 @@ Definimos el riesgo empírico o error empírico de un clasificador $h:X \rightar
 
 \end{definition}
 
-Es decir, es el error del clasificador $h$ sobre el conjunto de entrenamiento $S$. 
+Es decir, es el error del clasificador $h$ sobre el conjunto de entrenamiento $S$. Nótese que si $[h\neq f]$ como hemos
+supuesto al principio, fijado una tamaño de muestra $m$ y $h\in 2^X$, $S \mapsto L_S(h)$ es una variable aleatoria, y por
+tanto $L_S(h)^{-1}(]-\infty, a])$ sería un conjunto $\Sigma^m$ medible
 
 \begin{fact}
 Sea $H\subseteq 2^X$. Sea $\mathcal{D}$ distribución sobre $\mathcal{X}$. Sea $f \in H$ fija. Entonces para

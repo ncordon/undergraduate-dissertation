@@ -1,20 +1,24 @@
 \section{PAC cognoscibilidad}
 Proporcionamos a continuación una definición que materializa el concepto de que un algoritmo pueda aprender de los datos. Las
-siglas PAC derivan de Probablemente Aproximadamente Correcto.
+siglas PAC derivan de Probablemente Aproximadamente Correcto. Conviene tener en cuenta para la siguiente definición la
+biyección canónica \ref{biyeccion-canonica}, que nos permite asegurar la medibilidad de las hipótesis incluyéndo sus conjuntos
+asociados en la $\sigma$-álgebra.
 
 \begin{definition}[PAC cognoscible]
-Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen una función 
-$m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y 
-$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ verificando que para todo
-$0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
-verdadero etiquetado $f\in \Hclass$, dados $m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$, entonces:
+Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ 
+y $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ verificando que para todo
+$0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}=(\Sigma, \prob)$ sobre $X$ tal que $H\subseteq \Sigma$
+y para toda función de verdadero etiquetado $f\in \Hclass$, dado $m \ge m_H(\varepsilon, \delta)$ entonces:
 
 \[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta\]
 \end{definition}
 
-Llamamos \textit{algoritmo de aprendizaje} a $A$, a $(1-\delta)$ \textit{confianza} de la predicción y 
-a $(1-\varepsilon)$ \textit{exactitud}. Estos dos últimos parámetros explican el nombre aproximadamente 
-($\equiv$ confianza) correcto ($\equiv$ exactitud).
+$A$ recibe el nombre de \textit{algoritmo de aprendizaje}, $m_H$ se llama \textit{complejidad muestral}, $(1-\delta)$ es la 
+\textit{confianza} de la predicción y $(1-\varepsilon)$ la \textit{exactitud}. Estos dos últimos parámetros explican los 
+calificativos aproximadamente ($\equiv$ confianza) y correcto ($\equiv$ exactitud).
+
+En lo que sigue supondremos que las distribuciones de las que se habla, $\dist$, incluyen en la $\sigma$-álgebra las propias
+hipótesis.
 
 Nótese que la definición de PAC cognoscibilidad implica hipótesis de factibilidad de $H$ respecto a la función de verdadero
 etiquetado $f$ y la distribución $\dist$. El último apartado de la proposición \ref{fact:factibilidad} 
@@ -23,10 +27,9 @@ nos permite dar una caracterización con $f\in H$ estrictamente:
 \begin{charact}[PAC cognoscible]
 Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y 
-$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ verificando que para todo
+$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ verificando que para todo
 $0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
-verdadero etiquetado $f\in H$, dados $m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$, entonces:
-
+verdadero etiquetado $f\in H$, dado $m \ge m_H(\varepsilon, \delta)$ entonces:
 \[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta\]
 
 \label{def:pac}
@@ -60,7 +63,6 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
   \[H_B = \{h\in H: L_{\mathcal{D},f}(h) > \varepsilon\}\]
 
   Sea $A$ un $ERM_{H}$, entonces:
-
   \[\mprob [L_{\mathcal{D},f}(A(S)) > \varepsilon] \le \mprob 
   [\exists h\in H_B : L_S(h) = 0] \le \sum_{h\in H_B} P [L_S(h) = 0] \]
 
@@ -88,85 +90,69 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
 ¿Hay ejemplos de clases infinitas PAC cognoscibles? La respuesta es afirmativa. Veamos un ejemplo.
 
 \begin{example}
-  \begin{definition} \textbf{Clasificadores de rectángulo}
+  \begin{definition}[Clasificadores de rectángulo]
 
   La clase de clasificadores de rectángulo en el plano se define por:
-
   \[H^2_{rec} = \{ h_{a,b,c,d}: a\le b, c\le d\}\]
 
   donde $h_{a,b,c,d} = \mathds{1}_{[a,b]\times [c,d]}$
   \end{definition}
 
 
-  \begin{fact} \textbf{$H_{rec}^2$ es PAC cognoscible}
-
-  Bajo hipótesis de factibilidad, los rectángulos son PAC cognoscibles
-  \end{fact}
+    \begin{fact}
+    $H_{rec}^2$ es PAC cognoscible
+    \end{fact}
 
     \begin{proof}
-    Haremos la prueba tratando los clasificadores como conjuntos, en virtud de la biyección canónica \eqref{biyeccion-canonica}
+    Haremos la prueba tratando los clasificadores como conjuntos, en virtud de la biyección canónica \ref{biyeccion-canonica}.
     
-    Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos del conjunto 
-    de entrenamiento $S$.
+    Sea $A$ el algoritmo que devuelve el rectángulo más pequeño que engloba a todos los ejemplos positivos de un conjunto 
+    de entrenamiento $S$. Claramente $A$ es un $ERM_H$.
 
-    Sea $R^{\ast} = [a,b]\times [c,d]$ y $f = \mathds{1}_{R^{\ast}}$ función de verdadero etiquetado. Trabajaremos
-    con conjuntos en lugar de con hipótesis. 
+    Sea $R= [a,b]\times [c,d]$ el rectángulo que proporciona el verdadero etiquetado. Fijamos $\varepsilon, \delta \in ]0,1[$.
     
-    Dado $S \in (X\times Y)^m$ tal que $L_S(R^\ast) = 0$, claramente $x \in A(S)$ para todo $(x,1)\in S$. Por 
-    tanto $A(S) \subseteq R^\ast$, y se deduce $x \notin A(S)$ para cualquier $(x,0)\in S$. Por tanto, $A$ es
-    un ERM.
-
-    Fijamos $1 > \varepsilon, \delta > 0$.
-
-    Tomamos los rectángulos:
-    
+    Supongamos $\mathcal{B} = [L_{\dist,R}(A(S)) > \epsilon] \neq \emptyset$. Sea $S\in \mathcal{B}$ y 
+    $A(S) = [a^{\ast}, b^{\ast}] \times [c^{\ast}, d^{\ast}]$. Tomamos los rectángulos:
     \begin{align*} 
-    R_1 = [a,b^{\ast}] \times [c,d], \qquad R_2= [a^{\ast},b] \times [c,d] \\ 
-    R_3=[a,b] \times [c,d^{\ast}],   \qquad R_4=[a,b] \times [c^{\ast},d]     
+    R_1^S = [a,b^{\ast}] \times [c,d], \qquad R_2^S = [a^{\ast},b] \times [c,d] \\ 
+    R_3^S =[a,b] \times [c,d^{\ast}],   \qquad R_4^S = [a,b] \times [c^{\ast},d]     
     \end{align*}
  
-    verificándose $R_i \subseteq R^\ast$ y $L_{\mathcal{D},f}(R_i) \le \frac{\varepsilon}{4}$. Llamamos 
-    $\bar{R}_i = R\setminus R_i$
+    verificándose $R_j^S \subseteq R$ para todo $j$. Además debe existir $L_{\mathcal{D},R}(R_j^S) \ge \frac{\varepsilon}{4}$, 
+    para algún $j\in \{1, \ldots 4\}$, ya que en caso contrario, por subaditividad tendríamos $L_{\dist,R}(A(S)) < \epsilon$. 
+    Además podemos suponer s.p.g. $(R_i^S)^c = R\setminus R_i^S$ puesto que un clasificador $A(S)$ sólo fallará en el
+    espacio restante entre $R$ y $A(S)$.
     
-    Supongamos s.p.g que $L_{\mathcal{D},f}(R_i) > 0$ para todo $i\in\{1,\ldots 4\}$ (caso opuesto 
-    bastaría hacer la demostración para los rectángulos para los que no fuese nulo). Llamamos 
-    $\bar{\varepsilon} = \max_i L_{\mathcal{D},f}(R_i)$ y $\widetilde{\varepsilon} = \min_i L_{\mathcal{D},f}(R_i)$.
-
-    Fijado $S\in (X\times Y)^m$, $R=A(S)$, supongamos $\forall i : R \cap \bar{R_i} \neq \emptyset$. Entonces:
-
-    \[L_{\mathcal{D},f}(R) = \prob [h_R \neq f] \le \prob 
-    \left(\underset{i}{\cup} [h_R \neq f] \cap \bar{R}_i\right) \le \prob \left(\underset{i}{\cup} 
-    \bar{R}_i\right) \le 4 \bar{\varepsilon}\]
-
+    Seleccionamos $R_i \in \{R_i^S: S\in \mathcal{B}\}$, $i=1, \ldots, 4$. suponiendo s.p.g. que existen los cuatro (caso opuesto 
+    bastaría hacer la demostración para los rectángulos que sí existiesen). Fácilmente se comprueba que 
+    $S\in \mathcal{B} \Rightarrow A(S) \cap R_i^c = \emptyset$ para todo $i=1, \ldots, 4$, usando de nuevo reducción al 
+    absurdo y subaditividad.
+    
     La demostración acaba probando que:
+    \begin{align*}
+    \mprob [\exists i : A(S)\cap R_i^c = \emptyset] &\le \sum_{i=1}^4 \mprob[A(S)\cap R_i^c = \emptyset] \\
+                                                    &\le 4 \left(1-\varepsilon \right)^m \le 4e^{-\varepsilon m/4}
+    \end{align*}
 
-    \[\mprob [\exists i : A(S)\cap \bar{R}_i = \emptyset] \le \sum_{i=1}^4 
-    \mprob[A(S)\cap \bar{R}_i = \emptyset] \le 4 \left(1-\widetilde{\varepsilon} \right)^m \le 4e^{-\widetilde{\varepsilon}m/4}\]
-
-    y tomando $m > \frac{4}{\widetilde{\varepsilon}} log \left( \frac{4}{\delta} \right)$ llegaríamos al resultado buscado.
+    Juntando toda esta información: 
+    \[\mprob[L_{\dist,R}(A(S)) > \epsilon] \le \mprob [\exists i : A(S)\cap R_i^c = \emptyset] \le 4e^{-\varepsilon m/4}\]
+                                    
+    y tomando $m > \frac{4}{\varepsilon} log \left( \frac{4}{\delta} \right)$ llegaríamos al resultado buscado.
     \end{proof}
 \end{example}
 
-
-Nótese que las condiciones exigidas, cumplir la hipótesis de factibilidad y que la hipótesis devuelta deba estar en $H$, 
-son muy fuertes. En contraposición, esta definición tiene la virtud de que el tamaño muestral es independiente de la 
-distribución. Relajaremos esta definición con el concepto de PAC agnóstico (APAC)
-
-
 \section{APAC cognoscibilidad}
 
-Vamos a relajar tanto la definición de cognoscibilidad como las condiciones sobre las que aprender 
-(factibilidad por ejemplo, pérdidas arbitrarias, etc).
+Nótese que las condiciones exigidas en PAC cognoscibilidad son muy fuertes: cumplir la hipótesis de factibilidad y que 
+la hipótesis devuelta deba estar en $H$.Relajaremos esta definición con el concepto de PAC agnóstico (APAC).
+Vamos a relajar tanto la definición de cognoscibilidad como el marco teórico de aprendizaje.
 
-Sea $Z$ un conjunto, $\mathcal{D} = (\Sigma, \mathcal{P})$ distribución sobre $Z$
+Sea $Z$ un conjunto, $\mathcal{D} = (\Sigma, \mathcal{P})$ distribución sobre $Z$ en lo que sigue.
 
-\begin{definition} \textbf{Función de pérdida}
+\begin{definition}[Función de pérdida]
 Sea $H$ un conjunto arbitrario, se denomina función de pérdida de $H$ sobre $Z$ a cualquier función de la 
 forma:
-
-\[l : H \times Z \rightarrow \mathbb{R}^{+}\]
-
-que verifique que fijada $h\in H$ arbitrario la función $l(h, \cdot)$ sea $\Sigma$ medible.
+\[l : H \times Z \rightarrow \mathbb{R}_0^{+}\]
 \end{definition}
 
 Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}:
@@ -174,34 +160,30 @@ Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}
 \begin{itemize}
   \item \textbf{Verdadero etiquetado}: No asumimos que exista.
 
-  \item \textbf{Generación de instancias}: Tenemos una distribución $\mathcal{D}$ sobre $Z$.
+  \item \textbf{Generación de instancias}: Tenemos una distribución $\mathcal{D}$ sobre $Z = (X,Y)$ donde $X$ es el dominio
+  y $Y$ el conjunto de etiquetas.
   \item \textbf{Error del clasificador}: Lo redefinimos como:
-  \[L_{\mathcal{D}}(h) :=  \expect_{z\sim \dist} [l(h,z)]\]
+  \[L_{\mathcal{D}}(h) :=  \expect_{z\sim \dist} (l(h,z))\]
   
   \item \textbf{Error empírico}: Lo redefinimos como:
   \[L_{S} (h) := \frac{1}{m} \sum_{i=1}^m l(h,z_i)\]
 \end{itemize}
 
-Estamos en condiciones de dar una definción más laxa de cognoscibilidad.
-
-\begin{definition} \textbf{APAC cognoscible}
-
-Una clase $H$ es agnósticamente PAC (APAC) cognoscible respecto a $Z$ y a una función de pérdida 
+\begin{definition}[APAC cognoscible]
+Una clase $H$ es agnósticamente PAC (APAC) cognoscible respecto a $Z$ y respecto a una función de pérdida 
 $l: H \times Z \rightarrow \mathbb{R}^{+}$ si existe una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo 
-$A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow H$ verificando que si 
-$0 < \varepsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ se verifica
-que dado $S\sim \mathcal{D}^m$, con $m\ge m_{H}(\varepsilon, \delta)$ se tiene:
-
+$A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow Y^X$ verificando que si 
+$0 < \varepsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ que haga medible a $z \mapsto l(h, z)$,
+se cumple que dado $m\ge m_{H}(\varepsilon, \delta)$ entonces:
 \[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \varepsilon \bigg] \ge 1-\delta\]
 \end{definition}
 
 Nótese que en contraste con nuestra definición de PAC cognoscibilidad, el algoritmo $A$ podía devolver una 
 hipótesis que no estuviera en $H$. Cuando permitimos que el algoritmo $A$ devuelva una función 
 $h \notin H$, de manera que $h \in H'$ y  $H \subset H'$ una clase de funciones donde la función de pérdida 
-es extensible de manera natural, el aprendizaje recibe el nombre de \textbf{aprendizaje impropio}. La definición 
-anterior se ha hecho para \textbf{aprendizaje propio}.
-
+es extensible de manera natural, el aprendizaje recibe el nombre de \textit{aprendizaje impropio}. Si suponemos
+$A(S) \in H$ estaremos usando \textit{aprendizaje propio}.
 
 \subsection{Particularización a distintos paradigmas}
 
@@ -210,18 +192,17 @@ anterior se ha hecho para \textbf{aprendizaje propio}.
 
 Tendremos $Y=\{0,1\}$ o $Y=\{-1,1\}$ conjunto de etiquetas, un conjunto $X$ y $Z=X\times Y$, y nuestras clases
 de hipótesis $H$ estarán contenidas en $Y^X$, de manera que al aprender distribuciones sobre $Z$ podríamos 
-tener etiquetas distintas para una misma instancia $x \in X$
+tener etiquetas distintas para una misma instancia $x \in X$.
 
-\begin{definition} \textbf{Función de pérdida $0-1$}
-
-Llamamos función de pérdida $0-1$ a $l$ función de pérdida de $H\subseteq Y^X$ sobre $Z$ verificando:
+\begin{definition}[Función de pérdida $0-1$]
+Llamamos función de pérdida $0-1$ a una función de pérdida de $H\subseteq Y^X$ sobre $Z$, $l$, verificando:
  
  \[l(h, (x,y)) = \left\{\begin{array}{ll}
                          1 & \textrm{si } h(x)\neq y\\
                          0 & \textrm{en otro caso}
                         \end{array}\right.\]
 
-para cualquier $h\in \mathcal{H}$, cualquier $(x,y) \in Z$
+para cualquier $h\in H$, cualquier $(x,y) \in Z$
 \label{def:zero-one-loss}
 \end{definition}
 
@@ -229,11 +210,11 @@ Consideraremos la función de pérdida $0-1$ en clasificación binaria de ahora 
 lo opuesto.
 
 Con estos conceptos revisitados, podríamos asegurar que la hipótesis que menor error comete para 
-clasificación binaria y la función de pérdidad $0-1$ es el llamado \textbf{clasificador de Bayes}:
+clasificación binaria y la función de pérdidad $0-1$ es el llamado \textit{clasificador de Bayes}:
 
 \[f_{\mathcal{D}}(x) = \left\{\begin{array}{ll}
 1 & P [y = 1 |x] >= 0.5\\
-0 & \quad si \quad no
+0 & \textrm{caso opuesto}
 \end{array}\right.\]
 
 Pero evidentemente asumimos que el algoritmo no tiene acceso a la distribución, sino solo a los datos 
@@ -243,51 +224,56 @@ Particularizamos a continuación la definición de APAC anterior a clasificació
 con función de pérdida $0-1$ y aprendizaje impropio (ya que la función de pérdida $0-1$ está definida 
 en $2^X$).
 
-\begin{definition} \textbf{APAC cognoscible - paradigma binario}
-
-Una clase de funciones $H \subseteq 2^X$ es APAC cognoscible sii existen una función 
+\begin{definition}[APAC cognoscible - paradigma binario]
+Una clase de funciones $H \subseteq 2^X$ es APAC cognoscible sii existen 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow 2^X$ verificando que para todo
-$0 < \varepsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dados 
-$m \ge m_H(\varepsilon, \delta)$ y $S\sim \mathcal{D}^m$:
+$0 < \varepsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dado $m \ge m_H(\varepsilon, \delta)$:
 
-\[\mprob \bigg[L_{\dist,f}(A(S)) > \inf_{h\in H} L_D(h) + \varepsilon \bigg] < \delta \]
+\[\mprob \bigg[L_{\dist,f}(A(S)) \le \inf_{h\in H} L_D(h) + \varepsilon \bigg] \ge 1-\delta \]
 \end{definition}
 
-\subsubsection{Clasificación multiclase}
-
+\subsection{Clasificación multiclase}
 Dado $Y$, verificando $|Y| > 2$, $Z=X\times Y$ y $H\subseteq Y^X$, al problema lo llameremos de 
 clasificación multiclase. 
 
-Una posible función de pérdida para este problema sería también la función de pérdida $0-1$:
+Una posible función de pérdida para este problema sería también la función de pérdida $0-1$.
 
 \subsection{Regresión}
-
 Tenemos un problema de regresión si tomamos $Z=X \times \mathbb{R}$ y $H\subseteq \mathbb{R}^X$
 y $l(h,(x,y)) = (h(x)-y)^2$ función de pérdida cuadrática.
 
 \subsection{k-clustering}
-
 Tenemos un problema de clústering si $Z=\mathbb{R}^d$ y los elementos de $H$ son funciones constantes 
 $h = (c_1, \ldots c_k)$ con $c_i \in \mathbb{R}^d$. Una posible función de pérdida podría ser 
-$l((c_1, \ldots c_k), z) = \min_{i} \norm{c_i}^2$.
+$l((c_1, \ldots c_k), z) = \min_{i=1,\ldots, k} \norm{c_i - z}^2$.
 
 
 \section{Relación entre APAC y PAC cognoscibilidad}
+Aunque pueda parecer contraintuitivo, las clases APAC cognoscibles están contenidas en las PAC cognoscibles. De hecho, 
+tenemos una relación tal cual se muestra en la figura siguiente:
 
-El hecho de que exista un clasificador cuyo error sea nulo y poder aproximarlo es una condición más fuerte que poder 
-aproximar el mejor clasificador de una clase de funciones. Aunque pueda parecer contraintuitivo, las clases APAC 
-cognoscibles están contenidas en las PAC cognoscibles. De hecho, tenemos una relación tal cual se muestra en la figura
-siguiente:
-
-\img{./imgs/clases-pac.png}{0.75}
+\imgcaption{./imgs/clases-pac.png}{Relación entre clases PAC}{0.6}
 
 \begin{fact}
- Los conceptos de PAC cognoscibilidad para una clase $H$ que verifica hipótesis de factibilidad y de APAC cognoscibilidad 
- con funciones de pérdida $0-1$ son equivalentes
+ Si $H\subseteq 2^X$ es APAC propiamente cognoscible con funciones de pérdida $0-1$, entonces $H$ es PAC cognoscible.
 \end{fact}
 
 \begin{proof}
- Como se verifica la hipótesis de factibilidad, $\inf_{h\in H} L_{\dist}(h) = 0$, y basta comprobar que coincidirían 
- ambos conceptos de error \[f = \argmin_{h\in H} L_{\dist}(h), \quad L_{\dist,f} = L_{\dist}\]
+ Sea $f\in H$ y una distribución $\dist=(\Sigma,P)$ sobre $X$ verificando que $H\subseteq \Sigma$. Podemos ver 
+ $\dist$ como una distribución que asigna a cada $x\in X$ la etiqueta $f(x)$. Por definición $\inf_{h\in H} L_{\dist}(h) = 0$. 
+ Para terminar, dado $S=(z_1, \ldots, z_m)$ con $z_i = (x_i,y_i)$:
+ \[L_{\dist}(h) = \expect_{x\sim \dist}\bigg(l \big(h,(x,f(x)) \big)\bigg) = \prob[f \cap h] = L_{\dist,f}(h)\]
+ 
+ donde $[f\cap h] \in \Sigma$ por hipótesis ($f,h\in H \subseteq \Sigma$).
+ 
+ Por otro lado:
+ \[L_{S}(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i) = \frac{|\{i\in\{1,\ldots, m\}: h(x_i) \neq f(x_i)(= y_i)\}|}{m}\]
+ 
+ Además $l(h,\cdot)$ es $\Sigma$ medible ya que $l(h, \cdot)^{-1}(\{0\}) = [f = h] \in \Sigma$ y 
+ $l(h, \cdot)^{-1}(\{1\}) = [f\neq h]$. Por hipótesis existiría un algoritmo $A$ y $m_H(\epsilon, \delta)$
+ tal que para todo $m\ge m_H(\epsilon, \delta)$:
+ 
+ \[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \varepsilon \bigg] \ge 1-\delta\]
+ 
+ Luego $H$ sería PAC cognoscible.
 \end{proof}
-
