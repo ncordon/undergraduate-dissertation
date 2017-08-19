@@ -1,5 +1,4 @@
 \section{Problema de desbalanceo}
-
 Se considerará en toda la sección de informática clasificación binaria, donde tenemos un dominio $X$, y un conjunto de etiquetas 
 $Y=\{-1,1\}$. Llamamos $Z = X\times Y$. También consideraremos que los datos siguen una distribución dada por una función de 
 probabilidad prefijada pero no conocida por el algoritmo, a saber, $\dist=(\Sigma, P)$. 
@@ -34,7 +33,8 @@ En muchas ocasiones, al realizar análisis de datos no se tiene en cuenta el des
 cual hace que los algoritmos no reflejen adecuadamente la distribución de las clases. Para ciertos conjuntos de datos,
 donde el número de instancias positivas con respecto a las negativas es muy pequeño, un clasificador podría simplemente
 etiquetar todas las instancias como negativas, y obtener un error global pequeño, pero no acertaría en ninguna instancia
-positiva. Si los datasets empleados representaran enfermedades, por ejemplo, como en el caso de \cite{keelderma}, estaríamos
+positiva. Si los datasets empleados representaran enfermedades, por ejemplo, como es el caso de muchos de los
+disponibles en el repositorio \citepalias{keel}, algunos de los cuales se han integrado dentro del paquete, 
 nos interesaría encontrar mecanismos para disminuir el error sobre la clase positiva (la de las instancias correspondientes
 a la enfermedad).
 

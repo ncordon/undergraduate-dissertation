@@ -81,3 +81,87 @@ de documentación online \url{https://ncordon.github.io/imbalance}, pestaña \te
 ayuda de manual de \R, una vez cargado el paquete, con el nombre de la función precedido de \texttt{?} (ej. \texttt{?rwo}).
 
 \imgcaption{./imgs/docweb.png}{Web de documentación del proyecto}{0.95}
+
+Los métodos que exporta el paquete y que pueden usarse una vez
+se carga son:
+
+\begin{itemize}
+ \item \texttt{mwmote}
+ \item \texttt{racog}
+ \item \texttt{wracog}
+ \item \texttt{rwo}
+ \item \texttt{pdfos}
+ \item \texttt{neater}
+ \item \texttt{plotComparison}
+\end{itemize}
+
+\section{Estructura del paquete}
+El paquete, cuyo código fuente está disponible en el repositorio \url{https://github.com/ncordon/imbalance}, 
+bajo licencia GPL2 y posteriores, presenta la siguiente estructura de directorios y archivos:
+
+\begin{itemize}
+ \item \R: En esta carpeta se encuentra código fuente de los algoritmos, cada uno en un archivo homónimo al
+ nombre del algoritmo. También se encuentran los siguientes archivos:
+ 
+ \begin{itemize}
+  \item \texttt{data.R}: sólo contiene documentación en forma de comentarios de \texttt{Roxygen2} de la estructura
+    de los dataset incluidos con el paquete, todos ellos extraídos del repositorio \citepalias{keel}.
+  \item \texttt{RccpExports.R}: usado por la librería \texttt{Rcpp} para almacenar wrappers de llamadas a funciones
+    de \texttt{C++} que se encuentran en la carpeta \texttt{src} de la raíz del paquete.
+  \item \texttt{zzz.R}: (se usa por convenio), que se usa para liberar las librerías dinámicas generadas con 
+    \texttt{C++} en caso de que se libere el \texttt{Namespace} asociado al paquete.
+  \item \texttt{imbalance.R}: contiene la documentación del paquete para la ayuda \texttt{help}, accesible a través de:
+    \begin{lstlisting}[language=R, numbers=none]
+    \texttt{help(package='imbalance')}.
+    \end{lstlisting}
+  \item \texttt{utils.R}: que contiene funciones auxiliares llamadas desde los algoritmos, y la función \texttt{plotComparison}
+    para evaluar visualmente los resultados de un \textit{oversampling} o \textit{undersampling}.
+ \end{itemize}
+ 
+ \item \texttt{data-raw}: hay un script \texttt{rkeel-data.R} en esta carpeta que contiene el procedimiento con el que se han
+ leído y limpiado los datos desde archivos en formato KEEL. Es habitual distribuir este tipo de archivos en los fuentes de
+ los paquetes, aunque las \textit{builds} de los mismos no los contienen, por estar añadida esta carpeta al archivo \texttt{.Rbuildignore}.
+ \item \texttt{data}: contiene archivos de datos \texttt{.rda} con los \textit{datasets} con el tipo de datos 
+ correcto para cada columna, con el atributo clase ``Class'' con posibles valores \textit{positive} o \textit{negative}, 
+ respetando su formato original. Ha sido necesario consultar no sólo el repositorio KEEL, sino también el repositorio 
+ de \textit{machine learning} de \citepalias{uci}. Para acceder a la documentación sobre el formato de cada uno de ellos 
+ basta escribir en la consola de \R el nombre del \textit{dataset} precedido de \texttt{?} (ej. \texttt{?newthryoid1}). Los
+ siguientes \textit{datasets} están disponibles: \texttt{ecoli1}, \texttt{glass0}, \texttt{haberman}, \texttt{iris0},
+ \texttt{newthryoid1}, \texttt{wisconsin}, \texttt{yeast4}.
+ \item \texttt{src}: contiene código auxiliar en \texttt{C++} usado para acelerar el cuerpo de los algoritmos homónimos. El
+ archivo \texttt{RcppExports.cpp} contiene cabeceras de funciones que genera automáticamente el paquete \texttt{Rcpp}.
+ \item \texttt{tests}: contiene los tests que pasa el paquete en la integración continua cada vez que una modificación 
+ es subida al repo: se comprueba que ninguna función de las exportadas por el paquete falle, que las funciones comprueben
+ correctamente los parámetros de entrada, etc.
+\end{itemize}
+
+
+\section{Metodología de desarrollo}
+Los algoritmos han sido fundamentalmente programados en \R, de manera que todos tienen una estructura de la forma:
+\lstinputlisting[language=R, numbers=none]{./codelst/algorithm.R}.
+
+Asimismo, se ha usado la librería \citepalias{rcpp}, que proporciona una API de integración con \texttt{C++}, de manera que
+no hay que emplear manualmente llamadas a \texttt{.Call} en \R y facilita la transformación de tipos entre ambos lenguajes. También 
+ofrece azúcar sintáctico inspirado en \R disponible al programar \texttt{C++} apoyándonos en \texttt{Rcpp}. Además, para el desarrollo
+de dichos programas auxiliares hemos tenido que usar la librería \citepalias{rarmadillo}, que proporciona una extensa variedad 
+de operaciones matriciales y vectoriales en \texttt{C++}, y cuya sintaxis está inspirada en \texttt{Octave}
+\footnote{\url{https://en.wikipedia.org/wiki/GNU_Octave}}.
+
+Por último, cabe comentar que se ha empleado \texttt{Travis CI} \footnote{\url{https://docs.travis-ci.com/}} como servicio de integración
+continua con el repo de Github. De esta forma se han automatizado ejecuciones de tests unitarios y generación de documentación web. El
+archivo de configuración empleado para el servicio de integración continua está disponible en la raíz del repo, con nombre 
+\texttt{.travis.yml}.
+
+\section{Ejemplo de uso del software}
+Ejecución del algoritmo PDFOS sobre el dataset \texttt{newthryoid1} y evaluación de resultados visualmente con la función
+\texttt{plotComparison}:
+
+\lstinputlisting{./codelst/ex-pdfos.R}
+\imgcaption{../imbalance/README-example-pdfos-1.png}{
+  PDFOS sobre los 3 primeros atributos de \texttt{newthryoid1}}{1.1}
+
+Limpiado de las instancias generadas mediante NEATER:
+
+\lstinputlisting{./codelst/ex-neater.R}
+\imgcaption{../imbalance/README-example-neater-1.png}{
+  Evaluación de NEATER sobre las instancias anteriores}{1.1}

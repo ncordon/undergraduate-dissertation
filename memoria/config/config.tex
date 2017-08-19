@@ -1,6 +1,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[es-tabla,spanish,es-lcroman]{babel}
+\usepackage[spanish,es-lcroman]{babel}
 \usepackage{graphicx}
 \usepackage{tabularx}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
@@ -197,6 +197,24 @@
 \usepackage{config/Rd}
 
 % *************************************************************************************************************
+% Otras configuraciones
+% *************************************************************************************************************
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\everymath{\displaystyle}
+
+% *************************************************************************************************************
+% Classicthesis
+% *************************************************************************************************************
+\usepackage[pdfspacing,
+            eulerchapternumbers, 
+            parts, 
+            beramono,
+            %eulermath,
+            pdfspacing, 
+            manychapters]{classicthesis}
+            
+% *************************************************************************************************************
 % Bibliografía
 % *************************************************************************************************************
 %\bibliographystyle{apacite} 
@@ -211,22 +229,9 @@
 \defcitealias{rlang}{\texttt{R}}
 \defcitealias{rsmote}{\texttt{smotefamily}}
 \defcitealias{rrose}{\texttt{ROSE}}
+\defcitealias{rcpp}{\texttt{Rcpp}}
+\defcitealias{rarmadillo}{\texttt{Armadillo}}
 \defcitealias{scikit}{\texttt{scikit-learn}}
 \defcitealias{rdevtools}{\texttt{devtools}}
-
-% *************************************************************************************************************
-% Otras configuraciones
-% *************************************************************************************************************
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{1em}
-\everymath{\displaystyle}
-
-% *************************************************************************************************************
-% Classicthesis
-% *************************************************************************************************************
-\usepackage[pdfspacing,
-            eulerchapternumbers, 
-            parts, 
-            beramono, 
-            pdfspacing, 
-            manychapters]{classicthesis}
+\defcitealias{keel}{KEEL}
+\defcitealias{uci}{UCI}
