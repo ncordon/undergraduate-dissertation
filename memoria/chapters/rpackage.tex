@@ -49,25 +49,35 @@ citar a \citepalias{rsmote} o \citepalias{rrose} en \R) hace que no haya una fue
 \section{Instalación}
 \subsection{Instalación de \R}
 La instalación de \R en distribuciones Linux basadas en \texttt{Debian} puede efectuarse de la forma:
-\begin{lstlisting}
+\begin{lstlisting}[language=R,numbers=none]
 sudo apt install r-base rbase-dev
 \end{lstlisting}
 
 En distribuciones basadas en \texttt{Arch Linux}:
-\begin{lstlisting}
+\begin{lstlisting}[language=R,numbers=none]
 sudo pacman -S r
 \end{lstlisting}
 
 También es recomendable, aunque no necesario, instalar \texttt{RStudio} \footnote{\url{https://www.rstudio.com}}
 
-
-La instalación del software se puede llevar a cabo usando el paquete \citepalias{rdevtools}:
-\begin{lstlisting}
+\subsection{Instalación del software}
+La instalación del paquete \texttt{imbalance} desarrollado se puede llevar a cabo una vez abierto desde 
+una terminal \R o \texttt{RStudio} usando el paquete \citepalias{rdevtools}:
+\begin{lstlisting}[language=R,numbers=none]
 install.packages("devtools")
 devtools::install_github("ncordon/imbalance")
 \end{lstlisting}
 
+Posterior a este paso, sólo falta cargar el paquete:
+
+\begin{lstlisting}[language=R,numbers=none]
+library(imbalance)
+\end{lstlisting}
+
 La instalación del paquete \texttt{devtools} (primera línea) no es necesaria si ya se tiene instalado.
 
+Cualquier cuestión de documentación puede ser consultada en el anexo del presente trabajo, en la página
+de documentación online \url{https://ncordon.github.io/imbalance}, pestaña \textit{Reference}; o usando la 
+ayuda de manual de \R, una vez cargado el paquete, con el nombre de la función precedido de \texttt{?} (ej. \texttt{?rwo}).
 
-  
+\imgcaption{./imgs/docweb.png}{Web de documentación del proyecto}{0.95}

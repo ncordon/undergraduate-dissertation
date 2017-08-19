@@ -1,6 +1,11 @@
 %\documentclass[a4paper,11pt]{report}
 % Change this line for classicthesis
-\documentclass[dottedtoc, headinclude, footinclude=true]{scrreprt}
+%\documentclass[dottedtoc, headinclude, footinclude=true]{scrreprt}
+\RequirePackage{fix-cm} % fix some latex issues see: http://texdoc.net/texmf-dist/doc/latex/base/fixltx2e.pdf
+\documentclass[oneside,openany,titlepage,dottedtoc,headinclude,%1headlines,% letterpaper a4paper
+               footinclude=true,cleardoublepage=empty,abstractoff, % <--- obsolete, remove (todo)
+               paper=a4,fontsize=11pt,%11pt,a4paper,
+               ]{scrreprt}    
 
 % *************************************************************************************************************
 % Importa archivo de configuración
@@ -41,15 +46,12 @@
   \def\input@path{{./chapters/}}
 \makeatother
 
-% *************************************************************************************************************
 % Introducción y objetivos
-% *************************************************************************************************************
 \input{introduccion}
 \input{objetivos}
 
-% *************************************************************************************************************
+
 % Parte de matemáticas
-% *************************************************************************************************************
 \part{Matemáticas}  
   \chapter{Teoría de la probabilidad}
     \input{probabilidad}
@@ -64,9 +66,7 @@
   \chapter{Dimensión VC}
     \input{vapnik-chervonenkis}
   
-% *************************************************************************************************************
 % Parte de informática
-% *************************************************************************************************************
 \part{Informática}
   \chapter{Clasificación binaria desbalanceada}
     \input{desbalanceo}
@@ -76,11 +76,15 @@
     \input{algorithms/rwo}
     \input{algorithms/pdfos}
     \input{algorithms/neater}
-  \chapter{Software desarrollado}
+  \chapter{Paquete imbalance}
     \input{rpackage}
 
+% *************************************************************************************************************
+% Backmatter
+% *************************************************************************************************************
+\appendix
 \part*{Anexo}
-  \chapter*{Documentación del paquete}
+  \chapter{Documentación del paquete}
     \input{manual}
 
 \bibliography{references}

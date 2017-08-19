@@ -1,6 +1,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[spanish,es-lcroman]{babel}
+\usepackage[es-tabla,spanish,es-lcroman]{babel}
 \usepackage{graphicx}
 \usepackage{tabularx}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
@@ -10,7 +10,8 @@
 \usepackage[colorlinks=true, 
             pagebackref=true, 
             citecolor=magenta, 
-            urlcolor=RoyalBlue, 
+            urlcolor=RoyalBlue,
+            linkcolor=BrickRed,
             linktocpage=true]{hyperref}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -20,8 +21,6 @@
 \PassOptionsToPackage{usenames,dvipsnames}{xcolor}
 \usepackage{tikz}
 
-% Change this line for classicthesis
-\usepackage[pdfspacing]{classicthesis}
 
 
 % *************************************************************************************************************
@@ -173,7 +172,7 @@
 \lstset{
   language=R,
   literate={<-}{{\boldmath{$\gets$}}}1,
-  basicstyle=\footnotesize\linespread{1.3}\ttfamily,
+  basicstyle=\small\linespread{1.3}\ttfamily,
   commentstyle=\ttfamily\color{OliveGreen},
   stringstyle=\color{Thistle},
   numbers=left,
@@ -194,7 +193,6 @@
   keywordstyle={},
   morekeywords={}
 }
-
 
 \usepackage{config/Rd}
 
@@ -222,3 +220,13 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
 \everymath{\displaystyle}
+
+% *************************************************************************************************************
+% Classicthesis
+% *************************************************************************************************************
+\usepackage[pdfspacing,
+            eulerchapternumbers, 
+            parts, 
+            beramono, 
+            pdfspacing, 
+            manychapters]{classicthesis}
