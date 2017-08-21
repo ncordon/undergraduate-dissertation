@@ -1,3 +1,5 @@
+set.seed(12345)
+
 pkgs <- c("devtools", "RWeka", "caret")
 
 sapply(pkgs, function(pkg){
@@ -15,7 +17,7 @@ library("imbalance")
 source("./aux.R")
 
 ######################################################################
-# Load datasets from imbalance package
+# Load datasets from imbalance package and make partitions folds
 ######################################################################
 datasets <- c("ecoli1", "glass0", "haberman", "iris0",
               "newthyroid1", "wisconsin","yeast4")
@@ -23,6 +25,10 @@ datasets <- c("ecoli1", "glass0", "haberman", "iris0",
 data(list = datasets)
 numPartitions <- 3
 
+dataFolds <- lapply(datasets, function(d){
+  makePartition(eval(as.name(d)), numPartitions)
+})
+names(dataFolds) <- datasets
 ######################################################################
 # Prepare algorithms that will be used
 ######################################################################
@@ -36,46 +42,6 @@ trainWrapper.J48Wrapper <- function(wrapper, train, trainClass){
   J48(Class ~ ., train)
 }
 
-# Prepare matrix for results
-results <- matrix(ncol = length(datasets), nrow = length(algorithms))
-colnames(results) <- datasets
-rownames(results) <- algorithms
-balancedSizes <- results
-balancedNums <- results
 
-# For each algorithm, for each dataset, get numPartitions executions and calc
-# the mean size of coverages and the mean number of small disjuncts
-for(algName in algorithms){
-  if(algName != "none")
-    algorithm <- eval(as.name(algName))
-  
-  for(dataName in datasets){
-    overbalanced <- tryCatch(
-      sapply(seq_along(dataFolds[[dataName]]), function(j){
-        fold <- dataFolds[[dataName]][[j]]
-        validation <- dataFolds[[dataName]][[j %% numPartitions + 1]]
-        sizeMinority <- length(which(fold$Class == "positive"))
-        sizeDataset <- nrow(fold)
-        # We configure an imbalance ratio of 0.8
-        numInstances <- ceiling(0.8 * (sizeDataset - sizeMinority) - sizeMinority)
-        newSamples <- list()
-        
-        if(algName != "none"){
-          if (algName != "wracog"){
-            newSamples <- algorithm(fold, numInstances)
-          } else{
-            newSamples <- algorithm(fold, validation, wrapper = J48Wrapper)
-          }
-          balancedFold <- rbind(fold, newSamples)
-        } else{
-          balancedFold <- fold
-        }
-        infoSmallDisjuncts(balancedFold)
-      }), error = function(e){NA})
-
-    if(!anyNA(overbalanced)){
-      balancedSizes[algName, dataName] <- mean(unlist(overbalanced["numSmallDisjuncts", ]))
-      balancedNums[algName, dataName] <- mean(unlist(overbalanced["meanCoverage", ]))
-    }
-  }
-}
+withoutNEATER <- getResults(filtering = FALSE)
+withNEATER <- getResults(filtering = TRUE)
