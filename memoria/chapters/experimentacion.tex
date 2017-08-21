@@ -1,0 +1,124 @@
+En este capítulo proporcionamos una sencilla experimentación de los algoritmos implementados, aplicándolos al concepto de 
+\textit{small disjuncts} que se mencionó en \ref{sec:desbalanceo}, problema que surge como consecuencia del desbalanceo
+intra clases.
+
+\section{Marco de experimentación}
+Se estudiarán los algoritmos MWMOTE, RWO, PDFOS sobre todos los datasets incluidos en el paquete \texttt{imbalance}. 
+También se aplicará el algoritmo wRACOG sobre el único dataset de los del paquete enteramente discreto: \texttt{wisconsin},
+puesto que en el resto de casos, con atributos continuos, no tendría sentido aplicar el algoritmo. También se hará una 
+segunda experimentación, añadiendo filtrado con NEATER a cada uno de los algoritmos y datasets a los que pueden aplicarse.
+
+Trabajaremos con la implementación de árboles C4.5 de \citepalias{rweka}: \texttt{J48}, usando árboles sin poda 
+(opción \texttt{-U}), y sin mínimo de ejemplos por hoja (opción \texttt{-M=1}. 
+Definiremos un \textit{small disjunct} como una hoja del árbol con 3 o menos ejemplos. Nótese 
+que no hay definición formal para el concepto; este se define como reglas que cubren pocos ejemplos. Calcularemos para 
+cada dataset el número de \textit{small disjuncts} (de ambas clases, puesto que se explicó en \ref{sec:desbalanceo} que 
+son un problema que puede afectar a ambas clases, así como la media del número de ejemplos que cubren las hojas del árbol.
+Si alguno de los algoritmos de \textit{oversampling} introdujera más \textit{small disjuncts} en lugar de eliminarlos, 
+la media de tamaño bajaría, y el número de \textit{small disjuncts} crecería. Por tanto teorizamos que si eliminamos 
+desbalanceo en los datasets, el número de \textit{small disjuncts} decrecerá, y la media de ejemplos por hoja aumentará.
+
+Se dividirá cada conjunto en 3 particiones estratificadas por clase (esto es, la proporción de ejemplos de ambas
+clases será aproximadamente igual que en el conjunto sin particionar). Se hará una media de las medidas descritas para cada
+dataset, y compararemos los resultados con los obtenidos para las 3 particiones sin ningún algoritmo aplicado.
+
+La experimentación es completamente reproducible, y se encuentra disponible en la carpeta \texttt{experimentacion} del 
+repositorio que aleja al presente trabajo \footnote{\url{https://github.com/ncordon/tfg}}.
+Ahí pueden encontrarse dos archivos: \texttt{aux.R} y \texttt{small-disjuncts.R}. Basta ejecutar el segundo archivo
+para reproducir la experimentación.
+
+\section{Contenido de \texttt{aux.R}}
+\texttt{RWeka} no proporciona ningún método para obtener la cobertura de las hojas de los árboles que construye, así que
+ha sido necesario un método para \textit{parsear} la impresión que se hace del árbol en forma de cadena de caracteres
+
+\lstinputlisting[caption=función \texttt{leavesCoverage} en \texttt{aux.R}]{./codelst/leavesCoverage.R}
+
+Asimismo, en dicho archivo también podemos encontrar las funciones \texttt{makePartition}, que recibe un \texttt{dataset}
+y un número de particiones \texttt{numPartitions} y genera \texttt{numPartitions} estratificadas a partir del dataset; la
+función \texttt{infoSmallDisjuncts} que recibe un \texttt{dataset} y devuelve el cálculo de las dos medidas descritas, y 
+la función \texttt{getResults}, que recibe un parámetro \textit{booleano} indicando si queremos aplicar el filtro NEATER
+o no.
+
+\lstinputlisting[caption=función \texttt{infoSmallDisjuncts} en \texttt{aux.R}]{./codelst/infoSmallDisjuncts.R}
+
+\section{Contenido de \texttt{small-disjuncts.R}}
+Este archivo es el fichero principal de la experimentación. Comienza fijando una semilla aleatoria de modo que la experimentación
+sea reproducible, carga librerías, el fichero auxiliar \texttt{aux.R}, los datos de \texttt{imbalance}, los particiona,
+crea un \textit{wrapper} para \texttt{wRACOG} basado en \texttt{J48} y obtiene los resultados de la experimentación.
+
+\section{Resultados}
+En los resultado, \texttt{none} representa el dataset original sin tratamiento de \textit{oversampling}.
+\subsection{Sin filtrado de instancias}
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+    \hline
+    & none & mwmote & wracog & rwo & pdfos \\ 
+    \hline
+    ecoli1 & 24.83 & 17.88 &  & 11.22 &  \\ 
+    glass0 & 12.73 & 11.90 &  & 15.71 &  \\ 
+    haberman & 16.19 & 15.02 &  & 24.72 & 21.77 \\ 
+    iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+    newthyroid1 & 16.72 & 30.00 &  & 24.00 & 18.90 \\ 
+    wisconsin & 5.79 & 3.54 & 6.22 & 3.74 & 3.74 \\ 
+    yeast4 & 62.49 & 25.13 &  & 36.81 &  \\ 
+    \hline
+  \end{tabular}
+  \caption{Media de \textit{small disjuncts} tras \textit{oversampling}}
+  \end{table}
+
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+    \hline
+    & none & mwmote & wracog & rwo & pdfos \\ 
+    \hline
+    ecoli1 & 2.67 & 4.33 &  & 18.00 &  \\ 
+    glass0 & 3.67 & 5.33 &  & 3.33 &  \\ 
+    haberman & 3.33 & 1.67 &  & 2.67 & 2.33 \\ 
+    iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+    newthyroid1 & 1.67 & 1.33 &  & 1.33 & 2.33 \\ 
+    wisconsin & 29.33 & 66.00 & 30.67 & 61.67 & 61.67 \\ 
+    yeast4 & 4.33 & 16.00 &  & 26.33 &  \\ 
+    \hline
+  \end{tabular}
+  \caption{Tamaño medio de coberturas tras \textit{oversampling}}
+  \end{table}
+  
+\subsection{Con filtrado de instancias}
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 24.83 & 31.36 &  & 16.29 &  \\ 
+  glass0 & 12.73 & 14.39 &  & 16.53 &  \\ 
+  haberman & 16.19 & 10.17 &  & 26.48 & 10.05 \\ 
+  iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+  newthyroid1 & 16.72 & 29.06 &  & 21.58 & 22.97 \\ 
+  wisconsin & 5.79 & 3.50 & 5.67 & 3.79 & 3.79 \\ 
+  yeast4 & 62.49 & 23.66 &  & 28.53 &  \\ 
+   \hline
+\end{tabular}
+  \caption{Media de \textit{small disjuncts} tras \textit{oversampling} y filtrado}
+  \end{table}
+
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+    \hline
+    & none & mwmote & wracog & rwo & pdfos \\ 
+    \hline
+    ecoli1 & 2.67 & 1.33 &  & 16.00 &  \\ 
+    glass0 & 3.67 & 4.67 &  & 2.67 &  \\ 
+    haberman & 3.33 & 5.00 &  & 2.33 & 5.33 \\ 
+    iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+    newthyroid1 & 1.67 & 1.33 &  & 1.00 & 2.00 \\ 
+    wisconsin & 29.33 & 66.33 & 33.00 & 60.33 & 60.67 \\ 
+    yeast4 & 4.33 & 19.33 &  & 27.67 &  \\ 
+    \hline
+  \end{tabular}
+  \caption{Tamaño medio de coberturas tras \textit{oversampling} y filtrado}
+  \end{table}
+  

@@ -45,3 +45,9 @@ trainWrapper.J48Wrapper <- function(wrapper, train, trainClass){
 
 withoutNEATER <- getResults(filtering = FALSE)
 withNEATER <- getResults(filtering = TRUE)
+
+# xtable::xtable(withoutNEATER$nums)
+# xtable::xtable(withoutNEATER$sizes)
+# xtable::xtable(withNEATER$nums)
+# xtable::xtable(withNEATER$sizes)
+
