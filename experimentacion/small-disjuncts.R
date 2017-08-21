@@ -18,8 +18,8 @@ library("imbalance")
 datasets <- c("ecoli1", "glass0", "haberman", "iris0",
               "newthyroid1", "wisconsin","yeast4")
 
-data(list=datasets)
-
+data(list = datasets)
+numPartitions <- 3
 ######################################################################
 # Extract coverage for each leave of the tree
 ######################################################################
@@ -38,7 +38,8 @@ leavesCoverage <- function(tree, classAttr){
     y <- sub(").*", "", x)
     sub("/.*", "", y)
   })
-  as.numeric(unlist(coverages))
+  coverages <- as.numeric(unlist(coverages))
+  coverages[coverages != 0]
 }
 
 ######################################################################
@@ -53,18 +54,69 @@ makePartition <- function(dataset, numPartitions){
 
 
 dataFolds <- lapply(datasets, function(d){
-  makePartition(eval(as.name(d)), numPartitions = 3 )
+  makePartition(eval(as.name(d)), numPartitions)
 })
 names(dataFolds) <- datasets
 
-
 ######################################################################
-# make an unpruned C4.5 tree out of dataset
+# We consider a small disjunct a rule covering less or equal
+# than 3 samples. This function outputs number of small disjuncts
+# and mean of rule coverages
 ######################################################################
-arbol <- RWeka::J48(Class ~ ., ecoli1,
+infoSmallDisjuncts <- function(dataset){
+  # make an unpruned C4.5 tree out of dataset
+  tree <- RWeka::J48(Class ~ ., dataset,
                     control = Weka_control(U = list(TRUE), M = list(1)))
 
-positiveCoverage <- leavesCoverage(arbol, classAttr = "positive")
-negativeCoverage <- leavesCoverage(arbol, classAttr = "negative")
-coverages <- c(positiveCoverage, negativeCoverage)
-max(coverages)
+  positiveCoverage <- leavesCoverage(tree, classAttr = "positive")
+  negativeCoverage <- leavesCoverage(tree, classAttr = "negative")
+  coverages <- c(positiveCoverage, negativeCoverage)
+
+  list(numSmallDisjuncts = length(which(coverages <= 3)),
+       meanCoverage = mean(coverages))
+}
+
+
+algorithms <- c("mwmote", "wracog", "rwo")
+J48Wrapper <- structure(list(), class="J48Wrapper")
+trainWrapper.J48Wrapper <- function(wrapper, train, trainClass){
+  train <- cbind(train, trainClass)
+  colnames(train) <- colnames(train, do.NULL = FALSE)
+  colnames(train)[length(colnames(train))] <- "Class"
+  train <- data.frame(train)
+  J48(Class ~ ., train)
+}
+
+
+results <- matrix(ncol = length(datasets), nrow = length(algorithms))
+colnames(results) <- datasets
+rownames(results) <- algorithms
+balancedSizes <- results
+balancedNums <- results
+
+
+for(dataName in datasets){
+  for(algName in algorithms){
+    algorithm <- eval(as.name(algName))
+
+    overbalanced <- sapply(1:length(dataFolds[[dataName]]), function(j){
+      fold <- dataFolds[[dataName]][[j]]
+      validation <- dataFolds[[dataName]][[j %% numPartitions + 1]]
+      sizeMinority <- length(which(fold$Class == "positive"))
+      sizeDataset <- nrow(fold)
+      # We configure an imbalance ratio of 0.8
+      numInstances <- ceiling((sizeDataset - sizeMinority) * 0.8)
+
+      if (algName != "wracog"){
+        newSamples <- algorithm(fold, numInstances)
+      } else{
+        newSamples <- algorithm(fold, validation, wrapper = J48Wrapper)
+      }
+      balancedFold <- rbind(fold, newSamples)
+      infoSmallDisjuncts(balancedFold)
+    })
+
+    balancedSizes[algName, dataName] <- mean(unlist(overbalanced["numSmallDisjuncts", ]))
+    balancedNums[algName, dataName] <- mean(unlist(overbalanced["meanCoverage", ]))
+  }
+}
