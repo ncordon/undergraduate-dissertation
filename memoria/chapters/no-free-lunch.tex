@@ -36,8 +36,6 @@ Sea un conjunto de instancias $C=\{x_i, \ldots x_{2m}\}$. Hay $T = 2^{2m}$ posib
 esto es, $T$ posibles hipótesis, $f_i: C\rightarrow \{0,1\}$, que vamos a extender a $X$ llamándolas $\bar{f}_i$
 de forma que $\bar{f}_{i|C} = f_i$ y $\bar{f}_i(x) = 0 \quad \forall x\in X\setminus C$. 
 Vamos a tomar para cada una de ellas una distribución $\dist_i=(2^X, P_i)$ definida por:
-
-
 \[\forall (x,y)\in X \times \{0,1\}, \qquad \underset{z\sim \dist_i}{P_i} [z = (x,y)] = 
   \left\{\begin{array}{ll}
 	 1/|C| & x \in C, y=f_i(x)\\
@@ -47,38 +45,34 @@ Vamos a tomar para cada una de ellas una distribución $\dist_i=(2^X, P_i)$ defi
 Claramente $L_{\dist_i}(f_i) = 0$.
 
 Vamos a probar que:
-
 \[\exists i\in \{1, \ldots T\} : \quad \mexpecti{i} [L_{\dist_i} (A(S))] \ge \frac{1}{4}\]
 
 Fijamos $i \in \{1, \ldots T\}$. Hay $k = (2m)^m$ posibles tuplas de tamaño $m$, $S_{j}, j=1, \ldots k$, tomadas 
 desde $C$. Siendo $S_j = (x_1, \ldots x_m)$ notamos $S_j^i = ((x_1, f_i(x_1)), \ldots, (x_m, f_i(x_m)))$. Cada 
 $S_j^i$ tiene la misma probabilidad de ser nuestro conjunto de entrenamiento (extracción de $m$ valores con 
 reemplazamiento desde el conjunto $C$), verificándose:
-
-\[\mexpecti{i} [L_{\dist_i} (A(S))] = \frac{1}{k} \sum_{j=1}^k L_{\dist_i} (A(S_j^i))\]
-
+\[
+\mexpecti{i} [L_{\dist_i} (A(S))] = \frac{1}{k} \sum_{j=1}^k L_{\dist_i} (A(S_j^i))
+\]
 Recordando que hemos llamado $k=(2m)^m$, $T=2^{2m}$, y usando el lema \ref{lemma:nfl-ineqs}, y conmutatividad
 de sumatorios, se tiene:
-
 \begin{align}
 \max_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i)) &\ge \nonumber
-       \frac{1}{T} \sum_{i=1}^{T} \frac{1}{k} \sum_{j=1}^{k}  L_{\dist_i} (A(S_j^i))   =\\
-&=     \frac{1}{k} \sum_{j=1}^{k} \frac{1}{T} \sum_{i=1}^{T}  L_{\dist_i} (A(S_j^i)) \ge \nonumber\\
+       \frac{1}{T} \sum_{i=1}^{T} \frac{1}{k} \sum_{j=1}^{k}  L_{\dist_i} (A(S_j^i))\\
+&=     \frac{1}{k} \sum_{j=1}^{k} \frac{1}{T} \sum_{i=1}^{T}  L_{\dist_i} (A(S_j^i)) \nonumber\\
 &\ge \min_{j \in \{1, \ldots k\}} \frac{1}{T} \sum_{i=1}^{T}  L_{\dist_i} (A(S_j^i)) \label{eqn:nfl-ineqs1}
 \end{align}
-
 
 Además fijado $j \in \{1,\ldots k\}$:
 
 Sean $\{v_r\}_{r=1}^p$ los elementos de $C$ no presentes en el conjunto de entrenamiento $S_j$. 
 Claramente, como $|C|=2m$ y $S_j$ puede tener elementos repetidos, se tiene $p \ge m$. Asimismo:
-
-\[L_{\dist_i} (A(S^i_j)) = \frac{1}{|C|} \sum_{x\in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = 
-  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}\]
-
+\[
+  L_{\dist_i} (A(S^i_j)) = \frac{1}{|C|} \sum_{x\in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} = 
+  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}
+\]
 
 Por tanto:
-
 \begin{align}
 \frac{1}{T} \sum_{i=1}^{T}  L_{\dist_i} (A(S_j^i)) &\ge
 \frac{1}{T} \sum_{i=1}^{T}  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} \ge \nonumber\\
@@ -99,10 +93,9 @@ tendremos que o bien $A(S^i_j)(v_r) \neq f_i(v_r)$ o bien $A(S^{i'}_j)(v_r) \neq
 \end{equation}
 
 Y uniendo \eqref{eqn:nfl-ineqs1}, \eqref{eqn:nfl-ineqs2} y \eqref{eqn:nfl-ineqs3} tendríamos:
-
 \[\max_{i \in \{1,\ldots, T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i)) \ge \frac{1}{4}\]
 
-Sea $k = \argmax_{i \in \{1,\ldots, T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i))$
+Sea $k = \argmax_{i \in \{1,\ldots, T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i))$.
 
 Si $\dist = \dist_k$ cumple la parte 2 del enunciado del teorema, podemos tomar $f=f_k$ que cumple la primera
 parte del enunciado.
@@ -110,13 +103,11 @@ parte del enunciado.
 Como $L_{\dist} (A(\cdot))$ puede ser vista como una variable aleatoria donde $S \sim \dist^m$ y que toma
 valores en $[0,1]$, tenemos que tomando $Z = 1-L_{\dist}(A(\cdot))\ge 0$, $a=\frac{7}{8}$, estamos en 
 condiciones de aplicar la desigualdad \ref{ineq:markov} de Markov:
-
 \[\mprob \left(\frac{1}{8} \ge L_{\dist}(A(S)) \right) \le \frac{3}{4} \cdot \frac{8}{7} = \frac{1}{7}\]
 
 donde $\expect(Z) = \expect (1 - L_{\dist}(A(\cdot))) = 1 - \expect (L_{\dist}(A(\cdot))) \le \frac{3}{4}$
 
 Es decir:
-
 \[\mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] = \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] > 
 \frac{1}{7}\]
 \end{proof}

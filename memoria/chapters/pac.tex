@@ -9,8 +9,9 @@ Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen $A: \und
 y $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ verificando que para todo
 $0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}=(\Sigma, \prob)$ sobre $X$ tal que $H\subseteq \Sigma$
 y para toda función de verdadero etiquetado $f\in \Hclass$, dado $m \ge m_H(\varepsilon, \delta)$ entonces:
-
-\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta\]
+\[
+  \mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta
+\]
 \end{definition}
 
 $A$ recibe el nombre de \textit{algoritmo de aprendizaje}, $m_H$ se llama \textit{complejidad muestral}, $(1-\delta)$ es la 
@@ -30,8 +31,9 @@ $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y
 $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ verificando que para todo
 $0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
 verdadero etiquetado $f\in H$, dado $m \ge m_H(\varepsilon, \delta)$ entonces:
-\[\mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta\]
-
+\[
+  \mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta
+\]
 \label{def:pac}
 \end{charact}
 
@@ -51,50 +53,53 @@ verificando las hipótesis del enunciado.
 
 \begin{theorem}[Las clases finitas son PAC cognoscibles]
 Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
-
-\[m_H(\varepsilon, \delta) \le \left\lceil \frac{1}{\varepsilon} \log\left(\frac{|H|}{\delta} \right) \right\rceil\]
+\[
+  m_H(\varepsilon, \delta) \le \left\lceil \frac{1}{\varepsilon} \log\left(\frac{|H|}{\delta} \right) \right\rceil
+\]
 \label{th:finitas-pac}
 \end{theorem}
-
   \begin{proof}
-  Fijamos $\varepsilon, \delta \in ]0,1[$. Sea una distribución $\mathcal{D}$ sobre $X$, $m\in \mathbb{N}$ y una función de verdadero 
-  etiquetado $f\in H$, tomamos la clase de hipótesis ``malas'', que será numerable al ser $|H| < \infty$:
+   Fijamos $\varepsilon, \delta \in ]0,1[$. Sea una distribución $\mathcal{D}$ sobre $X$, $m\in \mathbb{N}$ y una función de verdadero 
+   etiquetado $f\in H$, tomamos la clase de hipótesis ``malas'', que será numerable al ser $|H| < \infty$:
+   \[
+     H_B = \{h\in H: L_{\mathcal{D},f}(h) > \varepsilon\}
+   \]
 
-  \[H_B = \{h\in H: L_{\mathcal{D},f}(h) > \varepsilon\}\]
+   Sea $A$ un $ERM_{H}$, entonces:
+   \[
+     \mprob [L_{\mathcal{D},f}(A(S)) > \varepsilon] \le \mprob 
+     [\exists h\in H_B : L_S(h) = 0] \le \sum_{h\in H_B} P [L_S(h) = 0] 
+   \]
 
-  Sea $A$ un $ERM_{H}$, entonces:
-  \[\mprob [L_{\mathcal{D},f}(A(S)) > \varepsilon] \le \mprob 
-  [\exists h\in H_B : L_S(h) = 0] \le \sum_{h\in H_B} P [L_S(h) = 0] \]
+   La primera desigualdad viene dada por la proposición \ref{fact:factibilidad}. La segunda, por subaditividad, puesto que:
+   \[
+     \mprob [\exists h\in H_B : L_S(h) = 0] = \mprob \left(\underset{h\in H_B}{\bigcup} [L_S(h) = 0]\right)
+   \]
 
-  La primera desigualdad viene dada por la proposición \ref{fact:factibilidad}. La segunda, por subaditividad, puesto que:
-  
-  \[\mprob [\exists h\in H_B : L_S(h) = 0] = \mprob \left(\underset{h\in H_B}{\bigcup} [L_S(h) = 0]\right)\]
+   Además, fijada $h\in H_B$, como $L_{\mathcal{D},f}(h) > \varepsilon$:
+   \begin{align*}
+   \mprob[L_S(h) = 0] = \mprob[h(x_i) = f(x_i), i =1,\ldots m\}]\\
+   = \prod_{i=1}^m \prob[h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\varepsilon)^m 
+   \underset{\textrm{\ref{lemma:fund-ineq}}}{\le} e^{-\varepsilon m}
+   \end{align*}
 
-  Además, fijada $h\in H_B$, como $L_{\mathcal{D},f}(h) > \varepsilon$:
-
-  \begin{align*}
-  \mprob[L_S(h) = 0] = \mprob[h(x_i) = f(x_i), i =1,\ldots m\}] =\\
-  = \prod_{i=1}^m \prob[h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\varepsilon)^m 
-  \underset{\textrm{\ref{lemma:fund-ineq}}}{\le} e^{-\varepsilon m}
-  \end{align*}
-
-
-  Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $H_B \subseteq H$ dan lugar a:
-
-  \[\mprob[L_{\mathcal{D},f}(h_S) > \varepsilon] \le |H|e^{-\varepsilon m}\]
-  
-  Y basta tomar $m\in \mathbb{N}$ tal que $|H|e^{-\varepsilon m} \le \delta$, sii 
-  $m\ge \frac{1}{\varepsilon} \log\left(\frac{|H|}{\delta}\right)$.
+   Las dos desigualdades probadas, junto a la hipótesis del enunciado, y usando $H_B \subseteq H$ dan lugar a:
+   \[
+     \mprob[L_{\mathcal{D},f}(h_S) > \varepsilon] \le |H|e^{-\varepsilon m}
+   \]
+   
+   Y basta tomar $m\in \mathbb{N}$ tal que $|H|e^{-\varepsilon m} \le \delta$, sii 
+   $m\ge \frac{1}{\varepsilon} \log\left(\frac{|H|}{\delta}\right)$.
   \end{proof}
 
 ¿Hay ejemplos de clases infinitas PAC cognoscibles? La respuesta es afirmativa. Veamos un ejemplo.
 
 \begin{example}
   \begin{definition}[Clasificadores de rectángulo]
-
   La clase de clasificadores de rectángulo en el plano se define por:
-  \[H^2_{rec} = \{ h_{a,b,c,d}: a\le b, c\le d\}\]
-
+  \[
+    H^2_{rec} = \{ h_{a,b,c,d}: a\le b, c\le d\}
+  \]
   donde $h_{a,b,c,d} = \mathds{1}_{[a,b]\times [c,d]}$
   \end{definition}
 
@@ -117,7 +122,6 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
     R_1^S = [a,b^{\ast}] \times [c,d], \qquad R_2^S = [a^{\ast},b] \times [c,d] \\ 
     R_3^S =[a,b] \times [c,d^{\ast}],   \qquad R_4^S = [a,b] \times [c^{\ast},d]     
     \end{align*}
- 
     verificándose $R_j^S \subseteq R$ para todo $j$. Además debe existir $L_{\mathcal{D},R}(R_j^S) \ge \frac{\varepsilon}{4}$, 
     para algún $j\in \{1, \ldots 4\}$, ya que en caso contrario, por subaditividad tendríamos $L_{\dist,R}(A(S)) < \epsilon$. 
     Además podemos suponer s.p.g. $(R_i^S)^c = R\setminus R_i^S$ puesto que un clasificador $A(S)$ sólo fallará en el
@@ -135,7 +139,9 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
     \end{align*}
 
     Juntando toda esta información: 
-    \[\mprob[L_{\dist,R}(A(S)) > \epsilon] \le \mprob [\exists i : A(S)\cap R_i^c = \emptyset] \le 4e^{-\varepsilon m/4}\]
+    \[
+      \mprob[L_{\dist,R}(A(S)) > \epsilon] \le \mprob [\exists i : A(S)\cap R_i^c = \emptyset] \le 4e^{-\varepsilon m/4}
+    \]
                                     
     y tomando $m > \frac{4}{\varepsilon} log \left( \frac{4}{\delta} \right)$ llegaríamos al resultado buscado.
     \end{proof}
@@ -152,20 +158,22 @@ Sea $Z$ un conjunto, $\mathcal{D} = (\Sigma, \mathcal{P})$ distribución sobre $
 \begin{definition}[Función de pérdida]
 Sea $H$ un conjunto arbitrario, se denomina función de pérdida de $H$ sobre $Z$ a cualquier función de la 
 forma:
-\[l : H \times Z \rightarrow \mathbb{R}_0^{+}\]
+\[
+  l : H \times Z \rightarrow \mathbb{R}_0^{+}
+\]
 \end{definition}
 
 Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}:
 
 \begin{itemize}
-  \item \textbf{Verdadero etiquetado}: No asumimos que exista.
-
-  \item \textbf{Generación de instancias}: Tenemos una distribución $\mathcal{D}$ sobre $Z = (X,Y)$ donde $X$ es el dominio
+  \item \textbf{Verdadero etiquetado}. No asumimos que exista.
+  \item \textbf{Generación de instancias}. Tenemos una distribución $\mathcal{D}$ sobre $Z = (X,Y)$ donde $X$ es el dominio
   y $Y$ el conjunto de etiquetas.
-  \item \textbf{Error del clasificador}: Lo redefinimos como:
-  \[L_{\mathcal{D}}(h) :=  \expect_{z\sim \dist} (l(h,z))\]
-  
-  \item \textbf{Error empírico}: Lo redefinimos como:
+  \item \textbf{Error del clasificador}- Lo redefinimos como:
+  \[
+    L_{\mathcal{D}}(h) :=  \expect_{z\sim \dist} (l(h,z))
+  \]  
+  \item \textbf{Error empírico}. Lo redefinimos como:
   \[L_{S} (h) := \frac{1}{m} \sum_{i=1}^m l(h,z_i)\]
 \end{itemize}
 
@@ -196,12 +204,12 @@ tener etiquetas distintas para una misma instancia $x \in X$.
 
 \begin{definition}[Función de pérdida $0-1$]
 Llamamos función de pérdida $0-1$ a una función de pérdida de $H\subseteq Y^X$ sobre $Z$, $l$, verificando:
- 
- \[l(h, (x,y)) = \left\{\begin{array}{ll}
-                         1 & \textrm{si } h(x)\neq y\\
-                         0 & \textrm{en otro caso}
-                        \end{array}\right.\]
-
+\[
+  l(h, (x,y)) = \left\{\begin{array}{ll}
+                        1 & \textrm{si } h(x)\neq y\\
+                        0 & \textrm{en otro caso}
+                        \end{array}\right.
+\]
 para cualquier $h\in H$, cualquier $(x,y) \in Z$
 \label{def:zero-one-loss}
 \end{definition}
@@ -211,11 +219,12 @@ lo opuesto.
 
 Con estos conceptos revisitados, podríamos asegurar que la hipótesis que menor error comete para 
 clasificación binaria y la función de pérdidad $0-1$ es el llamado \textit{clasificador de Bayes}:
-
-\[f_{\mathcal{D}}(x) = \left\{\begin{array}{ll}
-1 & P [y = 1 |x] >= 0.5\\
-0 & \textrm{caso opuesto}
-\end{array}\right.\]
+\[
+  f_{\mathcal{D}}(x) = \left\{\begin{array}{ll}
+                              1 & P [y = 1 |x] >= 0.5\\
+                              0 & \textrm{caso opuesto}
+                              \end{array}\right.
+\]
 
 Pero evidentemente asumimos que el algoritmo no tiene acceso a la distribución, sino solo a los datos 
 preetiquetados de $S$, y que por tanto no puede devolver el clasificador de Bayes directamente.
@@ -228,8 +237,9 @@ en $2^X$).
 Una clase de funciones $H \subseteq 2^X$ es APAC cognoscible sii existen 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow 2^X$ verificando que para todo
 $0 < \varepsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dado $m \ge m_H(\varepsilon, \delta)$:
-
-\[\mprob \bigg[L_{\dist,f}(A(S)) \le \inf_{h\in H} L_D(h) + \varepsilon \bigg] \ge 1-\delta \]
+\[
+  \mprob \bigg[L_{\dist,f}(A(S)) \le \inf_{h\in H} L_D(h) + \varepsilon \bigg] \ge 1-\delta 
+\]
 \end{definition}
 
 \subsection{Clasificación multiclase}
@@ -258,22 +268,26 @@ tenemos una relación tal cual se muestra en la figura siguiente:
  Si $H\subseteq 2^X$ es APAC propiamente cognoscible con funciones de pérdida $0-1$, entonces $H$ es PAC cognoscible.
 \end{fact}
 
-\begin{proof}
- Sea $f\in H$ y una distribución $\dist=(\Sigma,P)$ sobre $X$ verificando que $H\subseteq \Sigma$. Podemos ver 
- $\dist$ como una distribución que asigna a cada $x\in X$ la etiqueta $f(x)$. Por definición $\inf_{h\in H} L_{\dist}(h) = 0$. 
- Para terminar, dado $S=(z_1, \ldots, z_m)$ con $z_i = (x_i,y_i)$:
- \[L_{\dist}(h) = \expect_{x\sim \dist}\bigg(l \big(h,(x,f(x)) \big)\bigg) = \prob[f \cap h] = L_{\dist,f}(h)\]
- 
- donde $[f\cap h] \in \Sigma$ por hipótesis ($f,h\in H \subseteq \Sigma$).
- 
- Por otro lado:
- \[L_{S}(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i) = \frac{|\{i\in\{1,\ldots, m\}: h(x_i) \neq f(x_i)(= y_i)\}|}{m}\]
- 
- Además $l(h,\cdot)$ es $\Sigma$ medible ya que $l(h, \cdot)^{-1}(\{0\}) = [f = h] \in \Sigma$ y 
- $l(h, \cdot)^{-1}(\{1\}) = [f\neq h]$. Por hipótesis existiría un algoritmo $A$ y $m_H(\epsilon, \delta)$
- tal que para todo $m\ge m_H(\epsilon, \delta)$:
- 
- \[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \varepsilon \bigg] \ge 1-\delta\]
- 
- Luego $H$ sería PAC cognoscible.
-\end{proof}
+  \begin{proof}
+   Sea $f\in H$ y una distribución $\dist=(\Sigma,P)$ sobre $X$ verificando que $H\subseteq \Sigma$. Podemos ver 
+   $\dist$ como una distribución que asigna a cada $x\in X$ la etiqueta $f(x)$. Por definición $\inf_{h\in H} L_{\dist}(h) = 0$. 
+   Para terminar, dado $S=(z_1, \ldots, z_m)$ con $z_i = (x_i,y_i)$:
+   \[
+     L_{\dist}(h) = \expect_{x\sim \dist}\bigg(l \big(h,(x,f(x)) \big)\bigg) = \prob[f \cap h] = L_{\dist,f}(h)
+   \]
+   donde $[f\cap h] \in \Sigma$ por hipótesis ($f,h\in H \subseteq \Sigma$).
+   
+   Por otro lado:
+   \[
+     L_{S}(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i) = \frac{|\{i\in\{1,\ldots, m\}: h(x_i) \neq f(x_i)(= y_i)\}|}{m}
+   \]
+   
+   Además $l(h,\cdot)$ es $\Sigma$ medible ya que $l(h, \cdot)^{-1}(\{0\}) = [f = h] \in \Sigma$ y 
+   $l(h, \cdot)^{-1}(\{1\}) = [f\neq h]$. Por hipótesis existiría un algoritmo $A$ y $m_H(\epsilon, \delta)$
+   tal que para todo $m\ge m_H(\epsilon, \delta)$:
+   \[
+     \mprob \bigg[L_{\mathcal{D}}(A(S)) \le \varepsilon \bigg] \ge 1-\delta
+   \]
+   
+   Luego $H$ sería PAC cognoscible.
+  \end{proof}

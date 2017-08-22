@@ -83,8 +83,8 @@ que proporciona la verdadera etiqueta de todas las instancias.
 \item \textbf{Generación de instancias}: \fussy Se tiene $x\sim \mathcal{D} = (\Sigma, \prob)$. La distribución de probabilidad nos da 
 información sobre la probabilidad de extraer cada posible instancia desde  $x \in X$. 
 
-\item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1), \ldots, (x_m,y_m)) \in (X \times Y)^m$ 
-Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. Notaremos 
+\item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1), \ldots, (x_m,y_m))$, $S\in (X \times Y)^m$.
+Nótese que llamarlo conjunto puede dar lugar a confusión, puesto que se trata de una tupla. También notaremos 
 $S_x = (x_1, \ldots x_m)$.
 
 De momento asumiremos que las etiquetas del conjunto de entrenamiento se corresponden con el verdadero etiquetado: 
@@ -99,13 +99,15 @@ $\{h, h:X \rightarrow Y\} := 2^{X}$.
 
 \item \textbf{Error del clasificador}: Definimos el error del clasificador, suponiendo 
 $\{x\in X : h(x) \neq f(x)\} := [h\neq f] \in \Sigma$ como:
-
-\[L_{\mathcal{D},f}(h) :=  \prob [h \neq f]\]
+\[
+  L_{\mathcal{D},f}(h) :=  \prob [h \neq f]
+\]
 
 \item \textbf{Algoritmo de aprendizaje}: Llamamos algoritmo de aprendizaje a cualquier aplicación que tome conjuntos de 
 entrenamiento y devuelva hipótesis sobre el problema:
-
-\[A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}\]
+\[
+  A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}
+\]
 
 Asumimos que el algoritmo no tiene acceso a la función de verdadero etiquetado $f: X \rightarrow Y$ ni a
 la distribución $\mathcal{D}$.
@@ -119,7 +121,6 @@ contraposición al aprendizaje por lotes) y pasivo (el algoritmo no tiene intera
 \label{biyeccion-canonica} 
 En clasificación binaria, existe una biyección canónica entre la clase de hipótesis y el conjunto potencia de $X$, donde
 a cada hipótesis se le asigna su clase positiva:
-
 \begin{equation*}
  \begin{array}{rcl} 
   \{h, h:X \rightarrow Y\} & \longrightarrow & \mathcal{P}(X) \\
@@ -135,9 +136,9 @@ $h:X \rightarrow Y$ o con su conjunto asociado.
 
 \begin{definition}[Riesgo empírico]
 Definimos el riesgo empírico o error empírico de un clasificador $h:X \rightarrow Y$ como:
-
-\[L_S(h) = \frac{|\{i\in {1,\ldots, m}: h(x_i) \neq y_i\}|}{m}\]
-
+\[
+  L_S(h) = \frac{|\{i\in {1,\ldots, m}: h(x_i) \neq y_i\}|}{m}
+\]
 \end{definition}
 
 Es decir, es el error del clasificador $h$ sobre el conjunto de entrenamiento $S$. Nótese que si $[h\neq f]$ como hemos
@@ -147,28 +148,30 @@ tanto $L_S(h)^{-1}(]-\infty, a])$ sería un conjunto $\Sigma^m$ medible
 \begin{fact}
 Sea $H\subseteq 2^X$. Sea $\mathcal{D}$ distribución sobre $\mathcal{X}$. Sea $f \in H$ fija. Entonces para
 cualquier $h\in H$:
-\[\mexpect(L_S(h)) = L_{\dist,f}(h)\]
-
+\[
+  \mexpect(L_S(h)) = L_{\dist,f}(h)
+\]
 \end{fact}
 
-\begin{proof}
-  Llamamos $p= \prob [f\neq h]$
+  \begin{proof}
+   Llamamos $p= \prob [f\neq h]$.
 
-  Nótese que $h$ puede cometer como mucho $m$ errores.
-  
-  \begin{align*}
-  & \mexpect(L_S(h)) = \sum_{k=0}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} = \sum_{k=1}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k} =\\
-  & = \sum_{k=1}^m \binom{m-1}{k-1} p^k(1-p)^{m-k} = \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k+1}(1-p)^{m-1-k} = \\
-  & = p\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k}(1-p)^{m-1-k} = p(1+(1-p))^{m-1} = p
-  \end{align*}
-\end{proof}
+   Nótese que $h$ puede cometer como mucho $m$ errores.
+   \begin{align*}
+   \mexpect(L_S(h)) &= \sum_{k=0}^m \frac{k}{m} \binom{m}{k} p^k(1-p)^{m-k}\\
+                    &= \sum_{k=1}^m \binom{m-1}{k-1} p^k(1-p)^{m-k} \\
+                    &= p\cdot \sum_{k=0}^{m-1} \binom{m-1}{k} p^{k}(1-p)^{m-1-k}\\
+                    &= p(1+(1-p))^{m-1} = p
+   \end{align*}
+  \end{proof}
 
 
 \begin{definition}[Minimizador del riesgo empírico, ERM]
 Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un $ERM$ 
 (\textit{Empirical Risk Minimizer}) si busca una hipótesis cuyo error empírico sea mínimo:
-
-\[A(S) = \argmin_{h\in 2^X} L_S(h)\]
+\[
+  A(S) = \argmin_{h\in 2^X} L_S(h)
+\]
 \end{definition}
 
 Definimos $ERM(S)$ como todas las hipótesis producidas por algoritmos que son ERM
@@ -185,26 +188,25 @@ sea mínimo. Lo ilustramos en el siguiente ejemplo:
 Sea $X = \mathbb{R}$, $\mathcal{D}$ la distribución uniforme sobre $[0,2]\subset \mathbb{R}$, y la función
 $f= \mathds{1}_{[0,1]}$.
 
-
 Sea $S = ((x_1,y_1), \ldots (x_m, y_m))$ un conjunto de entrenamiento de tamaño $m$ sin elementos repetidos 
 y el clasificador:
-
-\[h_S(x) = \left\{\begin{array}{ll}
-y_i & \textrm{si } \exists i\in \{1\ldots m\} : x=x_i\\
-0   & \textrm{si } \nexists i\in \{1\ldots m\} : x=x_i
-\end{array}\right.\]
+\[
+  h_S(x) = \left\{\begin{array}{ll}
+                   y_i & \textrm{si } \exists i\in \{1\ldots m\} : x=x_i\\
+                   0   & \textrm{si } \nexists i\in \{1\ldots m\} : x=x_i
+                   \end{array}\right.
+\]
 
 No es difícil ver tomando $A(S) = h_S$, $A$ es un ERM. Pero se verifica $\prob[h_S \neq f] = 1/2$. $A(S)$ tiene el 
 mismo nivel de acierto que el clasificador idénticamente $1$. A este fenómeno lo denominamos \textit{overfitting}.
 \end{example}
 
 \begin{definition}[Overfitting]
-
  Dado $h: X\rightarrow Y$ clasificador, diremos que produce overfitting sobre el conjunto de entrenamiento 
  $S$ si se cumple $L_S(h) << L_{\mathcal{D},f}(h)$.
 \end{definition}
 
-Necesitamos incorporar, por tanto, \textbf{conocimiento previo} al problema, de manera que revisitamos la definición de riesgo
+Necesitamos incorporar, por tanto, \textit{conocimiento previo} al problema, de manera que revisitamos la definición de riesgo
 empírico.
 
 \subsection{ERM con sesgo inductivo}
@@ -217,8 +219,9 @@ características del problema y del conocimiento previo que tenemos del mismo.
 Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un $ERM$ con sesgo 
 inductivo hacia $H$ y lo abreviamos $ERM_H$, si busca una hipótesis en $H$ cuyo error empírico 
 sea mínimo, es decir:
-
-\[A(S) = \argmin_{h\in H} L_S(h)\]
+\[
+  A(S) = \argmin_{h\in H} L_S(h)
+\]
 \end{definition}
 
 Se define $ERM_H$ y $ERM_H(S)$ de manera análoga a $ERM$ y $ERM(S)$.
@@ -250,16 +253,21 @@ ${\bar{h}} \in H$ tal que $L_{D,f}(\bar{h}) = 0$, se verifica, con $A$ algoritmo
 Fijamos $A$ un $ERM_H$. Sabemos que por hipótesis de factibilidad existe $\bar{h} \in H$ tal que
 $L_{\mathcal{D},f}(\bar{h}) = \prob[\bar{h}\neq f] = 0$
 
-Entonces: \[\mprob[L_S(\bar{h}) > 0] = \mprob
-[\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \prob[h\neq f] = 0\]
+Entonces: 
+\[
+  \mprob[L_S(\bar{h}) > 0] = \mprob
+  [\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \prob[h\neq f] = 0
+\]
 
 Y como $[L_S(\bar{h}) = 0] \subseteq [L_S(A(S)) = 0]$ por ser $A(S) = \argmin_{h\in \mathcal{H}} L_S(h)$, deducimos:
-\[1 = \mprob[L_S(\bar{h}) = 0] \le \mprob[L_S(A(S)) = 0] \le 1\]
+\[
+  1 = \mprob[L_S(\bar{h}) = 0] \le \mprob[L_S(A(S)) = 0] \le 1
+\]
 
 Fijamos ahora $A$ un algoritmo. Veamos $L_{\dist,f}(A(S)) = L_{\dist,\bar{h}}(A(S))$:
   \begin{align*}
-  \prob[A(S) \neq f] &= \prob\bigg([A(S) \neq f \wedge f=h] \cup[A(S) \neq f \wedge f\neq h]\bigg) = \\
-  &= \prob[A(S) \neq f \wedge f=h] + \prob[A(S) \neq f \wedge f\neq h] = \\
+  \prob[A(S) \neq f] &= \prob\bigg([A(S) \neq f \wedge f=h] \cup[A(S) \neq f \wedge f\neq h]\bigg)\\
+  &= \prob[A(S) \neq f \wedge f=h] + \prob[A(S) \neq f \wedge f\neq h]\\
   &= \prob[A(S) \neq h \wedge f=h] + 0 = \prob[A(S)\neq h]
   \end{align*}
 \end{proof}
