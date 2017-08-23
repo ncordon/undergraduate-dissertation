@@ -18,45 +18,46 @@ datos de entrenamiento.
 \end{theorem}
 
 Supongamos que las muestras son de dimensión $d$. Fijamos una columna $j\in \{1, \ldots d\}$. Supuesto un
-conjunto de instancias de la clase positiva $\{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, supondremos que la
+conjunto de instancias de la clase positiva $\{x_i=(w_1^{(i)}, \ldots, w_d^{(i)})\}_{i=1}^m$, supondremos que la
 columna $j-$ésima de los datos está generada según una variable aleatoria $W_j$ de media $\mu_j$ y desviación
 típica $\sigma_j < \infty$.
 
 Sean $\mu_j', \sigma_j'$ la media y desviación típica muestrales, respectivamente. Las instancias sintéticas 
-que generaremos serán de la forma $w_j^{'(i)} = w_j^{(i)} - \frac{\sigma_j'}{\sqrt{m}} \cdot r_i$, con 
-$r_i\sim N(0,1)$, para $i=1, 2, \ldots, m$. Nótese la similitud de esta fórmula con \ref{th:tcl}, con la salvedad
-de que usamos los valores para la variable $W_j$ que conocemos en lugar de $\mu$, que es desconocida; y 
+que generaremos serán de la forma $w_j'(i) = w_j^{(i)} - \frac{\sigma_j'}{\sqrt{m}} \cdot r$, con 
+$r\sim N(0,1)$, para $i=1, 2, \ldots, m$. Nótese la similitud de esta fórmula con \ref{th:tcl}, con la salvedad
+de que usamos los valores para la variable $W_j$ que conocemos en lugar de $\mu_j$, que es desconocida; y 
 $\sigma_j'$ que es la varianza muestral no corregida, en lugar de la verdadera varianza muestral $\sigma_j$, 
 que tampoco la conocemos.
 
 \begin{theorem}
- La esperanza de la media muestral de las instancias $\{w_j^{'(i)}\}_{i=1}^m$ sintéticas es $\mu_j$. 
+ La esperanza de la media muestral de las instancias $\{w_j^{'}(i)\}_{i=1}^m$ sintéticas es $\mu_j$. 
  La esperanza de la varianza muestral tiende en $m$ a $\sigma_j^2$.
 \end{theorem}
 
-\begin{proof}
-Para la media:
- 
- \[\expect(W_j') = \expect(W_j) - \frac{\sigma_j'}{\sqrt{m}} \expect(r_i) = \mu_j\]
- 
- Puesto que $\expect(W_j) = \mu$ y $\expect(r_i) = 0$. Usando linealidad de la esperanza se prueba que
- $\expect\left(\frac{1}{m} \sum_{i=1}^m w_j'(i)\right) = \mu_j$.
- 
- Ahora dado $j$ arbitrario:
- 
- \begin{align*}
-   \expect \bigg(\bigg(W_j - \frac{r_i}{\sqrt{m}} \sigma_j' - \mu_j\bigg)^2\bigg) &= 
-   \expect \bigg((W_j - \mu_j)^2 \bigg) - \expect\bigg( 2 (W_j-\mu_j) \frac{r_i}{\sqrt{m}} \sigma_j' \bigg) + \\
-   &+ \expect\left(\frac{r_i^2}{m} \sigma_j'^2 \right) = \sigma_j^2 + 0 + \frac{1}{m}\sigma_j'^2
- \end{align*}
- 
- Sea $\tau_m = \frac{1}{m} \left(\sum_{i=1}^m w_j'(i) - \frac{1}{m} \sum_{i=1}^m w_j'(i)\right)^2$ la varianza muestral.
- 
- Es conocido que $\expect(\tau) = \frac{m-1}{m} Var(W_j') = 
- \frac{(m-1)}{m} \left(\sigma_j^2 + \frac{1}{m} \sigma_j'^2\right)$
+  \begin{proof}
+   Se tiene una variable aleatoria $W_j' = W_j - \frac{\sigma_j'}{\sqrt{m}} R$ donde $R\sim N(0,1)$.
+  
+   Para la media:
+   \[
+     \expect(W_j') = \expect(W_j) - \frac{\sigma_j'}{\sqrt{m}} \expect(R) = \mu_j
+   \]
+   
+   Puesto que $\expect(W_j) = \mu_j$ y $\expect(R) = 0$. Usando linealidad de la esperanza se prueba que
+   $\expect\left(\frac{1}{m} \sum_{i=1}^m w_j'(i)\right) = \mu_j$.
+   
+   Ahora dado $j$ arbitrario:
+   \begin{align*}
+     \expect \bigg(\bigg(W_j - R{\sqrt{m}} \sigma_j' - \mu_j\bigg)^2\bigg) &= 
+     \expect \bigg((W_j - \mu_j)^2 \bigg) - \expect\bigg( 2 (W_j-\mu_j) \frac{r_i}{\sqrt{m}} \sigma_j' \bigg) + \\
+     &+ \expect\left(\frac{R^2}{m} \sigma_j'^2 \right) = \sigma_j^2 + 0 + \frac{1}{m}\sigma_j'^2
+   \end{align*}
+   
+   Sea $\tau_m = \frac{1}{m} \sum_{i=1}^m \left(w_j'(i) - \frac{1}{m} \sum_{i=1}^m w_j'(i)\right)^2$ la varianza muestral.
+   Es conocido que $\expect(\tau_m) = \frac{m-1}{m} Var(W_j') = 
+   \frac{(m-1)}{m} \left(\sigma_j^2 + \frac{1}{m} \sigma_j'^2\right)$
 
- Luego $\lim_{m\rightarrow + \infty} \expect(\tau_m) = \sigma_j$.
-\end{proof}
+   Luego $\lim_{m\rightarrow + \infty} \expect(\tau_m) = \sigma_j^2$.
+  \end{proof}
 
 El algoritmo incluye una distinción para los atributos no numéricos, donde se establece una distribución uniforme
 para todos los valores que posean dichos atributos, y se le asigna a la instancia generada. En pseudocódigo
@@ -64,10 +65,9 @@ obtenemos:
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos positivos
+  \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, ejemplos positivos
   \REQUIRE $T$, número de instancias sintéticas deseado
-  \STATE{$S = \spos_x = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$}
-  \STATE{$S'= \emptyset$}
+  \STATE{Inicializar $S'= \emptyset$}
   \NEWLINE
   \FOR{Cada atributo atributo $j=1, \ldots, d$}
     \IF{El atributo $j-$ésimo es numérico}
@@ -78,9 +78,9 @@ obtenemos:
   \STATE{Hacer $M = \left\lceil T/m \right\rceil$}
   \FOR{$t=1, \ldots, M$}
     \FOR{$i=1,\ldots, m$}
-      \STATE{Escoger $r \sim N(0,1)$}
       \FOR{$j=1, \ldots, d$}
          \IF{El atributo $j-$ésimo es numérico}
+           \STATE{Escoger $r \sim N(0,1)$}
 	   \STATE{$w_j = w_j^{(i)} - \frac{\sigma_j'}{\sqrt{m}} \cdot r$}
 	 \ELSE
 	   \STATE{Escoger $w_j$ de manera uniforme sobre $\{w_j^{(1)}, \ldots w_j^{(m)}\}$}

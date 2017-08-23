@@ -1,7 +1,7 @@
 \section{Algoritmos RACOG y wRACOG}
 Sea un subconjunto $\spos$ de ejemplos de clase positiva de un conjunto de entrenamiento, donde cada $(x,y)\in \spos$ 
 verifica que $x = (w_1, \ldots, w_d)$ es $d-$dimensional. Los algoritmos RACOG y wRACOG parten de la base de que lo que vamos
-a aproximar es una distribución discreta, aunque no lo sea y podemos obtener instancias siguiendo una distribución 
+a aproximar es una distribución discreta, y podemos obtener instancias siguiendo una distribución 
 conjunta $P(W_1, \ldots, W_d)$.
 
 El problema es que calcular la anterior distribución es muy costoso, dado que tendríamos un número de posibles valores para 
@@ -16,8 +16,15 @@ es decir, para decidir qué valor le damos a cada $n(i)$, se usa el algoritmo \r
 que minimiza la distancia de Kullback-Leibler entre dos distribuciones. Esta distancia proporciona una medida de la 
 aproximación de una distribución de probabilidad $Q$ a la verdadera distribución $P$, usando teoría de la información. 
 Está definida como la esperanza de la diferencia logarítmica entre ambas distribuciones:
+\[
+  D_{KL}(P \parallel Q) = \sum_{i} P(i) \left(\log P(i) - \log Q(i)\right)
+\]
 
-\[D_{KL}(P \parallel Q) = \sum_{i} P(i) \left(\log P(i) - \log Q(i)\right)\]
+Debemos recordar que la definición de información mutua para dos variables aleatoria $W_i, W_j$, discretas, 
+se define como:
+\[
+  I(W_i, W_j) = \sum_{w_1\in W_1} \sum_{w_2\in W_2} p(w_1, w_2) \log\left(\frac{p(w_1,w_2)}{p(w_1) p(w_2)}\right)
+\]
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -34,7 +41,8 @@ mútua de los arcos}
 \end{algorithm}
 
 Una vez construido el árbol, es fácil, mediante el siguiente algoritmo obtener un grafo dirigido, en que a
-cada nodo (variable en la distribución), llega un único arco.
+cada nodo (variable en la distribución), tiene un único padre. Lo hacemos recorriendo el árbol desde la raíz
+y actualizando el conjunto de nodos que pueden ir siendo padres de otros nodos, $H$.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -45,9 +53,10 @@ cada nodo (variable en la distribución), llega un único arco.
  \WHILE{Mientras $E\neq \emptyset$ y $H\neq \emptyset$}
    \STATE{Toma $h\in H$, y actualiza $H = H\setminus \{h\}$}
    \STATE{Calcula $J = \{(u,v)\in E: u=h \vee v=h\}$}
-   \STATE{Calcula $J' = \{(u,v) : [(u,v)\in J, u=h] \vee [((v,u)\in J, v=h]\}$}
+   \STATE{Calcula $J' = \{(u,v) : [(u,v)\in J, u=h] \vee [(v,u)\in J, u=h]\}$}
    \STATE{$E = E\setminus J$}
    \STATE{$E'= E'\cup J'$}
+   \STATE{$H = H \cup \{v : (u,v) \in J'\}$}
  \ENDWHILE
  \NEWLINE
  \RETURN{$G'$}
@@ -60,20 +69,22 @@ Por tanto queda un algoritmo para aproximar la distribución de los ejemplos pos
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, instancias
+  \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots, w_d^{(i)})\}_{i=1}^m$, instancias
   \STATE{Calcular $G' = (E',V')$ árbol de dependencia según Chow Liu}
-  \STATE{Construir $G$ un grafo no dirigido con \ref{alg:make-directed} desde $G'$, $E$ arcos, $r$ raíz}
+  \STATE{Construir $G$ un grafo no dirigido con algoritmo \ref{alg:make-directed} desde $G'$,
+  donde $E$ son los arcos, $r$ la raíz. Definimos $P(W_r|n(r)) := P(W_r)$}
   \FOR{$(u,v) \in E$}
-    \STATE{Calcular $\bar{P}(W_v \mid W_u)$}
-    \STATE{Calcular $P_{abs}(W_u)$}
+    \STATE{Hacer $n(v) = u$}
+    \STATE{Calcular $P(W_v \mid W_u)$}
+    \STATE{Calcular $P(W_u), P(W_v)$}
   \ENDFOR
-  \RETURN{$P(w_1, \ldots w_m)$, construida con $P_{abs}$ y $\bar{P}$}  
+  \RETURN{$\{P(W_v \mid W_u), P(W_u), P(W_v)\}_{(u,v)\in E}$}  
 \end{algorithmic}
 \caption{Algoritmo AproximarDistribución}
 \label{alg:aproxdist}
 \end{algorithm}
 
-Nótese tenemos la distribución almacenada como marginales, y que por tanto necesitamos aún una forma de extraer
+Nótese que tenemos la distribución almacenada como marginales, y que por tanto necesitamos aún una forma de extraer
 muestras desde ella. Se usará para la construcción de ejemplos mediante dicha distribución un método de Monte 
 Carlo llamado GibbsSampler. Se parte de cada ejemplo, y se construye un nuevo ejemplo basado en el anterior y 
 la distribución conjunta aproximada. El método de Monte Carlo con dicho algoritmo consiste en ir construyendo 
@@ -82,8 +93,8 @@ $m$ cadenas de Markov, una para cada instancia, de manera que iteramos una vez c
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, instancias
-  \REQUIRE $P(w_1, \ldots, w_d)$, distribución conjunta
+  \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots, w_d^{(i)})\}_{i=1}^m$, instancias
+  \REQUIRE $\{P(W_v \mid W_u), P(W_u)\}_{(u,v)\in E}$
   \FOR{$i=1, \ldots, m$}
     \FOR{$k=1,\ldots, d$}
       \STATE{$\bar{w}_k^{(i)} \sim P(W_k \mid \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})$}
@@ -99,9 +110,9 @@ $m$ cadenas de Markov, una para cada instancia, de manera que iteramos una vez c
 
 
 Nótese además que fijado $k\in \{1, \ldots, d\}$, tenemos: 
-
-\[P(W_k \mid \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)}) = 
- \frac{P(W_k, \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})}
+\[
+  P(W_k \mid \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)}) = 
+  \frac{P(W_k, \bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})}
       {P(\bar{w}_1^{(i)}, \ldots, \bar{w}_{k-1}^{(i)}, w_{k+1}^{(i)} \ldots, w_{d}^{(i)})}
 \]
 
@@ -110,30 +121,31 @@ son valores fijos para cualquier valor que pueda tomar $W_k$, no nos hace falta 
 numerador lo calculamos como $\prod_{i=1}^d P(W_i \mid W_{n(i)})$, también encontramos una serie de términos 
 multiplicando que no debemos calcular, todos aquellos que cumplan $i\neq k \wedge n(i) \neq k$.
 
-Una última observación: el cálculo de $P(W_d \mid w_{n(d)})$ es directo. Pero el cálculo de 
-$P(w_i \mid W_{n(i)})$ donde $n(i) = d$ debe hacerse usando el teorema de Bayes:
-
-\[P(w_i \mid W_{n(i)} = a) = \frac{P(W_{n(i)} = a \mid w_i)}{P(W_{n(i)} = a)} \cdot P(w_i)\] 
+Una última observación: el cálculo de $P(W_k \mid W_{n(k)} = w_{n(k)})$ es directo. Pero el cálculo de 
+$P(W_k = w_k \mid W_{n(k)})$ donde $n(i) = d$ debe hacerse usando el teorema de Bayes:
+\[
+  P(W_i = w_i \mid W_{n(i)} = a) = \frac{P(W_{n(i)} = a \mid W_i = w_i)}{P(W_{n(i)} = a)} \cdot P(W_i = w_i)
+\] 
 
 \subsection{RACOG}
 RACOG (\textit{Rapidly Converging Gibbs}) consiste en ir construyendo una cadena de Markov para cada una de 
 las $m$ instancias minoritarias, de manera que descartamos las $\beta$ primeras instancias producidas para 
 cada ejemplo del conjunto positivo, y a partir de entonces cada $\alpha$ iteraciones se va escogiendo una. 
-Esto permite, según la literatura existente, perder dependencia de los valores iniciales en la cadena 
-(parámetro $\beta$ o burnin), así como reducir la dependencia en la generación de sucesivas instancias 
+Esto permite, según \citep{das2015}, perder dependencia de los valores iniciales en la cadena 
+(parámetro $\beta$ o \textit{burnin}), así como reducir la dependencia en la generación de sucesivas instancias 
 (parámetro $\alpha$ o \textit{lag}).
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos positivos
+  \REQUIRE $S = \{x_1, \ldots x_m\}$, ejemplos positivos
   \REQUIRE $\beta$, burnin
   \REQUIRE $\alpha$, lag
-  \REQUIRE $T$, número de iteraciones
-  \STATE{$S = \spos_x$}
+  \REQUIRE $T$, número de instancias sintéticas a generar
   \STATE{$P = \textrm{AproximarDistribución}(S)$}
   \STATE{$S'= \emptyset$}
+  \STATE{$M = \left\lceil\frac{\alpha}{m}\right\rceil \cdot T + \beta$}
   \NEWLINE
-  \FOR{$t=1,\ldots, T$}
+  \FOR{$t=1,\ldots, M$}
     \STATE{$S = \textrm{GibbsSampler}(S, P)$}
     \NEWLINE
     \IF{$t > \beta$ \AND $t\mod(\alpha) = 0$}
@@ -141,6 +153,7 @@ Esto permite, según la literatura existente, perder dependencia de los valores 
     \ENDIF
   \ENDFOR
   \NEWLINE
+  \STATE{$S' =$ Escoger $T$ instancias aleatorias de entre $S'$}
   \RETURN{$S'$, ejemplos positivos sintéticos}    
 \end{algorithmic}
 \caption{Algoritmo de \textit{oversampling} RACOG}
@@ -156,14 +169,14 @@ El algoritmo RACOG presenta un problema: depende de los parámetros de \textit{b
 es el usuario quien decide el número de instancias que desea. El algoritmo wRACOG (\textit{wrapper-based RACOG}),
 por el contrario, encapsula las iteraciones de GibbsSampler de manera que se proporcionan un conjunto de 
 entrenamiento y otro de validación. A cada iteración, se efectúa una iteración del GibbsSampler, se añaden 
-las instancias mal clasificadas por el modelo obtenido por un \textit{wrapper} de entre las muestras sintéticas, 
-se añaden al conjunto de sintéticas, y se genera un nuevo \textit{train} y un nuevo modelo. Se deja de iterar 
+las instancias mal clasificadas por el modelo obtenido por un \textit{wrapper} de entre las muestras sintéticas
+al conjunto de sintéticas, y se genera un nuevo \textit{train} y un nuevo modelo. Se deja de iterar 
 cuando se verifica un criterio sobre el conjunto de validación.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $S_{train} = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, conjunto de \textit{train}
-  \REQUIRE $S_{val} = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, validación
+  \REQUIRE $S_{train} = \{z_1=(x_1, y_1), \ldots, z_m=(x_m, y_m)\}$, conjunto de \textit{train}
+  \REQUIRE $S_{val}$, conjunto de validación
   \REQUIRE $wrapper$, clasificador
   \REQUIRE $T$, número de iteraciones a considerar
   \REQUIRE $\alpha$, parámetro de tolerancia

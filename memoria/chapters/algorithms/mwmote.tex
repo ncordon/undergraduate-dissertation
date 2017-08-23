@@ -1,10 +1,10 @@
 \section{Algoritmo MWMOTE}
-El algoritmo SMOTE presentado anteriormente en \ref{alg:smote} presenta el problema de que no incluye detección de
+El algoritmo \ref{alg:smote} presentado anteriormente presenta el problema de que no incluye detección de
 las instancias en la frontera entre ambas clases, que son en muchas ocasiones las más complicadas de aprender y las que más
 información aportan, debido a la habitual existencia de \textit{overlaping} entre clases en dichas zonas. Tras SMOTE surgió
 Borderline-SMOTE que detectaba instancias en la frontera bajo la tesis de que para una instancia minoritaria en la frontera,
-al efectuar el cálculo de sus $k$ vecinos más cercanos, más de la mitad sería mayor o igual que la mitad (dado que la
-clase mayoritaria tiene mayor representación en los datos).
+al efectuar el cálculo de sus $k$ vecinos más cercanos, más de la mitad serían instancias negativas, dado que la
+clase mayoritaria tiene mayor número de instancias.
 
 La última afirmación presenta problemas básicos como que instancias ruidosas podrían ser consideradas como fronterizas, o que
 el valor de $k$ no puede ser el mismo para todas las zonas del espacio, puesto que habrá zonas mucho más infrarrepresentadas
@@ -15,7 +15,7 @@ espacio de dichas regiones, podiendo ocasionar ruido en regiones de instancias n
 El algoritmo MWMOTE (\textit{Majority Weighted Minority Oversampling Technique}) surge como una modificación de SMOTE para poner 
 solución a los anteriores problemas. Sea $\spos = \{x_1, \ldots x_m\}$, clase minoritaria y $\sneg = \{y_1, \ldots y_m\}$, 
 clase mayoritaria, con $S= \spos \cup \sneg$ el conjunto de entrenamiento. Se usará KNN con distancia euclídea, donde notaremos
-$d(x,y)$ a la distancia euclídea entre $x$ e $y$. Notaremos para una instancia $x\in S$, $NN^{k}(x)$ a su $k$-KNN vecindario, 
+$d(x,y)$ a la distancia euclídea entre $x$ e $y$. Notaremos para una instancia $x\in S$, $NN^{k}(x)\subseteq S$ a su $k$-KNN vecindario, 
 esto es, el conjunto de las $k$ más cercanas (con distancia euclídea) a $x$. Notaremos $NN_{+}^k(x)$ a su $k$-KNN vecindario 
 positivo, esto es las $k$ instancias más cercanas pertenecientes a $\spos$. Análogamente definimos $NN_{-}^k(x) \subseteq \sneg$ 
 como el $k$-vecindario negativo de una instancia.
@@ -28,12 +28,12 @@ como el $k$-vecindario negativo de una instancia.
   \REQUIRE $k_{1}$, parámetro de KNN para filtrar ruido de $\spos$
   \REQUIRE $k_{2}$, parámetro de KNN para calcular frontera $U \subseteq \sneg$
   \REQUIRE $K_{3}$, parámetro de KNN para calcular frontera $V \subseteq \spos$
-  \REQUIRE $\alpha$, umbral de tolerancia en la cercanía a la frontera.
-  \REQUIRE $C$, ponderación de la cercanía a la frontera.
-  \REQUIRE $C_{clust}$, parámetro del \textit{clustering} para determinar número de clústers.
+  \REQUIRE $\alpha$, umbral de tolerancia en la cercanía a la frontera
+  \REQUIRE $C$, ponderación de la cercanía a la frontera
+  \REQUIRE $C_{clust}$, parámetro del \textit{clustering} para determinar el número de clústers
   \STATE{Inicializar $S' = \emptyset$, instancias sintéticas}
   \STATE{Para cada $x\in \spos$, calcular su $k_{1}$ KNN vecindario, $NN^{k_1}(x)$}
-  \STATE{Hacer $\spos_f = \spos - \{x\in \spos : NN(x) \cap \spos = \emptyset\}$}
+  \STATE{Hacer $\spos_f = \spos - \{x\in \spos : NN^{k_1}(x) \cap \spos = \emptyset\}$}
   \STATE{Calcular frontera negativa $U = \underset{x\in \spos_f}{\bigcup} NN_{-}^{k_2}(x)$}
   \STATE{Calcular frontera positiva $V = \underset{x\in U}{\bigcup} NN_{+}^{k_3}(x)$}
   \STATE{Para cada $x\in V$, calcular $P(x) = \sum_{y\in U} I_{\alpha,C}(x,y)$}
@@ -64,13 +64,14 @@ ya expresado para $U$.
 MWMOTE tiene 3 objetivos fundamentales: dar mayor peso a instancias minoritarias fronterizas, a instancias pertenecientes
 a clústeres de baja representación, y a instancias minoritarias muy cerca de zonas con muchas instancias mayoritarias.
 
-Definimos el peso informativo de $x$ respecto a $y$ como $I_{\alpha,C}(x,y) = C_f(x,y) \cdot D_f(x,y)$, donde si $x \notin NN_{+}(y)$,
-entonces $I_w(x,y) = 0$. Caso opuesto, se toma:
-
-\[f(x) = \left\{\begin{array}{ll} 
+Definimos el peso informativo de $x$ respecto a $y$ como $I_{\alpha,C}(x,y) = C_f(x,y) \cdot D_f(x,y)$, donde si 
+$x \notin NN_{+}^{k_3}(y)$, entonces $I_{\alpha,C}w(x,y) = 0$. Caso opuesto, se toma:
+\[
+  f(x) = \left\{\begin{array}{ll} 
                 x &, x\le \alpha \\
                 C & \textrm{en otro caso}
-               \end{array}\right.,\qquad C_f(x,y) = \frac{C}{\alpha} \cdot f\left(\frac{d}{d(x,y)}\right)\]
+               \end{array}\right.,\qquad C_f(x,y) = \frac{C}{\alpha} \cdot f\left(\frac{d}{d(x,y)}\right)
+\]
 
 $C_f$ es un factor que mide la cercanía a $y$, es decir, mide la cercanía entre dos instancias fronterizas. Se toma 
 $D_f(x,y) = \frac{C_f(x,y)}{\sum_{z\in V} C_f(z,y)}$, factor de densidad, de manera que una instancia perteneciente

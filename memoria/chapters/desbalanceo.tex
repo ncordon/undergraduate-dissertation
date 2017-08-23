@@ -15,7 +15,7 @@ Llamamos instancias positivas a $Z^{+} = \{(x,y)\in Z: y=1\}$.
 
 LLamamos instancias negativas a $Z^{-} = \{(x,y)\in Z: y=-1\}$.
 
-Una notación equivalente se aplica a $S$. Además llamamos $\ppos = P(Z_{+})$ y $\pneg = P(Z_{-})$.
+Una notación equivalente se aplica a $S$, conjunto de entrenamiento. Además llamamos $\ppos = P(Z_{+})$ y $\pneg = P(Z_{-})$.
 \end{definition}
 
 
@@ -24,13 +24,13 @@ Una notación equivalente se aplica a $S$. Además llamamos $\ppos = P(Z_{+})$ y
  Decimos que un problema de clasificación binaria es desbalanceado (entre clases) si se verifica que tomando 
  $\nneg = |S^{-}|$ y $\npos = |S^{+}|$, entonces $\npos < \nneg$.
  
- Llamamos ratio de desbalanceo a $r(S)=\frac{\nneg}{\npos}$.
+ Llamamos ratio de desbalanceo a $r(S)=\frac{\npos}{\nneg}$.
 \end{definition}
 
-Por convención se consideran problemas de desbalanceo donde $r(S) \gg 1$, tal y como se afirma en \cite{he2009}. Asimismo,
+Por convención se consideran problemas de desbalanceo donde $r(S) \ll 1$, tal y como se afirma en \citep{he2009}. Asimismo,
 en estos problemas nos interesa especialmente mejorar el error de los clasificadores sobre la clase minoritaria o positiva.
 
-En muchas ocasiones, al realizar análisis de datos no se tiene en cuenta el desbalanceo existente entre clases, lo
+En innumerables ocasiones, al realizar análisis de datos, no se tiene en cuenta el desbalanceo existente entre clases, lo
 cual hace que los algoritmos no reflejen adecuadamente la distribución de las clases. Para ciertos conjuntos de datos,
 donde el número de instancias positivas con respecto a las negativas es muy pequeño, un clasificador podría simplemente
 etiquetar todas las instancias como negativas, y obtener un error global pequeño, pero no acertaría en ninguna instancia
@@ -50,8 +50,8 @@ El desbalanceo puede ser:
   los datos, sino por factores como por ejemplo la complejidad para extraer la misma cantidad de datos de la misma clase.
 \end{enumerate}
 
-También podemos decir existe desbalanceo \textbf{intra clases} cuando además la clase minoritaria está repartida en varias 
-regiones no conexas, a saber $\sneg \supset A_1, \ldots A_m$ donde $|A_1| \le \ldots \le |A_m|$, con algún menor o igual estricto.
+También podemos decir que existe desbalanceo \textit{intra clases} cuando además la clase minoritaria está repartida en varias 
+regiones no conexas, a saber $\spos \supset A_1, \ldots A_m$ donde $|A_1| \le \ldots \le |A_m|$, con algún menor o igual estricto.
 Esto dificulta aún más la correcta clasificación de dichas instancias, porque aparecen zonas con instancias positivas 
 pobremente representadas. A estas zonas de baja representación las llamamos instancias raras. Nótese que hay que distinguir
 el concepto de instancia rara de otro concepto que surge en ciencia de datos: el concepto de ruido, instancias aisladas completamente.
@@ -59,13 +59,13 @@ el concepto de instancia rara de otro concepto que surge en ciencia de datos: el
 La aparición de instancias raras no sólo se debe al desbalanceo de clases, sino que se puede deber a un amplio rango de factores 
 que afectan a la complejidad de los datos: \textit{overlapping} ($\sneg_x \cap \spos_x \neq \emptyset$), falta de 
 representatividad en los datos, \textit{small disjuncts}, etc. En general, los clasificadores intentan aprender a partir de una clase 
-creando reglas (conceptos) disjuntas que agrupen a instancias. Como consecuencia de la infrarrepresentación de instancias, podemos 
-tener reglas que cubran una pequeña porción de las instancias de la clase positiva. Estas instancias conforman lo que llamamos 
-un \textit{small-disjunct}. Los \textit{small-disjuncts} no sólo afectan a la clase minoritaria, sino que pueden darse también 
-dentro de la mayoritaria, aunque la mayor densidad de datos de esta clase hace que el efecto no sea tan agravado o 
-sea una situación menos frecuente. De hecho hay estudios como \cite{jo2004} que sostienen que no sólo el desbalanceo de clases
-es el responsable de la pérdida de acierto de los clasificadores, sino que los \textit{small disjuncts} son un factor muy a tener en
-cuenta en la degradación del rendimiento de los mismos.
+creando reglas (conceptos) disjuntas que agrupen a instancias. Como consecuencia de la infrarrepresentación de instancias y del 
+desbalanceo \textit{intra clases}, podemos tener reglas que cubran una pequeña porción de las instancias de la clase 
+positiva. Estas instancias conforman lo que llamamos un \textit{small disjunct}. Los \textit{small disjuncts} no sólo afectan 
+a la clase minoritaria, sino que pueden darse también dentro de la mayoritaria, aunque la mayor densidad de datos de esta clase 
+hace que el efecto no sea tan agravado o sea una situación menos frecuente. De hecho hay estudios como \citep{jo2004} que sostienen 
+que no sólo el desbalanceo de clases es el responsable de la pérdida de acierto de los clasificadores, sino que los \textit{small disjuncts}
+son un factor muy a tener en cuenta en la degradación del rendimiento de los mismos.
 
 \imgcaption{./imgs/desbalanceo.png}{Ejemplo de dataset con desbalanceo}{0.85}
 
@@ -79,7 +79,7 @@ El \textit{undersampling} consiste en escoger un subconjuto $E \subseteq \sneg$,
 y tenemos un problema de clasificación con el conjunto de entrenamiento $S'$. Normalmente $E$ se genera de manera que se
 intentan eliminar instancias que aportan información redundante dentro del conjunto de instancias negativas.
 
-Suponemos también que tanto el \textit{oversampling} como el \textit{undersampling} se realiza de manera que $r(S') < r(S)$.
+Suponemos también que tanto el \textit{oversampling} como el \textit{undersampling} se realiza de manera que $r(S') > r(S)$.
 
 La gran ventaja de los métodos de \textit{sampling} respecto a otros como \textit{cost-sensitive} es su flexibilidad, puesto
 que podemos aplicárselos a cualquier clasificador.
@@ -120,21 +120,22 @@ encontrarnos algoritmos clásicos modificados para implementar \textit{cost sens
 \end{table}
 
 Para definir medidas de bondad necesitaremos tener en cuenta la matriz de confusión, donde $VP$ (verdaderos positivos) 
-representará el número de instancias positivas clasificadas como positivas; $FP$ (falsos positivos) representará las instancias
+representará el número de instancias positivas de $S$ clasificadas como positivas; $FP$ (falsos positivos) representará las instancias
 verdaderamente negativas pero que han sido clasificadas como positivas; $FN$ (falsos negativos) reprensetará instancias 
 positivas que han sido clasificadas como negativas; y $VN$ (verdaderos negativos) reprensentará instancias negativas
 correctamente clasificadas como negativas. Obsérvese además $\npos = VP + FN$ y $\nneg = FP + VN$, con $N = \npos + \nneg$.
 
 La medida de bondad habitual en clasificación es el acierto o exactitud: $e = \frac{VP + VN}{N}$. Esta medida presenta el
 problema en clasificación desbalanceada de que podríamos tener una exactitud muy alta, pero un acierto nulo sobre la clase 
-minoritaria. Necesitamos medidas que prioricen el acierto o al menos lo ponderen más en clasificación desbalanceada.
+minoritaria. Necesitamos medidas que prioricen el acierto sobre la clase positiva, o al menos lo ponderen 
+más, en clasificación desbalanceada.
 
 A tal efecto, podemos definir la precisión como $p = \frac{VP}{VP + FP}$, esto es, el nivel de acierto sobre las instancias 
 clasificadas como positivas. También tenemos en cuenta la sensibilidad, $s = \frac{VP}{\npos}$ que cuantifica las instancias
 positivas verdaderamente etiquetadas como tales, es decir, lo completa que ha sido la clasificación en términos de la clase
 minoritaria, reteniendo la información necesaria para clasificar las instancias positivas como tales.
 
-También se define el $F$-score como $F_{\beta} = \frac{1 + \beta^2}{\frac{\beta^2}{s} + \frac{1}{p}}$ como una media 
+También se define el $F$-score como $F_{\beta} = \frac{1 + \beta^2}{\frac{\beta^2}{s} + \frac{1}{p}}$, una media 
 ponderada de la sensibilidad y la precisión, donde cuantificamos la precisión con un factor $\beta$ de importancia sobre 
 la sensibilidad. De hecho en el caso $\beta = 1$ tenemos una media armónica de precisión y sensibilidad. También puede 
 expresarse como $F_{\beta} = \frac{(1+\beta^2) VP}{(1+\beta^2) VP + \beta^2 FN + FP}$.
@@ -142,22 +143,22 @@ expresarse como $F_{\beta} = \frac{(1+\beta^2) VP}{(1+\beta^2) VP + \beta^2 FN +
 Análogamente al $F$-score podemos definir la media geométrica de la precisión y la sensibilidad $G = \sqrt{s\cdot p}$, que
 cuantificaría ambas medidas por igual, siendo menos sensible a que una de ellas sea exageradamente buena y la otra no.
 
-Como última medida que vamos a considerar, tenemos el $AUC$ (\textit{area under the curve}). Para entender lo que es el $AUC$
-necesitamos antes definir la curva $ROC$ (\textit{receiver operating characteristic curve}), que se obtiene al representar en el eje
-de abcisas la tasa de falsos positivos o (1-especificidad) $\frac{VP}{\npos}$ , y en el eje de ordenadas la tasa de verdaderos positivos
-o sensibilidad del clasificador, de manera que nos queda un punto en el espacio $[0,1]\times [0,1]$. La curva $ROC$ se obtiene al unir 
+Como última medida que vamos a considerar, tenemos el $AUC$ (\textit{Area Under the Curve}). Para entender lo que es el $AUC$
+necesitamos antes definir la curva $ROC$ (\textit{Receiver Operating Characteristic curve}), que se obtiene al representar en el eje
+de abcisas la tasa de falsos positivos o (1-especificidad) $\frac{FP}{\nneg}$ , y en el eje de ordenadas la tasa de verdaderos positivos
+o sensibilidad del clasificador, de manera que nos quedan puntos en el espacio $[0,1]\times [0,1]$. La curva $ROC$ se obtiene al unir 
 todos los puntos de los que dispongamos para un clasificador (por ejemplo si hacemos una validación cruzada, o si consideramos distribuciones
 acumuladas sobre los datos). Intuitivamente, cuanto más cerca del punto $(0,1)$ (acertamos todos los ejemplos verdaderamente positivos,
 sin ningún falso positivo), mucho mejor $AUC$ obtendremos. La bisectriz $y=x$ marca el clasificador aleatorio (equivalente a lanzar 
 una moneda al aire) que asigna la mitad de instancias a cada clase.
 
-\imgcaption{./imgs/ROC.png}{Curva ROC}{0.85}
+\imgcaption{./imgs/ROC.png}{Curva ROC}{0.80}
 
 \section{Estado del arte del \textit{oversampling}}
-A día de hoy, el algoritmo SMOTE, propuesto por \citealt{chawla02} sigue siendo una de las referencias en el campo del 
+A día de hoy, el algoritmo SMOTE, propuesto en \citep{chawla02} sigue siendo una de las referencias en el campo del 
 \textit{oversampling} para clasificación desbalanceada, dada su idea simple pero eficaz de rellenar zonas visuales no 
-cubiertas con instancias a partir de instancias generadas en la recta que une otras dos. Damos una breve descripción
-del algoritmo.
+cubiertas con instancias minoritarias a partir de instancias generadas en la recta que une otras dos 
+minoritarias. Damos una breve descripción del algoritmo.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -170,7 +171,7 @@ del algoritmo.
   \NEWLINE
   \FOR{$x\in \spos$}
     \FOR{$m=1, \ldots, M$}
-      \STATE{Escoger un vecino más cercano para $x$, a saber, $y$}
+      \STATE{Escoger un vecino más cercano aleatorio para $x$, a saber, $y$}
       \STATE{Seleccionar $r$ en $[0,1]$ de manera uniforme}
       \STATE{$S' = S'\cup \{x + r(y-x)\}$}
     \ENDFOR

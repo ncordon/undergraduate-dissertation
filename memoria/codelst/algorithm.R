@@ -1,6 +1,6 @@
-samples <- cleanAndFormatSamples(samples)
+  samples <- cleanAndFormatSamples(samples)
 
-# Cuerpo del algoritmo
+  # Cuerpo del algoritmo
 
-samples <- originalFormat(samples)
-return(samples)
+  samples <- originalFormat(samples)
+  return(samples)

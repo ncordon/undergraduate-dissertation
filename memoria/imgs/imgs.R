@@ -24,4 +24,4 @@ ggsave(filename="desbalanceo.png",width=7, height=5)
 # Curva ROC
 ############################################################################
 data("aSAH")
-roc(aSAH$outcome, aSAH$s100b, plot = TRUE, xlab="Falsos positivos", ylab="Verdaderos positivos")
+roc(aSAH$outcome, aSAH$s100b, plot = TRUE, xlab="especificidad", ylab="sensibilidad")

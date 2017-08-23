@@ -2,11 +2,15 @@
 \subsection{Motivación}
 Dada una función de distribución de $X$ variable aleatoria, $F(x)$, si esta función es derivable casi seguramente entonces
 podemos tomar la función de densidad como la derivada de la función de distribución, casi seguramente, es decir:
-\[f(x) = \lim_{h\rightarrow 0} \frac{F(x+h) - F(x-h)}{2h} = \lim_{h\rightarrow 0} \frac{P(x-h < X \le x+h)}{2h}\]
+\[
+  f(x) = \lim_{h\rightarrow 0} \frac{F(x+h) - F(x-h)}{2h} = \lim_{h\rightarrow 0} \frac{P(x-h < X \le x+h)}{2h}
+\]
 
 Si tenemos muestras aleatorias de $X$, a saber, $X_1, \ldots X_n$ y $x_1, \ldots x_n$ una realización muestral, entonces un 
 estimador para $f$ sería:
-\[\widehat{f}(x) = \frac{1}{2hn} \bigg[\textrm{Número de } x_1, \ldots, x_n \textrm{ que se quedan en ]x-h, x+h[}\bigg]\]
+\[
+  \widehat{f}(x) = \frac{1}{2hn} \bigg[\textrm{Número de } x_1, \ldots, x_n \textrm{ que se quedan en ]x-h, x+h[}\bigg]
+\]
 
 Es decir, definiendo $\omega(x) = \left\{\begin{array}{ll} 
                                 \frac{1}{2} &, |x| < 1\\
@@ -15,22 +19,30 @@ Es decir, definiendo $\omega(x) = \left\{\begin{array}{ll}
                                 
                                 
 y $w_h(x) = w\left(\left|\frac{x}{h}\right|\right)$, podríamos reformular $\widehat{f}$ como:
-\[\widehat{f}(x) = \frac{1}{nh} \sum_{i=1}^n \omega_h(x-x_i)\]
+\[
+  \widehat{f}(x) = \frac{1}{nh} \sum_{i=1}^n \omega_h(x-x_i)
+\]
 
-Es decir, supuestas que las observaciones $x_1, \ldots, x_n$ se distancian múltiplos de $2h$ (caen en el centro de intervalos
-de longitud $2h$, habríamos construido $\widehat{f}$ a base de un histograma donde cada barra tiene ancho $2h$ y altura 
+Es decir, supuesto que las observaciones $x_1, \ldots, x_n$ se distancian múltiplos de $2h$ (caen en el centro de intervalos
+de longitud $2h$), habríamos construido $\widehat{f}$ a base de un histograma donde cada barra tiene ancho $2h$ y altura 
 $\frac{1}{2nh} \cdot \bigg[[\textrm{Número de muestras } x_1, \ldots, x_n \textrm{ en el intervalo}]\bigg]$. Al parámetro $h$
 se le llama parámetro de \textit{bandwidth}, por referencia al significado que tiene en el caso de los histogramas.
 
+En el caso multidimensional, tendríamos:
+\[
+  \widehat{f}(x) = \frac{1}{nh^d} \sum_{i=1}^n \omega_h(x-x_i)
+\]
+
 \subsection{Generalización a funciones kernel}
 Tomar $w = \frac{1}{2} \mathds{1}_{]-1,1[}$ presenta el problema de que $\widehat{f}$ será una función a saltos, y no
-será continua. Surge una generalización al tomar $\omega$ como funciones verificando $\int_{\Omega} \omega(x) dx = 1$, 
+será continua. Surge una generalización al tomar $\omega$ como funciones verificando $w\ge 0$, $\int_{\Omega} \omega(x) dx = 1$, 
 siendo $\Omega$ el dominio de $X$. Se suelen considerar además funciones simétricas $w(x) = w(-x)$ para cualquier 
-$x\in \Omega$.
+$x$ en el dominio.
 
 El estimador que se suele usar para evaluar la bondad de $\widehat{f}$ es el error cuadrático medio integrado (MISE):
-
-\[MISE(h) = \underset{x_1, \ldots, x_n}{\expect} \int (\widehat{f}(x) - f(x))^2 dx\]
+\[
+  MISE(h) = \underset{x_1, \ldots, x_n}{\expect} \int (\widehat{f}(x) - f(x))^2 dx
+\]
 
 \imgcaption{./imgs/kernel-estimation.png}{Ejemplo de estimación de densidad con funciones kernel \footnotemark}{0.9}
 
@@ -38,36 +50,37 @@ El estimador que se suele usar para evaluar la bondad de $\widehat{f}$ es el err
 
 \subsection{Funciones kernel Gaussianas multivariantes}
 El algoritmo PDFOS (\textit{Probability Distribution Oversampling}) se basa en tomar funciones kernel Gaussianas multivariantes.
-Recordamos la definición de la función de densidad de la distribución $d$-Gaussiana multivariante de media $0$ y covarianza $\Psi$:
+Recordamos la definición de la función de densidad de la distribución $d$-Gaussiana multivariante de media 
+$0$ y matriz de covarianza $\Psi$:
+\[
+  \phi^{\Psi}(x) = \frac{1}{\sqrt{(2\pi \cdot det(\Psi))^d}} exp\left(-\frac{1}{2} x \Psi^{-1} x^T \right)
+\]
 
-\[\phi^{\Psi}(x) = \frac{1}{\sqrt{(2\pi \cdot det(\Psi))^d}} exp\left(\frac{1}{2} x \Psi^{-1} x^T \right)\]
-
-Dada $\spos = \{x_i = (w_1^{(i)}, \ldots, w_d^{(i)})\}_{i=1}^m$, la clase minoritaria, calcularemos el estimador no sesgado 
+Dada $S = \{x_i = (w_1^{(i)}, \ldots, w_d^{(i)})\}_{i=1}^m$, la clase minoritaria, calcularemos el estimador no sesgado 
 para la covarianza:
-
-\[U = \frac{1}{m-1} \sum_{i=1}^m (x_i - \overline{x})(x_i - \overline{x})^T, 
-  \qquad \textrm{siendo } \overline{x} = \frac{1}{M}\sum_{i=1}^M x_i\]
+\[
+  U = \frac{1}{m-1} \sum_{i=1}^m (x_i - \overline{x})(x_i - \overline{x})^T, 
+  \qquad \textrm{siendo } \overline{x} = \frac{1}{m}\sum_{i=1}^m x_i
+\]
   
 Las funciones kernel que tomaremos serán de la forma: $\phi = \phi^{U}$, y tendremos que ajustar el \textit{bandwidth} $h$ de
-$\phi_h(x) = \phi^U\left(\frac{x}{h}\right)$ para minimizar el MISE. A tales efectos, hay que minimizar la función de validación
-cruzada:
+$\phi_h(x) = \phi^U\left(\frac{x}{h}\right)$ para minimizar el MISE. A tales efectos, hay que buscar el mínimo de
+la función de validación cruzada:
 \begin{equation}
- M(h) = \frac{1}{m^2} \sum_{i=1}^m \sum_{j=1}^m \phi_h^{\ast} (x_i - x_j) + \frac{2}{m} \phi_h(0)
+ M(h) = \frac{1}{m^2 h^d} \sum_{i=1}^m \sum_{j=1}^m \phi_h^{\ast} (x_i - x_j) + \frac{2}{m h^d} \phi_h(0)
  \label{eq:cross-val}
 \end{equation}
-
-donde se toma la aproximación:
-\[\phi_h^{\ast} \approx \phi_{h\sqrt{2}} - 2\phi_h\]
+donde $\phi_h^{\ast} \approx \phi_{h\sqrt{2}} - 2\phi_h$.
 
 Nótese que $x\mapsto \phi_h(x-x_i)$ es la función de densidad de una normal con matriz de covarianza $h^2 U$ y centrada en $x_i$.
 
 Una vez minimizada la función de validación cruzada $M$, el esquema de generación de instancias se basará en dada una instancia
-$x_i \in \spos$, tomar $x_i + h R r$, donde $r\sim N^m(0,1)$ y$R$ es la matriz triangular superior resultante de la descomposición
-de Choleski. Análogamente al caso unidimensional, donde se pueden generar instancias desde $N(\mu, \sigma)$ tomando $\mu + \sigma r$
-con $r\sim N(0,1)$, en el caso multivariante dada $U =  R \cdot R^T$, se pueden generar instancias siguiendo una distribución $N^m(\mu, U)$,
-tomando $\mu + R \cdot r$, donde $r\sim N^m(0,1)$.
+$x_i \in \spos$, tomar $x_i + h R r$, donde $r\sim N^d(0,1)$ y $U = R\cdot R^T$. Ilustramos el porqué de esta última afirmación:
+nálogamente al caso unidimensional, donde se pueden generar instancias desde $N(\mu, \sigma)$ tomando $\mu + \sigma r$
+con $r\sim N(0,1)$, en el caso multivariante dada $U =  R^T \cdot R$, se pueden generar instancias siguiendo una distribución $N^d(\mu, U)$,
+tomando $\mu + R \cdot r$, donde $r\sim N^d(0,1)$.
 
-En \cite{gao2014} se usa para descomponer $U = R\cdot R^T$ la descomposición de Choleski 
+En \citep{gao2014} se usa para descomponer $U = R^T \cdot R$ la descomposición de Choleski 
 \footnote{\url{https://en.wikipedia.org/wiki/Cholesky_decomposition}}, que sólo sirve para matrices definidas positivas.
 
 \begin{lemma}
@@ -75,32 +88,30 @@ En \cite{gao2014} se usa para descomponer $U = R\cdot R^T$ la descomposición de
 \end{lemma}
 \begin{proof}
  Dado $y \in \mathbb{R}^d$, se tiene:
- 
  \begin{align*}
  y^T \left(\sum_{i=1}^m (x_i - \overline{x})(x_i - \overline{x})^T\right) y &=
- \sum_{i=1}^m ( \underbrace{(x_i - \overline{x})^T y}_z)^T ((x_i - \overline{x})^T y) = \\
+ \sum_{i=1}^m ( \underbrace{(x_i - \overline{x})^T y}_z)^T ((x_i - \overline{x})^T y)\\
  &\underset{z \textrm{ es un vector}}{=} \sum_{i=1}^m ((x_i - \overline{x})^T y)^2 \ge 0
  \end{align*}
 \end{proof}
 
 Luego al estimador $S$ que calculamos para la varianza le podemos calcular la descomposición de Choleski cuando sea 
-definido positivo ($y^T \cdot S y > 0$ de manera estricta para todo $0 \neq y\in \mathbb{R}^d$. Pero no está garantizado 
+definido positivo ($y^T \cdot S\cdot y > 0$ de manera estricta para todo $0 \neq y\in \mathbb{R}^d$). Pero no está garantizado 
 que siempre sea definido positivo.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $\spos = \{z_1=(x_1, y_1), \ldots z_m=(x_m, y_m)\}$, ejemplos positivos
+  \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, ejemplos positivos
   \REQUIRE $T$, número de instancias sintéticas deseado
-  \STATE{$S = \spos_x = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$}
-  \STATE{$S'= \emptyset$}
-  \STATE{$\sigma =$ búsqueda con GridSearch que minimice $M$}
-  \STATE{Calcular $U$ la matriz de covarianza de $S$}
-  \STATE{Calcular descomposición de Choleski de $U$, donde $U=R^{T} R$, y $R$ triangular superior}
+  \STATE{Inicializamos $S'= \emptyset$}
+  \STATE{Búsqueda de $h =$ que minimice $M(h)$}
+  \STATE{Calcular $U$ la matriz de covarianza insesgada de $S$}
+  \STATE{Calcular descomposición de Choleski de $U$, donde $U=R^{T} \cdot R$, y $R$ triangular superior}
   \NEWLINE
   \FOR{$i=1, \ldots, T$}
     \STATE{Escoger $x\in S$}
     \STATE{Escoger $r$ siguiendo una normal multivariante, $r \sim N^d(0,1)$}
-    \STATE{$S' = S' \cup \{x + \sigma r R\}$}
+    \STATE{$S' = S' \cup \{x + h r R\}$}
   \ENDFOR
   \NEWLINE
   \RETURN{$S'$, ejemplos positivos sintéticos}
@@ -110,24 +121,28 @@ que siempre sea definido positivo.
 \end{algorithm}
 
 
-En \cite{gao2014} se hacía referencia a emplear un algoritmo \textit{grid} (dividir un intervalo plausible en valores
+En \citep{gao2014} se hacía referencia a emplear un algoritmo \textit{grid} (dividir un intervalo plausible en valores
 y buscar el que más pequeña hace la función de validación cruzada) para extraer el mejor valor de $h$. Se ha preferido
-tomar como primera aproximación el valor propuesto por \citeauthor{silverman}:
+tomar como primera aproximación el valor propuesto por \citep{silverman}:
+\[
+  h_{Silverman} = \left(\frac{4}{m(d+2)}\right)^{\frac{1}{d+4}}
+\]
+donde $d$ es la dimensión de los datos, y $m$ el número de instancias minoritarias. 
 
-\[h_{Silverman} = \left(\frac{4}{m(d+2)}\right)^{\frac{1}{d+4}}\]
-
-donde $d$ es la dimensión de los datos, y $m$ el número de instancias minoritarias. A partir de dicho valor se ha seguido un
-algoritmo de gradiente descendente para intentar buscar un mínimo local. Para ello se ha reformulado \ref{eq:cross-val} y
-se ha derivado, pudiéndose comprobar como tanto \ref{eq:cross-val} y \ref{eq:cross-val-df} serían calculables en una función:
-\begin{align*}
-M(h) &= \frac{1}{m^2} \sum_{i=1}^m \sum_{j=1}^m \phi_h^{\ast} (x_i - x_j) + \frac{2}{m} \phi_h(0) = \\
-     &= \frac{1}{m^2} \sum_{i=1}^m \sum_{j=1, j\neq i}^m \phi_h^{\ast} (x_i - x_j) + m \phi_{h\sqrt{2}}(0)
-\end{align*}
+A partir de dicho valor se ha seguido un algoritmo de gradiente descendente para intentar buscar un mínimo local. 
+Para ello se ha reformulado \eqref{eq:cross-val} y se ha derivado, pudiéndose comprobar como tanto \eqref{eq:cv-simp}
+como \eqref{eq:cross-val-df} serían calculables con una única función:
+\begin{align}
+M(h) &= \frac{1}{m^2 h^d} \sum_{i=1}^m \sum_{j=1}^m \phi_h^{\ast} (x_i - x_j) + \frac{2}{m h^d} \phi_h(0) \nonumber\\
+     &= \frac{1}{m^2 h^d} \sum_{i=1}^m \sum_{j=1, j\neq i}^m \phi_h^{\ast} (x_i - x_j) + \frac{1}{m h^{d}} \phi_{h\sqrt{2}}(0) \nonumber\\
+     &= \frac{2}{m^2 h^d} \sum_{j > i}^m \phi_h^{\ast} (x_i - x_j) + \frac{1}{m h^{d}} \phi_{h\sqrt{2}}(0)
+ \label{eq:cv-simp}
+\end{align}
 
 \begin{align}
-\frac{\partial M}{\partial h} = \frac{1}{m^2} \sum_{i} \sum_{j\neq i} \bigg[\left(-d h^{-1} + 
-  \frac{1}{2} h^{-3} (x_i-x_j)^T U (x_i-x_j) \right) \phi_{h\sqrt{2}}(x_i-x_j) + \nonumber \\ 
-  + 2 \left(d h^{-1} - h^{-3}(x_i-x_j)^T U (x_i-x_j) \right) \phi_{h}(x_i-x_j)\bigg] - \frac{dh^{-1}}{m} \phi_{h\sqrt{2}}(0)
+\frac{\partial M}{\partial h}(h) &= \frac{2}{m^2 h^d} \sum_{j>i}^m  \phi_h^{\ast} (x_i - x_j)
+ \bigg(-d h^{-1} + h^{-3} (x_i-x_j)^T U (x_i-x_j) \bigg) \nonumber\\
+ &- \frac{dh^{-1}}{mh^{d}} \phi_{h\sqrt{2}}(0)
  \label{eq:cross-val-df}
 \end{align}
 
@@ -142,12 +157,12 @@ El algoritmo de gradiente descendente dirigirá la búsqueda del valor de $h$ ha
   \STATE{Hacer $\alpha = 0.001$}
   \STATE{Sea $\gamma$ una constante suficientemente pequeña}
   \NEWLINE
-  \WHILE{$\delta > \alpha$ y Número de iteraciones menor que $m^2$}
+  \WHILE{$\delta > \alpha$ y número de iteraciones menor que $m \cdot d$}
     \IF{$M(h) < M_{best}$}
-      \STATE{$M_{best} = M(h)$ y $h_{best} = h$}
+      \STATE{Hacer $M_{best} = M(h)$ y $h_{best} = h$}
     \ENDIF
-    \STATE{$h_{-1} = h$}
-    \STATE{$h = \gamma \cdot M'(h)$}
+    \STATE{Hacer $h_{-1} = h$}
+    \STATE{Actualizar $h$ como $h = \gamma \cdot M'(h)$}
     \STATE{$\delta = h - h_{-1}$}
   \ENDWHILE
   \RETURN{$h$}
@@ -163,14 +178,14 @@ de sus autores:
 
 \begin{itemize} 
  \item No toda matriz $S$ es invertible, siendo el caso del dataset \texttt{ecoli1} incluido en el paquete de software 
- desarrollado, por ejemplo, una matriz de covarianza no invertible. En el caso de nuestro software se ha decidido interrumpir
+ desarrollado, por ejemplo, una matriz de covarianza no invertible. En nuestra implementación se ha decidido interrumpir
  el proceso en caso de que se encuentre una matriz no invertible, avisándolo a tales efectos. Podría estudiarse cómo encajaría
  dentro del algoritmo sustituir la inversa convencional por la inversa generalizada 
  \footnote{\url{https://en.wikipedia.org/wiki/Multivariate_normal_distribution\#Degenerate_case}}.
 
  \item El método de Choleski sólo se puede aplicar en los casos en los que la matriz es definida positiva, por lo que 
  al implementarse el algoritmo nos hemos preocupado de usar el método de Choleski con pivotado (lo usa la función \texttt{rmvnorm}
- de \texttt{mvtnorm} para generar las instancias, para lo cual hubo que revisar el código de dicha función). El método
+ de \citepalias{rnorm} para generar las instancias, para lo cual hubo que revisar el código de dicha función). El método
  de Choleski con pivotado sí que puede emplearse en el caso de matrices semidefinidas positivas no definidas positivas.
 \end{itemize}
 

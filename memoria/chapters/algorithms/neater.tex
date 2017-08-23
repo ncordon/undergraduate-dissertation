@@ -5,37 +5,39 @@ para poder comprender mejor el algoritmo.
 
 \subsection{Teoría de juegos}
 Sea una tupla $(P, S, f)$, donde $P=\{1, \ldots, n\}$, conjunto de jugadores. Tendremos $S_i=\{1, \ldots, k_i\}$ conjunto
-de posibles estrategias para el jugador $i$-ésimo, donde $S = S_1 \times \ldots \times S_n$, y dado $s = (s_1, \ldots s_n) \in S$
+de posibles estrategias para el jugador $i$-ésimo, donde $S = S_1 \times \ldots \times S_n$. Dado $s = (s_1, \ldots s_n) \in S$
 arbitrario, podremos asignarle una recompensa a cada jugador que dependerá de la estrategia que ha seguido y de la estrategia del
 resto de jugadores por lo que tendremos:
-
-\[\begin{array}{rll}
-   f: S &\longrightarrow& \mathbb{R}^n\\
-   s &\longmapsto& (f_1(s), \ldots, f_n(s))
-  \end{array}\]
+\[
+  \begin{array}{rll}
+  f: S &\longrightarrow& \mathbb{R}^n\\
+  s &\longmapsto& (f_1(s), \ldots, f_n(s))
+ \end{array}
+\]
   
-Notaremos $s_{-i} = (s_1, \ldots, s_{i-1}, s_{i+1}, \ldots s_n)$ y $f_i(s_i, s_{-i}):= f_i(s)$.
+Notaremos $s_{-i} = (s_1, \ldots, s_{i-1}, s_{i+1}, \ldots s_n)$ y $f_i(s_i, s_{-i})= f_i(s)$.
 
 \begin{definition}
-Un equilibrio de Nash estratégico es una tupla $s = (s_1, \ldots s_n)$ que verifica $f_i(s_i, s_{-i}) \ge f(s'_{i}, s_{-i})$ 
-para cualquier otra $s'\in S$.
+Un equilibrio de Nash estratégico es una tupla $(s_1, \ldots s_n)$ que verifica $f_i(s_i, s_{-i}) \ge f_i(s'_{i}, s_{-i})$ 
+para cualquier otra $s'\in S$, para todo $i=1, \ldots, n$.
 \end{definition}
 
 Es decir, una estrategia de Nash maximiza la recompensa para todos los jugadores.
 
 Tendremos probabilidades para escoger estrategias para cada jugador, esto es 
 $\delta_i \in \Delta_i = \{(\delta_i^{(1)}, \ldots, \delta_i^{(k_i)}) \in (R^{+})^k_i : \sum_{j=1}^{k_i} \delta_i^{(j)} = 1\}$. 
-A un vector $\delta = (\delta_1, \ldots, \delta_n) \in \Delta_1 \times \ldots \Delta_n = \Delta$ lo llamaremos perfil de estrategia. 
+Llamamos $\Delta_1 \times \ldots \Delta_n = \Delta$ y a $\delta = (\delta_1, \ldots, \delta_n) \in \Delta$ lo llamaremos perfil de estrategia. 
 Asociado a un perfil de estrategia $\delta$, notaremos a la recompensa total esperada para el jugador $i$-ésimo como:
+\[
+  u_i(\delta) = \sum_{s\in S} \delta_i^{(s_i)} f_i(s)
+\]
 
-\[u_i(\delta) = \sum_{(s\in S} \delta_i^{(s_1)} f_i(s)\]
-
-A $u_i$ lo llamaremos recompensa asociada al perfil de estrategia $x$ para el jugador $i$-ésimo, y dada $\delta\in \Delta$ notaremos
-$\delta_{-i} = (\delta_1, \ldots, \delta_{i-1}, \delta_{i+1}, \ldots, \delta_n)$, y $u_i(\delta_i, \delta_{-i}):= u_i(x)$.
+A $u_i$ es la recompensa asociada al perfil de estrategia $\delta$ para el jugador $i$-ésimo, y dada $\delta\in \Delta$ notaremos
+$\delta_{-i} = (\delta_1, \ldots, \delta_{i-1}, \delta_{i+1}, \ldots, \delta_n)$, y $u_i(\delta_i, \delta_{-i})= u_i(\delta)$.
 
 \begin{definition}
 Un equilibrio probabilístico de Nash es un perfil de estrategia $x = (\delta_1, \ldots \delta_n)$ que verifica 
-$u_i(\delta_i, \delta_{-i}) \ge u_i(x'_{i}, \delta_{-i})$ para cualquier otra $x'\in \Delta$.
+$u_i(\delta_i, \delta_{-i}) \ge u_i(\delta'_{i}, \delta_{-i})$ para cualquier otra $\delta'\in \Delta$, para todo $i=1, \ldots, n$.
 \end{definition}
 
 \begin{theorem}
@@ -46,56 +48,57 @@ $u_i(\delta_i, \delta_{-i}) \ge u_i(x'_{i}, \delta_{-i})$ para cualquier otra $x
 En nuestro caso los jugadores serán todos los posibles puntos del conjunto de entrenamiento unido a las instancias 
 sintéticas $S \cup S'$. Cada jugador podrá escoger entre dos estrategias $\{0,1\}$ donde $0$ será pertenencia a la clase 
 mayoritaria y $1$ pertenencia a la clase minoritaria. Habrá dos clases de jugadores, aquellos cuya estrategia ya es fija (es
-decir, conocemos su clase), que serán los de $S$, donde un jugador $k$ de $S$ siempre jugará a la estrategia $0$, esto es 
-$\delta_k = (0,1)$ siempre si es una instancia de la clase negativa; y jugará a la estrategia $1$, esto es 
-$\delta_k = (1,0)$ siempre, si es una instancia de la clase positiva.
+decir, conocemos su clase), que serán los de $S$, donde un jugador $i$ de $S$ siempre jugará a la estrategia $0$, esto es 
+$\delta_i = (0,1)$ siempre si es una instancia de la clase negativa; y jugará a la estrategia $1$, esto es 
+$\delta_i = (1,0)$ siempre, si es una instancia de la clase positiva.
 
-Consideraremos que a una instancia sólo le afecta para su recompensa asociada a una estrategia, la suya propia y la de sus
-$k$ vecinos más cercanos. Así para cada instancia $x_i \in S'$, tendremos $u_i(\delta) = \sum_{j\in NN^k(x)} (x_i^T w_{ij} x_j)$ donde
+Consideraremos que a una instancia sólo le afecta para su recompensa asociada a una estrategia la suya propia y la de sus
+$k$ vecinos más cercanos, calculados en $S\cup S'$. Así para cada instancia $x_i \in S'$, tendremos $u_i(\delta) = \sum_{j\in NN^k(x)} (x_i^T w_{ij} x_j)$ donde
 $w_{ij} = g\left(d(x_i, x_j)\right)$ tal que $g$ es decreciente (esto es, a mayor distancia, menor recompensa). En nuestro
 caso, hemos tomado $g(z) = \frac{1}{1+z^2}$, con $d$ la distancia euclídea.
 
 A cada paso se actualizarán los perfiles de estrategia de la clase minoritaria, donde para cada $x_i\in S'$ se hace: 
-
 \begin{align*}
 & \delta_i(0) = (0.5, 0.5)\\
 & \delta_{i,1}(n+1) = \frac{\alpha + u_i((1,0))}{\alpha + u_i(\delta(n))} \delta_{i,1}(n)\\
 & \delta_{i,2}(n+1) = 1 - \delta_{i,1}(n+1)
 \end{align*}
 
-Es decir, se va premiando a cada paso de las dos estrategias posibles, aquella que está reportando más recompensa, a base de
+Es decir, se va premiando a cada paso de las dos estrategias posibles aquella que está reportando más recompensa, a base de
 sustraérselo a la otra estrategia. Este proceso tiene garantizada una convergencia, por teoría de \textit{dinámica de replicador},
 de teoría de juegos evolutiva.
 
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-  \REQUIRE $S = \{z_1 = (x_1, y_1), \ldots z_m = (x_n, y_n)\}$, dataset original
+  \REQUIRE $S = \{z_1 = (x_1, y_1), \ldots z_n = (x_n, y_n)\}$, dataset original
   \REQUIRE $S' = \{\bar{z}_1=(\bar{x}_1, \bar{y}_1), \ldots \bar{z}_m=(\bar{x}_m, \bar{y}_m)\}$, ejemplos positivos
   \REQUIRE $k$, número de vecinos más cercano para KNN.
   \REQUIRE $T$, número de iteraciones deseadas.
   \REQUIRE $\alpha$, factor de suavizado.
   \STATE{Inicializar $E = \emptyset$}
-  \STATE{Crear una matriz $P$ de tamaño $2\times(n+m)$ donde se inicializa: \\
+  \STATE{Para cada $x_i \in S'$, calcular su vecindario $NN^k(x_i) \subseteq S\cup S'$}
+  \STATE{Inicializar:\\
     \begin{itemize} 
-    \item $i=1, \ldots, |S|$, entonces $P_i = \left\{\begin{array}{ll} 
+    \item $i=1, \ldots, n$, entonces $\delta_i = \left\{\begin{array}{ll} 
                                                     (1,0) & y_i = 1 \\
                                                     (0,1) & y_i = -1
                                               \end{array}\right.$
-    \item $i=|S| + 1, \ldots, |S'|$, entonces $\delta_i = (0.5,0.5)$
+    \item $i=n+1, \ldots, n+m$, entonces $\delta_i = (0.5,0.5)$
     \end{itemize}}
   \NEWLINE
   \FOR{$t=1, \ldots, T$}
     \FOR{$i=1, \ldots, m$}
-      \STATE{Calcular recomp. total $u_i = \sum_{x_j \in NN^k(x)} g(d(x_i,x_j))\cdot \delta_i\cdot \delta_j^T$}
-      \STATE{Calcular recomp. positiva $u = \sum_{x_j \in NN^k(x)} g(d(x_i,x_j))\cdot (1,0)\cdot \delta_j^T$}
-      \STATE{Calcular $\alpha = \frac{\alpha + u}{\alpha + u_i}$}
-      \STATE{Actualizar $\delta_i = (\alpha, 1-\alpha)$}
+      \STATE{Calcular recomp. total $u_i = \underset{x_j \in NN^k(x_i)}{\sum} g(d(\bar{x}_i,x_j))\cdot \delta_i\cdot \delta_j^T$}
+      \STATE{Calcular recomp. positiva $u = \underset{x_j \in NN^k(x_i)}{\sum} g(d(\bar{x}_i,x_j))\cdot (1,0)\cdot \delta_j^T$}
+      \STATE{Calcular $\alpha = (\alpha + u)/(\alpha + u_{n+1})$}
+      \STATE{Actualizar $\delta_{n+1} = (\alpha, 1-\alpha)$}
     \ENDFOR
   \ENDFOR
   \NEWLINE
   \FOR{$i=1, \ldots, m$}
     \IF{$\delta_{i1} > 0.5$}
-      \STATE{$E = E\cup \{(\bar{x},1)\}$}
+      \STATE{$E = E\cup \{(\bar{x}_i,1)\}$}
     \ENDIF
   \ENDFOR
   \NEWLINE

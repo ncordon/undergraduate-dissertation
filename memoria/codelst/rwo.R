@@ -6,7 +6,7 @@ newSamples <- lapply(minority, function(x){
     x - variance/sqrt(n) * scaleFactors
     
     # Else if attribute is not numeric, make a roulette 
-    # out of possible values for the attribute and their frequency
+    # of possible values for the attribute and their frequency
   } else{
     dist <- table(x)
     distValues <- names(dist)

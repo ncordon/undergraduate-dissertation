@@ -4,17 +4,17 @@ metodologías empleadas en su desarrollo.
 \section{¿Qué es R? ¿Por qué R?}
 \citepalias{rlang} es un lenguaje pensado para estadística computacional y todo lo que ello implica: 
 manipulación de datos, visualización, variedad de modelos estadísticos, etc. \R puede ser considerado una 
-implementación renovada del antiguo lenguaje S, para estadística. Destaca sobretodo por su amplia gama de
+implementación renovada del antiguo lenguaje \texttt{S}, para estadística. Destaca sobretodo por su amplia gama de
 paquetes, disponible en repositorios como CRAN \footnote{\url{https://cran.r-project.org/}} o 
 Bioconductor \footnote{\url{https://www.bioconductor.org}}, este último orientado a bioinformática.
 
-\R destaca por su extensibilidad, su facilidad de uso, su extensa documentación (para que un paquete pueda ser
-publicado en CRAN tiene como requisito fundamental estar bien documentado), su fácil acceso a la documentación,
+\R sobresale por su extensibilidad, su facilidad de uso, su extensa documentación (para que un paquete pueda ser
+publicado en CRAN tiene como requisito fundamental estar bien documentado), su fácil acceso a ella,
 y su heterogénea comunidad de usuarios, siendo empleado por estadistas, bioinformáticos, científicos
 de datos, informáticos o incluso investigadores asociados a medicina o biología.
 
-\R no debe ser visto sólo como un lenguaje, sino también como la propia implementación, puesto que lo que se
-asume como estándar del lenguaje es la implementación GNU-R (implementación libre), a pesar de existir otras 
+\R, a diferencia de otros lenguajes, no tiene un estándar y una implementación independientes, puesto que lo que se
+asume como estándar del lenguaje es la propia implementación GNU-R (implementación libre), a pesar de existir otras 
 como \texttt{pqR} \footnote{\url{www.pqr-project.org}} (\textit{Pretty Quick R}) o 
 \texttt{FastR} \footnote{\url{https://github.com/allr/purdue-fastr}}. \R no es rápido, puesto que es un 
 lenguaje interpretado y el \textit{core} de GNU-R no tiene como objetivo fundamental hacerlo más rápido, sino
@@ -26,19 +26,19 @@ La filosofía principal de la programación en R es:
   \item \textbf{Programación funcional}: los paquetes desarrollados sólo pueden exportar funciones (técnicamente
   también ojetos \texttt{S3}, \texttt{S4} o \texttt{RC}, pero incluso los mismos trabajan con un tipo de orientación
   a objetos peculiar, donde la función recibe al objeto, y este sólo se usa para resolver sobre qué método concreto
-  de los que concretan la función \textit{despacha} el objeto).
+  de los que concretan la función se \textit{despacha} el objeto).
   \item \textbf{Inmutabilidad}: cualquier función del lenguaje no puede modificar un objeto que existe en
   un entorno o capa superior desde donde ha sido llamada la función (técnicamente puede hacerlo, pero con metaprogramación,
   no con evaluación convencional).
   \item \textbf{Vectorización}: \R incluye una serie de funcionales (funciones que toman otras como entrada) 
   que vectorizan operaciones (hacen que se ejecuten de manera más eficiente, aprovechando la estructura del objeto)
-  sobre matrices, vectores, \textit{datasets}, listas, etc. Cuando puede usarse vectorización, es mucho más
+  sobre matrices, vectores, datasets, listas, etc. Cuando puede usarse vectorización, es mucho más
   rápida que los bucles convencionales.
 \end{itemize}
 
 Se ha escogido \R como herramienta para desarrollar el software dada su arraigado uso en estadística y en ciencia
 de datos. Aunque otros lenguajes como \texttt{Python} proporcionan herramientas tremendamente potentes para
-hacer ciencia de datos, \R está menos orientado a programadores puros a mi parecer y más a obtener resultados
+hacer ciencia de datos, \R parece estar menos orientado a programadores puros y más a obtener resultados
 científicos a partir de lo programado. Se quería proporcionar una implementación de los algoritmos que 
 ofreciera un balance entre eficiencia y facilidad de uso, y \R parecía la mejor opción para alcanzar dicho
 objetivo. Además, la diseminación de los algoritmos principales (no únicamente en preprocesamiento de datos,
@@ -49,30 +49,30 @@ citar a \citepalias{rsmote} o \citepalias{rrose} en \R) hace que no haya una fue
 \section{Instalación}
 \subsection{Instalación de \R}
 La instalación de \R en distribuciones Linux basadas en \texttt{Debian} puede efectuarse de la forma:
-\begin{lstlisting}[language=R,numbers=none]
-sudo apt install r-base rbase-dev
-\end{lstlisting}
+  \begin{lstlisting}[language=R,numbers=none]
+  sudo apt install r-base rbase-dev
+  \end{lstlisting}
 
 En distribuciones basadas en \texttt{Arch Linux}:
-\begin{lstlisting}[language=R,numbers=none]
-sudo pacman -S r
-\end{lstlisting}
+  \begin{lstlisting}[language=R,numbers=none]
+  sudo pacman -S r
+  \end{lstlisting}
 
-También es recomendable, aunque no necesario, instalar \texttt{RStudio} \footnote{\url{https://www.rstudio.com}}
+También es recomendable, aunque no necesario, instalar \texttt{RStudio} \footnote{\url{https://www.rstudio.com}}.
 
 \subsection{Instalación del software}
 La instalación del paquete \texttt{imbalance} desarrollado se puede llevar a cabo una vez abierto desde 
 una terminal \R o \texttt{RStudio} usando el paquete \citepalias{rdevtools}:
-\begin{lstlisting}[language=R,numbers=none]
-install.packages("devtools")
-devtools::install_github("ncordon/imbalance")
-\end{lstlisting}
+  \begin{lstlisting}[language=R,numbers=none]
+  install.packages("devtools")
+  devtools::install_github("ncordon/imbalance")
+  \end{lstlisting}
 
 Posterior a este paso, sólo falta cargar el paquete:
 
-\begin{lstlisting}[language=R,numbers=none]
-library(imbalance)
-\end{lstlisting}
+  \begin{lstlisting}[language=R,numbers=none]
+  library(imbalance)
+  \end{lstlisting}
 
 La instalación del paquete \texttt{devtools} (primera línea) no es necesaria si ya se tiene instalado.
 
@@ -96,7 +96,7 @@ se carga son:
 \end{itemize}
 
 \section{Estructura del paquete}
-El paquete, cuyo código fuente está disponible en el repositorio \url{https://github.com/ncordon/imbalance}, 
+El paquete, cuyo código fuente está disponible en un repositorio de Github \footnote{\url{https://github.com/ncordon/imbalance}}, 
 bajo licencia GPL2 y posteriores, presenta la siguiente estructura de directorios y archivos:
 
 \begin{itemize}
@@ -104,50 +104,50 @@ bajo licencia GPL2 y posteriores, presenta la siguiente estructura de directorio
  nombre del algoritmo. También se encuentran los siguientes archivos:
  
  \begin{itemize}
-  \item \texttt{data.R}: sólo contiene documentación en forma de comentarios de \texttt{Roxygen2} de la estructura
-    de los dataset incluidos con el paquete, todos ellos extraídos del repositorio \citepalias{keel}.
+  \item \texttt{data.R}: contiene documentación en forma de comentarios de \texttt{Roxygen2} de la estructura
+    de los datasets incluidos con el paquete, todos ellos extraídos del repositorio \citepalias{keel}.
   \item \texttt{RccpExports.R}: usado por la librería \texttt{Rcpp} para almacenar wrappers de llamadas a funciones
     de \texttt{C++} que se encuentran en la carpeta \texttt{src} de la raíz del paquete.
-  \item \texttt{zzz.R}: (se usa por convenio), que se usa para liberar las librerías dinámicas generadas con 
+  \item \texttt{zzz.R}: (nombre del archivo por convenio), que se usa para liberar las librerías dinámicas generadas con 
     \texttt{C++} en caso de que se libere el \texttt{Namespace} asociado al paquete.
   \item \texttt{imbalance.R}: contiene la documentación del paquete para la ayuda \texttt{help}, accesible a través de:
-    \begin{lstlisting}[language=R, numbers=none]
-    \texttt{help(package='imbalance')}.
-    \end{lstlisting}
-  \item \texttt{utils.R}: que contiene funciones auxiliares llamadas desde los algoritmos, y la función \texttt{plotComparison}
+   \begin{lstlisting}[language=R, numbers=none]
+   help(package="imbalance")
+   \end{lstlisting}
+  \item \texttt{utils.R}: contiene funciones auxiliares llamadas desde los algoritmos, y la función \texttt{plotComparison}
     para evaluar visualmente los resultados de un \textit{oversampling} o \textit{undersampling}.
  \end{itemize}
  
  \item \texttt{data-raw}: hay un script \texttt{rkeel-data.R} en esta carpeta que contiene el procedimiento con el que se han
  leído y limpiado los datos desde archivos en formato KEEL. Es habitual distribuir este tipo de archivos en los fuentes de
  los paquetes, aunque las \textit{builds} de los mismos no los contienen, por estar añadida esta carpeta al archivo \texttt{.Rbuildignore}.
- \item \texttt{data}: contiene archivos de datos \texttt{.rda} con los \textit{datasets} con el tipo de datos 
- correcto para cada columna, con el atributo clase ``Class'' con posibles valores \textit{positive} o \textit{negative}, 
+ \item \texttt{data}: contiene archivos de datos \texttt{.rda} con los datasets con el tipo de datos 
+ correcto para cada columna y con el atributo de clase ``Class'' con posibles valores \textit{positive} o \textit{negative}, 
  respetando su formato original. Ha sido necesario consultar no sólo el repositorio KEEL, sino también el repositorio 
  de \textit{machine learning} de \citepalias{uci}. Para acceder a la documentación sobre el formato de cada uno de ellos 
- basta escribir en la consola de \R el nombre del \textit{dataset} precedido de \texttt{?} (ej. \texttt{?newthryoid1}). Los
- siguientes \textit{datasets} están disponibles: \texttt{ecoli1}, \texttt{glass0}, \texttt{haberman}, \texttt{iris0},
+ basta escribir en la consola de \R el nombre del dataset precedido de \texttt{?} (ej. \texttt{?newthryoid1}). Los
+ siguientes datasets están disponibles: \texttt{ecoli1}, \texttt{glass0}, \texttt{haberman}, \texttt{iris0},
  \texttt{newthryoid1}, \texttt{wisconsin}, \texttt{yeast4}.
  \item \texttt{src}: contiene código auxiliar en \texttt{C++} usado para acelerar el cuerpo de los algoritmos homónimos. El
  archivo \texttt{RcppExports.cpp} contiene cabeceras de funciones que genera automáticamente el paquete \texttt{Rcpp}.
- \item \texttt{tests}: contiene los tests que pasa el paquete en la integración continua cada vez que una modificación 
- es subida al repo: se comprueba que ninguna función de las exportadas por el paquete falle, que las funciones comprueben
- correctamente los parámetros de entrada, etc.
+ \item \texttt{tests}: contiene los tests que pasa el paquete en la integración continua. Cada vez que una modificación 
+ es subida al repo se comprueba que ninguna función de las exportadas por el paquete falle, que las funciones comprueben
+ correctamente los parámetros de entrada, que el paquete pase los tests en formato CRAN, etc.
 \end{itemize}
 
 
 \section{Metodología de desarrollo}
 Los algoritmos han sido fundamentalmente programados en \R, de manera que todos tienen una estructura de la forma:
-\lstinputlisting[language=R, numbers=none]{./codelst/algorithm.R}.
+\lstinputlisting[language=R, numbers=none]{./codelst/algorithm.R}
 
 Asimismo, se ha usado la librería \citepalias{rcpp}, que proporciona una API de integración con \texttt{C++}, de manera que
 no hay que emplear manualmente llamadas a \texttt{.Call} en \R y facilita la transformación de tipos entre ambos lenguajes. También 
 ofrece azúcar sintáctico inspirado en \R disponible al programar \texttt{C++} apoyándonos en \texttt{Rcpp}. Además, para el desarrollo
 de dichos programas auxiliares hemos tenido que usar la librería \citepalias{rarmadillo}, que proporciona una extensa variedad 
 de operaciones matriciales y vectoriales en \texttt{C++}, y cuya sintaxis está inspirada en \texttt{Octave}
-\footnote{\url{https://en.wikipedia.org/wiki/GNU_Octave}}.
+\footnote{\url{https://www.gnu.org/software/octave}}.
 
-Por último, cabe comentar que se ha empleado \texttt{Travis CI} \footnote{\url{https://docs.travis-ci.com/}} como servicio de integración
+Por último, cabe comentar que se ha empleado \texttt{Travis CI} \footnote{\url{https://travis-ci.org}} como servicio de integración
 continua con el repo de Github. De esta forma se han automatizado ejecuciones de tests unitarios y generación de documentación web. El
 archivo de configuración empleado para el servicio de integración continua está disponible en la raíz del repo, con nombre 
 \texttt{.travis.yml}.
