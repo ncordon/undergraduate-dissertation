@@ -1,42 +1,7 @@
-En este capítulo proporcionamos una introducción y una motivación al \textit{framework} teórico que usaremos
-posteriormente. Daremos definiciones básicas como dominio, conjunto de etiquetas, error empírico, etc. que
-usaremos asiduamente en los capítulos posteriores.
-
-\section{Motivación}
-El objetivo del aprendizaje automático es convertir datos en conocimiento a través de un razonamiento inductivo, de manera que
-proporcionándole datos a una máquina seamos capaces de extraer un conocimiento (una generalización de los datos que nos permita
-inferir información). Surge la pregunta de por qué es necesario el aprendizaje automático o \textit{machine learning}, si la
-estadística también se encarga de obtener conocimiento a partir de unos datos.
-
-\subsection{¿Por qué necesitamos \textit{machine learning}?}
-\begin{enumerate}[i]
- \item Para resolver \textbf{tareas que requieren automatización}: entran dentro de esta categoría tanto aquellas tareas para
- las que no existe una axiomatización o un conocimiento exacto, como pueden ser el reconocimiento de dígitos o de voz, como 
- aquellas tareas que requieren del análisis de un gran número de datos, y quedan fuera de la capacidad humana para realizar
- un análisis estadístico manual. En el primer caso necesitamos apoyarnos en conocimiento auxiliar (por ejemplo, 
- un conjunto de dígitos o de muestras de voz preetiquetadas con los que poder comparar muestras sin etiquetar/clasificar); 
- en el segundo, se hace necsario el uso de una máquina para poder extraer conocimiento de todos los datos.
- 
- \item \textbf{Tareas que requieren adaptatividad}: si cambian los datos de entrada, necesitamos que los algoritmos se readapten
- a ellos, y no tengamos un conocimiento rígido, sino que pueda variar/mejorar en función de la entrada.
-\end{enumerate}
-
-\subsection{Áreas relacionadas con el aprendizaje}
-Entre las áreas relacionadas con el aprendizaje automático, cabe mencionar:
-
-\begin{enumerate}[i]
- \item \textbf{Inteligencia Artificial}
- \item \textbf{Algorítmica}: debemos analizar el tiempo asintótico de los algoritmos mediante los que aprende la máquina.
- \item \textbf{Inferencia}: entre las diferencias que podemos mencionar con la estadística convencional, destaca la necesidad de 
- programar las tareas, dado el volumen de datos con el que normalmente se trabaja, mientras que en muchos análisis estadísticos basta 
- lápiz y papel. También destaca la \textbf{independencia respecto a distribución} con la que se trabaja (no se asume una distribución
- determinada sobre los datos). La principal diferencia del aprendizaje automático respecto a la inferencia es que la inferencia
- se encarga de comprobar la validez de las hipótesis que propone el estadista, mientras que el algoritmo de 
- \textit{machine learning} genera hipótesis para unos datos determinados, con unas ciertas condiciones de aproximación y error.
- \item \textbf{Álgebra lineal}: algoritmos como los SVM (máquinas de soporte vectorial) basados en álgebra lineal siguen
- siendo hoy día muy importantes, a pesar de haber sido desarrollados en los años 60.
- \item \textbf{Optimización de algoritmos}
-\end{enumerate}
+En este capítulo proporcionamos una introducción y una motivación al \textit{framework} teórico que usaremos.
+Daremos definiciones básicas como dominio, conjunto de etiquetas, error empírico, etc. que
+usaremos asiduamente en los capítulos posteriores, así como las definiciones de PAC y APAC cognoscibilidad y
+describiremos la relación entre ambas.
 
 \subsection{Ejemplo práctico}\label{sec:first-ex}
 Pensemos en un ejemplo: tenemos clientes de un banco que quieren solicitar un préstamo, y a todos se les categoriza
