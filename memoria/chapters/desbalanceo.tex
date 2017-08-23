@@ -9,18 +9,17 @@ El problema de clasificación binaria consiste en buscar, dado $S= \left\{(x_1, 
 conjunto de entrenamiento, un clasificador de alguna clase $H$, $h$, verificando que $L_{P}(h)$ sea lo más pequeño posible.
 Nótese que estamos relajando las hipótesis de \ref{sec:clas-binaria} al considerar la distribución de probabilidad como prefijada.
 
-\begin{definition} \textbf{Instancias positivas, negativas}
-
-Llamamos instancias positivas a $Z^{+} = \{(x,y)\in Z: y=1\}$.
-
-LLamamos instancias negativas a $Z^{-} = \{(x,y)\in Z: y=-1\}$.
-
+\begin{definition}[Instancias positivas, negativas]
+LLamamos:
+\begin{itemize}
+ \item Instancias positivas a $Z^{+} = \{(x,y)\in Z: y=1\}$.
+ \item Instancias negativas a $Z^{-} = \{(x,y)\in Z: y=-1\}$.
+\end{itemize}
 Una notación equivalente se aplica a $S$, conjunto de entrenamiento. Además llamamos $\ppos = P(Z_{+})$ y $\pneg = P(Z_{-})$.
 \end{definition}
 
 
-\begin{definition} \textbf{Desbalanceo entre clases}
-
+\begin{definition}[Desbalanceo entre clases]
  Decimos que un problema de clasificación binaria es desbalanceado (entre clases) si se verifica que tomando 
  $\nneg = |S^{-}|$ y $\npos = |S^{+}|$, entonces $\npos < \nneg$.
  
@@ -154,7 +153,7 @@ una moneda al aire) que asigna la mitad de instancias a cada clase.
 
 \imgcaption{./imgs/ROC.png}{Curva ROC}{0.80}
 
-\section{Estado del arte del \textit{oversampling}}
+\section{Estado del arte del oversampling}
 A día de hoy, el algoritmo SMOTE, propuesto en \citep{chawla02} sigue siendo una de las referencias en el campo del 
 \textit{oversampling} para clasificación desbalanceada, dada su idea simple pero eficaz de rellenar zonas visuales no 
 cubiertas con instancias minoritarias a partir de instancias generadas en la recta que une otras dos 

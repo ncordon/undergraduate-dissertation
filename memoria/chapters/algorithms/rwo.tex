@@ -5,10 +5,11 @@ datos de entrenamiento.
 
 \begin{theorem}
  Sean $\{W_1, \ldots, W_m\}$ un conjunto de variables aleatorias i.i.d., con $\expect(W_i) = \mu$ y 
- $Var(W_i) = \sigma^2 < \infty$. Entonces:
- 
- \[\lim_{m} P\left[\frac{\sqrt{m}}{\sigma} \left(\underbrace{\frac{1}{m}\sum_{i=1}^m W_i}_{\overline{W}} - 
-   \mu \right) \le z \right] = \phi(z)\]
+ $Var(W_i) = \sigma^2 < \infty$. Entonces: 
+ \[
+   \lim_{m} P\left[\frac{\sqrt{m}}{\sigma} \left(\underbrace{\frac{1}{m}\sum_{i=1}^m W_i}_{\overline{W}} - 
+   \mu \right) \le z \right] = \phi(z)
+ \]
  
  donde $\phi$ es la función de distribución de la normal $N(0,1)$.
  
@@ -32,6 +33,7 @@ que tampoco la conocemos.
 \begin{theorem}
  La esperanza de la media muestral de las instancias $\{w_j^{'}(i)\}_{i=1}^m$ sintéticas es $\mu_j$. 
  La esperanza de la varianza muestral tiende en $m$ a $\sigma_j^2$.
+ \label{th:asyn-guarantee}
 \end{theorem}
 
   \begin{proof}
@@ -100,3 +102,9 @@ obtenemos:
 Implementado en R, el cuerpo principal del algoritmo, omitiendo otros detalles de la implementación, queda:
 
 \lstinputlisting[language=R, caption = Cuerpo del algoritmo RWO]{codelst/rwo.R}
+
+\subsection{Críticas al algoritmo}
+Se usa la varianza muestral sesgada, y por tanto en el teorema \ref{th:asyn-guarantee} lo único que podemos afirmar es que
+$\expect(\tau_m) \underset{m\rightarrow \infty}{\longrightarrow} \sigma_j^2$. Si se hubiera seleccionado el estimador
+insesgado para la varianza muestral, $\overline{\tau}_m = \frac{1}{m-1} \sum_{i=1}^m \left(w_j'(i) - \frac{1}{m} \sum_{i=1}^m w_j'(i)\right)^2$,
+tendríamos $\expect(\overline{\tau}_m) = \sigma_j^2$.

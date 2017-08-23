@@ -143,7 +143,7 @@ Esto permite, según \citep{das2015}, perder dependencia de los valores iniciale
   \REQUIRE $T$, número de instancias sintéticas a generar
   \STATE{$P = \textrm{AproximarDistribución}(S)$}
   \STATE{$S'= \emptyset$}
-  \STATE{$M = \left\lceil\frac{\alpha}{m}\right\rceil \cdot T + \beta$}
+  \STATE{$M = \left\lceil\frac{T}{m}\right\rceil \cdot \alpha + \beta$}
   \NEWLINE
   \FOR{$t=1,\ldots, M$}
     \STATE{$S = \textrm{GibbsSampler}(S, P)$}
@@ -202,7 +202,18 @@ cuando se verifica un criterio sobre el conjunto de validación.
 \label{alg:wracog}
 \end{algorithm}
 
-%Traducido a código:
+\subsection{Críticas a los algoritmos}
+Existe una crítica clara a los algoritmos: al aproximar distribuciones discretas, no se puede esperar que tengan buen 
+comportamiento sobre atributos continuos.
+
+Asimismo, como requieren acceso a la distribución precalculada, deberíamos tener alguna forma de tener acceso $\algcomp{1}$ a
+los valores para dicha distribución. El problema es que \R, el lenguaje donde se ha implementado, no proporciona estructura
+de tablas \textit{hash}, a pesar de existir un paquete \footnote{\url{https://cran.rstudio.com/web/packages/hash/}} que 
+las simula, pero que no proporciona acceso a datos $\algcomp{1}$. Esto supone que la implementación no puede hacerse eficiente
+a no ser que programemos los algoritmos \ref{alg:aproxdist}, \ref{alg:racog} y \ref{alg:gibbs} en otro lenguaje que se llame
+desde \R. El problema con esta última aproximación hubiera sido que \textit{wrapper} en el algoritmo \ref{alg:wracog} es
+una función que se le pasa al método y no podríamos mezclar dos lenguajes en el bucle principal.
+
 
 %\lstinputlisting[language=R, caption = Cuerpo del algoritmo wRACOG]{codelst/wracog.R}
 
