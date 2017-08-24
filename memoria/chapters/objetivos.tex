@@ -1,1 +1,50 @@
 \chapter{Objetivos}
+Los objetivos que se marcaron en la propuesta inicial fueron:
+\begin{enumerate}[i]
+ \item Recopilación, estudio bibliográfico y taxonomía de las técnicas existentes para el tratamiento de los 
+ \textit{small disjuncts} en clasificación no balanceada.
+ \item Estudio y formalización matemática del problema utilizando una reprensetación basada en grafos.
+ \item Implementación, adaptación y evaluación de los modelos desarrollados.
+\end{enumerate}
+
+Inicialmente el problema estaba enteramente enfocado al estudio de \textit{small disjuncts}, pero dada la baja formalización
+que admite el problema, y su alta dependencia del concepto de árboles y reglas, se optó por tomar una aproximación 
+al problema más orientada al desbalanceo de clases. Para ello se decidió profundizar en los cimientos
+teóricos del \textit{machine learning}, donde esta tarea constituiría la sección de matemáticas y el estudio del problema
+del desbalanceo se destinaría a dotar de contenido la sección de informática.
+
+El primer punto de los objetivos podría considerarse sobradamente cubierto por los temas \ref{ch:desbalanceo} y 
+\ref{ch:algs}, donde no sólo se ha revisado literatura perteneciente a la temática, sino que también se ha profundizado en
+ella, siendo necesario entender los algoritmos para poder implementarlos.
+
+El segundo punto es probablemente el punto al que menos nos hemos adaptado. No ha sido posible una formalización del problema
+(no se puede formalizar en términos de grafos un concepto de clasificadores de árboles), aunque sí se ha introducido el
+concepto en el tema \ref{ch:desbalanceo} y se ha llevado a cabo una sencilla experimentación en el tema \ref{ch:sdisjuncts}.
+
+El tercer punto también se puede considerar alcanzado con la programación del paquete \texttt{imbalance} para \R.
+
+Sumados a estos objetivos, podríamos añadir en el ámbito de matemáticas dos nuevos que han surgido con la elaboración de
+dicha parte:
+\begin{enumerate}[i]
+ \item Comprensión de la teoría de aprendizaje automático a través de una formalización matemática.
+ \item Estudio, síntesis y mejora de conceptos y definiciones existentes.
+\end{enumerate}
+
+En particular, en lo referente al segundo punto, se ha intentado relacionar la teoría existente, claramente tratada como 
+teoría computacional teórica, con la teoría de la medida. Para ilustrar este hecho, el tema \ref{ch:probabilidad} responde a la 
+simple pregunta: dados $A_i \in \Sigma_i, i=1, \ldots, n$ con $\Sigma_i$ $\sigma$-álgebras, ¿puedo construir un espacio probabilístico
+sobre la menor $\sigma$-álgebra que contiene a $\Sigma_1 \times \ldots \Sigma_n$ y una función de probabilidad $P$ sobre ella,
+donde $P(A_1 \times \ldots \times A_n)$ sea igual a $\prod_{i=1}^n P_i(A_i)$?. 
+
+Muchas demostraciones de las aquí presentadas \ref{fact:rel-pac-apac}, \ref{fact:factibilidad}, \ref{fact:expect-error},
+\ref{fact:props-vc}, \ldots son del autor del presente trabajo. Algunas estaban propuestas como ejercicios en las
+correspondientes referencias, otras han ido surgiendo de manera natural a medida que se han ido trabajando los conceptos. 
+Asimismo, se ha trabajado en lo máximo posible la definición de aprendizaje PAC \ref{def:pac-original},
+incluyendo el concepto de factibilidad a través de equivalencia de clases en el sentido de medida $\Hclass$, concepto que en su
+referencia original era bastante más difuso, o pidiéndole a las distribuciones que contengan los conjuntos $[f\neq h]$ para
+que los errores sean medibles.
+
+De las asignaturas del plan de estudios más relacionadas con el presente trabajo, cabría citar: fundamentos y metodología
+de la programación, algorítmica, análisis ii (teoría de la medida), probabilidad, inferencia estadística, inteligencia
+de negocio (nociones previas de ciencia de datos) o metaheurísticas (en cosas puntuales como por ejemplo el algoritmo 
+\ref{alg:gradient-descendent} de gradiente descendente).

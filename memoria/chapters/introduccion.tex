@@ -11,14 +11,14 @@
 
  \subsection{¿Por qué necesitamos \textit{machine learning}?}
  \begin{enumerate}[i]
-  \item Para resolver \textbf{tareas que requieren automatización}: entran dentro de esta categoría tanto aquellas tareas para
+  \item Para resolver \textbf{tareas que requieren automatización}. Entran dentro de esta categoría tanto aquellas tareas para
   las que no existe una axiomatización o un conocimiento exacto, como pueden ser el reconocimiento de dígitos o de voz, como 
   aquellas tareas que requieren del análisis de un gran número de datos, y quedan fuera de la capacidad humana para realizar
   un análisis estadístico manual. En el primer caso necesitamos apoyarnos en conocimiento auxiliar (por ejemplo, 
   un conjunto de dígitos o de muestras de voz preetiquetadas con los que poder comparar muestras sin etiquetar/clasificar); 
   en el segundo, se hace necsario el uso de una máquina para poder extraer conocimiento de todos los datos.
   
-  \item \textbf{Tareas que requieren adaptatividad}: si cambian los datos de entrada, necesitamos que los algoritmos se readapten
+  \item \textbf{Tareas que requieren adaptatividad}. Si cambian los datos de entrada, necesitamos que los algoritmos se readapten
   a ellos, y no tengamos un conocimiento rígido, sino que pueda variar/mejorar en función de la entrada.
  \end{enumerate}
 
@@ -26,26 +26,25 @@
  Entre las áreas relacionadas con el aprendizaje automático, cabe mencionar:
 
  \begin{enumerate}[i]
-  \item \textbf{Inteligencia Artificial}: aprender de los datos, cuando tenemos un volumen extenso de datos, es una tarea que 
+  \item \textbf{Inteligencia Artificial}. Aprender de los datos, cuando tenemos gran cantidad es una tarea que 
   claramente encaja con el uso de los ordenadores para ejecutar algoritmos que a un humano le sería imposible ejecutar a mano, o para
   extraer relaciones sutiles entre los datos que al mismo se le escaparían con facilidad.
   
-  \item \textbf{Inferencia}: entre las diferencias que podemos mencionar con la estadística convencional, destaca 
+  \item \textbf{Inferencia}. Entre las diferencias que podemos mencionar con la estadística convencional, destaca 
   la necesidad de programar las tareas, dado el volumen de datos con el que normalmente se trabaja, mientras que en muchos análisis 
   estadísticos basta lápiz y papel. También destaca la \textbf{independencia respecto a distribución} con la que se trabaja (no se
   asume una distribución determinada sobre los datos). La principal diferencia del aprendizaje automático respecto a la inferencia 
   es que la inferencia se encarga de comprobar la validez de las hipótesis que propone el estadista, mientras que el algoritmo de
   \textit{machine learning} genera hipótesis para unos datos determinados, con unas ciertas condiciones de aproximación y error.
  
-  \item \textbf{Teoría de la medida}: usaremos nociones de probabilidad y teoría de la medida para construir nuestra noción de 
-  aprendizaje: que bajo unos ciertos criterios de garantía el error cometido por nuestros algoritmos sea suficientemente pequeño. 
-  Asumiremos conocimiento previo de variables aleatorias, y de resultados fundamentales del grado en matemáticas como el Teorema de
-  convergencia monótona.
+  \item \textbf{Teoría de la medida}. Usaremos nociones de probabilidad y teoría de la medida para construir nuestra noción de 
+  aprendizaje: con cierta probabilidad, el error cometido deberá ser pequeño. Asumiremos conocimiento previo de variables 
+  aleatorias, y de resultados fundamentales del grado en matemáticas como el teorema de convergencia monótona.
   
-  \item \textbf{Algorítmica y optimización de algoritmos}: debemos analizar el tiempo asintótico de los algoritmos que deben ser ejecutados
-  sobre una máquina. Se busca que sean lo más eficientes posibles asintóticamente. Se ha intentado que la implementaciones realizadas 
-  tengan el menor orden de eficiencia posibles, y dada la lentitud de \R en los bucles, se han extraído algunas partes clave de dichos 
-  algoritmos para ejecutarlas sobre \texttt{C++} y devolverle los resultados a \R.
+  \item \textbf{Algorítmica y optimización de algoritmos}. Debemos analizar el tiempo asintótico de los algoritmos que deben ser ejecutados
+  sobre una máquina. Se busca que sean lo más eficientes posibles. Se ha intentado que la implementaciones realizadas 
+  tengan el menor orden de eficiencia posible, y dada la lentitud de \R en los bucles, se han extraído algunas partes clave de dichos 
+  algoritmos para ejecutarlas sobre \texttt{C++}.
  \end{enumerate}
  
  Nuestro estudio de informática estará centrado en el desbalanceo de clases (dos clases, una clase de los datos de entrenamiento más 
@@ -58,13 +57,34 @@
  
  Se ha intentado adaptar la teoría PAC de teoría computacional lo máximo posible a un \textit{framework} matemático, proporcionando
  una introducción a los problemas de medibilidad de los conjuntos cuando ha sido posible. El presente trabajo constituye una
- revisión del trabajo existente, así como un intento de mejora, adaptación y simplificación de las demostraciones y definiciones
- existentes.
+ revisión del trabajo existente, así como un intento de mejora, adaptación y simplificación de las demostraciones y definiciones.
  
  Se conduce el trabajo desde la dura formalización de aprendizaje PAC pasando por la contextualización del problema de 
  desbalanceo de clases, hasta llegar al estudio de \textit{small disjuncts}, un problema puramente empírico. El desarrollo
  informático se centra en proveer de algoritmos recientes en el campo del \textit{oversampling}, técnica usada para paliar
  el desbalanceo de clases, cuya implementación no ha sido liberada por sus autores.
+ 
+ Fundamentalmente nuestra memoria está dividida en:
+ \begin{itemize}
+  \item \textbf{Parte de matemáticas}:
+   \begin{itemize}
+    \item Nociones básicas de probabilidad, así como desigualdades básicas.
+    \item Introdución los primeros conceptos de aprendizaje PAC, y relajación posterior que se concreta en la teoría APAC
+    \item Noción de aprendizaje uniforme de Glivenko-Cantelli.
+    \item Teorema de No Free Lunch.
+    \item Dimensión Vapnik Chervonenkis y construcción del teorema fundamental del aprendizaje PAC.
+   \end{itemize}
+  \item \textbf{Parte de informática}:
+   \begin{itemize}
+    \item Presentación del problema de desbalanceado y de las técnicas existentes.
+    \item Descripción de los algoritmos implementados.
+    \item Descripción de las tecnologías empleadas y el paquete desarrollado.
+    \item Experimentación con \textit{small disjuncts}.
+   \end{itemize}
+  \item \textbf{Apéndice}: que provee de un manual para el manejo del paquete \texttt{imbalance}, del lenguaje de estadística
+  computacional \texttt{R}.
+ \end{itemize}
+
  
   \section{Bibliografía empleada}
   El material principal en el que se ha basado la sección de matemáticas ha sido \citep{shalev}, 
@@ -93,3 +113,11 @@
    Para el desarrollo del software se ha seguido fundamentalmente \citep{rhadleypkg}, que proporciona una guía detallada de
    cómo construir correctamente un paquete del lenguaje R. También se han consultado capítulos aislados de \citep{rgillespie},
    que ofrece información muy útil sobre cómo hacer softwre eficiente en R.
+   
+  \section{Conocimiento libre}
+   El contenido de este trabajo ha sido publicado bajo una licencia Creative Commons BY-NC-SA en un repositorio de Github 
+   \footnote{\url{https://github.com/ncordon/tfg}}. El código del fichero en \LaTeX, así como todas las imágenes, a excepción
+   de las extraídas de otras fuentes y explíticamente marcadas a tal efecto, quedan liberados bajo una licencia GPLv3.
+   
+   El software, disponible en otro repositorio de Github \footnote{\url{https://github.com/ncordon/imbalance}}, se libera bajo
+   una licencia GPLv2 o posterior.

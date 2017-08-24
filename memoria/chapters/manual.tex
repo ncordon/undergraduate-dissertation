@@ -10,8 +10,9 @@ generate more noisy instances out of them.
 %
 \begin{Usage}
 \begin{verbatim}
-mwmote(dataset, numInstances, kNoisy = 5, kMajority = 3, kMinority,
-  threshold = 5, cmax = 2, cclustering = 3, classAttr = "Class")
+mwmote(dataset, numInstances, kNoisy = 5, kMajority = 3, 
+       kMinority, threshold = 5, cmax = 2, cclustering = 3, 
+       classAttr = "Class")
 \end{verbatim}
 \end{Usage}
 %
@@ -23,7 +24,7 @@ mwmote(dataset, numInstances, kNoisy = 5, kMajority = 3, kMinority,
 \item[\code{numInstances}] Integer. Number of new minority examples to generate.
 
 \item[\code{kNoisy}] Integer. Parameter of euclidean KNN to detect noisy examples as
-those whose whole kNoisy-neighbourhood is from the opposite class.
+those whose whole kNoisy neighbourhood is from the opposite class.
 
 \item[\code{kMajority}] Integer. Parameter of euclidean KNN to detect majority
 borderline examples as those who are in any kMajority-neighbourhood of
@@ -78,7 +79,8 @@ synthetic minority examples by approximating their probability distribution.
 %
 \begin{Usage}
 \begin{verbatim}
-racog(dataset, iterations, burnin = 100, lag = 20, classAttr = "Class")
+racog(dataset, iterations, burnin = 100, lag = 20, 
+      classAttr = "Class")
 \end{verbatim}
 \end{Usage}
 %
@@ -87,8 +89,7 @@ racog(dataset, iterations, burnin = 100, lag = 20, classAttr = "Class")
 \item[\code{dataset}] \code{data.frame} to treat. All columns, except
 \code{classAttr} one, have to be numeric or coercible to numeric.
 
-\item[\code{iterations}] Integer. Number of iterations to run for each minority
-example.
+\item[\code{numInstances}] Integer. Number of new minority examples to generate.
 
 \item[\code{burnin}] Integer. It determines how many examples generated for a given
 one are going to be discarded firstly. By default, 100.
