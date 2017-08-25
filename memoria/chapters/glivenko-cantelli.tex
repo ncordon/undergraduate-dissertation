@@ -1,49 +1,52 @@
+Haremos un breve recorrido por el concepto estadístico de aprendizaje uniforme (clases de Glivenko-Cantelli) y la 
+implicación que tiene en teoría PAC. Probaremos que las clases finitas son APAC cognoscibles.
+
 \section{Clases de Glivenko-Cantelli}
-
-Empezamos definiendo lo que es un conjunto de entrenamiento $\varepsilon$ representativo.
-
 \begin{definition}
  Un conjunto de entrenamiento $S$ es $\varepsilon$-representativo de una clase de hipótesis $H$ respecto a una
- distribución $\dist$ y una función de pérdida $l$, si $\forall h\in H$ se tiene:
- 
- \[|L_S(h) - L_{\dist}(h)| \le \varepsilon\]
+ distribución $\dist$ y una función de pérdida $l$ (recordemos que $L$ se define en términos de $l$), 
+ si $\forall h\in H$ se tiene:
+ \[
+   |L_S(h) - L_{\dist}(h)| \le \varepsilon
+ \]
 \end{definition}
 
 Intuitivamente, cualquier $ERM_H$ sobre $S$ sería un buen algoritmo de aprendizaje 
 si $S$ es $\varepsilon$ representativo para cualquier $\varepsilon \in ]0,1[$ y cualquier distribución. 
-Lo formalizamos con la siguiente proposición:
+Lo formalizamos con la siguiente proposición.
 
 \begin{fact}
  Si $S$ es $\varepsilon$-representativo de $H$ con respecto a una distribución $\dist$ y una función de 
  pérdida $l$, entonces se tiene:
- 
- \[L_{\dist}(ERM_H(S)) \le \inf_{h\in H} L_{\dist}(h) + 2\varepsilon\]
+ \[
+   L_{\dist}(ERM_H(S)) \le \inf_{h\in H} L_{\dist}(h) + 2\varepsilon
+ \]
  
  \label{fact:epsilon-rep}
 \end{fact}
 
-\begin{proof}
- Sea $A$ un $ERM_H$
- 
- $L_{\dist}(A(S)) \le L_S(A(S)) + \varepsilon$ por ser $S$ $\varepsilon$-representativa. Pero por definición de 
- $ERM_H$, $\inf_{h\in H} L_S(A(S)) + \varepsilon \le \inf_{h\in H}L_S(h) + \varepsilon$ y aplicando
- $\varepsilon$-representatividad de nuevo:
- 
- \[\inf_{h\in H} L_S(h) + \varepsilon \le \inf_{h\in H} L_{\dist}(h) + 2\varepsilon\]
- 
- En resumen: $L_{\dist}(A(S)) \le \inf_{h\in H} L_{\dist}(h) + 2\varepsilon$, para $A \in ERM_H$ arbitrario.
-\end{proof}
+  \begin{proof}
+   Sea $A$ un $ERM_H$ en lo que sigue.
+   
+   $L_{\dist}(A(S)) \le L_S(A(S)) + \varepsilon$ por ser $S$ $\varepsilon$-representativo. Pero por definición de 
+   $ERM_H$, $L_S(A(S)) + \varepsilon \le \inf_{h\in H}L_S(h) + \varepsilon$ y aplicando
+   $\varepsilon$-representatividad de nuevo:
+   \[
+     \inf_{h\in H} L_S(h) + \varepsilon \le \inf_{h\in H} L_{\dist}(h) + 2\varepsilon
+   \]
+   
+   En resumen: $L_{\dist}(A(S)) \le \inf_{h\in H} L_{\dist}(h) + 2\varepsilon$, para $A \in ERM_H$ arbitrario.
+  \end{proof}
 
 
-\begin{definition} \textbf{Clase de Glivenko-Cantelli}
-
+\begin{definition}[Clase de Glivenko-Cantelli]
 Decimos que una clase de hipótesis $H$ es de Glivenko-Cantelli, respecto a un dominio $Z$, y a 
 una función de pérdida $l$, si existe una función ${m_{H}^{CU}: ]0,1[^2 \rightarrow \mathbb{N}}$ 
-verificando que para todo $0 < \delta, \varepsilon < 1$ y para toda distribución $\dist$ sobre $Z$, siendo 
-$S\sim \dist^m$ con $m \ge m_{H}^{CU}(\varepsilon, \delta)$, 
-entonces:
-
-\[\mprob [\forall h\in H, |L_S(h) - L_{\dist}(h)| \le \varepsilon] \ge 1-\delta\]
+verificando que para todo $0 < \delta, \varepsilon < 1$ y para toda distribución $\dist$ sobre $Z$ 
+que haga medible a $l$, siendo $S\sim \dist^m$ con $m \ge m_{H}^{CU}(\varepsilon, \delta)$, entonces:
+\[
+  \mprob [\forall h\in H, |L_S(h) - L_{\dist}(h)| \le \varepsilon] \ge 1-\delta
+\]
 \end{definition}
 
 Análogamente a lo que ocurría en la definición \ref{def:pac}, podemos considerar $m_H^{CU}$ única, en el sentido de
@@ -53,102 +56,97 @@ hipótesis.
 \section{Glivenko-Cantelli y APAC cognoscibilidad}
 
 \begin{theorem}
-Sea $H$ una clase de hipótesis de Glivenko-Cantelli, respecto a $\dist$ y función de pérdida $l$. 
+Sea $H$ una clase de hipótesis de Glivenko-Cantelli, respecto a $Z$ y función de pérdida $l$. 
 Entonces es APAC cognoscible con cualquier algoritmo $ERM_H$ y complejidad muestral
-$m(\varepsilon, \delta) \le m_{H}^{UC} \left(\frac{\varepsilon}{2}, \delta \right)$ 
+$m(\varepsilon, \delta) \le m_{H}^{UC} \left(\frac{\varepsilon}{2}, \delta \right)$. 
 \label{th:gc-apac}
 \end{theorem}
 
   \begin{proof}
-  Sea $A$ un $ERM_H$ arbitrario, y $\dist$ una distribución arbitraria sobre $Z$.
-  Fijamos $m = m_{H}^{UC} \left(\frac{\varepsilon}{2}, \delta \right)$.
+   Sea $A$ un $ERM_H$ arbitrario, y $\dist$ una distribución arbitraria sobre $Z$.
+   Fijamos $m = m_{H}^{UC} \left(\frac{\varepsilon}{2}, \delta \right)$.
 
-  Sea $S = (z_1, \ldots z_m)$ un conjunto de entrenamiento, verificando que: 
+   Sea $S = (z_1, \ldots z_m)$ un conjunto de entrenamiento, verificando que: 
+   \begin{equation}
+     \forall h\in H, |L_{S}(h)-L_{\dist}(h)| \le \frac{\varepsilon}{2}
+     \label{eq:gc-ineq}\tag{$\ast$}
+   \end{equation}
 
-  \begin{equation}
-    \forall h\in H, |L_{S}(h)-L_{\dist}(h)| \le \frac{\varepsilon}{2}
-    \label{eq:gc-ineq}
-  \end{equation}
+   Entonces $S$ es $\varepsilon$ representativa para $\dist$ y $l$, y por proposición \ref{fact:epsilon-rep}:
+   \begin{equation}
+    L_{\dist}(A(S)) \le \inf_{h\in H} L_{\dist}(h) + \varepsilon
+    \label{eq:gc-result}\tag{$\ast\ast$}
+   \end{equation}
 
-  Entonces $S$ es $\varepsilon$ representativa para $\dist$ y $l$, y por proposición \ref{fact:epsilon-rep}:
-
-  \begin{equation}
-   L_{\dist}(A(S)) \le \inf_{h\in H} L_{\dist}(h) + \varepsilon
-   \label{eq:gc-result}
-  \end{equation}
-
-  Pero como $\eqref{eq:gc-ineq}$ ocurre con probabilidad (sobre $S$) mayor o igual a $1-\delta$, entonces 
-  $\eqref{eq:gc-result}$ ocurre con probabiliad mayor o igual a $1-\delta$
-  
+   Pero como $\eqref{eq:gc-ineq}$ ocurre con probabilidad (sobre $S$) mayor o igual a $1-\delta$, entonces 
+   $\eqref{eq:gc-result}$ ocurre con probabiliad mayor o igual a $1-\delta$
   \end{proof}
   
   
 \begin{fact}
 Sea $H$ una clase de hipótesis finita, $Z$ un dominio y sea $l : H \times Z \rightarrow [a,b]$ una función de pérdida.
-Entonces $H$ es de Glivenko-Cantelli respecto a $H$ y $l$ con:
-
-\[m_{H}^{CU}(\varepsilon, \delta) \le \left\lceil \frac{log(2|H|/\delta)(b-a)^2}{2\varepsilon^2} \right\rceil\]
+Entonces $H$ es de Glivenko-Cantelli respecto a $Z$ y $l$ con:
+\[
+  m_{H}^{CU}(\varepsilon, \delta) \le \left\lceil \frac{log(2|H|/\delta)(b-a)^2}{2\varepsilon^2} \right\rceil
+\]
 \label{fact:finitas-gc}
 \end{fact}
   \begin{proof}
   Fijamos $0 < \delta, \varepsilon < 1$. 
   
   Necesitamos encontrar $m\in \mathbb{N}$ verificando:
-
-  \[\mprob [\exists h\in H : |L_S(h) - L_{\dist}(h)| > \varepsilon] < \delta\]
+  \[
+    \mprob [\exists h\in H : |L_S(h) - L_{\dist}(h)| > \varepsilon] < \delta
+  \]
 
   Partimos de la siguiente desigualdad, que usaremos más adelante, obtenida por subaditividad:
-
   \begin{equation}
   \mprob [\exists h\in H |L_S(h) - L_{\dist}(h)| > \varepsilon] \le 
   \sum_{h \in H} \mprob [|L_S(h) - L_{\dist}(h)| > \varepsilon]
-  \label{eqn:gc-subaditividad}
+  \label{eqn:gc-subaditividad}\tag{$\ast$}
   \end{equation}
 
   Fijamos $h \in H$.
 
   Dado un conjunto de entrenamiento $S = (z_1, \ldots z_m)$, recordamos que 
-  $L_{\dist} (h) = \mathbb{E}_{z\sim \dist} [l(h,z)]$ y que 
-  $L_{S}(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i)$
-
-  Donde $z_i \sim \dist$ son i.i.d. y por tanto:
+  $L_{\dist} (h) = \zexpect (l(h,z))$ y que $L_{S}(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i)$, donde $z_i \sim \dist$ son i.i.d.
+  y por tanto:
+  \[
+    \mexpect (L_S(h)) = \frac{1}{m} \sum_{i=1}^m \underset{z_i\sim \dist} \expect(l(h,z_i)) =  \zexpect (l(h,z)) = L_{\dist} (h)
+  \] 
   
-  \[\mathbb{E}_{S \sim \dist^m} [L_S(h)] = \frac{1}{m} \mathbb{E}_{z_i \sim \dist} [l(h,z_i)] =  
-    \mathbb{E}_{z \sim \dist} [l(h,z)] = L_{\dist} (h)\]. 
-  
-  Además, llamando $W_i:Z \rightarrow \mathbb{R}$, $W_i (z_i) = l(h,z_i)$, se tiene que las $W_i$ son 
-  independientes e idénticamente distribuidas, con $P[a \le W_i \le b] = 1$. 
-  Estamos en condiciones de aplicar la desigualdad \ref{ineq:hoeffding} de Hoeffding.
+  Además, llamando $W_i:Z \rightarrow \mathbb{R}$, $W_i (z_i) = l(h,z_i)$, se verifica que $P[a \le W_i \le b] = 1$
+  con las $W_i$ independiente e idénticamente distribuidas. Estamos en condiciones de aplicar la desigualdad \ref{ineq:hoeffding} de Hoeffding.
 
   Por tanto, por \eqref{eqn:gc-subaditividad}:
+  \[
+    \mprob \left[\left| \frac{1}{m} \sum_{i=1}^m W_i - L_{\dist} (h) \right| > \varepsilon\right] = 
+    P [|L_S(h) - L_{\dist}(h)| > \varepsilon] \le 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2}
+  \]
 
-  \[\mprob \left[\left| \frac{1}{m} \sum_{i=1}^m W_i - L_{\dist} (h) \right| > \varepsilon\right] = 
-    P [|L_S(h) - L_{\dist}(h)| > \varepsilon] \le 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2}\]
-
-  Y por tanto:
-
-  \[P [\exists h\in H |L_S(h) - L_{\dist}(h)| > \varepsilon] \le 
-   |H| 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2}\]
+  Así:
+  \[
+    P [\exists h\in H |L_S(h) - L_{\dist}(h)| > \varepsilon] \le 
+    |H| 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2}
+  \]
 
   Despejando $m$ para que $|H| 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2} < \delta$ 
   llegamos al resultado buscado.
   \end{proof}
 
-Recordemos hasta ahora el resultado que habíamos obtenido en el teorema \ref{th:finitas-pac}. El 
-teorema que sigue generaliza dicho resultado para cualquier función de pérdida acotada.
-era el carácter PAC cognoscible de las clases de hipótesis finitas. Recordamos también que 
-PAC cognoscibilidad y APAC cognoscibilidad asumiendo funciones de pérdida 0-1 e hipótesis de 
-factibilidad equivalían.
+Recordemos hasta ahora el resultado que habíamos obtenido en el teorema \ref{th:finitas-pac} 
+era el carácter PAC cognoscible de las clases de hipótesis finitas. El teorema que sigue generaliza dicho resultado
+para cualquier función de pérdida acotada.
 
-\begin{theorem}
-
+\begin{corollary}
 Sea $H$ una clase de hipótesis finita, $Z$ un dominio y sea $l : H \times Z \rightarrow [a,b]$ una
 función de pérdida. Entonces $H$ es APAC cognoscible con complejidad muestral:
-
-\[m_{H}( \varepsilon, \delta ) \le \left\lceil \frac{2 log(2|H|/\delta)(b-a)^2}{\varepsilon^2} \right\rceil\]
+\[
+  m_{H}( \varepsilon, \delta ) \le \left\lceil \frac{2 log(2|H|/\delta)(b-a)^2}{\varepsilon^2} \right\rceil
+\]
 
 \label{finitas-apac}
-\end{theorem}
+\end{corollary}
   
   \begin{proof}
   Estamos en condiciones de aplicar la proposición \ref{fact:finitas-gc}. $H$ sería de Glivenko-Cantelli 
@@ -157,6 +155,6 @@ función de pérdida. Entonces $H$ es APAC cognoscible con complejidad muestral:
 
 Por tanto, si podríamos haber deducido el teorema \ref{th:finitas-pac} a partir del anterior, ¿por qué no probar
 directamente este último?. Asintóticamente, para errores muy pequeños $\epsilon \sim 0$, el resultado último nos 
-proporciona una cota mucho mayor, pues depende de $\frac{1}{\epsilon^2}$, que \ref{th:finitas-pac}, que dependía 
-de $\frac{1}{\epsilon}$. Por tanto para PAC cognoscibilidad el teorema \ref{th:finitas-pac} proporciona un mejor
+proporciona una cota mucho mayor que \ref{th:finitas-pac}, pues depende de $\frac{1}{\epsilon^2}$, mientras que el primero
+dependía de $\frac{1}{\epsilon}$. Para PAC cognoscibilidad el teorema \ref{th:finitas-pac} proporciona un mejor
 resultado que este último.

@@ -1,13 +1,13 @@
-\section{Teorema de No Free Lunch}
-Veamos que dado un algoritmo de aprendizaje PAC no resulta óptimo para aprender todas las distribuciones. 
+Veremos que dado un algoritmo de aprendizaje PAC no resulta óptimo para aprender todas las distribuciones. 
 Lo vemos para clasificación binaria. Consideramos en este capítulo funciones de pérdida $0-1$, puesto que
 trabajaremos con paradigma PAC.
 
+\section{Teorema de No Free Lunch}
 \begin{lemma}
  Dados $w_1, \ldots w_T \in \mathbb{R}$. Entonces:
- 
- \[\min_{i = 1,\ldots ,T} w_i \le \frac{1}{T} \sum_{i=1}^T w_i \le \max_{i = 1,\ldots,T} w_i\]
-
+ \[
+   \min_{i = 1,\ldots ,T} w_i \le \frac{1}{T} \sum_{i=1}^T w_i \le \max_{i = 1,\ldots,T} w_i
+ \]
  \label{lemma:nfl-ineqs}
 \end{lemma}
 
@@ -15,55 +15,53 @@ trabajaremos con paradigma PAC.
  Trivial.
 \end{proof}
 
-
-\begin{theorem}
-\textbf{Teorema de No Free Lunch}
-
+\begin{theorem}[Teorema de No Free Lunch]
 Sea un dominio $X$, un conjunto de etiquetas $Y=\{0,1\}$, $H = 2^X$. 
 Sea $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ un algoritmo. Dado $m \le \frac{|X|}{2}$.
-Entonces existe $\dist$ distribución sobre $X\times \{0,1\}$ verificando:
-
+Entonces existe $\dist$ sobre $X\times \{0,1\}$ verificando:
 \begin{enumerate}[i]
 \item Existe una función $f: X \rightarrow \{0,1\}$ con $L_{\dist}(f)=0$
-\item $\mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \ge \frac{1}{7}$
+\item $\mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}$
 \end{enumerate}
 
 \label{th:nfl}
 \end{theorem}
 
 \begin{proof}
-Sea un conjunto de instancias $C=\{x_i, \ldots x_{2m}\}$. Hay $T = 2^{2m}$ posibilidades de etiquetado del conjunto,
+Sea un conjunto de instancias $C=\{x_1, \ldots x_{2m}\}$. Hay $T = 2^{2m}$ posibilidades de etiquetado del conjunto,
 esto es, $T$ posibles hipótesis, $f_i: C\rightarrow \{0,1\}$, que vamos a extender a $X$ llamándolas $\bar{f}_i$
 de forma que $\bar{f}_{i|C} = f_i$ y $\bar{f}_i(x) = 0 \quad \forall x\in X\setminus C$. 
 Vamos a tomar para cada una de ellas una distribución $\dist_i=(2^X, P_i)$ definida por:
-\[\forall (x,y)\in X \times \{0,1\}, \qquad \underset{z\sim \dist_i}{P_i} [z = (x,y)] = 
+\[
+  \forall (x,y)\in X \times \{0,1\}, \qquad \underset{z\sim \dist_i}{P_i} [z = (x,y)] = 
   \left\{\begin{array}{ll}
-	 1/|C| & x \in C, y=f_i(x)\\
-	 0     & \textrm{si no}
-  \end{array}\right. \]
+         1/|C| & x \in C, y=f_i(x)\\
+         0     & \textrm{si no}
+  \end{array}\right. 
+\]
 
-Claramente $L_{\dist_i}(f_i) = 0$.
-
-Vamos a probar que:
-\[\exists i\in \{1, \ldots T\} : \quad \mexpecti{i} [L_{\dist_i} (A(S))] \ge \frac{1}{4}\]
+Claramente $L_{\dist_i}(f_i) = 0$. Vamos a probar que:
+\[
+  \exists i\in \{1, \ldots T\} : \quad \mexpecti{i} [L_{\dist_i} (A(S))] \ge \frac{1}{4}
+\]
 
 Fijamos $i \in \{1, \ldots T\}$. Hay $k = (2m)^m$ posibles tuplas de tamaño $m$, $S_{j}, j=1, \ldots k$, tomadas 
 desde $C$. Siendo $S_j = (x_1, \ldots x_m)$ notamos $S_j^i = ((x_1, f_i(x_1)), \ldots, (x_m, f_i(x_m)))$. Cada 
 $S_j^i$ tiene la misma probabilidad de ser nuestro conjunto de entrenamiento (extracción de $m$ valores con 
 reemplazamiento desde el conjunto $C$), verificándose:
 \[
-\mexpecti{i} [L_{\dist_i} (A(S))] = \frac{1}{k} \sum_{j=1}^k L_{\dist_i} (A(S_j^i))
+  \mexpecti{i} [L_{\dist_i} (A(S))] = \frac{1}{k} \sum_{j=1}^k L_{\dist_i} (A(S_j^i))
 \]
-Recordando que hemos llamado $k=(2m)^m$, $T=2^{2m}$, y usando el lema \ref{lemma:nfl-ineqs}, y conmutatividad
-de sumatorios, se tiene:
+Recordando que hemos llamado $k=(2m)^m$, $T=2^{2m}$, y usando conmutatividad de sumatorios, se tiene:
 \begin{align}
-\max_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i)) &\ge \nonumber
-       \frac{1}{T} \sum_{i=1}^{T} \frac{1}{k} \sum_{j=1}^{k}  L_{\dist_i} (A(S_j^i))\\
+\max_{i \in \{1,\ldots T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i)) &\underset{\textrm{\ref{lemma:nfl-ineqs}}}{\ge }
+       \frac{1}{T} \sum_{i=1}^{T} \frac{1}{k} \sum_{j=1}^{k}  L_{\dist_i} (A(S_j^i)) \nonumber\\
 &=     \frac{1}{k} \sum_{j=1}^{k} \frac{1}{T} \sum_{i=1}^{T}  L_{\dist_i} (A(S_j^i)) \nonumber\\
-&\ge \min_{j \in \{1, \ldots k\}} \frac{1}{T} \sum_{i=1}^{T}  L_{\dist_i} (A(S_j^i)) \label{eqn:nfl-ineqs1}
+&\underset{\textrm{\ref{lemma:nfl-ineqs}}}{\ge} \min_{j \in \{1, \ldots k\}} \frac{1}{T} \sum_{i=1}^{T}  L_{\dist_i} (A(S_j^i)) 
+\label{eqn:nfl-ineqs1}\tag{$\ast$}
 \end{align}
 
-Además fijado $j \in \{1,\ldots k\}$:
+Fijamos ahora $j \in \{1,\ldots k\}$:
 
 Sean $\{v_r\}_{r=1}^p$ los elementos de $C$ no presentes en el conjunto de entrenamiento $S_j$. 
 Claramente, como $|C|=2m$ y $S_j$ puede tener elementos repetidos, se tiene $p \ge m$. Asimismo:
@@ -72,28 +70,29 @@ Claramente, como $|C|=2m$ y $S_j$ puede tener elementos repetidos, se tiene $p \
   \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}
 \]
 
-Por tanto:
+Deducimos:
 \begin{align}
 \frac{1}{T} \sum_{i=1}^{T}  L_{\dist_i} (A(S_j^i)) &\ge
-\frac{1}{T} \sum_{i=1}^{T}  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]} \ge \nonumber\\
-&\ge \frac{1}{T} \frac{1}{2p} \sum_{r=1}^p \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} \ge \nonumber\\
-&\ge \frac{1}{T} \frac{1}{2} \min_{r} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} 
-\label{eqn:nfl-ineqs2}
+\frac{1}{T} \sum_{i=1}^{T}  \frac{1}{2m} \sum_{x \in C} \mathds{1}_{[A(S^i_j)(x) \neq f_i(x)]}\nonumber\\
+&\ge \frac{1}{T} \frac{1}{2p} \sum_{r=1}^p \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} \nonumber\\
+&\underset{\textrm{\ref{lemma:nfl-ineqs}}}{\ge} \frac{1}{T} \frac{1}{2} \min_{r} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} 
+\label{eqn:nfl-ineqs2}\tag{$\ast\ast$}
 \end{align}
 
 
 Dado un $v_r$ cualquiera, $v_r \notin \bigg\{x_k: S_j = (x_1, \ldots, x_m)\bigg\}$. Luego existen 
 $f_i, f_{i'}$ que se diferencian justo en el elemento $v_r$. Por tanto, como $S_j^i = S_j^{i'}$,
 tendremos que o bien $A(S^i_j)(v_r) \neq f_i(v_r)$ o bien $A(S^{i'}_j)(v_r) \neq f_{i'}(v_r)$:
-
 \begin{equation}
 \frac{1}{T} \frac{1}{2} \sum_{i=1}^{T}  \mathds{1}_{[A(S^i_j)(v_r) \neq f_i(v_r)]} = 
   \frac{1}{T} \frac{1}{2} \frac{T}{2} = \frac{1}{4}
-\label{eqn:nfl-ineqs3}
+\label{eqn:nfl-ineqs3}\tag{$\ast\ast\ast$}
 \end{equation}
 
 Y uniendo \eqref{eqn:nfl-ineqs1}, \eqref{eqn:nfl-ineqs2} y \eqref{eqn:nfl-ineqs3} tendríamos:
-\[\max_{i \in \{1,\ldots, T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i)) \ge \frac{1}{4}\]
+\[
+  \max_{i \in \{1,\ldots, T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i)) \ge \frac{1}{4}
+\]
 
 Sea $k = \argmax_{i \in \{1,\ldots, T\}} \frac{1}{k} \sum_{j=1}^{k} L_{\dist_i} (A(S_j^i))$.
 
@@ -101,17 +100,19 @@ Si $\dist = \dist_k$ cumple la parte 2 del enunciado del teorema, podemos tomar 
 parte del enunciado.
 
 Como $L_{\dist} (A(\cdot))$ puede ser vista como una variable aleatoria donde $S \sim \dist^m$ y que toma
-valores en $[0,1]$, tenemos que tomando $Z = 1-L_{\dist}(A(\cdot))\ge 0$, $a=\frac{7}{8}$, estamos en 
+valores en $[0,1]$, tenemos que tomando $W = 1-L_{\dist}(A(\cdot))\ge 0$, $a=\frac{7}{8}$, estamos en 
 condiciones de aplicar la desigualdad \ref{ineq:markov} de Markov:
-\[\mprob \left(\frac{1}{8} \ge L_{\dist}(A(S)) \right) \le \frac{3}{4} \cdot \frac{8}{7} = \frac{1}{7}\]
+\[
+  \mprob \left(\frac{1}{8} \ge L_{\dist}(A(S)) \right) \le \frac{3}{4} \cdot \frac{8}{7} = \frac{6}{7}
+\]
 
-donde $\expect(Z) = \expect (1 - L_{\dist}(A(\cdot))) = 1 - \expect (L_{\dist}(A(\cdot))) \le \frac{3}{4}$
+donde $\mexpect(W) = \mexpect (1 - L_{\dist}(A(\cdot))) = 1 - \mexpect (L_{\dist}(A(\cdot))) \le \frac{3}{4}$
 
 Es decir:
-\[\mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] = \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] > 
-\frac{1}{7}\]
+\[
+  \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}
+\]
 \end{proof}
-
 
 Como consecuencia del teorema, podemos decir que no hay un algoritmo de aprendizaje óptimo para todas las 
 distribuciones, puesto que para un número de puntos $m \le \frac{|X|}{2}$ y la distribución dada por el teorema
@@ -123,28 +124,28 @@ obtendría con cierta probabilidad un fallo superior a $\frac{1}{8}$.
 \end{corollary}
 
 \begin{proof}
- Por reducción al absurdo. Sea $A$ el algoritmo de aprendizaje. Para todo $m\in \mathbb{N}$, como 
- $m\le \frac{|X|}{2}$, el teorema anterior nos diría que existe una distribución $\dist$ verificando:
- 
- \[\mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \ge \frac{1}{7}\]
+ Supongamos que lo fuese. Sea $A$ el algoritmo que hace a $2^X$ PAC cognoscible. Entonces todo $m\in \mathbb{N}$, como 
+ $m\le \frac{|X|}{2}$, el teorema anterior nos diría que existe una distribución $\dist$ verificando: 
+ \[
+   \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7} \Leftrightarrow 
+   \mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \le \frac{6}{7} 
+ \]
  
  Luego no puede existir $m_H \left(\frac{1}{8}, \delta\right)$ con $\delta > \frac{6}{7}$.
 \end{proof}
 
 
 \section{Equilibrio error-varianza}
-
-El equilibrio error-varianza (en inglés, \emph{bias-variance tradeoff}) hace referencia a un concepto intuitivo que se 
-desprende de la demostración del teorema \ref{th:nfl}. La clave de dicha demostración ha sido que estabamos considerando
-como conjunto de clasificadores todo el espacio $2^X$. Así, intuitivamente, cuanto más complejo o grande sea el conjunto 
-$H$, mejor aproximaremos el verdadero o mejor clasificador, pero más número de muestras necesitaremos y más varianza 
-respecto al mejor clasificador tendremos.
-
 \begin{definition}
- Llamamos error de aproximación a $err_{app} := \inf_{h\in H} L_{\dist}(h)$. LLamamos error de estimación a $err_{est,S} := 
+ Llamamos error de aproximación a $err_{app} := \inf_{h\in H} L_{\dist}(h)$. LLamamos error de estimación a $err_{est} := 
  L_{\dist} (A(S)) - err_{app}$ para un cierto algoritmo $A$ y conjunto de entrenamiento $S$ arbitrario.
 \end{definition}
 
+El equilibrio error-varianza hace referencia a un concepto intuitivo que se desprende de la demostración del teorema
+\ref{th:nfl}. La clave de dicha demostración ha sido que estabamos considerando
+como conjunto de clasificadores todo el espacio $2^X$. Así, intuitivamente, cuanto más complejo o grande sea el conjunto 
+$H$, mejor aproximaremos el verdadero o mejor clasificador, pero más número de muestras necesitaremos y más costoso será
+aproximarlo.
 
 Cuando crece $err_{app}$, decrece $err_{est}$ y viceversa. Por tanto, el \emph{machine learning} intenta buscar un equilibrio
 entre bondad de los clasificadores que se prueban y la complejidad de la clase a la que pertenecen los mismos.

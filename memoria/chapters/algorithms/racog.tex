@@ -6,8 +6,9 @@ conjunta $P(W_1, \ldots, W_d)$.
 
 El problema es que calcular la anterior distribución es muy costoso, dado que tendríamos un número de posibles valores para 
 cada instancia de:
-
-\[|\{\textrm{Posibles valores para }W_1\}| \cdots |\{\textrm{Posibles valores para} W_d\}|\]
+\[
+  |\{\textrm{Posibles valores para }W_1\}| \cdots |\{\textrm{Posibles valores para} W_d\}|
+\]
 
 Si consiguiéramos aproximar $P(W_1, \ldots, W_d)$ como producto de distribuciones marginales, esto es, 
 $P(W_1, \ldots W_d) \approx \prod_{i=1}^d P(W_i \mid W_{n(i)})$ donde cada $n(i) \in \{1, \ldots, d\}$,

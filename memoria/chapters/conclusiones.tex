@@ -1,0 +1,33 @@
+En el presente trabajo se han descrito una serie de formalizaciones sobre la teoría del aprendizaje estadístico, que dan
+lugar a teoremas tan complejos como el teorema fundamental del aprendizaje PAC o el teorema de No Free Lunch. Ha constituido
+un área difícil de estudiar puesto que requiere conocimientos de muchas disciplinas, aunque se ha alcanzado un buen nivel de
+asimilación de la teoría presentada.
+
+También se ha conseguido un objetivo fundamental, como era el desarrollo de un software de la temática a tratar, 
+dando unas nociones básicas sobre diversos algoritmos noveles que tratan el problema de la clasificación no balanceada.
+Se ha comprobado a través de la lectura de \textit{papers} sobre la temática que este es un tema muy estudiado, no sólo a
+nivel de informática, sino también de matemática teórica.
+
+Como principales vías futuras que continúen la línea de lo presentado hasta ahora, cabría proponer:
+
+\begin{itemize}
+ \item Caracterizar el problema de la clasificación no balanceada a través de los conceptos de dimensión Vapnik Chervonenkis.
+  Trabajos como \citep{he2009} aseguran que dicho problema ha sido muy tratado con esta teoría, aunque de manera indirecta,
+  a través de modificación de clasificadores SVM. Tras la asimilación de la teoría aquí descrita, sería deseable poder llegar
+  a una definición a través de dimensión VC que capturara el concepto de \textit{instancias raras}.
+ \item Leer e implementar \citep{pour2015}, un excelente \textit{paper} de la revista \textit{Journal of Machine Learning
+  Research} que trata el problema del \textit{oversampling} desde una perspectiva muy matemática, llevándose el espacio
+  de dimensiones a un espacio Hilbert, usando funciones kernel, y empleando originales ideas como que los datos generados, al 
+  proyectarlos a un espacio de menor dimensión, deberían quedar cerca de los de la clase minoritaria. Este \textit{paper} se ha leído varias
+  veces e intentado implementar el algoritmo que propone para este trabajo, pero contiene muchas referencias cruzadas a
+  libros y otros artículos de matemáticas y su dificultad quedaba fuera del alcance por el momento. Ahora que por ejemplo
+  se dispone de más conocimiento sobre funciones kernel, porque ha sido necesario para comprender el algoritmo PDFOS, sería
+  deseable intentar una lectura más profunda y la implementación.
+ \item Actualmente \texttt{imbalance} no está alojado en el repositorio CRAN de \R. De aquí a unas semanas se espera enviar
+  el software para someterlo a revisión y que pueda ser colgado en dicho repositorio. Esto implicaría que los usuarios no
+  tendrían que instalarse una versión en desarrollo desde Github, y que podría instalarse haciendo simplemente desde \R:
+  \begin{lstlisting}[numbers=none]
+   install.packages("imbalance")
+  \end{lstlisting}
+  Aparte, supondría un reconocimiento a que el paquete es usable y tiene una documentación apropiada.
+\end{itemize}
