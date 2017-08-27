@@ -594,12 +594,12 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  Sean $W_1, \ldots W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
  $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\varepsilon > 0$ arbitrario:
  \[
-   P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \varepsilon \right] \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^m (b_i-a_i)^2}}
+   P\left[\left| \overline{W} - \expect(\overline{W}) \right| \ge \varepsilon \right] \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^m (b_i-a_i)^2}}
  \]
  
  En el caso particular $a_i = a$ y $b_i = b$ para todo $i=1, \ldots m$:
  \[
-   P\left[\left| \overline{W} - \expect(\overline{W}) \right| > \varepsilon \right] \le 2e^{-2m \left(\frac{\varepsilon}{b-a}\right)^2}
+   P\left[\left| \overline{W} - \expect(\overline{W}) \right| \ge \varepsilon \right] \le 2e^{-2m \left(\frac{\varepsilon}{b-a}\right)^2}
  \] 
  \label{ineq:hoeffding}
 \end{lemma}
@@ -623,7 +623,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  \begin{align}
   & \expect(V_i) = \expect(W_i) - \expect(\expect(W_i)) = \expect(W_i) - \expect(W_i) = 0 \nonumber \\
   & a_i-\expect(W_i) \le V_i \le b_i-\expect(W_i)
-  \label{eq:prod-hoeff}\tag{$\ast\ast$}
+  \label{eq:prod-hoeff}\tag{$\ast$$\ast$}
  \end{align}
  
  Aplicando a cada $V_i/m$ el lema \ref{lemma:hoeffding}, desde \eqref{eq:markov-hoeff} y \eqref{eq:prod-hoeff} 
@@ -645,7 +645,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
  
  y por subaditividad: 
  \[
-   P[|\overline{V}| > \varepsilon] \le P[\overline{V} \ge \varepsilon] + P[-\overline{V} \ge \varepsilon]
+   P[|\overline{V}| \ge \varepsilon] \le P[\overline{V} \ge \varepsilon] + P[-\overline{V} \ge \varepsilon]
    \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^n (b_i-a_i)^2}}
  \]
  
