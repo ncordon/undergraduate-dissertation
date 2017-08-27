@@ -76,7 +76,7 @@ Nótese que $x\mapsto \phi_h(x-x_i)$ es la función de densidad de una normal co
 
 Una vez minimizada la función de validación cruzada $M$, el esquema de generación de instancias se basará en dada una instancia
 $x_i \in \spos$, tomar $x_i + h R r$, donde $r\sim N^d(0,1)$ y $U = R\cdot R^T$. Ilustramos el porqué de esta última afirmación:
-nálogamente al caso unidimensional, donde se pueden generar instancias desde $N(\mu, \sigma)$ tomando $\mu + \sigma r$
+análogamente al caso unidimensional, donde se pueden generar instancias desde $N(\mu, \sigma)$ tomando $\mu + \sigma r$
 con $r\sim N(0,1)$, en el caso multivariante dada $U =  R^T \cdot R$, se pueden generar instancias siguiendo una distribución $N^d(\mu, U)$,
 tomando $\mu + R \cdot r$, donde $r\sim N^d(0,1)$.
 

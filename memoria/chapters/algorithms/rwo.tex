@@ -23,11 +23,11 @@ conjunto de instancias de la clase positiva $\{x_i=(w_1^{(i)}, \ldots, w_d^{(i)}
 columna $j-$ésima de los datos está generada según una variable aleatoria $W_j$ de media $\mu_j$ y desviación
 típica $\sigma_j < \infty$.
 
-Sean $\mu_j', \sigma_j'$ la media y desviación típica muestrales, respectivamente. Las instancias sintéticas 
+Sean $\mu_j', \sigma_j'^2$ la media y varianza sesgada muestrales, respectivamente. Las instancias sintéticas 
 que generaremos serán de la forma $w_j'(i) = w_j^{(i)} - \frac{\sigma_j'}{\sqrt{m}} \cdot r$, con 
 $r\sim N(0,1)$, para $i=1, 2, \ldots, m$. Nótese la similitud de esta fórmula con \ref{th:tcl}, con la salvedad
 de que usamos los valores para la variable $W_j$ que conocemos en lugar de $\mu_j$, que es desconocida; y 
-$\sigma_j'$ que es la varianza muestral no corregida, en lugar de la verdadera varianza muestral $\sigma_j$, 
+$\sigma_j'^2$ que es la varianza muestral no corregida, en lugar de la verdadera varianza muestral $\sigma_j^2$, 
 que tampoco la conocemos.
 
 \begin{theorem}

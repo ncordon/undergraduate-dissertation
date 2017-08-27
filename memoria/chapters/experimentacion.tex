@@ -20,8 +20,9 @@ la media de cobertura de las hojas bajaría, y el número de \textit{small disju
 desbalanceo en los datasets, el número de \textit{small disjuncts} decrecerá, y la media de ejemplos por hoja aumentará.
 
 Se dividirá cada conjunto en 3 particiones estratificadas por clase (esto es, la proporción de ejemplos de ambas
-clases será aproximadamente igual que en el conjunto sin particionar). Se hará una media de las medidas descritas para cada
-dataset, y compararemos los resultados con los obtenidos para las 3 particiones sin ningún algoritmo aplicado.
+clases será aproximadamente igual que en el conjunto sin particionar), y se intentará conseguir un ratio de desbalanceo del
+80\% con cada uno de los algoritmos. Se hará una media de las medidas descritas para cada dataset, y compararemos los 
+resultados con los obtenidos para las 3 particiones sin ningún algoritmo aplicado.
 
 La experimentación es completamente reproducible, y se encuentra disponible en la carpeta \texttt{experimentacion} del 
 repositorio que aloja al presente trabajo \footnote{\url{https://github.com/ncordon/tfg}}.
@@ -53,17 +54,17 @@ En los resultados, \texttt{none} representa el dataset original sin tratamiento 
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-    \hline
-    & none & mwmote & wracog & rwo & pdfos \\ 
-    \hline
-    ecoli1 & 24.83 & 17.88 &  & 11.22 &  \\ 
-    glass0 & 12.73 & 11.90 &  & 15.71 &  \\ 
-    haberman & 16.19 & 15.02 &  & 24.72 & 21.77 \\ 
-    iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
-    newthyroid1 & 16.72 & 30.00 &  & 24.00 & 18.90 \\ 
-    wisconsin & 5.79 & 3.54 & 6.22 & 3.74 & 3.74 \\ 
-    yeast4 & 62.49 & 25.13 &  & 36.81 &  \\ 
-    \hline
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 21.26 & 30.22 &  & 15.36 &  \\ 
+  glass0 & 10.39 & 10.67 &  & 11.92 &  \\ 
+  haberman & 24.93 & 18.34 &  & 26.25 & 18.43 \\ 
+  iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+  newthyroid1 & 16.69 & 39.00 &  & 20.40 & 24.00 \\ 
+  wisconsin & 6.52 & 3.62 & 6.41 & 3.81 & 3.81 \\ 
+  yeast4 & 55.04 & 33.47 &  & 42.21 &  \\ 
+  \hline
   \end{tabular}
   \caption{Media de \textit{small disjuncts} tras \textit{oversampling}}
   \end{table}
@@ -71,17 +72,17 @@ En los resultados, \texttt{none} representa el dataset original sin tratamiento 
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-    \hline
-    & none & mwmote & wracog & rwo & pdfos \\ 
-    \hline
-    ecoli1 & 2.67 & 4.33 &  & 18.00 &  \\ 
-    glass0 & 3.67 & 5.33 &  & 3.33 &  \\ 
-    haberman & 3.33 & 1.67 &  & 2.67 & 2.33 \\ 
-    iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
-    newthyroid1 & 1.67 & 1.33 &  & 1.33 & 2.33 \\ 
-    wisconsin & 29.33 & 66.00 & 30.67 & 61.67 & 61.67 \\ 
-    yeast4 & 4.33 & 16.00 &  & 26.33 &  \\ 
-    \hline
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 3.00 & 2.00 &  & 17.00 &  \\ 
+  glass0 & 2.67 & 4.00 &  & 3.00 &  \\ 
+  haberman & 1.33 & 3.33 &  & 2.00 & 3.00 \\ 
+  iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+  newthyroid1 & 2.67 & 0.33 &  & 2.00 & 1.67 \\ 
+  wisconsin & 25.67 & 63.67 & 26.00 & 60.67 & 60.67 \\ 
+  yeast4 & 4.00 & 8.67 &  & 40.00 &  \\ 
+  \hline
   \end{tabular}
   \caption{Tamaño medio de coberturas tras \textit{oversampling}}
   \end{table}
@@ -89,37 +90,43 @@ En los resultados, \texttt{none} representa el dataset original sin tratamiento 
 \subsection{Con filtrado de instancias}
   \begin{table}[H]
   \centering
-  \begin{tabular}{rrrrrr}
+\begin{tabular}{rrrrrr}
   \hline
   & none & mwmote & wracog & rwo & pdfos \\ 
   \hline
-  ecoli1 & 24.83 & 31.36 &  & 16.29 &  \\ 
-  glass0 & 12.73 & 14.39 &  & 16.53 &  \\ 
-  haberman & 16.19 & 10.17 &  & 26.48 & 10.05 \\ 
+  ecoli1 & 21.26 & 25.65 &  & 23.89 &  \\ 
+  glass0 & 10.39 & 10.70 &  & 12.31 &  \\ 
+  haberman & 24.93 & 15.61 &  & 28.61 & 21.49 \\ 
   iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
-  newthyroid1 & 16.72 & 29.06 &  & 21.58 & 22.97 \\ 
-  wisconsin & 5.79 & 3.50 & 5.67 & 3.79 & 3.79 \\ 
-  yeast4 & 62.49 & 23.66 &  & 28.53 &  \\ 
-   \hline
-\end{tabular}
+  newthyroid1 & 16.69 & 22.69 &  & 22.67 & 20.29 \\ 
+  wisconsin & 6.52 & 3.68 & 6.39 & 3.82 & 3.89 \\ 
+  yeast4 & 55.04 & 29.79 &  & 38.41 &  \\ 
+  \hline
+  \end{tabular}
   \caption{Media de \textit{small disjuncts} tras \textit{oversampling} y filtrado}
   \end{table}
 
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-    \hline
-    & none & mwmote & wracog & rwo & pdfos \\ 
-    \hline
-    ecoli1 & 2.67 & 1.33 &  & 16.00 &  \\ 
-    glass0 & 3.67 & 4.67 &  & 2.67 &  \\ 
-    haberman & 3.33 & 5.00 &  & 2.33 & 5.33 \\ 
-    iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
-    newthyroid1 & 1.67 & 1.33 &  & 1.00 & 2.00 \\ 
-    wisconsin & 29.33 & 66.33 & 33.00 & 60.33 & 60.67 \\ 
-    yeast4 & 4.33 & 19.33 &  & 27.67 &  \\ 
-    \hline
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 3.00 & 3.00 &  & 16.67 &  \\ 
+  glass0 & 2.67 & 3.33 &  & 2.33 &  \\ 
+  haberman & 1.33 & 4.00 &  & 1.00 & 2.33 \\ 
+  iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+  newthyroid1 & 2.67 & 2.33 &  & 2.00 & 1.67 \\ 
+  wisconsin & 25.67 & 61.67 & 27.67 & 60.33 & 58.67 \\ 
+  yeast4 & 4.00 & 9.67 &  & 24.00 &  \\ 
+  \hline
   \end{tabular}
   \caption{Tamaño medio de coberturas tras \textit{oversampling} y filtrado}
   \end{table}
   
+  Se puede observar cómo nuestros algoritmos consiguen en muchos casos reducir el número de hojas de pequeña 
+  cobertura existente en los datasets, y aumentar los tamaños medios de las mismas, aunque hemos usado en todos ellos
+  los parámetros por defecto, y podrían obtenerse mejores resutlados si intentásemos optimizar los mismos. Además, la medida
+  de \textit{small disjuncts} que está siendo empleada es bastante arbitraria, y podría intentarse encontrar una más
+  adaptada a cada dataset: hojas que tuviesen una cobertura inferior al 80\% de la media, por ejemplo.
+ 

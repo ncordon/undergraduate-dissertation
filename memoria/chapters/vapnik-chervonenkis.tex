@@ -4,31 +4,29 @@ que nos falta para poder demostrar el teorema fundamental del aprendizaje PAC, q
 clases de Glivenko-Cantelli, teoría PAC y geometría computacional, a través de la dimensión VC.
 
 \section{Fragmentación}
-
 \begin{definition}
-Sea $H\subseteq 2^X$, y $C \subseteq X$. Llamamos restricción de $H$ a $C$ a:
+Sea $H\subseteq 2^X$, y $C \subseteq X$. Llamamos restricción de $H$ a $C$:
+\[
+  H_{C} := \{h_{|C} : h\in H\}
+\]
 
-\[H_{C} := \{h_{|C} : h\in H\}\]
-
-En notación conjuntista, existe biyección entre $H_C$ y $C_{H}$ con:
-
-\[C_{H} := \{C_h : h\in H\} \subseteq \mathcal{P}(X)\]
+En notación conjuntista, existe biyección entre $H_C$ y $C_{H}$ donde:
+\[
+  C_{H} := \{C_h : h\in H\} \subseteq \mathcal{P}(X)
+\]
 \end{definition}
 
-
-\begin{definition} \textbf{Conjunto fragmentado}
-
+\begin{definition}[Conjunto fragmentado]
  Sea $H\subseteq 2^X$ y sea $A\subseteq X$. Decimos que $H$ fragmenta a $A$ si para toda función $g:A\rightarrow \{0,1\}$ 
  existe $h\in H$ verificando $h_{|A} = g$.
+ \label{def:shattering}
 \end{definition}
 
 Recordando la biyección canónica entre hipótesis y conjuntos \ref{biyeccion-canonica}, podemos aportar la siguiente 
 caracterización de fragmentación.
 
-\begin{fact} \textbf{Caracterizaciones de conjunto fragmentado}
-
+\begin{fact}[Caracterizaciones de conjunto fragmentado]
  Sea $H\subseteq 2^X$ y sea $A\subseteq X$ finito. Entonces equivalen:
- 
  \begin{enumerate}[i]
   \item $H$ fragmenta a $A$.
   \item Para todo $B\subseteq A$, existe $h\in H$ verificando $X_h \cap A = B$
@@ -39,25 +37,21 @@ caracterización de fragmentación.
 \end{fact}
 
   \begin{proof}
-  Trivial desde \ref{biyeccion-canonica}
+   Trivial desde \ref{biyeccion-canonica} y \ref{def:shattering}.
   \end{proof}
-
 
 Cuando demostrábamos el teorema No Free Lunch \ref{th:nfl}, pedíamos que la clase de clasificadores $H$ fuese todo $2^X$. 
 Observando la demostración, solo asumiamos la existencia de un conjunto $C\subseteq X$ sobre el que pudiéramos definir 
 todas las posibles hipótesis $C \rightarrow \{0,1\}$. Revisitamos por tanto el enunciado de dicho teorema.
 
-\begin{theorem}
-\textbf{Teorema de No Free Lunch revisitado}
-
+\begin{theorem}[Teorema de No Free Lunch revisitado]
 Sea un dominio $X$, un conjunto de etiquetas $Y=\{0,1\}$, $H \subseteq 2^X$.
 Sea $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ un algoritmo. Dado $m \le \frac{|X|}{2}$,
 supongamos que existe $C\subseteq X$ de tamaño $2m$ fragmentado por $H$. Entonces existe $\dist$ distribución sobre 
 $X\times \{0,1\}$ verificando:
-
 \begin{enumerate}[i]
 \item Existe una función $f: X \rightarrow \{0,1\}$ con $L_{\dist}(f)=0$
-\item $\mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \ge \frac{1}{7}$
+\item $\mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}$
 \end{enumerate}
 
 \label{th:nfl2}
@@ -65,70 +59,61 @@ $X\times \{0,1\}$ verificando:
 
 
 \section{Dimensión VC}
-
-\begin{definition}
-\textbf{Dimensión VC}
-
+\begin{definition}[Dimensión VC]
 Sea $H \subseteq 2^X$. Definimos su dimensión Vapnik-Chervonenkis, que abreviaremos dimensión VC, como:
-
-\[VC(H) := \max \{|A| : A\subseteq X, A \textrm{ es fragmentado por } H\}\]
+\[
+  VC(H) := \max \{|A| : A\subseteq X, A \textrm{ es fragmentado por } H\}
+\]
 \end{definition}
 
 
 \begin{example}
+Sea $H_{thr} = \{h_a = \mathds{1}_{]-\infty, a]}: a\in \mathbb{R}\}$ clase de hipótesis sobre $\mathbb{R}$. 
 
-Sea $H_{thr} = \{h_a = \mathds{1}_{[-\infty, a]}: a\in \mathbb{R}\}$ clase de hipótesis sobre $\mathbb{R}$. 
-
-Dado un conjunto $C=\{\alpha\}$, podemos tomar $h_{\alpha}$ y $h_{\alpha+1}$, que nos dan todos los posibles etiquetados de
+Dado un conjunto $C=\{\alpha\}$, podemos tomar $h_{\alpha}$ y $h_{\alpha-1}$, que nos dan todos los posibles etiquetados de
 $C$. Sin embargo, dado un conjunto de tamaño 2, $C=\{\alpha, \beta\}$, donde podemos suponer spg. $\alpha < \beta$. 
 Entonces no podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=0$ y $h_b(\beta) = 1$, ya que esto implicaría que 
-$b > \beta$ y por tanto entraría en contradicción con que $h_b(\alpha) = 0$.
+$b \ge \beta$ y por tanto entraría en contradicción con que $h_b(\alpha) = 0$.
 
 Hemos probado $VC(H_{thr}) = 1$.
-
 \end{example}
 
 \begin{example}
-
 Sea $H^1_{rec} = \{h_{a,b} = \mathds{1}_{[a,b]}: a,b\in \mathbb{R}\}$ clase de hipótesis sobre $\mathbb{R}$. 
 
-Dado un conjunto $C=\{\alpha\, \beta\}$, con $\alpha < \beta$, las hipótesis $h_{\alpha+\delta_1, \beta + \delta_2}$ con 
-$\delta_i \in \{0,1\}$ nos dan todos los posibles etiquetados de $C$. Sin embargo, dado un conjunto de tamaño 3, 
-$C=\{\alpha, \beta\, \theta\}$, donde podemos suponer $\alpha < \beta < \theta$. Entonces no podemos encontrar $h_b \in H$ 
-verificando $h_b(\alpha)=1$ y $h_b(\theta) = 1$ y $h_b(\beta) = 0$.
+Dado un conjunto $C=\{\alpha, \beta\}$, con $\alpha < \beta$, las hipótesis $h_{\alpha+\delta_1, \beta - \delta_2}$ con 
+$\delta_i \in \left\{0, \frac{\beta - \alpha}{2} \right\}$ nos dan todos los posibles etiquetados de $C$. Sin embargo, 
+dado un conjunto de tamaño 3, $C=\{\alpha, \beta, \theta\}$, donde podemos suponer $\alpha < \beta < \theta$, no
+podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=1$ y $h_b(\theta) = 1$ y $h_b(\beta) = 0$.
 
 Por tanto $VC(H^1_{rec}) = 2$.
 \end{example}
 
 \begin{example}
-
-Sea $H^2_{rec} = \{h_{a,b,c,d} = \mathds{1}_{[a,b]\times [c,d]}: a,b,c,d\in \mathbb{R}\}$ clase de hipótesis sobre 
-$\mathbb{R}^2$.
+Sea $H^2_{rec}$ la clase de hipótesis definidas en \ref{def:rec2}.
 
 Podemos fragmentar el conjunto $C = \{(0,1), (0,-1), (1,0), (-1,0)\}$
 
-\img{./imgs/rect-vc.png}{0.7}
+\imgcaption{./imgs/rect-vc.png}{Rectángulos que framentan $C$}{0.65}
 
 Luego $VC(H^2_{rec}) \ge 4$. Veamos que $VC(H^2_{rec}) = 4$.
 
 Sea $C\subseteq \mathbb{R}^2$ con $|C|=5$. Entonces podemos 
-tomar $x_1 \in C$ punto más a la izquierda de $C$ (primera coordenada más pequeña), $x_2 \in C$ punto más a la derecha de 
-$C$, $x_3 \in C$ punto más arriba en $C$ (segunda coordenada más grande), $x_4 \in C$ punto más abajo en $C$. Se podría 
-tener $x_i = x_j$ para algún $i\neq j$. Si tenemos un rectángulo que contiene a dichos puntos, debe necesariamente contenerlos
-a todos.
+tomar $z_1 \in C$ punto de menor abscisa, $z_2 \in C$ punto de mayor abscisa, $z_3 \in C$ punto de mayor 
+ordenada, $z_4 \in C$ punto de menor ordenada. Se podría tener s.p.g. $z_i = z_j$ para algún $i\neq j$. Si tenemos 
+un rectángulo que contiene a dichos puntos, debe necesariamente contenerlos a todos, luego no existe uno que contenga esos
+cuatro puntos y no el restante.
 \end{example}
 
 
-
-\begin{fact} \textbf{Propiedades de la dimensión VC}
-
+\begin{fact}[Propiedades de la dimensión VC]
 Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
-
 \begin{enumerate}[i]
  \item $VC(H) \le \log_2(|H|)$.
  \item Si $H_1 \subseteq H_2$ entonces $VC(H_1) \le VC(H_2)$.
  \item $VC(H)$ no depende del número de parámetros de los clasificadores de $H$.
 \end{enumerate}
+
 \label{fact:props-vc}
 \end{fact}
 
@@ -154,10 +139,10 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
   Sea $H_{sin} = \{h_{\theta}: \theta \in \mathbb{R}\}$ donde $h_{\theta}: \mathbb{R} \rightarrow \{0,1\}$ está definida por 
   $h_\theta (x) = \lceil -0.5sen(\theta x) \rceil$. Cada $h \in H_{sin}$ depende de un único parámetro $\theta$.
   
-  Sea $d\in \mathbb{N}$. Tomamos $d$ puntos codificados por $x_i = 0.x_{i,1} x_{i,2} \ldots x_{i, 2^d} x_{i, 2^d+1}$ 
-  donde cada $x_{i}, i=1, \ldots d$ viene determinado por una fila de la matriz $\bigg(x_{i,j}\bigg)$
+  Sea $d\in \mathbb{N}$. Tomamos $d$ puntos dados por $x_i = 0.x_{i,1} x_{i,2} \ldots x_{i, 2^d} x_{i, 2^d+1}$ 
+  donde cada $x_{i}, i=1, \ldots, d$ viene determinado por una fila de la matriz $\bigg(x_{i,j}\bigg)$
   donde la columna $j$-ésima codifica el número $j-1$ en binario leído de arriba a abajo, para $j\neq 2^d+1$, y la columna 
-  $2^d+1$-ésima es constantemente $1$.
+  $(2^d+1)$-ésima es constantemente $1$.
   
 % 
 %   \[\left(\begin{array}{ccccc}
@@ -180,15 +165,13 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
   
   \bigskip
   
-  
   Así, dada una asignación de $d$ etiquetas, debe codificar un número en binario entre $0$ y $2^d-1$, a saber, 
   la columna $k$ ésima de la matriz. Tomamos el clasificador $h(x) = \lceil -0.5 sen(10^k \pi x) \rceil$ que verificará
   que su asignación de etiquetas es justamente la columna $k$ ésima. 
   
-  El sentido de la última columna constantemente $1$
-  puede explicarse en que daremos $x_{i,1} \ldots x_{i,k}$ medias vueltas a la circunferencia unidad y recorreremos
-  una fracción $0.x_{i,k+1} \ldots x_{i, 2^d} 1$ no nula de otra media vuelta a la circunferencia. Si 
-  $x_{i,k} = 1$ entonces $h(x_i) = 1$, y si $x_{i,k}=0$ entonces $h(x_i) = 0$. 
+  La última columna constantemente $1$ puede explicarse en que daremos $x_{i,1} \ldots x_{i,k}$ medias vueltas a la 
+  circunferencia unidad y recorreremos una fracción $0.x_{i,k+1} \ldots x_{i, 2^d} 1$ no nula de otra media vuelta a la 
+  circunferencia. Si $x_{i,k} = 1$ entonces $h(x_i) = 1$, y si $x_{i,k}=0$ entonces $h(x_i) = 0$. 
   
   Como $d\in \mathbb{N}$ era arbitrario, $VC(H_{sin}) = \infty$, y por tanto hemos encontrado una clase de hipótesis 
   uniparámetrica con dimensión $VC(H_{sin})\neq 1$.
@@ -202,35 +185,36 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 \end{corollary}
 
   \begin{proof}
-  Si $X < \infty$, entonces $|H| \le 2^{|X|} < \infty$, y $VC(H) \le \log_2(|H|) < \infty$. Luego $|X| = \infty$
+  Si $X < \infty$, entonces $|H| \le 2^{|X|} < \infty$, y $VC(H) \le \log_2(|H|) < \infty$. Luego $|X| = \infty$.
   
   Por reducción al absurdo. Sea $A$ el algoritmo de aprendizaje. Para todo $m\in \mathbb{N}$ par arbitrario, como 
   $m\le \frac{|X|}{2}$, existe $C$ con $|C| = m$ fragmentado por $H$, el teorema \ref{th:nfl2} nos diría que existe una 
   distribución $\dist$ verificando:
- 
-  \[\mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \ge \frac{1}{7}\]
+  \[
+    \mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \ge \frac{1}{7}
+  \]
  
   Luego no puede existir $m_H \left(\frac{1}{8}, \delta\right)$ con $\delta > \frac{6}{7}$.
   \end{proof}
-  
+
+Nótese la similitud de este corolario con \ref{cor:P(X)notpac}.
+
 \subsection{Función de crecimiento}
-
-\begin{definition}
-\textbf{Función de crecimiento}
-
+\begin{definition}[Función de crecimiento]
 Sea $H$ una clase de hipótesis. Definimos como función de crecimiento de $H$:
-
-\[\Pi_{H}: \mathbb{N} \longrightarrow \mathbb{N}, \qquad \Pi_{H}(m) = \max_{C \subseteq X, \,\, |C|=m} |H_C|\]
+\[
+  \Pi_{H}: \mathbb{N} \longrightarrow \mathbb{N}, \qquad \Pi_{H}(m) = \max_{C \subseteq X, \,\, |C|=m} |H_C|
+\]
 \end{definition}
 
 Esta función está bien definida puesto que fijado $m \in \mathbb{N}$ y $C\subseteq X$ con $|C| = m$, se tiene siempre 
 que $|H_C| \le 2^C$, identificando elementos de $H_C$ con subconjuntos de $C$.
 
-\begin{lemma} \textbf{Lema de Sauer-Shelah-Perles}
-
+\begin{lemma}[Lema de Sauer-Shelah-Perles]
 Sea $H \subseteq 2^X$ con $VC(H) \le d < \infty$. Entonces para $m\in \mathbb{N}$ verificando $d\le m$:
-
-\[\Pi_{H} (m) \le \sum_{i=0}^d \binom{m}{i} \le m^d + 1\]
+\[
+  \Pi_{H} (m) \le \sum_{i=0}^d \binom{m}{i} \le m^d + 1
+\]
 \label{lemma:sauer}
 \end{lemma}
 
@@ -242,34 +226,33 @@ Empezamos probando que una clase $\mathcal{F}$, con $|\mathcal{F}| < \infty$, fr
 Lo hacemos por inducción sobre el tamaño de $X_\mathcal{F}$ que es un conjunto finito por ser $\mathcal{F}$ clase finita.
 
 \begin{subenv}
-Si su tamaño es 1, parte al conjunto vacío.
+Si su tamaño es 1, fragmenta al conjunto vacío.
 
 Supuesto que se verifica la hipótesis para tamaños menores que $k-1$ y sea $|X_\mathcal{F}| = k$. Escogemos entonces 
 $x\in X$ verificando que $x$ pertenece a algunos conjuntos de $X_\mathcal{F}$ pero no a todos (debe existir, sino 
 tendríamos que $X_\mathcal{F}$ contiene un único conjunto).
 
-Definimos: $\begin{array}{l} 
-	A = \{S \subseteq X_\mathcal{F} : x\in S\} \\
-        A'=\{S\setminus\{x\} : S \in A\} \\ 
-        B= \{S \subseteq X_\mathcal{F} : x\not\in S\}
-     \end{array}$ donde $X_{\mathcal{F}} = A + B$.
+Definimos: $\begin{array}{ll} 
+            A &= \{S \in X_\mathcal{F} : x\in S\} \\
+            A'&=\{S\setminus\{x\} : S \in A\} \\ 
+            B &= \{S \in X_\mathcal{F} : x\not\in S\}
+           \end{array}$ donde $X_{\mathcal{F}} = A + B$.
 
-Claramente $|A| = |A'|$ y por hipótesis de inducción $A'$ fragmenta $k \ge |A|$ conjuntos, y $B$ fragmenta $|B|$ conjuntos. 
-También es trivial ver que los conjuntos $S$ y $S\cup \{x\}$ son fragmentados por $A$ donde $S$ es un conjunto fragmentado 
-por $A'$. 
+Claramente $|A| = |A'|$ y por hipótesis de inducción $A'$ fragmenta $p \ge |A|$ conjuntos, y $B$ fragmenta $|B|$ conjuntos. 
+Por otro lado, si un conjunto es fragmentado por $A$ y $B$ a la vez, entoces no contiene a $x$, luego es fragmentado por
+$A'$ y por $B$ a la vez, y podremos tener a lo sumo $p$ conjuntos de este tipo. De hecho, dado $S$ conjunto fragmentado por
+$A$ y $B$, se tendría $x\notin S$, claramente, y $S\cup\{x\}$ sería fragmentado por $A + B$, pero no por $A$ o $B$ por
+separado.
 
-Hemos probado que $A$ fragmenta $|A'| + k = |A|+k$ conjuntos, y si un conjunto es fragmentado por $A$ y $B$ a la vez, 
-entoces no contiene a $x$, luego es fragmentado por $A'$ y por $B$ a la vez, y podremos tener a lo sumo $k$ conjuntos de
-este tipo.
+Así, $\mathcal{F}$ fragmenta al menos $|A| + p + |B| - p = |A| + |B| = |X_\mathcal{F}|$ conjuntos.
 \end{subenv}
 
-Por tanto $F$ fragmenta al menos $|A| + k + |B| - k = |A| + |B| = |\mathcal{F}|$ conjuntos.
+Fijamos ahora un $C\subseteq X$ con $|C| = m$. Entonces $|H_C| < \infty$. Luego:
+\[
+  |H_C| \le |\{B\subseteq C : H_C \textrm{ fragmenta } B\}| = |\{B\subseteq C : H \textrm{ fragmenta } B\}|
+\]
 
-Fijamos ahora un $C\subseteq X$ con $|C| = m$. Entonces $|H_C| < \infty$. Luego: 
-
-\[|H_C| \le |\{B\subseteq C : H_C \textrm{ fragmenta } B\}| = |\{B\subseteq C : H \textrm{ fragmenta } B\}|\] 
-
-Por tanto: $|\{B\subseteq C : H \textrm{ fragmenta } B\}| \le \sum_{i=0}^d \binom{m}{i}$ puesto que $VC(H)=d$ y el número de 
+Por tanto $|\{B\subseteq C : H \textrm{ fragmenta } B\}| \le \sum_{i=0}^d \binom{m}{i}$ al ser $VC(H)=d$ y el número de 
 subconjuntos de $C$ de cardinal menor o igual a $d$ viene dado por $\sum_{i=0}^d \binom{m}{i}$.
 
 Veamos ahora $\sum_{i=0}^d \binom{m}{i} \le m^d + 1$. La parte izquierda de la desigualdad nos da todos los posibles 
@@ -278,12 +261,13 @@ repetición desde $C$, y hay $m^d$ posibles extracciones de este tipo.
 \end{proof}
 
 \begin{corollary}
-Sea $H \subseteq 2^X$. Si $\exists d\in \mathbb{N}$ tal que $\Pi_{H} (m) > \sum_{i=0}^d \binom{m}{i}$,
+Sea $H \subseteq 2^X$. Si existe $d\in \mathbb{N}$ tal que $\Pi_{H} (m) > \sum_{i=0}^d \binom{m}{i}$,
 entonces $VC(H)$ es al menos $d+1$.
 \end{corollary}
 
 \begin{proof}
-Por reducción al absurdo desde el lema \ref{lemma:sauer}, si $\Pi_{H}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces $VC(H) > d$.
+Por reducción al absurdo desde el lema \ref{lemma:sauer}, si $\Pi_{H}(m) > \sum_{i=0}^d \binom{m}{i}$ entonces 
+no puede ser $VC(H) \le d$.
 \end{proof}
 
 \section{Teorema fundamental del aprendizaje PAC}

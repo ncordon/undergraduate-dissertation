@@ -13,7 +13,7 @@ an excellent formalization, and to study and code some of the most recent algori
 journals on the topic of imbalance classification.
 
 \section*{Mathematical introduction}
-We introduce concepts suchs as product ring and semiring of sets, and their relationship with $\sigma$-algebras. We give
+We introduce concepts such as product ring and semiring of sets, and their relationship with $\sigma$-algebras. We give
 the notion of measure, without distinction between $\sigma$-algebras and other sets, whereas in classic literature the latter
 ones are called premeasures. We also introduce the outer measures, and we advance towards the construction of a $\sigma$-algebra
 based on a premeasure over some space, and the extension of that outer measure to a measure. The result which will give us
@@ -28,8 +28,8 @@ lemma. Those will be key inequalities in our subsequent progress.
 
 \section*{Machine learning introduction and PAC framework}
 We will provide motivations for the machine learning theory, as well as basic definitions such as domain set, label set, 
-true labelling, instance generation, training set, hypothesis, hypothesis' error or learning algorithm. The error of an
-hypothesis respect to the true labelling function will be defined as the expectation that the two are different. The error over
+true labeling, instance generation, training set, hypothesis, hypothesis' error or learning algorithm. The error of an
+hypothesis respect to the true labeling function will be defined as the expectation that the two are different. The error over
 a training set, as the mean of the number of instances in which it fails.
 
 We will also describe a relation between hypothesis and the sets that those hypothesis classify as one of the classes. Thus,
@@ -37,7 +37,7 @@ we will be able to work both with hypothesis or sets. The essential algorithms w
 minimizers, that is, all those which try to minimize the error over a given training set.
 
 All those concepts will sum up to the very first notion of PAC learning: we will say that a hypothesis collection is 
-learnable if we can allways guarantee an small error from one of them with respect to the true labelling function, under
+learnable if we can allways guarantee an small error from one of them with respect to the true labeling function, under
 certain restriction over probabilistic confidence. In particular, we will prove that every finite collection of hypothesis
 is learnable, and that there exist infinite learnable collections, such as rectangles hypothesis.
 
@@ -71,7 +71,7 @@ concepts.
 In order to study some machine learning algorithms, we will weaken our concept of learning until we reach a framework in which
 we can easily explain one of data science most studied problems: imbalanced classification. We will describe the suitable
 approaches to solve that problem: undersampling and oversampling with and without filtering of instances and cost-sensitive 
-framework. Since most of nowadays algorithms tend to understimate the importance of the minority examples, 
+framework. Since most of current algorithms tend to understimate the importance of the minority examples, 
 we should provide a set of measurements of the quality of an algorithm based not only on the total accuracy over the training
 set, but in the level of success over the minority class.
 
