@@ -136,16 +136,16 @@ cualquier $h\in H$:
 Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$ es un $ERM$ 
 (\textit{Empirical Risk Minimizer}) si busca una hipótesis cuyo error empírico sea mínimo:
 \[
-  A(S) = \argmin_{h\in 2^X} L_S(h)
+  A(S) \in \argmin_{h\in 2^X} L_S(h)
 \]
 \end{definition}
 
-Definimos $ERM(S)$ como todas las hipótesis producidas por algoritmos que son ERM
+Definimos $ERM(S)$ como todas las hipótesis producidas por algoritmos que son $ERM$
 sobre el conjunto $S$. Cuando notemos $\mathcal{Q}(ERM(S))$ con $\mathcal{Q}$ un predicado sobre elementos 
 de $2^X$ nos refereriremos a que la propiedad se verifica para todos los elementos de $ERM(S)$.
 
 Trivialmente $L_{\mathcal{D},f}(f) = 0$ y $L_S(f) = 0$ para cualquier $S \in (X \times Y)^m$ conjunto de entrenamiento.
-Esto último implica que $A(S) = 0$ para $A$ un algoritmo ERM.
+Esto último implica que $A(S) = 0$ para $A$ un algoritmo $ERM$.
 
 Aunque $A(S)$ minimice el error sobre el conjunto de entrenamiento, esto no significa que el error $L_{\mathcal{D},f} (A(S))$ 
 sea mínimo. Lo ilustramos en el siguiente ejemplo:
@@ -163,7 +163,7 @@ y el clasificador:
                    \end{array}\right.
 \]
 
-No es difícil ver tomando $A(S) = h_S$, $A$ es un ERM. Pero se verifica $\prob[h_S \neq f] = 1/2$. $A(S)$ tiene el 
+No es difícil ver tomando $A(S) = h_S$, $A$ es un $ERM$. Pero se verifica $\prob[h_S \neq f] = 1/2$. $A(S)$ tiene el 
 mismo nivel de acierto que el clasificador idénticamente $1$. A este fenómeno lo denominamos \textit{overfitting}.
 \end{example}
 

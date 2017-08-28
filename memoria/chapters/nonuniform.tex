@@ -1,0 +1,161 @@
+Introduciremos el concepto de aprendizaje no-uniforme, relajando la definición de agnósticamente PAC cognoscible. En el 
+aprendizaje no-uniforme intentaremos no aproximar el mejor clasificador de una clase de hipótesis, sino uno fijo, a diferencia
+de en APAC cognoscibilidad.
+
+\begin{definition}[Aprendizaje no-uniforme]
+Una clase de hipótesis $H$ sobre $Z=\mathcal{X} \times \mathcal{Y}$ es no-uniformemente PAC cognoscible si existe
+un algoritmo $A$ y una función $m_{H}^{NU} : ]0,1[^2 \times H \rightarrow \mathbb{N}$ verificando que dados 
+$0 < \varepsilon, \delta < 1$ y $h \in H$, entonces para toda distribución $\dist$ sobre $Z$ y
+$m\ge m_{H}^{NU} (\varepsilon, \delta, h)$ se verifica:
+\[
+  \mprob\bigg[L_{\dist}(A(S)) \le L_{\dist}(h) + \varepsilon\bigg] \ge 1-\delta
+\]
+\end{definition}
+
+
+\section{Minimización del riesgo estructural}
+Hasta ahora hemos traducido el conocimiento previo sobre el problema como una restricción global en la clase de hipótesis
+para la minimización del riesgo empírico. Ahora generalizaremos esto aún más y estableceremos la suposición de que 
+$H= \cup_{n\in \mathbb{N}} H_n$, donde cada clase $H_n$ tendrá asignado un peso $w(n)$. 
+
+\begin{fact}
+Sea $w : \mathbb{N} \rightarrow [0,1]$ verificando $\sum_{n=1}^\infty w(n) \le 1$, $H \subseteq 2^X$
+que puede ser escrita como $H= \cup_{n\in \mathbb{N}} H_n$, donde cada $H_n$ es una clase de Glivenko-Cantelli. 
+Escogemos:
+\[
+  \varepsilon_n : \mathbb{N} \times ]0,1[ \rightarrow ]0,1[, \qquad 
+  \varepsilon_n (m,\delta) \in \{\varepsilon \in ]0,1[: m_{H_n}^{UC} (\varepsilon, \delta) \le m\}
+\]
+
+Entonces para todo $\delta \in ]0,1[$ y para toda distribución $\dist$ se verifica:
+\[
+  \mprob\bigg[\forall n\in \mathbb{N}, \forall h\in H_n, |L_{\dist}(h) - L_S(h)| \le 
+              \varepsilon_n (m, w(n) \delta)\bigg] \ge 1-\delta
+\] 
+
+En particular, tomando $n(h)\in \{n: h\in H_n\}$ para cada $h\in H$:
+\[
+  \mprob \bigg[\forall h\in H, |L_{\dist}(h) - L_S(h)| \le \varepsilon_{n(h)} (m, w(n(h)) \delta)\bigg] \ge 1-\delta
+\]
+\label{th:non-uniform-complex}
+\end{fact}
+
+  \begin{proof}
+   Fijado $n$, por ser $H_n$ de Glivenko-Cantelli:
+   \[
+     \mprob\bigg[\forall h\in H_n, |L_{\dist}(h) - L_S(h)| \le \varepsilon_n (m, w(n)\delta)\bigg] \ge 1- w(n) \delta
+   \]
+
+   Por tanto:
+   \begin{align*}
+   &\mprob \bigg[\forall n\in \mathbb{N}, \forall h\in H_n, |L_{\dist}(h) - L_S(h)| \le \varepsilon_n (m, w(n) \delta)\bigg] = \\
+   &= 1 - \mprob\bigg[\exists n\in \mathbb{N}, \exists h\in H_n, |L_{\dist}(h) - L_S(h)| > \varepsilon_n (m, w(n) \delta)\bigg] \\
+   &\ge 1- \sum_{n=1}^{\infty} w(n) \delta \ge 1-\delta
+   \end{align*}
+  \end{proof}
+
+Este teorema motiva las definiciones de riesgo estructural y minimizador de dicho riesgo.
+
+\begin{definition}[Riesgo estructural]
+Sea $H = \cup_{n\in \mathbb{N}} H_n$ donde $H_n$ es de Glivenko-Cantelli y tenemos una función de peso
+$w : \mathbb{N} \rightarrow [0,1]$, $\sum_n w(n) \le 1$. Dado $h\in H$, escogemos:
+\[
+  \varepsilon_n (m,\delta) = \min_{\varepsilon \in ]0,1[}\{m_{H_n}^{UC} (\varepsilon, \delta) \le m\}, \quad n(h) = min\{n: h\in H_n\}
+\]
+
+Dado $S\in (X\times Y)^m$, se llama riesgo estructural de $h\in H$, respecto a $\varepsilon_n, w$:
+\[L_S(h) + \varepsilon_{n(h)} \left(m, w(n(h))\frac{1}{m}\right)\].
+\end{definition}
+
+Por sencillez de las demostraciones, supondremos que existe el mínimo de $\{m_{H_n}^{UC}(\epsilon, \delta)\}$ y por tanto
+podemos definir $\varepsilon_n$.
+
+\begin{definition}[Minimizador del riesgo estructural, SRM]
+Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ es un $SRM$ 
+(\textit{Structural Risk Minimizer}) si busca una hipótesis cuyo error estructural sea mínimo, suponiendo que
+dicho mínimo tiene sentido. Dado $S \in (X\times Y)^m$ devolverá:
+\[
+  A(S) \in \argmin_{h\in H} L_S(h) + \varepsilon_{n(h)} \left(m, w(n(h))\frac{1}{m}\right)
+\]
+\end{definition}
+
+Es conocido que $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$. Usando este hecho y el anterior resultado, podemos
+dar condiciones suficientes para que un $SRM$ haga a una clase no-uniformemente cognoscible.
+
+\begin{fact}
+Sea $H$ una clase de hipótesis verificando $H = \cup_{n\in \mathbb{N}} H_n$ donde cada 
+$H_n$ es de Glivenko-Cantelli. Sea $w : \mathbb{N} \rightarrow [0,1]$ dada por $w(n) = \frac{6}{(\pi n)^2}$. 
+Entonces $H$ es no-uniformemente cognoscible para cualquier algoritmo $A$ que sea un $SRM$. Además se verifica:
+\[
+  m_{H}^{NU} (\varepsilon, \delta, h) \le \left\{m_{H_{n(h)}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right), 
+  \left\lceil\frac{2}{\delta}\right\rceil \right\}
+\]
+\end{fact}
+  \begin{proof}
+   Fijamos $\bar{h}\in H$ y $0 < \delta, \varepsilon < 1$. Sea:
+   \[
+     m = \max\left\{m_{H_{n(h)}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right), \left\lceil\frac{2}{\delta}\right\rceil \right\}
+   \]
+   Claramente $\varepsilon_{n(h)}\left(m, w(n(h)) \frac{1}{m}\right) \le \varepsilon/2$.
+
+   Usando el hecho de que $\sum_{n\ge 1} w(n) = 1$, por proposición \ref{th:non-uniform-complex} se verifica:    
+   \begin{equation}
+     \mprob \bigg[\forall h\in H |L_{\dist}(h) - L_S(h)| \le \varepsilon_{n(h)} \left(m, w(n(h)) \frac{1}{m}\right)\bigg] 
+     \ge 1-\frac{1}{m} \ge 1 - \frac{\delta}{2}
+   \label{ineq:srm-h}\tag{\textrm{$\ast$}}
+   \end{equation}
+   
+   Por ser $A$ un $SRM$, entonces dado $S\in (X\times Y)^m$:
+   \begin{align}
+     L_{\dist}(A(S)) &\le L_S(\bar{h}) + \varepsilon_{n(\bar{h})} \left(m, w(n(\bar{h}))\frac{1}{m}\right) \nonumber\\
+                     &\le L_S(\bar{h}) + \frac{\varepsilon}{2}
+     \label{ineq:srm}\tag{\textrm{$\ast$$\ast$}}
+   \end{align}
+   
+   A partir de \eqref{ineq:srm-h} y \eqref{ineq:srm}, y usando $\varepsilon_{n(\bar{h})}\left(m, w(n(\bar{h})) \frac{1}{m}\right) \le \varepsilon/2$, deducimos:
+   \begin{align}
+                     &\mprob \bigg[L_{\dist}(A(S)) \le L_{S}(\bar{h}) + \varepsilon/2\bigg] \ge 1-\frac{\delta}{2} \nonumber\\
+     \Leftrightarrow &\mprob \bigg[L_{\dist}(A(S)) > L_{S}(\bar{h}) + \varepsilon/2\bigg] \le \frac{\delta}{2}
+     \label{ineq:LDbound}\tag{\textrm{$\dagger$}}
+   \end{align}
+   
+   Además, usando convergencia uniforme, con probabilidad menor o igual que $\delta/2$:
+   \begin{equation}
+     L_S(\bar{h}) > L_{\dist}(\bar{h}) + \varepsilon/2
+     \label{ineq:Lhbound}\tag{\textrm{$\dagger$$\dagger$}}
+   \end{equation}
+
+   Uniendo \eqref{ineq:LDbound} y \eqref{ineq:Lhbound} deducimos, por subaditividad:
+   \[
+     \mprob \bigg[L_{\dist}(A(S)) > L_{S}(\bar{h}) + \varepsilon/2 \bigvee L_S(\bar{h}) > L_{\dist}(\bar{h}) + \varepsilon/2\bigg] \le \delta
+   \]
+   
+   Es decir:
+   \[
+     \mprob \bigg[L_{\dist}(A(S)) \le L_{\dist}(\bar{h}) + \varepsilon \bigg] \ge 1 - \delta
+   \]
+  \end{proof}
+
+\begin{theorem}[Caracterización de aprendizaje no-uniforme]
+Una clase de hipótesis $H \subseteq 2^X$ es no-uniformemente cognoscible sii $H = \bigcup_{n\in\mathbb{N}} H_n$ donde
+cada $H_n$ es APAC cognoscible.
+\end{theorem}
+  \begin{proof}
+   Supongamos $H = \cup_{n\in \mathbb{N}} H_n$ donde cada $H_n$ es agnósticamente PAC 
+   cognoscible. Por teorema fundamental de aprendizaje PAC, \ref{th:fundamental}, cada clase $H_n$ tiene la propiedad de 
+   convergencia uniforme, y podemos aplicar el teorema anterior.
+
+   En el sentido opuesto, sea $H$ es no-uniformemente cognoscible usando un cierto algoritmo $A$. Fijamos $\delta > \frac{6}{7}$ y
+   definimos:
+   \[
+     H_n = \{h \in H : m_{H}^{NU}(1/8, \delta, h) \le n\}
+   \]
+   
+   para todo $n$ natural. Claramente $H = \cup_{n\in \mathbb{N}} H_n$. Supongamos $VC(H_n) = \infty$ para algún $n\in \mathbb{N}$.
+   Entonces por teorema de No Free Lunch, \ref{th:nfl2}, entonces tendríamos que existe $\dist$ una distribución sobre 
+   $X$ verificando:
+   \[
+     \exists \bar{h}\in H_n: L_{\dist}(\bar{h}) = 0 \textrm{ y } \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}
+   \]
+   lo cual para $m > m_H^{NU}(\frac{1}{8}, \delta, \bar{h})$ constituiría una contradicción.
+  \end{proof}
