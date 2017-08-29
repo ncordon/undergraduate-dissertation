@@ -1,0 +1,277 @@
+Introduciremos el concepto de aprendizaje no-uniforme, relajando la definición de agnósticamente PAC cognoscible. También
+proporcionaremos una noción de codificación para las clases de hipótesis numerables, y otro paradigma para aprenderlas, que
+nos llevará al principio de la \textit{navaja de Occam} en el contexto del aprendizaje automático.
+
+\begin{definition}[Aprendizaje no-uniforme]
+Una clase de hipótesis $H$ sobre $Z=\mathcal{X} \times \mathcal{Y}$ es no-uniformemente PAC cognoscible si existe
+un algoritmo $A$ y una función $m_{H}^{NU} : ]0,1[^2 \times H \rightarrow \mathbb{N}$ verificando que dados 
+$0 < \varepsilon, \delta < 1$ y $h \in H$, entonces para toda distribución $\dist$ sobre $Z$ y
+$m\ge m_{H}^{NU} (\varepsilon, \delta, h)$ se verifica:
+\[
+  \mprob\bigg[L_{\dist}(A(S)) \le L_{\dist}(h) + \varepsilon\bigg] \ge 1-\delta
+\]
+\end{definition}
+
+
+\section{Minimización del riesgo estructural}
+Hasta ahora hemos traducido el conocimiento previo sobre el problema como una restricción global en la clase de hipótesis
+para la minimización del riesgo empírico. Ahora generalizaremos esto aún más y estableceremos la suposición de que 
+$H= \cup_{n\in \mathbb{N}} H_n$, donde cada clase $H_n$ tendrá asignado un peso $w(n)$. 
+
+\begin{fact}
+Sea $w : \mathbb{N} \rightarrow [0,1]$ verificando $\sum_{n=1}^\infty w(n) \le 1$, $H \subseteq 2^X$
+que puede ser escrita como $H= \cup_{n\in \mathbb{N}} H_n$, donde cada $H_n$ es una clase de Glivenko-Cantelli. 
+Escogemos:
+\[
+  \varepsilon_n : \mathbb{N} \times ]0,1[ \rightarrow ]0,1[, \qquad 
+  \varepsilon_n (m,\delta) \in \{\varepsilon \in ]0,1[: m_{H_n}^{UC} (\varepsilon, \delta) \le m\}
+\]
+
+Entonces para todo $\delta \in ]0,1[$ y para toda distribución $\dist$ se verifica:
+\[
+  \mprob\bigg[\forall n\in \mathbb{N}, \forall h\in H_n, |L_{\dist}(h) - L_S(h)| \le 
+              \varepsilon_n (m, w(n) \delta)\bigg] \ge 1-\delta
+\] 
+
+En particular, tomando $n(h)\in \{n: h\in H_n\}$ para cada $h\in H$:
+\[
+  \mprob \bigg[\forall h\in H, |L_{\dist}(h) - L_S(h)| \le \varepsilon_{n(h)} (m, w(n(h)) \delta)\bigg] \ge 1-\delta
+\]
+\label{th:non-uniform-complex}
+\end{fact}
+
+  \begin{proof}
+   Fijado $n$, por ser $H_n$ de Glivenko-Cantelli:
+   \[
+     \mprob\bigg[\forall h\in H_n, |L_{\dist}(h) - L_S(h)| \le \varepsilon_n (m, w(n)\delta)\bigg] \ge 1- w(n) \delta
+   \]
+
+   Por tanto:
+   \begin{align*}
+   &\mprob \bigg[\forall n\in \mathbb{N}, \forall h\in H_n, |L_{\dist}(h) - L_S(h)| \le \varepsilon_n (m, w(n) \delta)\bigg] = \\
+  =& 1 - \mprob\bigg[\exists n\in \mathbb{N}, \exists h\in H_n, |L_{\dist}(h) - L_S(h)| > \varepsilon_n (m, w(n) \delta)\bigg] \\
+\ge& 1- \sum_{n=1}^{\infty} w(n) \delta \ge 1-\delta
+   \end{align*}
+  \end{proof}
+
+Este teorema motiva las definiciones de riesgo estructural y minimizador de dicho riesgo.
+
+\begin{definition}[Riesgo estructural]
+Sea $H = \cup_{n\in \mathbb{N}} H_n$ donde $H_n$ es de Glivenko-Cantelli y tenemos una función de peso
+$w : \mathbb{N} \rightarrow [0,1]$, $\sum_n w(n) \le 1$. Dado $h\in H$, escogemos:
+\[
+  \varepsilon_n (m,\delta) = \min_{\varepsilon \in ]0,1[}\{m_{H_n}^{UC} (\varepsilon, \delta) \le m\}, \quad n(h) = min\{n: h\in H_n\}
+\]
+
+Dado $S\in (X\times Y)^m$, se llama riesgo estructural de $h\in H$, respecto a $\varepsilon_n, w$:
+\[L_S(h) + \varepsilon_{n(h)} \left(m, w(n(h))\frac{1}{m}\right)\].
+\end{definition}
+
+Por sencillez de las demostraciones, supondremos que existe el mínimo de $\{m_{H_n}^{UC}(\epsilon, \delta)\}$ y por tanto
+podemos definir $\varepsilon_n$.
+
+\begin{definition}[Minimizador del riesgo estructural, SRM]
+Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ es un $SRM$ 
+(\textit{Structural Risk Minimizer}) si busca una hipótesis cuyo error estructural sea mínimo, suponiendo que
+dicho mínimo tiene sentido. Dado $S \in (X\times Y)^m$ devolverá:
+\[
+  A(S) \in \argmin_{h\in H} L_S(h) + \varepsilon_{n(h)} \left(m, w(n(h))\frac{1}{m}\right)
+\]
+\end{definition}
+
+Es conocido que $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$. Usando este hecho y\[
+  m_{H}^{NU} (\varepsilon, \delta, h) \le \left\{m_{H_{n(h)}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right), 
+  \left\lceil\frac{2}{\delta}\right\rceil \right\}
+\] el anterior resultado, podemos
+dar condiciones suficientes para que un $SRM$ haga a una clase no-uniformemente cognoscible.
+
+\begin{theorem}
+Sea $H$ una clase de hipótesis verificando $H = \cup_{n\in \mathbb{N}} H_n$ donde cada 
+$H_n$ es de Glivenko-Cantelli. Sea $w : \mathbb{N} \rightarrow [0,1]$ dada por $w(n) = \frac{6}{(\pi n)^2}$. 
+Entonces $H$ es no-uniformemente cognoscible para cualquier algoritmo $A$ que sea un $SRM$. Además se verifica:
+\[
+  m_{H}^{NU} (\varepsilon, \delta, h) \le \left\{m_{H_{n(h)}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right), 
+  \left\lceil\frac{2}{\delta}\right\rceil \right\}
+\]
+\label{th:srm-suficientes}
+\end{theorem}
+  \begin{proof}
+   Fijamos $\bar{h}\in H$ y $0 < \delta, \varepsilon < 1$. Sea:
+   \[
+     m = \max\left\{m_{H_{n(h)}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right), \left\lceil\frac{2}{\delta}\right\rceil \right\}
+   \]
+   Claramente $\varepsilon_{n(h)}\left(m, w(n(h)) \frac{1}{m}\right) \le \varepsilon/2$.
+
+   Usando el hecho de que $\sum_{n\ge 1} w(n) = 1$, por proposición \ref{th:non-uniform-complex} se verifica:    
+   \begin{equation}
+     \mprob \bigg[\forall h\in H |L_{\dist}(h) - L_S(h)| \le \varepsilon_{n(h)} \left(m, w(n(h)) \frac{1}{m}\right)\bigg] 
+     \ge 1-\frac{1}{m} \ge 1 - \frac{\delta}{2}
+   \label{ineq:srm-h}\tag{\textrm{$\ast$}}
+   \end{equation}
+   
+   Por ser $A$ un $SRM$, entonces dado $S\in (X\times Y)^m$:
+   \begin{align}
+     L_{\dist}(A(S)) &\le L_S(\bar{h}) + \varepsilon_{n(\bar{h})} \left(m, w(n(\bar{h}))\frac{1}{m}\right) \nonumber\\
+                     &\le L_S(\bar{h}) + \frac{\varepsilon}{2}
+     \label{ineq:srm}\tag{\textrm{$\ast$$\ast$}}
+   \end{align}
+   
+   A partir de \eqref{ineq:srm-h} y \eqref{ineq:srm}, y usando $\varepsilon_{n(\bar{h})}\left(m, w(n(\bar{h})) \frac{1}{m}\right) \le \varepsilon/2$, deducimos:
+   \begin{align}
+                     &\mprob \bigg[L_{\dist}(A(S)) \le L_{S}(\bar{h}) + \varepsilon/2\bigg] \ge 1-\frac{\delta}{2} \nonumber\\
+     \Leftrightarrow &\mprob \bigg[L_{\dist}(A(S)) > L_{S}(\bar{h}) + \varepsilon/2\bigg] \le \frac{\delta}{2}
+     \label{ineq:LDbound}\tag{\textrm{$\dagger$}}
+   \end{align}
+   
+   Además, usando convergencia uniforme, con probabilidad menor o igual que $\delta/2$:
+   \begin{equation}
+     L_S(\bar{h}) > L_{\dist}(\bar{h}) + \varepsilon/2
+     \label{ineq:Lhbound}\tag{\textrm{$\dagger$$\dagger$}}
+   \end{equation}
+
+   Uniendo \eqref{ineq:LDbound} y \eqref{ineq:Lhbound} deducimos, por subaditividad:
+   \[
+     \mprob \bigg[L_{\dist}(A(S)) > L_{S}(\bar{h}) + \varepsilon/2 \bigvee L_S(\bar{h}) > L_{\dist}(\bar{h}) + \varepsilon/2\bigg] \le \delta
+   \]
+   
+   Es decir:
+   \[
+     \mprob \bigg[L_{\dist}(A(S)) \le L_{\dist}(\bar{h}) + \varepsilon \bigg] \ge 1 - \delta
+   \]
+  \end{proof}
+
+\begin{theorem}[Caracterización de aprendizaje no-uniforme]
+Una clase de hipótesis $H \subseteq 2^X$ es no-uniformemente cognoscible sii $H = \bigcup_{n\in\mathbb{N}} H_n$ donde
+cada $H_n$ es APAC cognoscible.
+\end{theorem}
+  \begin{proof}
+   Supongamos $H = \cup_{n\in \mathbb{N}} H_n$ donde cada $H_n$ es agnósticamente PAC 
+   cognoscible. Por teorema fundamental de aprendizaje PAC, \ref{th:fundamental}, cada clase $H_n$ tiene la propiedad de 
+   convergencia uniforme, y podemos aplicar el teorema anterior.
+
+   En el sentido opuesto, sea $H$ es no-uniformemente cognoscible usando un cierto algoritmo $A$. Fijamos $\delta > \frac{6}{7}$ y
+   definimos:
+   \[
+     H_n = \{h \in H : m_{H}^{NU}(1/8, \delta, h) \le n\}
+   \]
+   
+   para todo $n$ natural. Claramente $H = \cup_{n\in \mathbb{N}} H_n$. Supongamos $VC(H_n) = \infty$ para algún $n\in \mathbb{N}$.
+   Entonces por teorema de No Free Lunch, \ref{th:nfl2}, entonces tendríamos que existe $\dist$ una distribución sobre 
+   $X$ verificando:
+   \[
+     \exists \bar{h}\in H_n: L_{\dist}(\bar{h}) = 0 \textrm{ y } \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}
+   \]
+   lo cual para $m > m_H^{NU}(\frac{1}{8}, \delta, \bar{h})$ constituiría una contradicción.
+  \end{proof}
+  
+\begin{corollary}
+ La noción de cognoscibilidad no-uniforme es más fuerte que la APAC cognoscibilidad.
+\end{corollary}
+\begin{proof}
+ Dada $H$ APAC cognoscible, por el teorema anterior es no-uniformemente cognoscible.
+ 
+ $H = \{h:\mathbb{R} \rightarrow \{-1,1\} : h^{-1}(1) \textrm{ es finito}\}$ es no-uniformemente cognoscible, pero no es
+ APAC cognoscible. Veámoslo.
+ 
+ Escribimos $H_n = \{h\in H: |h^{-1}(1)| \le n\}$. Es claro que $H=\bigcup_{n\in \mathbb{N}} H_n$. Además, $VC(H_n) = n$,
+ porque no podríamos fragmentar conjuntos de tamaño mayor que $n$, al ser $h^{-1}(1)$ de cardinal $n$ como mucho. Es trivial
+ ver que sí podemos fragmentar conjuntos de tamaño $n$. Luego por teorema fundamental del PAC, \ref{th:fundamental}, 
+ cada $H_n$ sería APAC cognoscible, y el teorema anterior nos dice que $H$ es no-uniformemente cognoscible.
+ 
+ Pero $VC(H) = \infty$, porque $VC(H) \ge VC(H_n) = n$ para $n\in \mathbb{N}$ arbitrario, luego $H$ no es APAC cognoscible.
+\end{proof}
+  
+\section{La navaja de Occam en aprendizaje no-uniforme}
+\begin{definition}[Lenguaje de descripción de hipótesis]
+ Sea $H$ una clase de hipótesis, $\Gamma$ un conjunto finito de símbolos, que llamaremos alfabeto. Notaremos 
+ al lenguaje generado por $\Gamma$:
+ \[
+   \Gamma^{\ast} = \{(\gamma_1, \ldots, \gamma_m): \gamma_i \in \Gamma, m\in \mathbb{N}\}
+ \]
+ donde la longitud de una palabra $\gamma = (\gamma_1, \ldots, \gamma_m) \in \Gamma$ será $m$ y lo notaremos $|\gamma| = m$.
+ 
+ Un lenguaje de descripción para $H$ será una asignación $d: H \rightarrow \Gamma^{\ast}$, libre de prefijos,
+ esto es, dados $h,h'\in H$ distintos, con $|d(h)| \le |d(h')|$, los $|d(h)|$ primeros símbolos de $d(h')$
+ no podrán ser $d(h)$ (al menos no en ese orden).
+ 
+ Dado un lenguaje de descripción de $H$, a saber, $d$, notaremos $|h| = |d(h)|$.
+\end{definition}
+
+Por simplicidad, consideraremos $\Gamma = \{a,b\}$ en lo que sigue.
+
+\begin{lemma}[Desigualdad de Kraft]
+ Si $\mathcal{L}\subseteq \Gamma^{\ast}$ es un conjunto de palabras provenientes de un lenguaje libre de prefijos, entonces:
+ \[
+   \sum_{\alpha \in \mathcal{L}} \frac{1}{2^{|\alpha|}} \le 1
+ \]
+ \label{lemma:kraft}
+\end{lemma}
+  \begin{proof}
+   Como las palabras del lenguaje son libres de prefijos, podríamos representar $\mathcal{L}$ con un árbol binario, donde
+   cada palabra sería el camino más corto desde una hoja a la raíz del árbol ($\emptyset$). Recíprocamente, cualquier árbol binario estaría
+   representando un lenguaje libre de prefijos, si consideramos la misma regla para formar palabras.
+   
+   Hacemos la demostración sobre la altura del árbol, identificando cada hoja de un árbol, $(T,E)$, con una palabra.
+   
+   \begin{subenv}
+    Para un árbol de altura $0$, tendríamos la palbra vacía, que tendría longitud $0$, y por tanto $\frac{1}{2^0} = 1$.
+    
+    Supuesto que se cumple para árboles de hasta altura $n$, y sea un árbol de altura $n+1$, a saber $(T,E)$. Sean $J$ sus hojas.
+    Si podásemos las ramas de longitud $n+1$, obtendríamos un árbol binario $(T_p,E)$ de altura $n$, con hojas $J'$ por lo que cumpliría:
+    \[
+      \sum_{l'\in J'} \frac{1}{2^{|l'|}} \le 1
+    \]
+    Pero cada rama $l'$ de $(T_p, E)$ podría dividirse como mucho en dos ramas para volver a tener la rama original $l$. Si se dividiese
+    en una, tendríamos $|l| > |l'|$ y por tanto $\frac{1}{2^{|l|}} \le \frac{1}{2^{|l'|}}$. Si se dividiese en dos, tendríamos
+    dos factores que valdrían la mitad, y al sumarse, $\frac{1}{2^{|l'|}}$. Si no se dividiese en ninguna, no se alteraría
+    el factor correspondiente.
+   \end{subenv}
+  \end{proof}
+
+\begin{fact}
+ Sea $H \subseteq 2^X$ una clase de hipótesis numerable, $d:H \rightarrow \{a,b\}$ un lenguaje de descripción de $H$. Entonces
+ para cualquier $m\in \mathbb{N}$, cualesquiera $0 < \delta, \epsilon < 1$ y una distribución $\dist$ sobre $X$ arbitraria, 
+ se cumpliría:
+ \[
+   \mprob\bigg[\forall h\in H, L_{\dist}(h) \le L_S(h) + \sqrt{\frac{|h| + \log(2/\delta)}{2m}} \bigg] \ge 1 - \delta
+ \] 
+ \label{fact:occam}
+\end{fact}
+\begin{proof}
+ Sea $H = \bigcup_{n\in \mathbb{N}} \{h_n\}$. 
+ 
+ Por proposición \ref{fact:finitas-gc} tendríamos que $m^{CU}_{\{h_n\}} \le \left\lceil \frac{\log(2/\delta)}{2\varepsilon^2} \right\rceil$
+ para cada $n\in \mathbb{N}$ arbitrario, y respecto de la función de pérdida $0-1$.
+ 
+ Luego $\epsilon_n(m,\delta) = \sqrt{\frac{\log(2/\delta)}{2m}}$, el $SRM$ estaría bien definido. Tomando $w(n) = \frac{1}{2^|h_n|}$ la longitud
+ dada por el lenguaje de descripción $d$, el lema \ref{lemma:kraft} de Kraft nos diría $\sum_{n \ge 1} w(n) \le 1$.
+ 
+ Aplicando la proposición \ref{th:non-uniform-complex} tendríamos que:
+ \[
+   \mprob\bigg[\forall h\in H, L_{\dist}(h) \le L_S(h) + \sqrt{\frac{-\log(\frac{1}{2^|h|}) + \log(2/\delta)}{2m}} \bigg] \ge 1 - \delta
+ \]
+ 
+ Pero como $-\log(\frac{1}{2^|h|}) = |h|\log(2) \le h$, y $\sqrt{(\cdot)}$ es creciente, por subaditividad:
+ \[
+   \mprob\bigg[\forall h\in H, L_{\dist}(h) \le L_S(h) + \sqrt{\frac{|h| + \log(2/\delta)}{2m}} \bigg] \ge 1 - \delta
+ \]
+\end{proof}
+
+Este teorema, adaptación de \ref{th:non-uniform-complex} al caso de $H$ numerable y existencia de un lenguaje de descripción,
+motiva que adaptemos también el $SRM$ a dicho paradigma.
+
+\begin{definition}[Minimizador de la longitud descriptiva]
+Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ es un $DLM$ 
+(\textit{Description Length Minimizer}) si dado $S \in (X\times Y)^m$ entones:
+\[
+  A(S) \in \argmin_{h\in H} L_S(h) + \sqrt{\frac{|h| + \log(2m)}{2m}} 
+\]
+\end{definition}
+
+El teorema \ref{th:srm-suficientes} nos dice que para una clase $H$ numerable y $d$ su lenguaje de descripción, un $DLM$
+hace a $H$ no-uniformemente cognoscible.
+
+\subsection{Navaja de Occam}
+De la proposición \ref{fact:occam} se desprende que tomando dos $h, h' \in H$ con igual $L_S(h)$, sería preferible tomar siempre
+la hipótesis de mínima longitud de descripción $|h|$. Este principio es conocido como \textit{navaja de Occam}, y establece
+que una hipótesis sencilla (de descripción corta) tiende a ser más válida que una complicada (de descripción más larga).
