@@ -23,7 +23,8 @@ leavesCoverage <- function(tree, classAttr){
 ######################################################################
 # Divide data in 3 partitions
 ######################################################################
-makePartition <- function(dataset, numPartitions){
+makePartition <- function(dataset, numPartitions, seed = 12345){
+  set.seed(seed)
   folds <- createFolds(dataset$Class, numPartitions)
 
   # Returns map of folds to the original data
@@ -52,7 +53,8 @@ infoSmallDisjuncts <- function(dataset){
 # Function to get results. If filtering is set to TRUE, neater is used
 # to clean new generated instances.
 ######################################################################
-getResults <- function(filtering){
+getResults <- function(filtering, seed = 12345){
+  set.seed(seed)
   # Prepare matrix for results
   results <- matrix(ncol = length(datasets), nrow = length(algorithms))
   colnames(results) <- datasets

@@ -49,22 +49,24 @@ sea reproducible, carga librerías, el fichero auxiliar \texttt{aux.R}, los dato
 crea un \textit{wrapper} para \texttt{wRACOG} basado en \texttt{J48} y obtiene los resultados de la experimentación.
 
 \section{Resultados}
-En los resultados, \texttt{none} representa el dataset original sin tratamiento de \textit{oversampling}.
+En los resultados, \texttt{none} representa el dataset original sin tratamiento de \textit{oversampling}. En la columna
+correspondiente al algoritmo PDFOS faltan algunos datos debido a que las matrices de los datos particionados resultan
+no invertibles. La columna de wRACOG sólo incluye el único dataset discreto, \texttt{wisconsin}.
 \subsection{Sin filtrado de instancias}
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-  \hline
-  & none & mwmote & wracog & rwo & pdfos \\ 
-  \hline
-  ecoli1 & 21.26 & 30.22 &  & 15.36 &  \\ 
-  glass0 & 10.39 & 10.67 &  & 11.92 &  \\ 
-  haberman & 24.93 & 18.34 &  & 26.25 & 18.43 \\ 
-  iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
-  newthyroid1 & 16.69 & 39.00 &  & 20.40 & 24.00 \\ 
-  wisconsin & 6.52 & 3.62 & 6.41 & 3.81 & 3.81 \\ 
-  yeast4 & 55.04 & 33.47 &  & 42.21 &  \\ 
-  \hline
+   \hline
+   & none & mwmote & wracog & rwo & pdfos \\ 
+   \hline
+   ecoli1 & 24.83 & 20.39 &  & 14.13 &  \\ 
+   glass0 & 13.30 & 8.76 &  & 11.07 &  \\ 
+   haberman & 45.05 & 14.86 &  & 20.00 & 22.31 \\ 
+   iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+   newthyroid1 & 19.89 & 30.00 &  & 20.40 & 23.40 \\ 
+   wisconsin & 6.74 & 3.88 & 5.68 & 3.65 & 3.65 \\ 
+   yeast4 & 77.83 & 30.69 &  & 55.21 &  \\ 
+   \hline
   \end{tabular}
   \caption{Media de \textit{small disjuncts} tras \textit{oversampling}}
   \end{table}
@@ -72,17 +74,17 @@ En los resultados, \texttt{none} representa el dataset original sin tratamiento 
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-  \hline
-  & none & mwmote & wracog & rwo & pdfos \\ 
-  \hline
-  ecoli1 & 3.00 & 2.00 &  & 17.00 &  \\ 
-  glass0 & 2.67 & 4.00 &  & 3.00 &  \\ 
-  haberman & 1.33 & 3.33 &  & 2.00 & 3.00 \\ 
-  iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
-  newthyroid1 & 2.67 & 0.33 &  & 2.00 & 1.67 \\ 
-  wisconsin & 25.67 & 63.67 & 26.00 & 60.67 & 60.67 \\ 
-  yeast4 & 4.00 & 8.67 &  & 40.00 &  \\ 
-  \hline
+   \hline
+   & none & mwmote & wracog & rwo & pdfos \\ 
+   \hline
+   ecoli1 & 2.67 & 3.00 &  & 17.67 &  \\ 
+   glass0 & 2.33 & 5.00 &  & 3.67 &  \\ 
+   haberman & 1.33 & 6.33 &  & 3.33 & 4.33 \\ 
+   iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+   newthyroid1 & 1.67 & 1.33 &  & 1.67 & 1.00 \\ 
+   wisconsin & 27.67 & 62.33 & 36.00 & 65.67 & 65.67 \\ 
+   yeast4 & 3.00 & 16.67 &  & 5.00 &  \\ 
+   \hline
   \end{tabular}
   \caption{Tamaño medio de coberturas tras \textit{oversampling}}
   \end{table}
@@ -90,18 +92,18 @@ En los resultados, \texttt{none} representa el dataset original sin tratamiento 
 \subsection{Con filtrado de instancias}
   \begin{table}[H]
   \centering
-\begin{tabular}{rrrrrr}
-  \hline
-  & none & mwmote & wracog & rwo & pdfos \\ 
-  \hline
-  ecoli1 & 21.26 & 25.65 &  & 23.89 &  \\ 
-  glass0 & 10.39 & 10.70 &  & 12.31 &  \\ 
-  haberman & 24.93 & 15.61 &  & 28.61 & 21.49 \\ 
-  iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
-  newthyroid1 & 16.69 & 22.69 &  & 22.67 & 20.29 \\ 
-  wisconsin & 6.52 & 3.68 & 6.39 & 3.82 & 3.89 \\ 
-  yeast4 & 55.04 & 29.79 &  & 38.41 &  \\ 
-  \hline
+  \begin{tabular}{rrrrrr}
+   \hline
+   & none & mwmote & wracog & rwo & pdfos \\ 
+   \hline
+   ecoli1 & 24.83 & 19.59 &  & 14.10 &  \\ 
+   glass0 & 13.30 & 9.80 &  & 14.77 &  \\ 
+   haberman & 45.05 & 9.37 &  & 14.32 & 12.55 \\ 
+   iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+   newthyroid1 & 19.89 & 28.83 &  & 21.19 & 23.85 \\ 
+   wisconsin & 6.74 & 3.88 & 5.78 & 3.67 & 3.71 \\ 
+   yeast4 & 77.83 & 35.66 &  & 52.80 &  \\ 
+   \hline
   \end{tabular}
   \caption{Media de \textit{small disjuncts} tras \textit{oversampling} y filtrado}
   \end{table}
@@ -109,17 +111,17 @@ En los resultados, \texttt{none} representa el dataset original sin tratamiento 
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-  \hline
-  & none & mwmote & wracog & rwo & pdfos \\ 
-  \hline
-  ecoli1 & 3.00 & 3.00 &  & 16.67 &  \\ 
-  glass0 & 2.67 & 3.33 &  & 2.33 &  \\ 
-  haberman & 1.33 & 4.00 &  & 1.00 & 2.33 \\ 
-  iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
-  newthyroid1 & 2.67 & 2.33 &  & 2.00 & 1.67 \\ 
-  wisconsin & 25.67 & 61.67 & 27.67 & 60.33 & 58.67 \\ 
-  yeast4 & 4.00 & 9.67 &  & 24.00 &  \\ 
-  \hline
+   \hline
+   & none & mwmote & wracog & rwo & pdfos \\ 
+   \hline
+   ecoli1 & 2.67 & 2.67 &  & 17.67 &  \\ 
+   glass0 & 2.33 & 3.67 &  & 3.33 &  \\ 
+   haberman & 1.33 & 7.33 &  & 3.00 & 5.33 \\ 
+   iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+   newthyroid1 & 1.67 & 1.33 &  & 2.33 & 1.00 \\ 
+   wisconsin & 27.67 & 62.33 & 34.33 & 65.00 & 63.67 \\ 
+   yeast4 & 3.00 & 9.67 &  & 4.00 &  \\ 
+   \hline
   \end{tabular}
   \caption{Tamaño medio de coberturas tras \textit{oversampling} y filtrado}
   \end{table}

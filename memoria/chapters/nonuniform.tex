@@ -48,9 +48,9 @@ En particular, tomando $n(h)\in \{n: h\in H_n\}$ para cada $h\in H$:
 
    Por tanto:
    \begin{align*}
-   &\mprob \bigg[\forall n\in \mathbb{N}, \forall h\in H_n, |L_{\dist}(h) - L_S(h)| \le \varepsilon_n (m, w(n) \delta)\bigg] = \\
-  =& 1 - \mprob\bigg[\exists n\in \mathbb{N}, \exists h\in H_n, |L_{\dist}(h) - L_S(h)| > \varepsilon_n (m, w(n) \delta)\bigg] \\
-\ge& 1- \sum_{n=1}^{\infty} w(n) \delta \ge 1-\delta
+          &\mprob \bigg[\forall n\in \mathbb{N}, \forall h\in H_n, |L_{\dist}(h) - L_S(h)| \le \varepsilon_n (m, w(n) \delta)\bigg]\\
+   = 1 -  &\mprob\bigg[\exists n\in \mathbb{N}, \exists h\in H_n, |L_{\dist}(h) - L_S(h)| > \varepsilon_n (m, w(n) \delta)\bigg]\\
+   \ge 1- &\sum_{n=1}^{\infty} w(n) \delta \ge 1-\delta
    \end{align*}
   \end{proof}
 
@@ -79,11 +79,13 @@ dicho mínimo tiene sentido. Dado $S \in (X\times Y)^m$ devolverá:
 \]
 \end{definition}
 
-Es conocido que $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$. Usando este hecho y\[
+Es conocido que $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$. Usando este hecho,
+\[
   m_{H}^{NU} (\varepsilon, \delta, h) \le \left\{m_{H_{n(h)}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right), 
   \left\lceil\frac{2}{\delta}\right\rceil \right\}
-\] el anterior resultado, podemos
-dar condiciones suficientes para que un $SRM$ haga a una clase no-uniformemente cognoscible.
+\] 
+y el anterior resultado, podemos dar condiciones suficientes para que un $SRM$ haga a una clase no-uniformemente
+cognoscible.
 
 \begin{theorem}
 Sea $H$ una clase de hipótesis verificando $H = \cup_{n\in \mathbb{N}} H_n$ donde cada 
@@ -98,9 +100,10 @@ Entonces $H$ es no-uniformemente cognoscible para cualquier algoritmo $A$ que se
   \begin{proof}
    Fijamos $\bar{h}\in H$ y $0 < \delta, \varepsilon < 1$. Sea:
    \[
-     m = \max\left\{m_{H_{n(h)}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right), \left\lceil\frac{2}{\delta}\right\rceil \right\}
+     m \ge \max\left\{m_{H_{n(\bar{h})}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(\bar{h}))^2} \right), 
+         \left\lceil\frac{2}{\delta}\right\rceil \right\}
    \]
-   Claramente $\varepsilon_{n(h)}\left(m, w(n(h)) \frac{1}{m}\right) \le \varepsilon/2$.
+   Claramente $\varepsilon_{n(\bar{h})}\left(m, w(n(\bar{h})) \frac{1}{m}\right) \le \varepsilon/2$.
 
    Usando el hecho de que $\sum_{n\ge 1} w(n) = 1$, por proposición \ref{th:non-uniform-complex} se verifica:    
    \begin{equation}
@@ -111,12 +114,13 @@ Entonces $H$ es no-uniformemente cognoscible para cualquier algoritmo $A$ que se
    
    Por ser $A$ un $SRM$, entonces dado $S\in (X\times Y)^m$:
    \begin{align}
-     L_{\dist}(A(S)) &\le L_S(\bar{h}) + \varepsilon_{n(\bar{h})} \left(m, w(n(\bar{h}))\frac{1}{m}\right) \nonumber\\
+     L_{S}(A(S)) + \varepsilon_{n(A(S))} \left(m, w(n(A(S)))\frac{1}{m}\right)
+                     &\le L_S(\bar{h}) + \varepsilon_{n(\bar{h})} \left(m, w(n(\bar{h}))\frac{1}{m}\right) \nonumber\\
                      &\le L_S(\bar{h}) + \frac{\varepsilon}{2}
      \label{ineq:srm}\tag{\textrm{$\ast$$\ast$}}
    \end{align}
    
-   A partir de \eqref{ineq:srm-h} y \eqref{ineq:srm}, y usando $\varepsilon_{n(\bar{h})}\left(m, w(n(\bar{h})) \frac{1}{m}\right) \le \varepsilon/2$, deducimos:
+   A partir de \eqref{ineq:srm-h} y \eqref{ineq:srm}, deducimos:
    \begin{align}
                      &\mprob \bigg[L_{\dist}(A(S)) \le L_{S}(\bar{h}) + \varepsilon/2\bigg] \ge 1-\frac{\delta}{2} \nonumber\\
      \Leftrightarrow &\mprob \bigg[L_{\dist}(A(S)) > L_{S}(\bar{h}) + \varepsilon/2\bigg] \le \frac{\delta}{2}
@@ -149,17 +153,17 @@ cada $H_n$ es APAC cognoscible.
    cognoscible. Por teorema fundamental de aprendizaje PAC, \ref{th:fundamental}, cada clase $H_n$ tiene la propiedad de 
    convergencia uniforme, y podemos aplicar el teorema anterior.
 
-   En el sentido opuesto, sea $H$ es no-uniformemente cognoscible usando un cierto algoritmo $A$. Fijamos $\delta > \frac{6}{7}$ y
+   En el sentido opuesto, sea $H$ no-uniformemente cognoscible usando un cierto algoritmo $A$. Fijamos $\delta > \frac{6}{7}$ y
    definimos:
    \[
      H_n = \{h \in H : m_{H}^{NU}(1/8, \delta, h) \le n\}
    \]
+   para todo $n$ natural. Claramente $H = \cup_{n\in \mathbb{N}} H_n$. 
    
-   para todo $n$ natural. Claramente $H = \cup_{n\in \mathbb{N}} H_n$. Supongamos $VC(H_n) = \infty$ para algún $n\in \mathbb{N}$.
-   Entonces por teorema de No Free Lunch, \ref{th:nfl2}, entonces tendríamos que existe $\dist$ una distribución sobre 
-   $X$ verificando:
+   Supongamos $VC(H_n) = \infty$ para algún $n\in \mathbb{N}$. Entonces por teorema de No Free Lunch, \ref{th:nfl2}, 
+   tendríamos que existe $\dist$ una distribución sobre $X$ verificando:
    \[
-     \exists \bar{h}\in H_n: L_{\dist}(\bar{h}) = 0 \textrm{ y } \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}
+     \exists \bar{h}\in H_n: L_{\dist}(\bar{h}) = 0 \qquad\textrm{y}\quad \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}
    \]
    lo cual para $m > m_H^{NU}(\frac{1}{8}, \delta, \bar{h})$ constituiría una contradicción.
   \end{proof}
@@ -170,8 +174,8 @@ cada $H_n$ es APAC cognoscible.
 \begin{proof}
  Dada $H$ APAC cognoscible, por el teorema anterior es no-uniformemente cognoscible.
  
- $H = \{h:\mathbb{R} \rightarrow \{-1,1\} : h^{-1}(1) \textrm{ es finito}\}$ es no-uniformemente cognoscible, pero no es
- APAC cognoscible. Veámoslo.
+ Por otro lado $H = \{h:\mathbb{R} \rightarrow \{-1,1\} : h^{-1}(1) \textrm{ es finito}\}$ es no-uniformemente cognoscible,
+ pero no es APAC cognoscible. Veámoslo.
  
  Escribimos $H_n = \{h\in H: |h^{-1}(1)| \le n\}$. Es claro que $H=\bigcup_{n\in \mathbb{N}} H_n$. Además, $VC(H_n) = n$,
  porque no podríamos fragmentar conjuntos de tamaño mayor que $n$, al ser $h^{-1}(1)$ de cardinal $n$ como mucho. Es trivial
@@ -181,9 +185,9 @@ cada $H_n$ es APAC cognoscible.
  Pero $VC(H) = \infty$, porque $VC(H) \ge VC(H_n) = n$ para $n\in \mathbb{N}$ arbitrario, luego $H$ no es APAC cognoscible.
 \end{proof}
   
-\section{La navaja de Occam en aprendizaje no-uniforme}
+\section{Minimización de longitud descriptiva}
 \begin{definition}[Lenguaje de descripción de hipótesis]
- Sea $H$ una clase de hipótesis, $\Gamma$ un conjunto finito de símbolos, que llamaremos alfabeto. Notaremos 
+ Sea $H$ una clase de hipótesis y $\Gamma$ un conjunto finito de símbolos, que llamaremos alfabeto. Notaremos 
  al lenguaje generado por $\Gamma$:
  \[
    \Gamma^{\ast} = \{(\gamma_1, \ldots, \gamma_m): \gamma_i \in \Gamma, m\in \mathbb{N}\}
@@ -214,22 +218,22 @@ Por simplicidad, consideraremos $\Gamma = \{a,b\}$ en lo que sigue.
    Hacemos la demostración sobre la altura del árbol, identificando cada hoja de un árbol, $(T,E)$, con una palabra.
    
    \begin{subenv}
-    Para un árbol de altura $0$, tendríamos la palbra vacía, que tendría longitud $0$, y por tanto $\frac{1}{2^0} = 1$.
+    Para un árbol de altura $0$, tendríamos la palabra vacía, que tendría longitud $0$, y por tanto $\frac{1}{2^0} = 1$.
     
     Supuesto que se cumple para árboles de hasta altura $n$, y sea un árbol de altura $n+1$, a saber $(T,E)$. Sean $J$ sus hojas.
-    Si podásemos las ramas de longitud $n+1$, obtendríamos un árbol binario $(T_p,E)$ de altura $n$, con hojas $J'$ por lo que cumpliría:
+    Si podásemos las ramas de longitud $n+1$, obtendríamos un árbol binario de altura $n$, con hojas $J'$ por lo que cumpliría:
     \[
       \sum_{l'\in J'} \frac{1}{2^{|l'|}} \le 1
     \]
-    Pero cada rama $l'$ de $(T_p, E)$ podría dividirse como mucho en dos ramas para volver a tener la rama original $l$. Si se dividiese
-    en una, tendríamos $|l| > |l'|$ y por tanto $\frac{1}{2^{|l|}} \le \frac{1}{2^{|l'|}}$. Si se dividiese en dos, tendríamos
+    Pero la rama correspondiente a una hoja $l'$ podría dividirse como mucho en dos ramas para volver a tener la rama original $l$. Si 
+    se dividiese en una, tendríamos $|l| > |l'|$ y por tanto $\frac{1}{2^{|l|}} \le \frac{1}{2^{|l'|}}$. Si se dividiese en dos, tendríamos
     dos factores que valdrían la mitad, y al sumarse, $\frac{1}{2^{|l'|}}$. Si no se dividiese en ninguna, no se alteraría
     el factor correspondiente.
    \end{subenv}
   \end{proof}
 
 \begin{fact}
- Sea $H \subseteq 2^X$ una clase de hipótesis numerable, $d:H \rightarrow \{a,b\}$ un lenguaje de descripción de $H$. Entonces
+ Sea $H \subseteq 2^X$ una clase de hipótesis numerable, un lenguaje de descripción $d:H \rightarrow \{a,b\}^{\ast}$. Entonces
  para cualquier $m\in \mathbb{N}$, cualesquiera $0 < \delta, \epsilon < 1$ y una distribución $\dist$ sobre $X$ arbitraria, 
  se cumpliría:
  \[
@@ -241,17 +245,18 @@ Por simplicidad, consideraremos $\Gamma = \{a,b\}$ en lo que sigue.
  Sea $H = \bigcup_{n\in \mathbb{N}} \{h_n\}$. 
  
  Por proposición \ref{fact:finitas-gc} tendríamos que $m^{CU}_{\{h_n\}} \le \left\lceil \frac{\log(2/\delta)}{2\varepsilon^2} \right\rceil$
- para cada $n\in \mathbb{N}$ arbitrario, y respecto de la función de pérdida $0-1$.
+ para cada $n\in \mathbb{N}$ arbitrario, respecto de la función de pérdida $0-1$.
  
- Luego $\epsilon_n(m,\delta) = \sqrt{\frac{\log(2/\delta)}{2m}}$, el $SRM$ estaría bien definido. Tomando $w(n) = \frac{1}{2^|h_n|}$ la longitud
- dada por el lenguaje de descripción $d$, el lema \ref{lemma:kraft} de Kraft nos diría $\sum_{n \ge 1} w(n) \le 1$.
+ Luego $\varepsilon_n(m,\delta) = \sqrt{\frac{\log(2/\delta)}{2m}}$ y el $SRM$ estaría bien definido. Tomando $w(n) = \frac{1}{2^{|h_n|}}$, donde
+ $|d_n|$ es la longitud dada por el lenguaje de descripción $d$, el lema \ref{lemma:kraft} de Kraft nos diría 
+ $\sum_{n \ge 1} w(n) \le 1$.
  
  Aplicando la proposición \ref{th:non-uniform-complex} tendríamos que:
  \[
-   \mprob\bigg[\forall h\in H, L_{\dist}(h) \le L_S(h) + \sqrt{\frac{-\log(\frac{1}{2^|h|}) + \log(2/\delta)}{2m}} \bigg] \ge 1 - \delta
+   \mprob\bigg[\forall h\in H, L_{\dist}(h) \le L_S(h) + \sqrt{\frac{-\log(1/2^{|h|}) + \log(2/\delta)}{2m}} \bigg] \ge 1 - \delta
  \]
  
- Pero como $-\log(\frac{1}{2^|h|}) = |h|\log(2) \le h$, y $\sqrt{(\cdot)}$ es creciente, por subaditividad:
+ Pero como $-\log(1/2^{|h|}) = |h|\log(2) \le h$, y $\sqrt{(\cdot)}$ es creciente, por subaditividad:
  \[
    \mprob\bigg[\forall h\in H, L_{\dist}(h) \le L_S(h) + \sqrt{\frac{|h| + \log(2/\delta)}{2m}} \bigg] \ge 1 - \delta
  \]
@@ -275,3 +280,17 @@ hace a $H$ no-uniformemente cognoscible.
 De la proposición \ref{fact:occam} se desprende que tomando dos $h, h' \in H$ con igual $L_S(h)$, sería preferible tomar siempre
 la hipótesis de mínima longitud de descripción $|h|$. Este principio es conocido como \textit{navaja de Occam}, y establece
 que una hipótesis sencilla (de descripción corta) tiende a ser más válida que una complicada (de descripción más larga).
+
+\section{Aprendizaje PAC vs aprendizaje no-uniforme}
+En términos de error, ambos paradigmas proporcionan una cota del error cometido, que se cumple con cierta probabilidad. Ahora
+bien, en paradigma no-uniforme no podemos conocer a priori cuántos ejemplos son necesarios para aprender la mejor hipótesis,
+mientras que en aprendizaje PAC sí le pedimos esta condición al algoritmo y la función de complejidad muestral.
+
+Puesto que ambos paradigmas proporcionan cotas para $err_{est}$, sabemos qué parte del error corresponde a la aproximación
+y cuál a la estimación. Si el error de aproximación es muy alto, siempre podemos intentar aprender con otra clase $H$ en PAC
+o modificar el esquema de asignación de pesos $w(n)$ en aprendizaje no-uniforme.
+
+La pregunta ¿cómo aprender? es altamente dependiente del problema. Ambos paradigmas nos permiten usar conocimiento
+previo para que un problema sea resoluble: PAC restringiendo $H$ y aprendizaje no-uniforme escogiendo $w(n)$. El aprendizaje
+no-uniforme es más flexible que el aprendizaje PAC, pero proporciona menos garantías en base al número de ejemplos que necesitamos
+para aprender.

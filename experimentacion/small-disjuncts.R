@@ -1,5 +1,3 @@
-set.seed(12345)
-
 pkgs <- c("devtools", "RWeka", "caret")
 
 sapply(pkgs, function(pkg){
@@ -13,7 +11,6 @@ if(!"imbalance" %in% installed.packages())
 library("RWeka")
 library("caret")
 library("imbalance")
-
 source("./aux.R")
 
 ######################################################################
@@ -41,7 +38,6 @@ trainWrapper.J48Wrapper <- function(wrapper, train, trainClass){
   train <- data.frame(train)
   J48(Class ~ ., train)
 }
-
 
 withoutNEATER <- getResults(filtering = FALSE)
 withNEATER <- getResults(filtering = TRUE)

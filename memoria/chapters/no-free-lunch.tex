@@ -138,8 +138,8 @@ obtendría con cierta probabilidad un fallo superior a $\frac{1}{8}$.
 
 \section{Equilibrio error-varianza}
 \begin{definition}
- Llamamos error de aproximación a $err_{app} := \inf_{h\in H} L_{\dist}(h)$. LLamamos error de estimación a $err_{est} := 
- L_{\dist} (A(S)) - err_{app}$ para un cierto algoritmo $A$ y conjunto de entrenamiento $S$ arbitrario.
+ Llamamos error de aproximación a $err_{H} := \inf_{h\in H} L_{\dist}(h)$. LLamamos error de estimación a $err_{est} := 
+ L_{\dist} (A(S)) - err_{H}$ para un cierto algoritmo $A$ y conjunto de entrenamiento $S$ arbitrario.
 \end{definition}
 
 El equilibrio error-varianza hace referencia a un concepto intuitivo que se desprende de la demostración del teorema
@@ -148,5 +148,5 @@ como conjunto de clasificadores todo el espacio $2^X$. Así, intuitivamente, cua
 $H$, mejor aproximaremos el verdadero o mejor clasificador, pero más número de muestras necesitaremos y más costoso será
 aproximarlo.
 
-Cuando crece $err_{app}$, decrece $err_{est}$ y viceversa. Por tanto, el \emph{machine learning} intenta buscar un equilibrio
+Cuando crece $err_{H}$, decrece $err_{est}$ y viceversa. Por tanto, el \emph{machine learning} intenta buscar un equilibrio
 entre bondad de los clasificadores que se prueban y la complejidad de la clase a la que pertenecen los mismos.
