@@ -20,7 +20,7 @@ $A$ recibe el nombre de \textit{algoritmo de aprendizaje}, $m_H$ se llama \texti
 calificativos aproximadamente ($\equiv$ confianza) y correcto ($\equiv$ exactitud).
 
 En lo que sigue supondremos que las distribuciones de las que se habla, $\dist$, incluyen en la $\sigma$-álgebra las propias
-hipótesis.
+hipótesis, y que tienen las garantías de medibilidad necesarias sobre $\bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg]$.
 
 Nótese que la definición de PAC cognoscibilidad implica hipótesis de factibilidad de $H$ respecto a la función de verdadero
 etiquetado $f$ y la distribución $\dist$. El último apartado de la proposición \ref{fact:factibilidad} 
@@ -182,8 +182,8 @@ Una clase $H$ es agnósticamente PAC (APAC) cognoscible respecto a $Z$ y respect
 $l: H \times Z \rightarrow \mathbb{R}^{+}$ si existe una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo 
 $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow Y^X$ verificando que si 
-$0 < \varepsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$ que haga medible a $z \mapsto l(h, z)$,
-se cumple que dado $m\ge m_{H}(\varepsilon, \delta)$ entonces:
+$0 < \varepsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$
+se cumple que dado $m\ge m_{H}(\varepsilon, \delta)$:
 \[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \varepsilon \bigg] \ge 1-\delta\]
 \end{definition}
 
@@ -192,6 +192,9 @@ hipótesis que no estuviera en $H$. Cuando permitimos que el algoritmo $A$ devue
 $h \notin H$, de manera que $h \in H'$ y  $H \subset H'$ una clase de funciones donde la función de pérdida 
 es extensible de manera natural, el aprendizaje recibe el nombre de \textit{aprendizaje impropio}. Si suponemos
 $A(S) \in H$ estaremos usando \textit{aprendizaje propio}.
+
+Análogamente al aprendizaje PAC, en las definiciones supondremos implícitamente que $l$ o $L_{\dist}$ proporcionan las suficientes
+garantías de medibilidad.
 
 \subsection{Particularización a distintos paradigmas}
 
