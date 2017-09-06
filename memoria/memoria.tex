@@ -21,23 +21,30 @@
   \def\input@path{{./frontmatter/}}
 \makeatother
 
-\pagenumbering{roman}
 
 \input{titlepage}
-\pagestyle{plain}
+
+\pagestyle{empty}
+
 \chapter*{Resumen}
+  \thispagestyle{empty}
   \input{es-abstract}
 \chapter*{Abstract}
+  \thispagestyle{empty}
   \input{en-abstract}
-% Autorizaciones de depósito en biblioteca
 \chapter*{}
-  \input{AutorizacionBiblioteca}
-  \input{AutorizacionTutor}
+  % Autorizaciones de depósito en biblioteca
+  \thispagestyle{empty}
+  \input{autorizacionBiblioteca}
+  \input{autorizacionTutor}
 \chapter*{Agradecimientos}
+  \thispagestyle{empty}
   \input{agradecimientos}
 
 \setcounter{tocdepth}{1}
+\addtocontents{toc}{\protect\thispagestyle{empty}} 
 \tableofcontents
+\thispagestyle{empty}
 
 \break 
 
