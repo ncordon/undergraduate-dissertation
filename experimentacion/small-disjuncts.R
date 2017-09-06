@@ -44,6 +44,8 @@ withNEATER <- getResults(filtering = TRUE)
 
 # xtable::xtable(t(withoutNEATER$nums))
 # xtable::xtable(t(withoutNEATER$sizes))
+# xtable::xtable(t(withoutNEATER$sensitivities))
 # xtable::xtable(t(withNEATER$nums))
 # xtable::xtable(t(withNEATER$sizes))
+# xtable::xtable(t(withNEATER$sensitivities))
 

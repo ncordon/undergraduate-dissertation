@@ -49,7 +49,7 @@ verificando las hipótesis del enunciado.
  Basta hacer la demostración para $m=1$.
  
  Tomando $h(\varepsilon) = e^{-\varepsilon} + \varepsilon - 1$, se tiene que $h$ es derivable y 
- $h'(\varepsilon) = -e^{-\varepsilon} + 1 \ge 0$. Como $h(0) = 0$, se tiene $h \ge 0$.
+ $h'(\varepsilon) = -e^{-\varepsilon} + 1 \ge 0$. Como $h(0) = 0$, se cumple $h \ge 0$.
 \end{proof}
 
 \begin{theorem}[Las clases finitas son PAC cognoscibles]
@@ -79,7 +79,7 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
 
    Además, fijada $h\in H_B$, como $L_{\mathcal{D},f}(h) > \varepsilon$:
    \begin{align*}
-   \mprob[L_S(h) = 0] = \mprob[h(x_i) = f(x_i), i =1,\ldots m\}]\\
+   \mprob[L_S(h) = 0] = \mprob[h(x_i) = f(x_i), i =1,\ldots, m\}]\\
    = \prod_{i=1}^m \prob[h = f] = \prod_{i=1}^m (1 - L_{\mathcal{D},f}(h)) \le (1-\varepsilon)^m 
    \underset{\textrm{\ref{lemma:fund-ineq}}}{\le} e^{-\varepsilon m}
    \end{align*}

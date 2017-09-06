@@ -174,11 +174,12 @@ El algoritmo de gradiente descendente dirigirá la búsqueda del valor de $h$ ha
 
 
 \subsection{Críticas al algoritmo}
+\label{sec:critica-pdfos}
 Podemos efectuar dos críticas principales al algoritmo, no estando reflejadas las siguientes consideraciones en el \textit{paper}
 de sus autores:
 
 \begin{itemize} 
- \item No toda matriz $S$ es invertible, siendo el caso del dataset \texttt{ecoli1} incluido en el paquete de software 
+ \item No toda matriz de covarianza es invertible, siendo el caso del dataset \texttt{ecoli1} incluido en el paquete de software 
  desarrollado, por ejemplo, una matriz de covarianza no invertible. En nuestra implementación se ha decidido interrumpir
  el proceso en caso de que se encuentre una matriz no invertible, avisándolo a tales efectos. Podría estudiarse cómo encajaría
  dentro del algoritmo sustituir la inversa convencional por la inversa generalizada 

@@ -32,6 +32,15 @@ makePartition <- function(dataset, numPartitions, seed = 12345){
 }
 
 ######################################################################
+# Compute sensitivity of model respect to a dataset
+######################################################################
+computeSensitivity <- function(model, dataset){
+  numPositives <- length(which(dataset$Class == "positive"))
+  length(which(predict(model, dataset) == dataset$Class & 
+               dataset$Class == "positive")) / numPositives
+}
+
+######################################################################
 # We consider a small disjunct a rule covering less or equal
 # than 3 samples. This function outputs number of small disjuncts
 # and mean of rule coverages
@@ -44,9 +53,11 @@ infoSmallDisjuncts <- function(dataset){
   positiveCoverage <- leavesCoverage(tree, classAttr = "positive")
   negativeCoverage <- leavesCoverage(tree, classAttr = "negative")
   coverages <- c(positiveCoverage, negativeCoverage)
-
+  sensitivity <- computeSensitivity(tree, dataset)
+  
   list(numSmallDisjuncts = length(which(coverages <= 3)),
-       meanCoverage = mean(coverages))
+       meanCoverage = mean(coverages),
+       sensitivity = sensitivity)
 }
 
 ######################################################################
@@ -61,7 +72,8 @@ getResults <- function(filtering, seed = 12345){
   rownames(results) <- algorithms
   resultsSizes <- results
   resultsNums <- results
-
+  resultsSensitivities <- results
+  
   # For each algorithm, for each dataset, get numPartitions executions and calc
   # the mean size of coverages and the mean number of small disjuncts
   for(algName in algorithms){
@@ -100,11 +112,12 @@ getResults <- function(filtering, seed = 12345){
           }), error = function(e){NA})
   
         if(!anyNA(overbalanced)){
-          resultsSizes[algName, dataName] <- mean(unlist(overbalanced["numSmallDisjuncts", ]))
-          resultsNums[algName, dataName] <- mean(unlist(overbalanced["meanCoverage", ]))
+          resultsSizes[algName, dataName] <- mean(unlist(overbalanced["meanCoverage", ]))
+          resultsNums[algName, dataName] <- mean(unlist(overbalanced["numSmallDisjuncts", ]))
+          resultsSensitivities[algName, dataName] <- mean(unlist(overbalanced["sensitivity", ]))
         }
       }
     }
   }
-  list(sizes = resultsSizes, nums = resultsNums)
+  list(sizes = resultsSizes, nums = resultsNums, sensitivities = resultsSensitivities)
 }

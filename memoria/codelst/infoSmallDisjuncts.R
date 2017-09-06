@@ -7,7 +7,9 @@ infoSmallDisjuncts <- function(dataset){
   positiveCoverage <- leavesCoverage(tree, classAttr = "positive")
   negativeCoverage <- leavesCoverage(tree, classAttr = "negative")
   coverages <- c(positiveCoverage, negativeCoverage)
+  sensitivity <- computeSensitivity(tree, dataset)
   
   list(numSmallDisjuncts = length(which(coverages <= 3)),
-       meanCoverage = mean(coverages))
+       meanCoverage = mean(coverages),
+       sensitivity = sensitivity)
 }

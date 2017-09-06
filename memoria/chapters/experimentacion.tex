@@ -15,14 +15,17 @@ Definiremos un \textit{small disjunct} como una hoja del árbol con 3 o menos ej
 que no hay definición formal para el concepto, pues este se define como reglas que cubren pocos ejemplos. Calcularemos para 
 cada dataset el número de \textit{small disjuncts} (de ambas clases, puesto que se explicó en \ref{sec:desbalanceo} que 
 es un problema que puede afectar a ambas clases), así como la media del número de ejemplos que cubren las hojas del árbol.
+
 Si alguno de los algoritmos de \textit{oversampling} introdujera más \textit{small disjuncts} en lugar de eliminarlos, 
 la media de cobertura de las hojas bajaría, y el número de \textit{small disjuncts} crecería. Por tanto teorizamos que si eliminamos 
-desbalanceo en los datasets, el número de \textit{small disjuncts} decrecerá, y la media de ejemplos por hoja aumentará.
+desbalanceo en los datasets, el número de \textit{small disjuncts} decrecerá, y la media de ejemplos por hoja aumentará. 
+También trabajaremos con la sensibilidad, medida que se explicó en la sección \ref{sec:medidas-desbalanceo}.
 
 Se dividirá cada conjunto en 3 particiones estratificadas por clase (esto es, la proporción de ejemplos de ambas
 clases será aproximadamente igual que en el conjunto sin particionar), y se intentará conseguir un ratio de desbalanceo del
 80\% con cada uno de los algoritmos. Se hará una media de las medidas descritas para cada dataset, y compararemos los 
-resultados con los obtenidos para las 3 particiones sin ningún algoritmo aplicado.
+resultados con los obtenidos para las 3 particiones sin ningún algoritmo aplicado. Para aplicar el algoritmo wRACOG se usará
+como conjunto de entrenamiento una partición y como conjunto de validación la siguiente.
 
 La experimentación es completamente reproducible, y se encuentra disponible en la carpeta \texttt{experimentacion} del 
 repositorio que aloja al presente trabajo \footnote{\url{https://github.com/ncordon/tfg}}.
@@ -32,41 +35,41 @@ para reproducir la experimentación.
 \section{Contenido de \texttt{aux.R}}
 \texttt{RWeka} no proporciona ningún método para obtener la cobertura de las hojas de los árboles que construye, así que
 ha sido necesario un método para \textit{parsear} la impresión que se hace del árbol en forma de cadena de caracteres
-
 \lstinputlisting[caption=función \texttt{leavesCoverage} en \texttt{aux.R}]{./codelst/leavesCoverage.R}
 
 Asimismo, en dicho archivo también podemos encontrar las funciones \texttt{makePartition}, que recibe un \texttt{dataset}
 y un número de particiones \texttt{numPartitions} y genera \texttt{numPartitions} estratificadas a partir del dataset; la
 función \texttt{infoSmallDisjuncts} que recibe un \texttt{dataset} y devuelve el cálculo de las dos medidas descritas, y 
 la función \texttt{getResults}, que recibe un parámetro \textit{booleano} indicando si queremos aplicar el filtro NEATER
-o no.
-\clearpage
+o no. Las funciones para particionar y obtener resultados fijan la semilla $12345$ por defecto, con objeto de que la 
+experimentación sea reproducible.
 \lstinputlisting[caption=función \texttt{infoSmallDisjuncts} en \texttt{aux.R}]{./codelst/infoSmallDisjuncts.R}
 
 \section{Contenido de \texttt{small-disjuncts.R}}
-Este archivo es el fichero principal de la experimentación. Comienza fijando una semilla aleatoria de modo que la experimentación
-sea reproducible, carga librerías, el fichero auxiliar \texttt{aux.R}, los datos de \texttt{imbalance}, los particiona,
-crea un \textit{wrapper} para \texttt{wRACOG} basado en \texttt{J48} y obtiene los resultados de la experimentación.
+Este archivo es el fichero principal de la experimentación. Carga librerías, el fichero auxiliar \texttt{aux.R}, los datos
+de \texttt{imbalance}, los particiona, crea un \textit{wrapper} para \texttt{wRACOG} basado en \texttt{J48} y obtiene los 
+resultados de la experimentación.
 
 \section{Resultados}
 En los resultados, \texttt{none} representa el dataset original sin tratamiento de \textit{oversampling}. En la columna
-correspondiente al algoritmo PDFOS faltan algunos datos debido a que las matrices de los datos particionados resultan
-no invertibles. La columna de wRACOG sólo incluye el único dataset discreto, \texttt{wisconsin}.
+correspondiente al algoritmo PDFOS faltan algunos datos debido a que las matrices de covarianza de los datos particionados 
+resultan no invertibles, tal y como se explicó en la sección \ref{sec:critica-pdfos}. La columna de wRACOG sólo incluye el
+único dataset discreto, \texttt{wisconsin}.
 \subsection{Sin filtrado de instancias}
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-   \hline
-   & none & mwmote & wracog & rwo & pdfos \\ 
-   \hline
-   ecoli1 & 24.83 & 20.39 &  & 14.13 &  \\ 
-   glass0 & 13.30 & 8.76 &  & 11.07 &  \\ 
-   haberman & 45.05 & 14.86 &  & 20.00 & 22.31 \\ 
-   iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
-   newthyroid1 & 19.89 & 30.00 &  & 20.40 & 23.40 \\ 
-   wisconsin & 6.74 & 3.88 & 5.68 & 3.65 & 3.65 \\ 
-   yeast4 & 77.83 & 30.69 &  & 55.21 &  \\ 
-   \hline
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 2.67 & 3.00 &  & 17.67 &  \\ 
+  glass0 & 2.33 & 5.00 &  & 3.67 &  \\ 
+  haberman & 1.33 & 6.33 &  & 3.33 & 4.33 \\ 
+  iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+  newthyroid1 & 1.67 & 1.33 &  & 1.67 & 1.00 \\ 
+  wisconsin & 27.67 & 62.33 & 36.00 & 65.67 & 65.67 \\ 
+  yeast4 & 3.00 & 16.67 &  & 5.00 &  \\ 
+  \hline
   \end{tabular}
   \caption{Media de \textit{small disjuncts} tras \textit{oversampling}}
   \end{table}
@@ -74,36 +77,55 @@ no invertibles. La columna de wRACOG sólo incluye el único dataset discreto, \
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-   \hline
-   & none & mwmote & wracog & rwo & pdfos \\ 
-   \hline
-   ecoli1 & 2.67 & 3.00 &  & 17.67 &  \\ 
-   glass0 & 2.33 & 5.00 &  & 3.67 &  \\ 
-   haberman & 1.33 & 6.33 &  & 3.33 & 4.33 \\ 
-   iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
-   newthyroid1 & 1.67 & 1.33 &  & 1.67 & 1.00 \\ 
-   wisconsin & 27.67 & 62.33 & 36.00 & 65.67 & 65.67 \\ 
-   yeast4 & 3.00 & 16.67 &  & 5.00 &  \\ 
-   \hline
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 24.83 & 20.39 &  & 14.13 &  \\ 
+  glass0 & 13.30 & 8.76 &  & 11.07 &  \\ 
+  haberman & 45.05 & 14.86 &  & 20.00 & 22.31 \\ 
+  iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+  newthyroid1 & 19.89 & 30.00 &  & 20.40 & 23.40 \\ 
+  wisconsin & 6.74 & 3.88 & 5.68 & 3.65 & 3.65 \\ 
+  yeast4 & 77.83 & 30.69 &  & 55.21 &  \\ 
+  \hline
   \end{tabular}
   \caption{Tamaño medio de coberturas tras \textit{oversampling}}
   \end{table}
+  
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 0.76 & 1.00 &  & 0.96 &  \\ 
+  glass0 & 0.97 & 0.98 &  & 1.00 &  \\ 
+  haberman & 0.54 & 0.85 &  & 0.76 & 0.68 \\ 
+  iris0 & 1.00 & 1.00 &  & 1.00 & 1.00 \\ 
+  newthyroid1 & 0.97 & 1.00 &  & 0.99 & 1.00 \\ 
+  wisconsin & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\ 
+  yeast4 & 0.33 & 1.00 &  & 0.99 &  \\ 
+  \hline
+  \end{tabular}
+  \caption{Media de sensibilidad tras \textit{oversampling}}
+  \end{table}
+  
   
 \subsection{Con filtrado de instancias}
   \begin{table}[H]
   \centering
   \begin{tabular}{rrrrrr}
-   \hline
-   & none & mwmote & wracog & rwo & pdfos \\ 
-   \hline
-   ecoli1 & 24.83 & 19.59 &  & 14.10 &  \\ 
-   glass0 & 13.30 & 9.80 &  & 14.77 &  \\ 
-   haberman & 45.05 & 9.37 &  & 14.32 & 12.55 \\ 
-   iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
-   newthyroid1 & 19.89 & 28.83 &  & 21.19 & 23.85 \\ 
-   wisconsin & 6.74 & 3.88 & 5.78 & 3.67 & 3.71 \\ 
-   yeast4 & 77.83 & 35.66 &  & 52.80 &  \\ 
-   \hline
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 2.67 & 2.67 &  & 17.67 &  \\ 
+  glass0 & 2.33 & 3.67 &  & 3.33 &  \\ 
+  haberman & 1.33 & 7.33 &  & 3.00 & 5.33 \\ 
+  iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+  newthyroid1 & 1.67 & 1.33 &  & 2.33 & 1.00 \\ 
+  wisconsin & 27.67 & 62.33 & 34.33 & 65.00 & 63.67 \\ 
+  yeast4 & 3.00 & 9.67 &  & 4.00 &  \\ 
+  \hline
   \end{tabular}
   \caption{Media de \textit{small disjuncts} tras \textit{oversampling} y filtrado}
   \end{table}
@@ -114,21 +136,46 @@ no invertibles. La columna de wRACOG sólo incluye el único dataset discreto, \
    \hline
    & none & mwmote & wracog & rwo & pdfos \\ 
    \hline
-   ecoli1 & 2.67 & 2.67 &  & 17.67 &  \\ 
-   glass0 & 2.33 & 3.67 &  & 3.33 &  \\ 
-   haberman & 1.33 & 7.33 &  & 3.00 & 5.33 \\ 
-   iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
-   newthyroid1 & 1.67 & 1.33 &  & 2.33 & 1.00 \\ 
-   wisconsin & 27.67 & 62.33 & 34.33 & 65.00 & 63.67 \\ 
-   yeast4 & 3.00 & 9.67 &  & 4.00 &  \\ 
+  ecoli1 & 24.83 & 19.59 &  & 14.10 &  \\ 
+  glass0 & 13.30 & 9.80 &  & 14.77 &  \\ 
+  haberman & 45.05 & 9.37 &  & 14.32 & 12.55 \\ 
+  iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+  newthyroid1 & 19.89 & 28.83 &  & 21.19 & 23.85 \\ 
+  wisconsin & 6.74 & 3.88 & 5.78 & 3.67 & 3.71 \\ 
+  yeast4 & 77.83 & 35.66 &  & 52.80 &  \\ 
    \hline
   \end{tabular}
   \caption{Tamaño medio de coberturas tras \textit{oversampling} y filtrado}
   \end{table}
   
-  Se puede observar cómo nuestros algoritmos consiguen en muchos casos reducir el número de hojas de pequeña 
-  cobertura existente en los datasets, y aumentar los tamaños medios de las mismas, aunque hemos usado en todos ellos
-  los parámetros por defecto, y podrían obtenerse mejores resutlados si intentásemos optimizar los mismos. Además, la medida
-  de \textit{small disjuncts} que está siendo empleada es bastante arbitraria, y podría intentarse encontrar una más
-  adaptada a cada dataset: hojas que tuviesen una cobertura inferior al 80\% de la media, por ejemplo.
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 0.76 & 0.98 &  & 0.96 &  \\ 
+  glass0 & 0.97 & 0.98 &  & 0.99 &  \\ 
+  haberman & 0.54 & 0.83 &  & 0.85 & 0.87 \\ 
+  iris0 & 1.00 & 1.00 &  & 1.00 & 1.00 \\ 
+  newthyroid1 & 0.97 & 1.00 &  & 0.99 & 1.00 \\ 
+  wisconsin & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\ 
+  yeast4 & 0.33 & 0.99 &  & 0.99 &  \\ 
+  \hline
+  \end{tabular}
+  \caption{Media de sensibilidad tras \textit{oversampling}}
+  \end{table}
+  
+  Se puede observar cómo nuestros algoritmos consiguen en algunos casos reducir el número de hojas de pequeña 
+  cobertura existente en los datasets, y aumentar los tamaños medios de las mismas. En especial se desprende que el algoritmo
+  NEATER mejora los resultados obtenidos sin filtrado. Hemos usado en todos ellos los parámetros por defecto, y podrían 
+  obtenerse mejores resutlados si intentásemos optimizar los mismos. Además, la medida de \textit{small disjuncts} que está
+  siendo empleada es bastante arbitraria, y podría intentarse encontrar una más adaptada a cada dataset: hojas que tuviesen
+  una cobertura inferior al 80\% de la media, por ejemplo. 
+  
+  A esto hay que sumar que en algunos casos \texttt{J48} puede estar creando una única hoja donde clasifique a todos los
+  ejemplos dentro  de la misma clase, con lo cual obtendríamos un tamaño de cobertura bastante grande. Ello no quiere decir
+  que si el \textit{oversampling} disminuye el tamaño medio de cobertura, su funcionamiento no sea el correcto. Prueba de esto
+  es que los algoritmos implementados aumentan notablemente la sensibilidad de los modelos, lo cual indica que 
+  consiguen su objetivo de mejorar la clasificación de instancias positivas.
  
