@@ -24,10 +24,15 @@
 \pagenumbering{roman}
 
 \input{titlepage}
+\pagestyle{plain}
 \chapter*{Resumen}
   \input{es-abstract}
 \chapter*{Abstract}
   \input{en-abstract}
+% Autorizaciones de depósito en biblioteca
+\chapter*{}
+  \input{AutorizacionBiblioteca}
+  \input{AutorizacionTutor}
 \chapter*{Agradecimientos}
   \input{agradecimientos}
 
@@ -45,6 +50,7 @@
 \makeatletter
   \def\input@path{{./chapters/}}
 \makeatother
+\pagestyle{headings}
 
 % Introducción y objetivos
 \chapter{Introducción}
