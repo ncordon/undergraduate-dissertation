@@ -49,9 +49,9 @@ El estimador que se suele usar para evaluar la bondad de $\widehat{f}$ es el err
 \footnotetext{Imagen de dominio público tomada de Wikimedia Commons}
 
 \subsection{Funciones kernel Gaussianas multivariantes}
-El algoritmo PDFOS (\textit{Probability Distribution Oversampling}) se basa en tomar funciones kernel Gaussianas multivariantes.
-Recordamos la definición de la función de densidad de la distribución $d$-Gaussiana multivariante de media 
-$0$ y matriz de covarianza $\Psi$:
+El algoritmo PDFOS (\textit{Probability Distribution density Function estimation based Oversampling}) se basa en tomar
+funciones kernel Gaussianas multivariantes. Recordamos la definición de la función de densidad de la distribución $d$-Gaussiana 
+multivariante de media $0$ y matriz de covarianza $\Psi$:
 \[
   \phi^{\Psi}(x) = \frac{1}{\sqrt{(2\pi \cdot det(\Psi))^d}} exp\left(-\frac{1}{2} x \Psi^{-1} x^T \right)
 \]
@@ -181,7 +181,7 @@ de sus autores:
 \begin{itemize} 
  \item No toda matriz de covarianza es invertible, siendo el caso del dataset \texttt{ecoli1} incluido en el paquete de software 
  desarrollado, por ejemplo, una matriz de covarianza no invertible. En nuestra implementación se ha decidido interrumpir
- el proceso en caso de que se encuentre una matriz no invertible, avisándolo a tales efectos. Podría estudiarse cómo encajaría
+ el proceso en caso de que se encuentre una matriz no invertible, avisando al usuario a tales efectos. Podría estudiarse cómo encajaría
  dentro del algoritmo sustituir la inversa convencional por la inversa generalizada 
  \footnote{\url{https://en.wikipedia.org/wiki/Multivariate_normal_distribution\#Degenerate_case}}.
 
