@@ -16,7 +16,7 @@ LLamamos:
  \item Instancias positivas a $Z^{+} = \{(x,y)\in Z: y=1\}$.
  \item Instancias negativas a $Z^{-} = \{(x,y)\in Z: y=-1\}$.
 \end{itemize}
-Una notación equivalente se aplica a $S$, conjunto de entrenamiento. Además llamamos $\ppos = P(Z_{+})$ y $\pneg = P(Z_{-})$.
+Una notación equivalente se aplica a $S$, conjunto de entrenamiento. Además llamamos $\ppos = P(Z^{+})$ y $\pneg = P(Z^{-})$.
 \end{definition}
 
 
@@ -47,11 +47,11 @@ El desbalanceo puede ser:
 
   \item \textbf{Extrínseco}, si $\ppos \ge \pneg$ pero sin embargo para nuestro conjunto de entrenamiento $S$, 
   tenemos que $\npos < \nneg$. Esto quiere decir que el desbalanceo no viene determinado por la verdadera distribución de
-  los datos, sino por factores como por ejemplo la complejidad para extraer la misma cantidad de datos de la misma clase.
+  los datos, sino por factores como por ejemplo la complejidad para extraer datos de alguna de las clases.
 \end{enumerate}
 
 También podemos decir que existe desbalanceo \textit{intra clases} cuando además la clase minoritaria está repartida en varias 
-regiones no conexas, a saber $\spos \supset A_1, \ldots A_m$ donde $|A_1| \le \ldots \le |A_m|$, con algún menor o igual estricto.
+regiones no conexas, a saber $\spos \supset A_1, \ldots, A_m$ donde $|A_1| \le \ldots \le |A_m|$, con algún menor o igual estricto.
 Esto dificulta aún más la correcta clasificación de dichas instancias, porque aparecen zonas con instancias positivas 
 pobremente representadas. A estas zonas de baja representación las llamamos instancias raras. Nótese que hay que distinguir
 el concepto de instancia rara de otro concepto que surge en ciencia de datos: el concepto de ruido, instancias aisladas completamente.
@@ -152,7 +152,7 @@ acumuladas sobre los datos). Intuitivamente, cuanto más cerca del punto $(0,1)$
 sin ningún falso positivo), mucho mejor $AUC$ obtendremos. La bisectriz $y=x$ marca el clasificador aleatorio (equivalente a lanzar 
 una moneda al aire) que asigna la mitad de instancias a cada clase.
 
-\imgcaption{./imgs/ROC.png}{Curva ROC}{0.80}
+\imgcaption{./imgs/ROC.png}{Ejemplo de curva ROC}{0.80}
 
 \section{Estado del arte del oversampling}
 A día de hoy, el algoritmo SMOTE, propuesto en \citep{chawla02} sigue siendo una de las referencias en el campo del 
@@ -166,7 +166,7 @@ minoritarias. Damos una breve descripción del algoritmo.
   \REQUIRE $T$, número de instancias sintéticas deseado
   \REQUIRE $k$, parámetro de KNN para crear instancias sintéticas
   \STATE{Inicializar $S' = \emptyset$, instancias sintéticas}
-  \STATE{Calcular los $k$ vecinos más cercanos en $\spos$ para cada de $x\in \spos$} 
+  \STATE{Calcular los $k$ vecinos más cercanos en $\spos$ para cada $x\in \spos$} 
   \STATE{Toma $M = \left\lceil T/|\spos| \right\rceil$}
   \NEWLINE
   \FOR{$x\in \spos$}

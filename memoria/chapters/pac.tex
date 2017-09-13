@@ -5,7 +5,7 @@ biyección canónica \ref{biyeccion-canonica}, que nos permite asegurar la medib
 asociados en la $\sigma$-álgebra.
 
 \begin{definition}[PAC cognoscible]
-Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ 
+Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ 
 y $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ verificando que para todo
 $0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}=(\Sigma, \prob)$ sobre $X$ tal que $H\subseteq \Sigma$
 y para toda función de verdadero etiquetado $f\in \Hclass$, dado $m \ge m_H(\varepsilon, \delta)$ entonces:
@@ -29,7 +29,7 @@ nos permite dar una caracterización con $f\in H$ estrictamente:
 \begin{charact}[PAC cognoscible]
 Una clase de funciones $H \subseteq 2^X$ es PAC cognoscible sii existen una función 
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$, llamada complejidad muestral, y 
-$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ verificando que para todo
+$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ verificando que para todo
 $0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$ y para toda función de 
 verdadero etiquetado $f\in H$, dado $m \ge m_H(\varepsilon, \delta)$ entonces:
 \[
@@ -53,7 +53,7 @@ verificando las hipótesis del enunciado.
 \end{proof}
 
 \begin{theorem}[Las clases finitas son PAC cognoscibles]
-Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
+Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible para cualquier $ERM_H$ con:
 \[
   m_H(\varepsilon, \delta) \le \left\lceil \frac{1}{\varepsilon} \log\left(\frac{|H|}{\delta} \right) \right\rceil
 \]
@@ -72,7 +72,7 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
      [\exists h\in H_B : L_S(h) = 0] \le \sum_{h\in H_B} P [L_S(h) = 0] 
    \]
 
-   La primera desigualdad viene dada por la proposición \ref{fact:factibilidad}. La segunda, por subaditividad, puesto que:
+   La segunda desigualdad viene dada por subaditividad, puesto que:
    \[
      \mprob [\exists h\in H_B : L_S(h) = 0] = \mprob \left(\underset{h\in H_B}{\bigcup} [L_S(h) = 0]\right)
    \]
@@ -127,15 +127,16 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
     Además podemos suponer s.p.g. $(R_i^S)^c = R\setminus R_i^S$ puesto que un clasificador $A(S)$ sólo fallará en el
     espacio restante entre $R$ y $A(S)$.
     
-    Seleccionamos $R_i \in \{R_i^S: S\in \mathcal{B}\}$, $i=1, \ldots, 4$. suponiendo s.p.g. que existen los cuatro (caso opuesto 
+    Seleccionamos $R_i \in \{R_i^S: S\in \mathcal{B}, L_{\mathcal{D},R}(R_i^S)\ge \frac{\varepsilon}{4}\}$, $i=1, \ldots, 4$. suponiendo s.p.g. que existen los cuatro (caso opuesto 
     bastaría hacer la demostración para los rectángulos que sí existiesen). Fácilmente se comprueba que 
-    $S\in \mathcal{B} \Rightarrow A(S) \cap R_i^c = \emptyset$ para todo $i=1, \ldots, 4$, usando de nuevo reducción al 
+    $S\in \mathcal{B} \Rightarrow A(S) \cap R_i^c = \emptyset$ para algún $i=1, \ldots, 4$, usando de nuevo reducción al 
     absurdo y subaditividad.
     
     La demostración acaba probando que:
     \begin{align*}
     \mprob [\exists i : A(S)\cap R_i^c = \emptyset] &\le \sum_{i=1}^4 \mprob[A(S)\cap R_i^c = \emptyset] \\
-                                                    &\le 4 \left(1-\varepsilon \right)^m \le 4e^{-\varepsilon m/4}
+                                                    &\le 4 \left(1-\frac{\varepsilon}{4}\right)^m 
+                                                    \underset{\textrm{\ref{lemma:fund-ineq}}}{\le} 4e^{-\varepsilon m/4}
     \end{align*}
 
     Juntando toda esta información: 
@@ -150,10 +151,10 @@ Sea $H \subseteq 2^{X}$ finito. Entonces $H$ es PAC cognoscible con:
 \section{APAC cognoscibilidad}
 
 Nótese que las condiciones exigidas en PAC cognoscibilidad son muy fuertes: cumplir la hipótesis de factibilidad y que 
-la hipótesis devuelta deba estar en $H$.Relajaremos esta definición con el concepto de PAC agnóstico (APAC).
+la hipótesis devuelta deba estar en $H$. Relajaremos esta definición con el concepto de PAC agnóstico (APAC).
 Vamos a relajar tanto la definición de cognoscibilidad como el marco teórico de aprendizaje.
 
-Sea $Z$ un conjunto, $\mathcal{D} = (\Sigma, \mathcal{P})$ distribución sobre $Z$ en lo que sigue.
+Sea $Z$ un conjunto, $\mathcal{D} = (\Sigma, \zprob)$ distribución sobre $Z$ en lo que sigue.
 
 \begin{definition}[Función de pérdida]
 Sea $H$ un conjunto arbitrario, se denomina función de pérdida de $H$ sobre $Z$ a cualquier función de la 
@@ -169,7 +170,7 @@ Modificamos los siguientes puntos de las definiciones básicas en \ref{sec:defs}
   \item \textbf{Verdadero etiquetado}. No asumimos que exista.
   \item \textbf{Generación de instancias}. Tenemos una distribución $\mathcal{D}$ sobre $Z = (X,Y)$ donde $X$ es el dominio
   y $Y$ el conjunto de etiquetas.
-  \item \textbf{Error del clasificador}- Lo redefinimos como:
+  \item \textbf{Error del clasificador}. Lo redefinimos como:
   \[
     L_{\mathcal{D}}(h) :=  \expect_{z\sim \dist} (l(h,z))
   \]  
@@ -187,7 +188,7 @@ se cumple que dado $m\ge m_{H}(\varepsilon, \delta)$:
 \[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \varepsilon \bigg] \ge 1-\delta\]
 \end{definition}
 
-Nótese que en contraste con nuestra definición de PAC cognoscibilidad, el algoritmo $A$ podía devolver una 
+Nótese que en contraste con nuestra definición de PAC cognoscibilidad, el algoritmo $A$ podría devolver una 
 hipótesis que no estuviera en $H$. Cuando permitimos que el algoritmo $A$ devuelva una función 
 $h \notin H$, de manera que $h \in H'$ y  $H \subset H'$ una clase de funciones donde la función de pérdida 
 es extensible de manera natural, el aprendizaje recibe el nombre de \textit{aprendizaje impropio}. Si suponemos
@@ -241,7 +242,7 @@ Una clase de funciones $H \subseteq 2^X$ es APAC cognoscible sii existen
 $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow 2^X$ verificando que para todo
 $0 < \varepsilon, \delta < 1$ y para toda distribución $\mathcal{D}$ sobre $Z$, dado $m \ge m_H(\varepsilon, \delta)$:
 \[
-  \mprob \bigg[L_{\dist,f}(A(S)) \le \inf_{h\in H} L_D(h) + \varepsilon \bigg] \ge 1-\delta 
+  \mprob \bigg[L_{\dist}(A(S)) \le \inf_{h\in H} L_D(h) + \varepsilon \bigg] \ge 1-\delta 
 \]
 \end{definition}
 
@@ -277,9 +278,9 @@ tenemos una relación tal cual se muestra en la figura siguiente:
    $\dist$ como una distribución que asigna a cada $x\in X$ la etiqueta $f(x)$. Por definición $\inf_{h\in H} L_{\dist}(h) = 0$. 
    Para terminar, dado $S=(z_1, \ldots, z_m)$ con $z_i = (x_i,y_i)$:
    \[
-     L_{\dist}(h) = \expect_{x\sim \dist}\bigg(l \big(h,(x,f(x)) \big)\bigg) = \prob[f \cap h] = L_{\dist,f}(h)
+     L_{\dist}(h) = \expect_{x\sim \dist}\bigg(l \big(h,(x,f(x)) \big)\bigg) = \prob[f \neq h] = L_{\dist,f}(h)
    \]
-   donde $[f\cap h] \in \Sigma$ por hipótesis ($f,h\in H \subseteq \Sigma$).
+   donde $[f\neq h] = [f\cap h]^c \in \Sigma$ por hipótesis ($f,h\in H \subseteq \Sigma$).
    
    Por otro lado:
    \[

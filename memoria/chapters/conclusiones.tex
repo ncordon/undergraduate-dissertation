@@ -11,23 +11,31 @@ nivel de informática, sino también de matemática teórica.
 Como principales vías futuras que continúen la línea de lo presentado hasta ahora, cabría proponer:
 
 \begin{itemize}
- \item Caracterizar el problema de la clasificación no balanceada a través de los conceptos de dimensión Vapnik Chervonenkis.
+ \item Caracterizar el problema de la clasificación no balanceada a través de los conceptos de dimensión Vapnik-Chervonenkis.
   Trabajos como \citep{he2009} aseguran que dicho problema ha sido muy tratado con esta teoría, aunque de manera indirecta,
   a través de modificación de clasificadores SVM. Tras la asimilación de la teoría aquí descrita, sería deseable poder llegar
   a una definición a través de dimensión VC que capturara el concepto de \textit{instancias raras}.
+  
  \item Leer e implementar \citep{pour2015}, un excelente \textit{paper} de la revista \textit{Journal of Machine Learning
   Research} que trata el problema del \textit{oversampling} desde una perspectiva muy matemática, llevándose el espacio
-  de dimensiones a un espacio Hilbert, usando funciones kernel, y empleando originales ideas como que los datos generados, al 
-  proyectarlos a un espacio de menor dimensión, deberían quedar cerca de los de la clase minoritaria. Este \textit{paper} se ha leído varias
-  veces e intentado implementar el algoritmo que propone para este trabajo, pero contiene muchas referencias cruzadas a
+  de dimensiones a un espacio Hilbert, usando funciones kernel, y empleando originales ideas como que los datos sintéticos, al 
+  proyectarlos a un espacio de menor dimensión, deberían quedar cerca de los de la clase minoritaria. Este \textit{paper} se ha 
+  leído varias veces e intentado implementar el algoritmo que propone para este trabajo, pero contiene muchas referencias cruzadas a
   libros y otros artículos de matemáticas y su dificultad quedaba fuera del alcance por el momento. Ahora que por ejemplo
   se dispone de más conocimiento sobre funciones kernel, porque ha sido necesario para comprender el algoritmo PDFOS, sería
   deseable intentar una lectura más profunda y la implementación.
+  
  \item Actualmente \texttt{imbalance} no está alojado en el repositorio CRAN de \R. De aquí a unas semanas se espera enviar
   el software para someterlo a revisión y que pueda ser colgado en dicho repositorio. Esto implicaría que los usuarios no
   tendrían que instalarse una versión en desarrollo desde Github, y que podría instalarse haciendo simplemente desde \R:
   \begin{lstlisting}[numbers=none]
    install.packages("imbalance")
   \end{lstlisting}
-  Aparte, supondría un reconocimiento a que el paquete es usable y tiene una documentación apropiada.
+  Aparte, supondría un reconocimiento a que el paquete es usable, estable y tiene una documentación apropiada.
+  
+ \item Los artículos de Wikipedia en inglés \footnote{\url{https://en.wikipedia.org/wiki/Probably_approximately_correct_learning}} y en 
+ español \footnote{\url{https://es.wikipedia.org/wiki/Aprendizaje_PAC}} sobre la temática del aprendizaje PAC son escuetos, y en el caso del 
+ artículo en español está marcado como ``mala traducción''. Un objetivo deseable sería ampliar y corregir dichos artículos,
+ añadiendo buenas referencias, siguiendo la política de conocimiento libre, que posibilita un acceso abierto a la cultura y
+ el conocimiento.
 \end{itemize}

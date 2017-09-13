@@ -9,7 +9,7 @@ Los objetivos que se marcaron en la propuesta inicial fueron:
 Inicialmente el problema estaba enteramente enfocado al estudio de \textit{small disjuncts}, pero dada la baja formalización
 que admite el problema, y su alta dependencia del concepto de árboles y reglas, se optó por tomar una aproximación 
 al problema más orientada al desbalanceo de clases. Para ello se decidió profundizar en los cimientos
-teóricos del \textit{machine learning}, donde esta tarea constituiría la sección de matemáticas y el estudio del problema
+teóricos del \textit{machine learning}, donde ésta tarea constituiría la sección de matemáticas y el estudio del problema
 del desbalanceo se destinaría a dotar de contenido la sección de informática.
 
 El primer punto de los objetivos podría considerarse sobradamente cubierto por los temas \ref{ch:desbalanceo} y 
@@ -20,7 +20,7 @@ El segundo punto es probablemente el punto al que menos nos hemos adaptado. No h
 (no se puede formalizar en términos de grafos un concepto de clasificadores de árboles), aunque sí se ha introducido el
 concepto en el tema \ref{ch:desbalanceo} y se ha llevado a cabo una sencilla experimentación en el tema \ref{ch:sdisjuncts}.
 
-El tercer punto también se puede considerar alcanzado con la programación del paquete \texttt{imbalance} para \R.
+El tercer punto también se puede considerar alcanzado a través de la programación del paquete \texttt{imbalance} para \R.
 
 Sumados a estos objetivos, podríamos añadir en el ámbito de matemáticas dos nuevos que han surgido con la elaboración de
 dicha parte:
@@ -31,14 +31,14 @@ dicha parte:
 
 En particular, en lo referente al segundo punto, se ha intentado relacionar la teoría existente, claramente tratada como 
 teoría computacional teórica, con la teoría de la medida. Para ilustrar este hecho, el tema \ref{ch:probabilidad} responde a la 
-simple pregunta: dados $A_i \in \Sigma_i, i=1, \ldots, n$ con $\Sigma_i$ $\sigma$-álgebras, ¿puedo construir un espacio probabilístico
-sobre la menor $\sigma$-álgebra que contiene a $\Sigma_1 \times \ldots \Sigma_n$ y una función de probabilidad $P$ sobre ella,
+simple pregunta: dados $A_i \in \Sigma_i, i=1, \ldots, n$ con $(\Sigma_i, P_i)$ distribuciones, ¿puedo construir un espacio probabilístico
+sobre la menor $\sigma$-álgebra que contiene a $\Sigma_1 \times \ldots \times \Sigma_n$ y una función de probabilidad $P$ sobre ella,
 donde $P(A_1 \times \ldots \times A_n)$ sea igual a $\prod_{i=1}^n P_i(A_i)$?. 
 
 Muchas demostraciones de las aquí presentadas \ref{fact:rel-pac-apac}, \ref{fact:factibilidad}, \ref{fact:expect-error},
-\ref{fact:props-vc}, \ref{lemma:kraft}, la parte de probabilidad del tema \ref{ch:sdisjuncts} \ldots son trabajo del autor del presente
+\ref{fact:props-vc}, \ref{lemma:kraft}, la parte de probabilidad del tema \ref{ch:probabilidad}, \ldots son trabajo del autor del presente
 trabajo. Algunas estaban propuestas como ejercicios en las correspondientes referencias, otras han ido surgiendo de manera natural a medida que 
-se han ido trabajando los conceptos. Asimismo, se ha trabajado en lo máximo posible la definición de aprendizaje PAC \ref{def:pac-original},
+se han ido trabajando los conceptos. Asimismo, se ha ahondado lo máximo posible la definición de aprendizaje PAC \ref{def:pac-original},
 incluyendo el concepto de factibilidad a través de equivalencia de clases en el sentido de medida $\Hclass$, concepto que en su
 referencia original era bastante más difuso, o pidiéndole a las distribuciones que contengan los conjuntos $[f\neq h]$ para
 que los errores sean medibles.

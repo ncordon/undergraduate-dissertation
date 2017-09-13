@@ -229,7 +229,8 @@
 \bibliographystyle{config/custom-dinat}
 \usepackage[sort&compress,square, comma, authoryear]{natbib}
 % Alias in monospace letter for R packages or other programming resources
-\def\R{\texttt{R} }
+\usepackage{xspace}
+\def\R{\texttt{R}\xspace}
 \defcitealias{rlang}{\texttt{R}}
 \defcitealias{rsmote}{\texttt{smotefamily}}
 \defcitealias{rrose}{\texttt{ROSE}}

@@ -1,16 +1,16 @@
 En este capítulo proporcionamos una introducción y una motivación al \textit{framework} teórico que usaremos.
 Daremos definiciones básicas como dominio, conjunto de etiquetas, error empírico, etc. que
-usaremos asiduamente en los capítulos posteriores, así como las definiciones de PAC y APAC cognoscibilidad y
-describiremos la relación entre ambas.
+usaremos asiduamente en capítulos posteriores, así como las definiciones de PAC y APAC cognoscibilidad,
+describiendo la relación entre ambas.
 
 \section{Ejemplo práctico}\label{sec:first-ex}
 Pensemos en un ejemplo: tenemos clientes de un banco que quieren solicitar un préstamo, y a todos se les categoriza
-el tamaño del préstamo que quieren solicitar(cómo de grande es su importe) y su nivel de ingresos. Estas variables se miden 
+el tamaño del préstamo que quieren solicitar (cómo de grande es su importe) y su nivel de ingresos. Estas variables se miden 
 en una escala de $0$ a $1$ donde $1$ es el nivel máximo. Queremos etiquetar a cada cliente como $1\equiv$ conceder préstamo o 
 $0\equiv$ no concederlo.
 
 Dado un histórico de $m\in \mathbb{N}$ clientes a los que se les concedieron y devolvieron o no préstamos, tenemos una tupla 
-$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = (x_i^{(1)}, x_i^{(2)}) \in [0,1]^2, y_i \in \{0,1\}$. Asimismo $x_i^{(1)}$ representa el 
+$((x_1, y_1), \ldots (x_m, y_m))$ donde $x_i = (x_i^{(1)}, x_i^{(2)}) \in [0,1]^2, y_i \in \{0,1\}$. Asimismo, $x_i^{(1)}$ representa el 
 tamaño del préstamo solicitado y $x_i^{(2)}$ representa el nivel ingresos mensuales. Tenemos a los clientes clasificados en 
 función de si devolvieron los préstamos o no.
 
@@ -94,7 +94,7 @@ a cada hipótesis se le asigna su clase positiva:
 \end{equation*}
 
 Esta relación es biyección claramente, lo que justifica que identifiquemos $\{h, h:X \rightarrow Y\}$ con $2^X$, donde $2^X$ 
-suele ser una notación empleada para referirse a $\mathcal{P}(X)$. Esto nos permite trabajar con una aplicación
+suele ser una notación empleada para referirse a $\mathcal{P}(X)$. Ello nos permite trabajar con una aplicación
 $h:X \rightarrow Y$ o con su conjunto asociado.
 
 \subsection{Minimización del riesgo empírico}
@@ -142,10 +142,10 @@ Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \
 
 Definimos $ERM(S)$ como todas las hipótesis producidas por algoritmos que son $ERM$
 sobre el conjunto $S$. Cuando notemos $\mathcal{Q}(ERM(S))$ con $\mathcal{Q}$ un predicado sobre elementos 
-de $2^X$ nos refereriremos a que la propiedad se verifica para todos los elementos de $ERM(S)$.
+de $2^X$, nos refereriremos a que la propiedad se verifica para todos los elementos de $ERM(S)$.
 
 Trivialmente $L_{\mathcal{D},f}(f) = 0$ y $L_S(f) = 0$ para cualquier $S \in (X \times Y)^m$ conjunto de entrenamiento.
-Esto último implica que $A(S) = 0$ para $A$ un algoritmo $ERM$.
+Esto último implica que $L_S(A(S)) = 0$ para $A$ un algoritmo $ERM$.
 
 Aunque $A(S)$ minimice el error sobre el conjunto de entrenamiento, esto no significa que el error $L_{\mathcal{D},f} (A(S))$ 
 sea mínimo. Lo ilustramos en el siguiente ejemplo:
@@ -186,14 +186,14 @@ Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \
 inductivo hacia $H$ y lo abreviamos $ERM_H$, si busca una hipótesis en $H$ cuyo error empírico 
 sea mínimo, es decir:
 \[
-  A(S) = \argmin_{h\in H} L_S(h)
+  A(S) \in \argmin_{h\in H} L_S(h)
 \]
 \end{definition}
 
 Se define $ERM_H$ y $ERM_H(S)$ de manera análoga a $ERM$ y $ERM(S)$.
 
-Dada $H\in 2^X$, podemos tomar la clase de funciones iguales probabilístamente a $f$:
-$\Hclass = \{f\in 2^X: \exists h\in H \textrm{ verificando }\prob[f\neq h] = 0\}$.
+Dada $H\subseteq 2^X$, podemos tomar la clase de funciones iguales probabilístamente a algún elemento de $H$:
+\[\Hclass = \{f\in 2^X: \exists h\in H \textrm{ verificando }\prob[f\neq h] = 0\}\]
 
 \begin{definition}[Hipótesis de factibilidad]
 
@@ -206,11 +206,11 @@ $H \subseteq \Hclass$ para cualquier $\dist$.
 
 \begin{fact}
 Dada $H$ verificando factibilidad respecto a $f\in 2^X$ y $\mathcal{D}$ distribución sobre $X$, entonces siendo 
-${\bar{h}} \in H$ tal que $L_{D,f}(\bar{h}) = 0$, se verifica, con $A$ algoritmo arbitrario:
+${\bar{h}} \in H$ tal que $L_{D,f}(\bar{h}) = 0$, se verifica:
 \begin{enumerate}[i.]
 \item $\mprob \bigg[L_S(\bar{h}) = 0 \bigg] = 1$.
 \item $\mprob \bigg[L_S(ERM_H(S)) = 0 \bigg] = 1$.
-\item $L_{\dist,f}(A(S)) = L_{\dist,\bar{h}}(A(S))$ para un algoritmo $A$ arbitrario.
+\item $L_{\dist,f}(A(S)) = L_{\dist,\bar{h}}(A(S))$ para $A$ algoritmo $ERM_H$ arbitrario.
 \end{enumerate}
 \label{fact:factibilidad}
 \end{fact}
@@ -222,19 +222,19 @@ $L_{\mathcal{D},f}(\bar{h}) = \prob[\bar{h}\neq f] = 0$
 Entonces: 
 \[
   \mprob[L_S(\bar{h}) > 0] = \mprob
-  [\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \prob[h\neq f] = 0
+  [\exists i: \bar{h}(x_i) \neq f(x_i)] \le \sum_{i=1}^m \prob[\bar{h} \neq f] = 0
 \]
 
-Y como $[L_S(\bar{h}) = 0] \subseteq [L_S(A(S)) = 0]$ por ser $A(S) = \argmin_{h\in \mathcal{H}} L_S(h)$, deducimos:
+Y como $[L_S(\bar{h}) = 0] \subseteq [L_S(A(S)) = 0]$ por ser $A(S) \in \argmin_{h\in \mathcal{H}} L_S(h)$, deducimos:
 \[
   1 = \mprob[L_S(\bar{h}) = 0] \le \mprob[L_S(A(S)) = 0] \le 1
 \]
 
-Fijamos ahora $A$ un algoritmo. Veamos $L_{\dist,f}(A(S)) = L_{\dist,\bar{h}}(A(S))$:
+Veamos $L_{\dist,f}(A(S)) = L_{\dist,\bar{h}}(A(S))$:
   \begin{align*}
-  \prob[A(S) \neq f] &= \prob\bigg([A(S) \neq f \wedge f=h] \cup[A(S) \neq f \wedge f\neq h]\bigg)\\
-  &= \prob[A(S) \neq f \wedge f=h] + \prob[A(S) \neq f \wedge f\neq h]\\
-  &= \prob[A(S) \neq h \wedge f=h] + 0 = \prob[A(S)\neq h]
+  \prob[A(S) \neq f] &= \prob\bigg([A(S) \neq f \wedge f=\bar{h}] \cup[A(S) \neq f \wedge f\neq \bar{h}]\bigg)\\
+  &= \prob[A(S) \neq f \wedge f=\bar{h}] + \prob[A(S) \neq f \wedge f\neq \bar{h}]\\
+  &= \prob[A(S) \neq \bar{h} \wedge f=\bar{h}] + 0 = \prob[A(S)\neq \bar{h}]
   \end{align*}
 \end{proof}
 

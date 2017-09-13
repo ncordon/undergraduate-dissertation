@@ -1,7 +1,7 @@
 \label{ch:sdisjuncts}
 En este capítulo proporcionamos una sencilla experimentación de los algoritmos implementados, aplicándolos al concepto de 
 \textit{small disjuncts} que se mencionó en \ref{sec:desbalanceo}, problema que surge como consecuencia del desbalanceo
-intra clases.
+\textit{intra clases}.
 
 \section{Marco de experimentación}
 Se estudiarán los algoritmos MWMOTE, RWO, PDFOS sobre todos los datasets incluidos en el paquete \texttt{imbalance}. 
@@ -38,7 +38,7 @@ ha sido necesario un método para \textit{parsear} la impresión que se hace del
 \lstinputlisting[caption=función \texttt{leavesCoverage} en \texttt{aux.R}]{./codelst/leavesCoverage.R}
 
 Asimismo, en dicho archivo también podemos encontrar las funciones \texttt{makePartition}, que recibe un \texttt{dataset}
-y un número de particiones \texttt{numPartitions} y genera \texttt{numPartitions} estratificadas a partir del dataset; la
+y un número de particiones \texttt{numPartitions} y genera particiones estratificadas a partir del dataset; la
 función \texttt{infoSmallDisjuncts} que recibe un \texttt{dataset} y devuelve el cálculo de las dos medidas descritas, y 
 la función \texttt{getResults}, que recibe un parámetro \textit{booleano} indicando si queremos aplicar el filtro NEATER
 o no. Las funciones para particionar y obtener resultados fijan la semilla $12345$ por defecto, con objeto de que la 
@@ -163,7 +163,7 @@ resultan no invertibles, tal y como se explicó en la sección \ref{sec:critica-
   yeast4 & 0.33 & 0.99 &  & 0.99 &  \\ 
   \hline
   \end{tabular}
-  \caption{Media de sensibilidad tras \textit{oversampling}}
+  \caption{Media de sensibilidad tras \textit{oversampling} y filtrado}
   \end{table}
   
   Se puede observar cómo nuestros algoritmos consiguen en algunos casos reducir el número de hojas de pequeña 

@@ -23,23 +23,23 @@ This introduction's purpose is to provide us with basic tools to develop the fol
 given a set of probabilistic spaces, does it exist a product $\sigma$-algebra space in which the product of the sets has
 the product of the probabilities as measure?.
 
-This very first part includes demonstrations for Markov and Hoeffding's inequalities, the former one based on the Hoeffding
+This first part includes demonstrations for Markov and Hoeffding's inequalities, the former one based on the Hoeffding
 lemma. Those will be key inequalities in our subsequent progress.
 
 \section*{Machine learning introduction and PAC framework}
 We will provide motivations for the machine learning theory, as well as basic definitions such as domain set, label set, 
-true labeling, instance generation, training set, hypothesis, hypothesis' error or learning algorithm. The error of an
-hypothesis respect to the true labeling function will be defined as the expectation that the two are different. The error over
-a training set, as the mean of the number of instances in which it fails.
+true labeling, instance generation, training set, hypothesis, hypothesis' error or learning algorithm. On the one hand, the 
+error of an hypothesis respect to the true labeling function will be defined as the expectation that the two are different. 
+On the other hand, the error over a training set will be established as the mean of the number of instances where it fails.
 
 We will also describe a relation between hypothesis and the sets that those hypothesis classify as one of the classes. Thus,
 we will be able to work both with hypothesis or sets. The essential algorithms we will be using will be empirical risk 
-minimizers, that is, all those which try to minimize the error over a given training set.
+minimizers, that is, all those which intend to minimize the error over a given training set.
 
 All those concepts will sum up to the very first notion of PAC learning: we will say that a hypothesis collection is 
 learnable if we can allways guarantee an small error from one of them with respect to the true labeling function, under
 certain restriction over probabilistic confidence. In particular, we will prove that every finite collection of hypothesis
-is learnable, and that there exist infinite learnable collections, such as rectangles hypothesis.
+is learnable, and that there exist infinite learnable collections, such as rectangle hypothesis.
 
 The PAC notions will be weakened as much as possible until we arrive to a more flexible definition of learning: APAC 
 learning, which is rather similar to PAC learning, with the main difference that we can define our own error function,
@@ -53,44 +53,44 @@ We will define Glivenko-Cantelli classes (uniform classes) of hypothesis, and sh
 stronger assumption than being APAC. As a result of the work developed under this chapter, we will prove again that finite
 classes are learnable, but under a random error function and with worse asymptotic complexity.
 
-In addition to this, we will show by means of the No Free Lunch Theorem, that if we only see half or less of the instances 
+In addition to this, we will show, by means of the No Free Lunch Theorem, that if we only see half or less of the instances 
 of a domain, that domain is not PAC learnable. Moreover, we will relate this theorem with a rather known fact: the 
 bias-complexity tradeoff: the more complex the class of functions we are trying to learn, the lower the error and the
 harder the learning process.
 
-Vapnik Chervonenkis classes will also be introduced, along with the concept of shattering. This is a pure combinatorics
-definition. The Sauer-Shelah lemma will gives us a relationship between the Vapnik Chervonenkis dimension and the number
+Vapnik-Chervonenkis classes will also be introduced, along with the concept of shattering. This is a pure combinatorics
+definition. The Sauer-Shelah lemma will give us a relationship between the Vapnik-Chervonenkis dimension and the number
 of possible hypothesis in terms of their image of a training set of fixed size. 
 
-At this stage, we will have all the pieces to prove the fundamental theorem of PAC learning, that connects statistical
-concepts, such as Glivenko-Cantelli classes, combinatorial ones (the Vapnik Chervonenkis dimension) and PAC and APAC
+At this stage, we will have all the pieces to prove the fundamental theorem of PAC learning, which connects statistical
+concepts, such as Glivenko-Cantelli classes, combinatorial ones (Vapnik-Chervonenkis dimension) and PAC and APAC
 concepts.
 
-Finally, at the end of the mathematics part, we will suggest another learning paradigm, called nonuniform learnability, 
-which we will prove is strictly weaker than APAC. A suitable procedure to assign a codification to certain hypothesis
-classes and how to learn using that codification, as well as a comparison of the studied paradigms will also
+Finally, at the end of the mathematics part, we will suggest another learning paradigm, called nonuniform learnability 
+and we will prove is strictly weaker than APAC. A suitable procedure to assign a codification to certain hypothesis
+classes and how to learn using that codification, as well as a comparison of the studied paradigms, will also
 be explained.
 
 \section*{Introduction to the imbalance problem}
 
 In order to study some machine learning algorithms, we will weaken our concept of learning until we reach a framework in which
 we can easily explain one of data science most studied problems: imbalanced classification. We will describe the suitable
-approaches to solve that problem: undersampling and oversampling with and without filtering of instances and cost-sensitive 
+approaches to solve that problem: undersampling and oversampling with and without filtering of instances, and cost-sensitive 
 framework. Since most of current algorithms tend to understimate the importance of the minority examples, 
-we should provide a set of measurements of the quality of an algorithm based not only on the total accuracy over the training
+we should provide methods to measure the quality of an algorithm based not only on the total accuracy over the training
 set, but in the level of success over the minority class.
 
 Our main focus will be on oversampling, the creation of synthetic samples belonging to the minority class. We will provide
 a description of a classic method: SMOTE. Although it was first described 15 years ago, it is still a reference in the
-treatment of imbalanced datasets, and a lot of other algorithms have arised by means of modification of the former one. It will be the case
-of our MWMOTE algorithm.
+treatment of imbalanced datasets, and a lot of other algorithms have arised by means of modification of the former one, such as
+MWMOTE.
 
 \section*{Description of the coded algorithms}
 
 We will analyze a series of algorithms that are not currently present in any package of \R programming language. All of
 them provide an oversampling scheme, except for NEATER. A brief background theory for those algorithms will be provided.
 We will start with MWMOTE, which tries to fix some of the issues of SMOTE algorithm, such as creation of new instances 
-using noisy ones, or producing instances between two different minoriry class clusters.
+using noisy ones, or creation of instances between two different minority class clusters.
 
 RACOG will also be addresed, as an algorithm that approximates discrete distributions using marginal pairwise ones and 
 information theory. Once the distribution has been approximated, it will extract samples following a Monte Carlo scheme
@@ -101,35 +101,34 @@ The next algorithm we will code is RWO. RWO finds its foundation on a statistics
 us that under asymptotic and generation scheme assumptions, our newly generated instances will preserve the original mean
 and variance of the training data set.
 
-PDFOS will be another of the algorithms selected. It is based on multivariate Gaussian kernel density estimations. We will
+PDFOS will be another of the selected algorithms. It is based on multivariate Gaussian kernel density estimations. We will
 provide an introduction to the kernel density estimators pointing out their relationship with histograms and we will give
 a measure of the error of the estimation, the Mean Integrated Squared Error. PDFOS will try to adapt the bandwith parameter
 for a sum of multivariate Gaussian functions, that is, a multiplicative constant for the unbiased covariance of the minority
 training samples. A gradient descendent method will be used to optimize such parameter.
 
 The last algorithm we are going to study is NEATER, a filtering algorithm to clean up noisy instances created as a result of
-oversampling. NEATER is based on game theory and Nash profile equilibriums, that guarantee that if an instance could play
-two possible roles, it will tend to stabilize as one of them, given a series of payoffs based on their neighbours role.
-instances.
+oversampling. NEATER is based on game theory and Nash profile equilibriums, which guarantee that if an instance could play
+two possible roles, it will tend to stabilize as one of them, given a series of payoffs based on their neighbours' role.
 
 \section*{Developed software}
 An implementation for those algorithms will be made using the \R programming language combined with \texttt{C++} chunks. 
-\R language provides a tradeoff between ease of use for the users and speed of the code, the second one will be used to 
+\R language provides a tradeoff between ease of use for the users and speed of code. \texttt{C++} will be used to 
 speed up our algorithms when possible. Thus, we will develop a package, called \texttt{imbalance}, to fill the lack of implementation of the 
 described algorithms in \R.
 
 It is important to note not only the code, but the methodology used to develop the code: under a GPLv2 or later license,
-allocated in a public Github repo and with continuous integration to provide unit testing and periodic updates of
+allocated in a public Github repo with continuous integration to provide unit testing and periodic updates of
 its online web documentation page.
 
 \section*{Experiments on small disjuncts}
 Finally, we will conduct a simple experiment on small disjuncts problem, which originate as a direct result of class imbalance
-problem. The experiment will somehow show that when we overcome the imbalance of the datasets, small disjuncts tend to
+problem. The experiment will somehow show that sometimes, when we overcome the imbalance of the datasets, small disjuncts tend to
 vanish.
 
 We propose a simple measure of the small disjuncts which a dataset has: given a tree classifier, we will consider a small
-disjunct all those leaves which label less than a given threshold examples. We will also measure the mean size of the 
-leaves in terms of examples classified, sometimes called coverage.
+disjunct all those leaves which label less than a given threshold number of examples. We will also measure the mean size of the 
+leaves in terms of examples classified, that is, the mean coverage.
 
 \paragraph{Keywords}
-Machine learning, PAC learning, imbalanced classification, \textit{oversampling}, \textit{small disjuncts}
+Machine learning, PAC learning, imbalanced classification, oversampling, small disjuncts

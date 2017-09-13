@@ -42,8 +42,8 @@ Lo formalizamos con la siguiente proposición.
 \begin{definition}[Clase de Glivenko-Cantelli]
 Decimos que una clase de hipótesis $H$ es de Glivenko-Cantelli, respecto a un dominio $Z$, y a 
 una función de pérdida $l$, si existe una función ${m_{H}^{CU}: ]0,1[^2 \rightarrow \mathbb{N}}$ 
-verificando que para todo $0 < \delta, \varepsilon < 1$ y para toda distribución $\dist$ sobre $Z$ 
-que haga medible a $l$, siendo $S\sim \dist^m$ con $m \ge m_{H}^{CU}(\varepsilon, \delta)$, entonces:
+verificando que para todo $0 < \delta, \varepsilon < 1$ y para toda distribución $\dist$ sobre $Z$, 
+siendo $S\sim \dist^m$ con $m \ge m_{H}^{CU}(\varepsilon, \delta)$, entonces:
 \[
   \mprob [\forall h\in H, |L_S(h) - L_{\dist}(h)| \le \varepsilon] \ge 1-\delta
 \]
@@ -51,7 +51,7 @@ que haga medible a $l$, siendo $S\sim \dist^m$ con $m \ge m_{H}^{CU}(\varepsilon
 
 Análogamente a lo que ocurría en la definición \ref{def:pac}, podemos considerar $m_H^{CU}$ única, en el sentido de
 que para cada $0 < \delta, \varepsilon < 1$, $m_{H}^{CU}(\varepsilon, \delta)$ es el mínimo natural que satisface las 
-hipótesis.
+hipótesis. También suponemos suficientes garantías de medibilidad sobre $l, L_S, L_\dist$.
 
 \section{Glivenko-Cantelli y APAC cognoscibilidad}
 
@@ -101,12 +101,12 @@ Entonces $H$ es de Glivenko-Cantelli respecto a $Z$ y $l$ con:
 
   Partimos de la siguiente desigualdad, que usaremos más adelante, obtenida por subaditividad:
   \begin{equation}
-  \mprob [\exists h\in H |L_S(h) - L_{\dist}(h)| > \varepsilon] \le 
+  \mprob [\exists h\in H, |L_S(h) - L_{\dist}(h)| > \varepsilon] \le 
   \sum_{h \in H} \mprob [|L_S(h) - L_{\dist}(h)| > \varepsilon]
   \label{eqn:gc-subaditividad}\tag{$\ast$}
   \end{equation}
 
-  Fijamos $h \in H$.
+  Fijamos $h \in H$ en lo que sigue.
 
   Dado un conjunto de entrenamiento $S = (z_1, \ldots z_m)$, recordamos que 
   $L_{\dist} (h) = \zexpect (l(h,z))$ y que $L_{S}(h) = \frac{1}{m} \sum_{i=1}^m l(h,z_i)$, donde $z_i \sim \dist$ son i.i.d.
@@ -115,10 +115,10 @@ Entonces $H$ es de Glivenko-Cantelli respecto a $Z$ y $l$ con:
     \mexpect (L_S(h)) = \frac{1}{m} \sum_{i=1}^m \underset{z_i\sim \dist} \expect(l(h,z_i)) =  \zexpect (l(h,z)) = L_{\dist} (h)
   \] 
   
-  Llamando $W_i:Z \rightarrow \mathbb{R}$, $W_i (z_i) = l(h,z_i)$, tenemos $P[a \le W_i \le b] = 1$
+  Llamando $W_i:Z \rightarrow \mathbb{R}$, $W_i (z_i) = l(h,z_i)$, tenemos $a \le W_i \le b$
   con las $W_i$ independiente e idénticamente distribuidas. Estamos en condiciones de aplicar la desigualdad \ref{ineq:hoeffding} de Hoeffding.
 
-  Por tanto, por \eqref{eqn:gc-subaditividad}:
+  Por tanto, desde la parte derecha de \eqref{eqn:gc-subaditividad}:
   \[
     \mprob \left[\left| \frac{1}{m} \sum_{i=1}^m W_i - L_{\dist} (h) \right| > \varepsilon\right] = 
     P [|L_S(h) - L_{\dist}(h)| > \varepsilon] \le 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2}
@@ -126,7 +126,7 @@ Entonces $H$ es de Glivenko-Cantelli respecto a $Z$ y $l$ con:
 
   Así:
   \[
-    P [\exists h\in H |L_S(h) - L_{\dist}(h)| > \varepsilon] \le 
+    P [\exists h\in H, |L_S(h) - L_{\dist}(h)| > \varepsilon] \le 
     |H| 2e^{-2m \left( \frac{\varepsilon}{b-a} \right)^2}
   \]
 
@@ -134,7 +134,7 @@ Entonces $H$ es de Glivenko-Cantelli respecto a $Z$ y $l$ con:
   llegamos al resultado buscado.
   \end{proof}
 
-Recordemos hasta ahora el resultado que habíamos obtenido en el teorema \ref{th:finitas-pac} 
+Recordemos que hasta ahora el resultado que habíamos obtenido en el teorema \ref{th:finitas-pac} 
 era el carácter PAC cognoscible de las clases de hipótesis finitas. El teorema que sigue generaliza dicho resultado
 para cualquier función de pérdida acotada.
 
@@ -150,7 +150,7 @@ función de pérdida. Entonces $H$ es APAC cognoscible con complejidad muestral:
   
   \begin{proof}
   Estamos en condiciones de aplicar la proposición \ref{fact:finitas-gc}. $H$ sería de Glivenko-Cantelli 
-  respecto a $Z,l$. Luego por teorema \ref{th:gc-apac} llegamos al resultado buscaado.
+  respecto a $Z,l$. Luego por teorema \ref{th:gc-apac} llegamos al resultado buscado.
   \end{proof}
 
 Por tanto, si podríamos haber deducido el teorema \ref{th:finitas-pac} a partir del anterior, ¿por qué no probar

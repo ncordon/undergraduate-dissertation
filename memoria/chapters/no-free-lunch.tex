@@ -103,7 +103,7 @@ Como $L_{\dist} (A(\cdot))$ puede ser vista como una variable aleatoria donde $S
 valores en $[0,1]$, tenemos que tomando $W = 1-L_{\dist}(A(\cdot))\ge 0$, $a=\frac{7}{8}$, estamos en 
 condiciones de aplicar la desigualdad \ref{ineq:markov} de Markov:
 \[
-  \mprob \left(\frac{1}{8} \ge L_{\dist}(A(S)) \right) \le \frac{3}{4} \cdot \frac{8}{7} = \frac{6}{7}
+  \mprob \left[\frac{1}{8} \ge L_{\dist}(A(S)) \right] \le \frac{3}{4} \cdot \frac{8}{7} = \frac{6}{7}
 \]
 
 donde $\mexpect(W) = \mexpect (1 - L_{\dist}(A(\cdot))) = 1 - \mexpect (L_{\dist}(A(\cdot))) \le \frac{3}{4}$
@@ -129,10 +129,10 @@ obtendría con cierta probabilidad un fallo superior a $\frac{1}{8}$.
  $m\le \frac{|X|}{2}$, el teorema anterior nos diría que existe una distribución $\dist$ verificando: 
  \[
    \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7} \Leftrightarrow 
-   \mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \le \frac{6}{7} 
+   \mprob \left[ L_{\dist}(A(S)) \le \frac{1}{8} \right] \le \frac{6}{7} 
  \]
  
- Luego no puede existir $m_H \left(\frac{1}{8}, \delta\right)$ con $\delta > \frac{6}{7}$.
+ Luego no puede existir $m_H \left(\frac{1}{8}, \delta\right)$ con $\delta < \frac{1}{7}$.
 \end{proof}
 
 

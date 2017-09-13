@@ -45,8 +45,8 @@ Observando la demostración, solo asumiamos la existencia de un conjunto $C\subs
 todas las posibles hipótesis $C \rightarrow \{0,1\}$. Revisitamos por tanto el enunciado de dicho teorema.
 
 \begin{theorem}[Teorema de No Free Lunch revisitado]
-Sea un dominio $X$, un conjunto de etiquetas $Y=\{0,1\}$, $H \subseteq 2^X$.
-Sea $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ un algoritmo. Dado $m \le \frac{|X|}{2}$,
+Sea un dominio $X$, un conjunto de etiquetas $Y=\{0,1\}$, $H \subseteq 2^X$, 
+$A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ un algoritmo. Dado $m \le \frac{|X|}{2}$,
 supongamos que existe $C\subseteq X$ de tamaño $2m$ fragmentado por $H$. Entonces existe $\dist$ distribución sobre 
 $X\times \{0,1\}$ verificando:
 \begin{enumerate}[i]
@@ -71,7 +71,7 @@ Sea $H \subseteq 2^X$. Definimos su dimensión Vapnik-Chervonenkis, que abreviar
 Sea $H_{thr} = \{h_a = \mathds{1}_{]-\infty, a]}: a\in \mathbb{R}\}$ clase de hipótesis sobre $\mathbb{R}$. 
 
 Dado un conjunto $C=\{\alpha\}$, podemos tomar $h_{\alpha}$ y $h_{\alpha-1}$, que nos dan todos los posibles etiquetados de
-$C$. Sin embargo, dado un conjunto de tamaño 2, $C=\{\alpha, \beta\}$, donde podemos suponer spg. $\alpha < \beta$. 
+$C$. Sin embargo, dado un conjunto de tamaño 2, $C=\{\alpha, \beta\}$, donde podemos suponer s.p.g. $\alpha < \beta$. 
 Entonces no podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=0$ y $h_b(\beta) = 1$, ya que esto implicaría que 
 $b \ge \beta$ y por tanto entraría en contradicción con que $h_b(\alpha) = 0$.
 
@@ -84,7 +84,7 @@ Sea $H^1_{rec} = \{h_{a,b} = \mathds{1}_{[a,b]}: a,b\in \mathbb{R}\}$ clase de h
 Dado un conjunto $C=\{\alpha, \beta\}$, con $\alpha < \beta$, las hipótesis $h_{\alpha+\delta_1, \beta - \delta_2}$ con 
 $\delta_i \in \left\{0, \frac{\beta - \alpha}{2} \right\}$ nos dan todos los posibles etiquetados de $C$. Sin embargo, 
 dado un conjunto de tamaño 3, $C=\{\alpha, \beta, \theta\}$, donde podemos suponer $\alpha < \beta < \theta$, no
-podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=1$ y $h_b(\theta) = 1$ y $h_b(\beta) = 0$.
+podemos encontrar $h_b \in H$ verificando $h_b(\alpha)=1$, $h_b(\theta) = 1$ y $h_b(\beta) = 0$.
 
 Por tanto $VC(H^1_{rec}) = 2$.
 \end{example}
@@ -180,7 +180,7 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
 
 
 \begin{corollary}
- Sea $H \subseteq 2^X$. Si $VC(H) = \infty$ entonces $H$ no es PAC cognoscible.
+ Sea $H \subseteq 2^X$. Si $VC(H) = \infty$, entonces $H$ no es PAC cognoscible.
  \label{cor:vc-finito}
 \end{corollary}
 
@@ -191,10 +191,10 @@ Sean $H,H_1, H_2 \subseteq 2^X$. Se cumple:
   $m\le \frac{|X|}{2}$, existe $C$ con $|C| = m$ fragmentado por $H$, el teorema \ref{th:nfl2} nos diría que existe una 
   distribución $\dist$ verificando:
   \[
-    \mprob \left[ L_{\dist}(A(S)) \ge \frac{1}{8} \right] \ge \frac{1}{7}
+    \mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}
   \]
  
-  Luego no puede existir $m_H \left(\frac{1}{8}, \delta\right)$ con $\delta > \frac{6}{7}$.
+  Luego no puede existir $m_H \left(\frac{1}{8}, \delta\right)$ con $\delta < \frac{1}{7}$.
   \end{proof}
 
 Nótese la similitud de este corolario con \ref{cor:P(X)notpac}.
@@ -319,7 +319,7 @@ Sea $H\subseteq 2^X$. Consideramos funciones de pérdida $0-1$. Entonces equival
 \item \label{th:fundii} $H$ es APAC cognoscible por cuaquier algoritmo $ERM_H$.
 \item \label{th:fundiii} $H$ es APAC cognoscible.
 \item \label{th:fundiv} $H$ es PAC cognoscible.
-\item \label{th:fundv} $H$ es PAC cognoscible por cualquier algoritmo $ERM_H$
+\item \label{th:fundv} $H$ es PAC cognoscible por cualquier algoritmo $ERM_H$.
 \item \label{th:fundvi} $VC (H) < \infty$.
 \end{enumerate}
 \label{th:fundamental}

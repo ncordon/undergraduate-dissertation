@@ -64,7 +64,7 @@ $w : \mathbb{N} \rightarrow [0,1]$, $\sum_n w(n) \le 1$. Dado $h\in H$, escogemo
 \]
 
 Dado $S\in (X\times Y)^m$, se llama riesgo estructural de $h\in H$, respecto a $\varepsilon_n, w$:
-\[L_S(h) + \varepsilon_{n(h)} \left(m, w(n(h))\frac{1}{m}\right)\].
+\[L_S(h) + \varepsilon_{n(h)} \left(m, w(n(h))\frac{1}{m}\right)\]
 \end{definition}
 
 Por sencillez de las demostraciones, supondremos que existe el mínimo de $\{m_{H_n}^{UC}(\epsilon, \delta)\}$ y por tanto
@@ -79,11 +79,7 @@ dicho mínimo tiene sentido. Dado $S \in (X\times Y)^m$ devolverá:
 \]
 \end{definition}
 
-Es conocido que $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$. Usando este hecho,
-\[
-  m_{H}^{NU} (\varepsilon, \delta, h) \le \left\{m_{H_{n(h)}}^{CU} \left(\varepsilon/2, \frac{3 \delta}{(\pi n(h))^2} \right), 
-  \left\lceil\frac{2}{\delta}\right\rceil \right\}
-\] 
+Es conocido que $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$. Usando este hecho
 y el anterior resultado, podemos dar condiciones suficientes para que un $SRM$ haga a una clase no-uniformemente
 cognoscible.
 
@@ -153,7 +149,7 @@ cada $H_n$ es APAC cognoscible.
    cognoscible. Por teorema fundamental de aprendizaje PAC, \ref{th:fundamental}, cada clase $H_n$ tiene la propiedad de 
    convergencia uniforme, y podemos aplicar el teorema anterior.
 
-   En el sentido opuesto, sea $H$ no-uniformemente cognoscible usando un cierto algoritmo $A$. Fijamos $\delta > \frac{6}{7}$ y
+   En el sentido opuesto, sea $H$ no-uniformemente cognoscible usando un cierto algoritmo $A$. Fijamos $\delta < \frac{1}{7}$ y
    definimos:
    \[
      H_n = \{h \in H : m_{H}^{NU}(1/8, \delta, h) \le n\}
@@ -248,7 +244,7 @@ Por simplicidad, consideraremos $\Gamma = \{a,b\}$ en lo que sigue.
  para cada $n\in \mathbb{N}$ arbitrario, respecto de la función de pérdida $0-1$.
  
  Luego $\varepsilon_n(m,\delta) = \sqrt{\frac{\log(2/\delta)}{2m}}$ y el $SRM$ estaría bien definido. Tomando $w(n) = \frac{1}{2^{|h_n|}}$, donde
- $|d_n|$ es la longitud dada por el lenguaje de descripción $d$, el lema \ref{lemma:kraft} de Kraft nos diría 
+ $|h_n|$ es la longitud dada por el lenguaje de descripción $d$, el lema \ref{lemma:kraft} de Kraft nos diría 
  $\sum_{n \ge 1} w(n) \le 1$.
  
  Aplicando la proposición \ref{th:non-uniform-complex} tendríamos que:

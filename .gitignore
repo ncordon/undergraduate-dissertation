@@ -265,3 +265,8 @@ old/ltxpng/*
 
 # pdf files
 *.pdf
+
+# signatures
+firma_paco.png
+firma_salva.png
+firma_nacho.png
