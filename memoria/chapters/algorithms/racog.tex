@@ -183,7 +183,7 @@ cuando se verifica un criterio sobre el conjunto de validación.
   \REQUIRE $\alpha$, parámetro de tolerancia
   \STATE{$S = \spos_{train}$}
   \STATE{$P = \textrm{AproximarDistribución}(S)$}
-  \STATE{Obetener $modelo$ con $wrapper$ y $S_{train}$}
+  \STATE{Obtener $modelo$ con $wrapper$ y $S_{train}$}
   \STATE{Inicializar nuevas muestras $S'= \emptyset$}
   \STATE{Inicializar $\tau = (\underset{1)}{+\infty}, \ldots, \underset{T)}{+\infty})$}
   \NEWLINE
@@ -192,7 +192,7 @@ cuando se verifica un criterio sobre el conjunto de validación.
     \STATE{$S_{misc} =$ instancias mal clasisicadas de $S$ clasificadas por $modelo$}
     \STATE{Actualizar nuevas instancias, $S' = S' \cup S_{misc}$}
     \STATE{Actualizar \textit{train}, $S_{train} = S_{train} \cup S_{misc}$}
-    \STATE{Obetener $modelo$ con $wrapper$ y $S_{train}$}
+    \STATE{Obtener $modelo$ con $wrapper$ y $S_{train}$}
     \STATE{Hacer $s = $ sensibilidad de la predicción de $modelo$ sobre $S_{val}$}
     \STATE{Hacer $\tau = (\tau_2, \ldots, \tau_T, s)$}
   \ENDWHILE

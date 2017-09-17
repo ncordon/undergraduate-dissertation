@@ -23,7 +23,7 @@
 % the various libraries we will be using
 \usepackage{tikz}
 \usetikzlibrary{calc}
-\usepackage[none]{hyphenat}
+%\usepackage[none]{hyphenat}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish, es-lcroman]{babel}
@@ -293,13 +293,21 @@
 		\ifnum\thepage=1\relax
 			% the title page
 			% draw the fills
-			\fill[color=ExecusharesRed] (0, 4cm) rectangle(\slidewidth,\slideheight);
+			\fill[color=ExecusharesRed] (0, 6cm) rectangle(\slidewidth,\slideheight);
 
 			% draw the actual text
-			\node[anchor=south,text width=\slidewidth-1cm,inner xsep=0.5cm, align=left] at (0.5\slidewidth,4cm) {\color{ExecusharesWhite}\Huge\textbf{\inserttitle}};
+			\node[anchor=south,text width=\slidewidth-1cm,inner xsep=0.5cm, align=left] at (0.5\slidewidth,6.7cm) {\color{ExecusharesWhite}\Huge\textbf{\inserttitle}};
 			\node[anchor=north east,text width=\slidewidth-1cm, align=left] at (\slidewidth-0.4cm,4cm) {\color{ExecusharesBlack}\tiny\insertsubtitle};
-			\node at (0.5\slidewidth,2cm) {\color{ExecusharesBlack}\LARGE\insertauthor};
-
+			\node at (0.3\slidewidth,4.5cm) {\color{ExecusharesBlack}\textbf{AUTOR}};
+			\node at (0.3\slidewidth,4cm) {\color{ExecusharesBlack}\LARGE\insertauthor};
+			\node at (0.3\slidewidth,3cm) {\color{ExecusharesBlack}\textbf{TUTORES}};
+                        \node at (0.3\slidewidth,2.5cm) {\color{ExecusharesBlack}\LARGE\tutor};
+                        \node at (0.3\slidewidth,2cm) {\color{ExecusharesBlack}\LARGE\othertutor};
+                        \node at (0.7\slidewidth,3.5cm) {\includegraphics[scale=0.7]{\universitybadge}};
+                        \node at (0.3\slidewidth,0.8cm) {\includegraphics[scale=0.17]{\ghlogo}};
+                        \node[anchor=south,text width=0.5\slidewidth,inner xsep=0.5cm, align=left] at (0.6\slidewidth,0.8cm) {\color{ExecusharesBlack}\small\url{\theoryrepo}};
+                        \node[anchor=south,text width=0.5\slidewidth,inner xsep=0.5cm, align=left] at (0.6\slidewidth,0.4cm) {\color{ExecusharesBlack}\small\url{\swrepo}};
+                        
 			% add the date in the corner
 			\node[anchor=south east] at(\slidewidth,0cm) {\color{ExecusharesGrey}\tiny\insertdate};
 		\else

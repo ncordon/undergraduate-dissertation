@@ -1,12 +1,30 @@
-\documentclass[spanish, 9pt, professionalfont, notheorems, xcolor=dvipsnames]{beamer}
+\documentclass[spanish, 9pt, notheorems, xcolor=dvipsnames]{beamer}
 % \usepackage{eulervm}
 % \usefonttheme[onlymath]{serif}
 % \everymath{\displaystyle}
 \usetheme{Execushares}
+\usefonttheme{professionalfonts}
+\addtobeamertemplate{block begin}{}{\justifying}
+\apptocmd{\frame}{}{\justifying}{}
+\apptocmd{\column}{}{\justifying}{}
+\let\oldenumerate=\enumerate  
+\renewenvironment{enumerate}{\justifying\oldenumerate}{\endlist}
+\let\olditem=\item% 
+\renewcommand{\item}{\olditem \justifying}
+
+\makeatletter
+  \def\tutor{Salvador García}
+  \def\othertutor{Francisco Herrera}
+  \def\universitybadge{../memoria/imgs/ugr.png}
+  \def\theoryrepo{https://github.com/ncordon/tfg}
+  \def\swrepo{https://github.com/ncordon/imbalance}
+  \def\ghlogo{./gh-logo.png}
+\makeatother
 
 \title{Aprendizaje PAC.\\ Clasificación no balanceada:\\ particularización a \textit{small disjuncts}}
-\author{Ignacio Cordón Castillo}
+\author{Ignacio Cordón}
 \date{\today}
+
 
 \setcounter{showSlideNumbers}{1}
 
@@ -38,7 +56,12 @@
  \section{Clasificación binaria desbalanceada}
   \input{desbalanceo}
   \input{rpackage}
-  %\input{small-disjuncts}
+  \input{experimentacion}
+ 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Conclusiones
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+ \input{conclusiones}
  
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % Bibliografía

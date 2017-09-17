@@ -1,0 +1,113 @@
+\subsection{Experimentación con \textit{small disjuncts}}
+\fontsize{8pt}{0}\selectfont
+\begin{frame}\frametitle{Experimentación}
+ \vspace{2em}
+ Los clasificadores intentan aprender a partir de una clase 
+ creando reglas (conceptos) disjuntas que agrupen a instancias. Debido a la infrarrepresentación y al 
+ desbalanceo \textit{intra clases}, podemos tener reglas que cubran una pequeña porción de la clase 
+ positiva (\textit{small disjuncts}).
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+  newthyroid1 & 1.67 & 1.33 &  & 1.67 & 1.00 \\ 
+  wisconsin & 27.67 & 62.33 & 36.00 & 65.67 & 65.67 \\ 
+  \hline
+  \end{tabular}
+  \caption{Media de \textit{small disjuncts} tras \textit{oversampling}}
+  \end{table}
+
+  \vspace{-2em}
+  
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+  newthyroid1 & 19.89 & 30.00 &  & 20.40 & 23.40 \\ 
+  wisconsin & 6.74 & 3.88 & 5.68 & 3.65 & 3.65 \\ 
+  \hline
+  \end{tabular}
+  \caption{Tamaño medio de coberturas tras \textit{oversampling}}
+  \end{table}
+  
+  \vspace{-2em}
+  
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 0.76 & 1.00 &  & 0.96 &  \\ 
+  glass0 & 0.97 & 0.98 &  & 1.00 &  \\ 
+  haberman & 0.54 & 0.85 &  & 0.76 & 0.68 \\ 
+  iris0 & 1.00 & 1.00 &  & 1.00 & 1.00 \\ 
+  newthyroid1 & 0.97 & 1.00 &  & 0.99 & 1.00 \\ 
+  wisconsin & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\ 
+  yeast4 & 0.33 & 1.00 &  & 0.99 &  \\ 
+  \hline
+  \end{tabular}
+  \caption{Media de sensibilidad tras \textit{oversampling}}
+  \end{table}
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Experimentación}
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  iris0 & 0.00 & 0.00 &  & 0.00 & 0.00 \\ 
+  newthyroid1 & 1.67 & 1.33 &  & 2.33 & 1.00 \\ 
+  wisconsin & 27.67 & 62.33 & 34.33 & 65.00 & 63.67 \\ 
+  \hline
+  \end{tabular}
+  \caption{Media de \textit{small disjuncts} tras \textit{oversampling} y filtrado}
+  \end{table}
+
+  \vspace{-2em}
+  
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+   \hline
+   & none & mwmote & wracog & rwo & pdfos \\ 
+   \hline
+   iris0 & 25.00 & 30.33 &  & 30.33 & 30.33 \\ 
+   newthyroid1 & 19.89 & 28.83 &  & 21.19 & 23.85 \\ 
+   wisconsin & 6.74 & 3.88 & 5.78 & 3.67 & 3.71 \\
+   \hline
+  \end{tabular}
+  \caption{Tamaño medio de coberturas tras \textit{oversampling} y filtrado}
+  \end{table}
+  
+  \vspace{-2em}
+  
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{rrrrrr}
+  \hline
+  & none & mwmote & wracog & rwo & pdfos \\ 
+  \hline
+  ecoli1 & 0.76 & 0.98 &  & 0.96 &  \\ 
+  glass0 & 0.97 & 0.98 &  & 0.99 &  \\ 
+  haberman & 0.54 & 0.83 &  & 0.85 & 0.87 \\ 
+  iris0 & 1.00 & 1.00 &  & 1.00 & 1.00 \\ 
+  newthyroid1 & 0.97 & 1.00 &  & 0.99 & 1.00 \\ 
+  wisconsin & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\ 
+  yeast4 & 0.33 & 0.99 &  & 0.99 &  \\ 
+  \hline
+  \end{tabular}
+  \caption{Media de sensibilidad tras \textit{oversampling} y filtrado}
+  \end{table}
+  
+\end{frame}
