@@ -185,7 +185,7 @@ $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo
 $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow Y^X$ verificando que si 
 $0 < \varepsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$
 se cumple que dado $m\ge m_{H}(\varepsilon, \delta)$:
-\[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \underset{h\in H}{inf} L_{\mathcal{D}}(h) + \varepsilon \bigg] \ge 1-\delta\]
+\[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \inf_{h\in H} L_{\mathcal{D}}(h) + \varepsilon \bigg] \ge 1-\delta\]
 \end{definition}
 
 Nótese que en contraste con nuestra definición de PAC cognoscibilidad, el algoritmo $A$ podría devolver una 

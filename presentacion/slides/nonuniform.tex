@@ -1,0 +1,47 @@
+\subsection{Aprendizaje no-uniforme}
+\begin{frame}\frametitle{Aprendizaje no-uniforme}
+ \begin{definition}[Aprendizaje no-uniforme]
+  Una clase de hipótesis $H$ sobre $Z=\mathcal{X} \times \mathcal{Y}$ es no-uniformemente PAC cognoscible si existe
+  un algoritmo $A$ y una función $m_{H}^{NU} : ]0,1[^2 \times H \rightarrow \mathbb{N}$ verificando que dados 
+  $0 < \varepsilon, \delta < 1$ y $h \in H$, entonces para toda distribución $\dist$ sobre $Z$ y
+  $m\ge m_{H}^{NU} (\varepsilon, \delta, h)$ se verifica:
+  \[
+    \mprob\bigg[L_{\dist}(A(S)) \le L_{\dist}(h) + \varepsilon\bigg] \ge 1-\delta
+  \]
+ \end{definition}
+
+ \begin{theorem}[Caracterización de aprendizaje no-uniforme]
+  Una clase de hipótesis $H \subseteq 2^X$ es no-uniformemente cognoscible sii $H = \bigcup_{n\in\mathbb{N}} H_n$ donde
+  cada $H_n$ es APAC cognoscible.
+ \end{theorem}
+ 
+ \begin{corollary}
+  La noción de cognoscibilidad no-uniforme es más fuerte que la APAC cognoscibilidad.
+ \end{corollary}
+\end{frame}
+
+\begin{frame}\frametitle{Navaja de Occam}
+ \begin{definition}[Lenguaje de descripción de hipótesis]
+  Sea $H$ una clase de hipótesis y $\Gamma$ un conjunto finito de símbolos. Notaremos 
+  $\Gamma^{\ast} = \{(\gamma_1, \ldots, \gamma_m): \gamma_i \in \Gamma, m\in \mathbb{N}\}$
+  donde la longitud de una palabra $\gamma = (\gamma_1, \ldots, \gamma_m) \in \Gamma$ será $m$ y lo escribiremos $|\gamma| = m$.\\
+  \medskip
+  Un lenguaje de descripción para $H$ será $d: H \rightarrow \Gamma^{\ast}$, libre de prefijos.\\
+  \medskip  
+  Dado un lenguaje de descripción de $H$, a saber, $d$, notaremos $|h| = |d(h)|$.
+ \end{definition}
+ 
+ \begin{definition}[Minimizador de la longitud descriptiva]
+  Decimos que un algoritmo $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ es un $DLM$ 
+  (\textit{Description Length Minimizer}) si dado $S \in (X\times Y)^m$ entones:
+  \[
+   A(S) \in \argmin_{h\in H} L_S(h) + \sqrt{\frac{|h| + \log(2m)}{2m}} 
+  \]
+ \end{definition}
+ 
+ \vspace{-2em}
+ 
+ \begin{theorem}
+ Si $H$ es numerable y $d$ su lenguaje de descripción, un $DLM$ con $|\Gamma| = 2$ hace a $H$ no-uniformemente cognoscible.
+ \end{theorem}
+\end{frame}

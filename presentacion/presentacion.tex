@@ -1,0 +1,47 @@
+\documentclass[spanish, 9pt, professionalfont, notheorems, xcolor=dvipsnames]{beamer}
+% \usepackage{eulervm}
+% \usefonttheme[onlymath]{serif}
+% \everymath{\displaystyle}
+\usetheme{Execushares}
+
+\title{Aprendizaje PAC.\\ Clasificación no balanceada:\\ particularización a \textit{small disjuncts}}
+\author{Ignacio Cordón Castillo}
+\date{\today}
+
+\setcounter{showSlideNumbers}{1}
+
+\makeatletter
+  \def\input@path{{./slides/}}
+\makeatother
+
+\begin{document}
+ \setcounter{showProgressBar}{0}
+ \setcounter{showSlideNumbers}{0}
+
+ % Título, objetivos e índice
+ \frame{\titlepage}
+ \input{objetivos}
+ \begin{frame}{Contenido}
+  \tableofcontents
+ \end{frame}
+
+ \setcounter{framenumber}{0}
+ \setcounter{showProgressBar}{1}
+ \setcounter{showSlideNumbers}{1}
+
+ \section{Aprendizaje PAC}
+  \input{probabilidad}
+  \input{pac}
+  \input{fundamental}
+  \input{nonuniform}
+ 
+ \section{Clasificación binaria desbalanceada}
+  \input{desbalanceo}
+  \input{rpackage}
+  %\input{small-disjuncts}
+ 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Bibliografía
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+ \input{references}
+\end{document}

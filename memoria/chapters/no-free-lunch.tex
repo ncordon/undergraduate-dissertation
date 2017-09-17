@@ -28,7 +28,7 @@ Entonces existe $\dist$ sobre $X\times \{0,1\}$ verificando:
 \end{theorem}
 
 \begin{proof}
-Sea un conjunto de instancias $C=\{x_1, \ldots x_{2m}\}$. Hay $T = 2^{2m}$ posibilidades de etiquetado del conjunto,
+Sea un conjunto de instancias $C=\{x_1, \ldots, x_{2m}\}$. Hay $T = 2^{2m}$ posibilidades de etiquetado del conjunto,
 esto es, $T$ posibles hipótesis, $f_i: C\rightarrow \{0,1\}$, que vamos a extender a $X$ llamándolas $\bar{f}_i$
 de forma que $\bar{f}_{i|C} = f_i$ y $\bar{f}_i(x) = 0 \quad \forall x\in X\setminus C$. 
 Vamos a tomar para cada una de ellas una distribución $\dist_i=(2^X, P_i)$ definida por:
@@ -45,8 +45,8 @@ Claramente $L_{\dist_i}(f_i) = 0$. Vamos a probar que:
   \exists i\in \{1, \ldots T\} : \quad \mexpecti{i} [L_{\dist_i} (A(S))] \ge \frac{1}{4}
 \]
 
-Fijamos $i \in \{1, \ldots T\}$. Hay $k = (2m)^m$ posibles tuplas de tamaño $m$, $S_{j}, j=1, \ldots k$, tomadas 
-desde $C$. Siendo $S_j = (x_1, \ldots x_m)$ notamos $S_j^i = ((x_1, f_i(x_1)), \ldots, (x_m, f_i(x_m)))$. Cada 
+Fijamos $i \in \{1, \ldots, T\}$. Hay $k = (2m)^m$ posibles tuplas de tamaño $m$, $S_{j}, j=1, \ldots k$, tomadas 
+desde $C$. Siendo $S_j = (x_1, \ldots, x_m)$ notamos $S_j^i = ((x_1, f_i(x_1)), \ldots, (x_m, f_i(x_m)))$. Cada 
 $S_j^i$ tiene la misma probabilidad de ser nuestro conjunto de entrenamiento (extracción de $m$ valores con 
 reemplazamiento desde el conjunto $C$), verificándose:
 \[
@@ -61,7 +61,7 @@ Recordando que hemos llamado $k=(2m)^m$, $T=2^{2m}$, y usando conmutatividad de 
 \label{eqn:nfl-ineqs1}\tag{$\ast$}
 \end{align}
 
-Fijamos ahora $j \in \{1,\ldots k\}$:
+Fijamos ahora $j \in \{1,\ldots, k\}$:
 
 Sean $\{v_r\}_{r=1}^p$ los elementos de $C$ no presentes en el conjunto de entrenamiento $S_j$. 
 Claramente, como $|C|=2m$ y $S_j$ puede tener elementos repetidos, se tiene $p \ge m$. Asimismo:

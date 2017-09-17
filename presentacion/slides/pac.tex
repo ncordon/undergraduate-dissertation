@@ -1,0 +1,123 @@
+\subsection{Nociones PAC y APAC}
+\begin{frame}\frametitle{Motivación}
+\begin{columns}
+ \begin{column}{0.45\textwidth}
+  Tenemos clientes de un banco que quieren solicitar un préstamo, y a todos se les categoriza
+  el tamaño del préstamo que quieren solicitar (cómo de grande es su importe) y su nivel de ingresos, ambos 
+  en una escala de $0$ a $1$ donde $1$ es el nivel máximo. Queremos etiquetar a cada cliente como $1\equiv$ conceder préstamo o 
+  $0\equiv$ no concederlo.\\
+  \bigskip
+  Llamamos $X=[0,1]^2, Y=\{0,1\}$. Podríamos asumir una clase de funciones $H \subseteq Y^X$, de entre las que existe
+  una óptima, por ejemplo:
+
+  \[h_{a,b,c,d} = \mathds{1}_{[a,b]\times[c,d]}, \qquad [a,b]\times [c,d] \subseteq [0,1]^2\]
+ \end{column}
+ \begin{column}{0.55\textwidth}
+  \img{../memoria/imgs/rect-ex.png}{1}
+ \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}\frametitle{Definiciones básicas}
+ \begin{itemize}
+  \item \textbf{Dominio}: $X$. Llamamos \textbf{instancia} a $x\in X$
+
+  \item \textbf{Conjunto de etiquetas}: $Y$. Consideramos $Y = \{0,1\}$ o $Y=\{-1,1\}$
+
+  \item \textbf{Verdadero etiquetado}: Asumimos la existencia de una función ${f: X \rightarrow Y}$ 
+  que proporciona la verdadera etiqueta de todas las instancias.
+
+  \item \textbf{Generación de instancias}: $x\sim \mathcal{D} = (\Sigma, \prob)$.
+
+  \item \textbf{Conjunto de entrenamiento}: $S = ((x_1,y_1), \ldots, (x_m,y_m))$, $S\in (X \times Y)^m$ donde
+  $y_i = f(x_i)$. Notaremos $S_x = (x_1, \ldots x_m)$.
+
+  La elección de $S_x$ es i.i.d., esto es $x_i \sim \mathcal{D}$ para todo $i=1, \ldots, m$.
+  Lo notamos $S_x \sim \mathcal{D}^m$, o $S \sim \mathcal{D}^m$, por abuso de notación. 
+
+  \item \textbf{Hipótesis/clasificador/predicción}: elementos de $\{h, h:X \rightarrow Y\} := 2^{X}$. 
+
+  \item \textbf{Error del clasificador}: lo definimos como $L_{\mathcal{D},f}(h) :=  \prob [h \neq f]$
+
+  \item \textbf{Error empírico}: $L_S(h) = \frac{1}{m}|\{i\in {1,\ldots, m}: h(x_i) \neq y_i\}|$
+  
+  \item \textbf{Algoritmo de aprendizaje}: $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^{X}$. 
+  
+  Un algoritmo $A$ se dice $ERM$ si $A(S) \in \argmin_{h\in 2^X} L_S(h)$.
+  Un algoritmo $A$ se dice $ERM_H$ si $A(S) \in \argmin_{h\in H} L_S(h)$.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{PAC cognoscibilidad}
+ \begin{definition}[PAC cognoscibilidad]
+ \justifying
+ $H \subseteq 2^X$ es PAC cognoscible sii existen $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow H$ 
+ y $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ verificando que para todo
+ $0 < \varepsilon, \delta < 1$, para toda distribución $\mathcal{D}$ sobre $X$
+ y para toda función de verdadero etiquetado $f\in H$, dado $m \ge m_H(\varepsilon, \delta)$ entonces:
+ \[
+   \mprob \bigg[L_{\mathcal{D},f}(A(S)) \le \varepsilon \bigg] \ge 1-\delta
+ \]
+ \end{definition}
+
+\begin{example}
+ \begin{itemize}
+  \item $H \subseteq 2^{X}$ finito es PAC cognoscible para cualquier $ERM_H$ con:
+  \[m_H(\varepsilon, \delta) \le \left\lceil \frac{1}{\varepsilon} \log\left(\frac{|H|}{\delta} \right) \right\rceil\]
+  \item  $H^2_{rec} = \{ \mathds{1}_{[a,b]\times [c,d]}: a\le b, c\le d\}$ para el $ERM_H$ que devuelve el rectángulo más 
+  pequeño que engloba a los ejemplos positivos del conjunto de entrenamiento.
+ \end{itemize}
+\end{example}
+
+\end{frame}
+
+\begin{frame}\frametitle{APAC cognoscibilidad}
+ \begin{itemize}
+  \item \textbf{Generación de instancias}. Tenemos una distribución $\mathcal{D}$ sobre $Z = (X,Y)$.
+  \item \textbf{Función de pérdida}. $l : H \times Z \rightarrow \mathbb{R}_0^{+}$
+  \item \textbf{Error del clasificador}. Lo redefinimos como $L_{\mathcal{D}}(h) :=  \expect_{z\sim \dist} (l(h,z))$
+  \item \textbf{Error empírico}. Lo redefinimos como $L_{S} (h) := \frac{1}{m} \sum_{i=1}^m l(h,z_i)$
+ \end{itemize}
+
+ \begin{definition}[APAC cognoscible]
+  Una clase $H$ es agnósticamente PAC (APAC) cognoscible respecto a $Z$ y respecto a una función de pérdida 
+  $l: H \times Z \rightarrow \mathbb{R}^{+}$ si existe una función 
+  $m_{H} : ]0,1[^2\rightarrow \mathbb{N}$ y un algoritmo 
+  $A: \underset{m\in \mathbb{N}}{\bigcup} Z^m \rightarrow Y^X$ verificando que si 
+  $0 < \varepsilon, \delta < 1$, entonces para toda distribución $\mathcal{D}$ sobre $Z$
+  se cumple que dado $m\ge m_{H}(\varepsilon, \delta)$:
+  \[\mprob \bigg[L_{\mathcal{D}}(A(S)) \le \inf_{h\in H} L_{\mathcal{D}}(h) + \varepsilon \bigg] \ge 1-\delta\]
+ \end{definition}
+
+ Cuando $A$ puede devolver una función  $h \notin H$, de manera que $h \in H'$ y  $H \subset H'$ 
+ donde la función de pérdida es extensible de manera natural, tenemos
+ \textit{aprendizaje impropio}. Si $Im(A) \subseteq H$ hablamos de \textit{aprendizaje propio}.
+\end{frame}
+
+\begin{frame}\frametitle{PAC vs APAC cognoscibilidad}
+ \begin{columns}
+  \begin{column}{0.45\textwidth}
+   \img{../memoria/imgs/clases-pac.png}{1}
+  \end{column}
+  \begin{column}{0.55\textwidth}
+   \begin{definition}[Función de pérdida $0-1$]
+    Llamamos función de pérdida $0-1$ a una función de pérdida de $H\subseteq Y^X$ sobre $Z$, $l$, verificando:
+    \[
+      l(h, (x,y)) = \left\{\begin{array}{ll}
+                            1 & \textrm{si } h(x)\neq y\\
+                            0 & \textrm{en otro caso}
+                            \end{array}\right.
+    \]
+    para cualquier $h\in H$, cualquier $(x,y) \in Z$
+   \end{definition}
+   
+   \begin{fact}
+    Si $H\subseteq 2^X$ es APAC propiamente cognoscible con funciones de pérdida $0-1$, entonces $H$ es PAC cognoscible.
+   \end{fact}
+   \begin{proof}
+    Probar que equivalen las nociones de error y error empírico, y que se verifican unas ciertas condiciones de medibilidad.
+   \end{proof}
+  \end{column}
+ \end{columns}
+\end{frame}
+

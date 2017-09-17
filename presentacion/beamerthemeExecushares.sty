@@ -1,0 +1,367 @@
+% The MIT License (MIT)
+% 
+% Copyright (c) 2014 Kenton Hamaluik
+% Modified by Nacho Cordón
+% 
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+% 
+% The above copyright notice and this permission notice shall be included in all
+% copies or substantial portions of the Software.
+% 
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
+% the various libraries we will be using
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[none]{hyphenat}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-lcroman]{babel}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{fix-cm}
+\usepackage{dsfont}
+
+\usepackage{ragged2e}
+\definecolor{lightgray}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+\definecolor{midgray}{gray}{0.40}
+\usepackage{mdframed} % Add easy frames to paragraphs
+\usepackage{lipsum} % For dummy text
+\usepackage{xparse} % Add support for \NewDocumentEnvironment
+\newmdenv[ % Define mdframe settings and store as leftrule
+  linecolor=lightgray,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{leftrule}
+
+% *************************************************************************************************************
+% Pseudocódigo de algoritmos
+% *************************************************************************************************************
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\floatname{algorithm}{Algoritmo}
+\renewcommand{\listalgorithmname}{Lista de algoritmos}
+\renewcommand{\algorithmicrequire}{\textbf{Entrada:}}
+\renewcommand{\algorithmicensure}{\textbf{Salida:}}
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Código}
+\definecolor{light-gray}{gray}{0.97}
+\lstset{
+  language=R,
+  literate={<-}{{\boldmath{$\gets$}}}1,
+  basicstyle=\small\linespread{1.3}\ttfamily,
+  commentstyle=\ttfamily\color{OliveGreen},
+  stringstyle=\color{Thistle},
+  numbers=left,
+  numberstyle=\scriptsize\ttfamily\color{RoyalBlue},
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{light-gray},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  %frame=single,
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false,
+  %title=\lstname,
+  escapeinside={},
+  keywordstyle={},
+  morekeywords={}
+}
+
+\usepackage{graphicx}
+\usepackage{tabularx}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{float}
+\usepackage{wrapfig}
+
+\NewDocumentEnvironment{example}{O{\textbf{Ejemplo:}}}
+{\begin{leftrule}\noindent\textcolor{black}{#1}\par}
+{\end{leftrule}}
+
+\NewDocumentEnvironment{counterex}{O{\textbf{Contraejemplo:}}}
+{\begin{leftrule}\noindent\textcolor{black}{#1}\par}
+{\end{leftrule}}
+% arg min
+\DeclareMathOperator*{\argmin}{arg\,\min }
+\DeclareMathOperator*{\argmax}{arg\,\max }
+
+% norma || ||
+\newcommand{\norm}[1]{||{#1}||}
+
+
+\defaultfontfeatures{Ligatures=TeX}
+
+\addto\captionsspanish{%
+  \renewcommand{\proofname}%
+    {\textit{Sketch} de la prueba}%
+}
+
+\newcommand{\img}[2]{
+  \begin{center}
+  \includegraphics[width=#2\textwidth]{#1}
+  \end{center}
+}
+
+\newcommand{\imgcaption}[3]{
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=#3\textwidth]{#1}
+  \end{center}
+  
+  \caption[]{#2}
+\end{figure}
+}
+
+\newcommand{\mprob}{\underset{S\sim \mathcal{D}^m}{P}}
+\newcommand{\dosmprob}{\underset{S\sim \mathcal{D}^{2m}}{P}}
+\newcommand{\munoprob}{\underset{S_1\sim \mathcal{D}^m}{P}}
+\newcommand{\mdosprob}{\underset{S_2\sim \mathcal{D}^m}{P}}
+\newcommand{\mmprob}{\underset{\begin{subarray}{c} 
+                                S_1 \sim \mathcal{D}^{m} \\ 
+                                S_2 \sim\mathcal{D}^m 
+                                \end{subarray}}{P}}
+\newcommand{\prob}{\underset{x\sim \mathcal{D}}{P}}
+\newcommand{\zprob}{\underset{z\sim \mathcal{D}}{P}}
+\newcommand{\dist}{\mathcal{D}}
+\newcommand{\expect}{\mathbb{E}}
+\newcommand{\zexpect}{\underset{z\sim \mathcal{D}}{\expect}}
+\newcommand{\mexpecti}[1]{\underset{S\sim \mathcal{D}_{#1}^m}{\mathbb{E}}}
+\newcommand{\mexpect}{\underset{S\sim \mathcal{D}^m}{\mathbb{E}}}
+\newcommand{\dosmexpect}{\underset{S\sim \mathcal{D}^{2m}}{\mathbb{E}}}
+\newcommand{\ppos}{P^{+}}
+\newcommand{\pneg}{P^{-}}
+\newcommand{\npos}{N^{+}}
+\newcommand{\nneg}{N^{-}}
+\newcommand{\spos}{S^{+}}
+\newcommand{\sneg}{S^{-}}
+\newcommand{\Hclass}{\lfloor H \rfloor_{\dist}}
+\newcommand{\algcomp}[1]{\mathcal{O}\left(#1\right)}
+
+
+\theoremstyle{definition}
+
+\newtheorem{thm}{theorem}[section]
+\newtheorem{theorem}[thm]{Teorema}
+\newtheorem*{theorem*}{Teorema}
+\newtheorem{fact}[thm]{Proposición}
+\newtheorem*{fact*}{Proposición}
+\newtheorem{lemma}[thm]{Lema}
+\newtheorem*{lemma*}{Lema}
+\newtheorem{corollary}[thm]{Corolario}
+\newtheorem*{corollary*}{Corolario}
+\newtheorem{definition}[thm]{Definición}
+\newtheorem*{definition*}{Definición}
+\newtheorem{charact}[thm]{Caracterización}
+\newtheorem*{charact*}{Caracterización}
+
+\newtranslation[to=Spanish]{Fact}{Proposición}
+
+\newif\ifbeamer@pixelitem
+\beamer@pixelitemtrue
+\DeclareOptionBeamer{nopixelitem}{\beamer@pixelitemfalse}
+\ProcessOptionsBeamer
+
+% define colours
+% taken from pickton on Adobe Kuler:
+% https://kuler.adobe.com/Some-Kind-Of-Execushares-color-theme-3837185/
+\definecolor{ExecusharesRed}{RGB}{230,37,52}
+\definecolor{ExecusharesBlack}{RGB}{43,40,40}
+\definecolor{ExecusharesBlue}{RGB}{22,190,207}
+\definecolor{ExecusharesWhite}{RGB}{255,255,243}
+\definecolor{ExecusharesGrey}{RGB}{107,110,108}
+
+% use Adobe's Source Pro fonts:
+% Source Serif Pro: https://github.com/adobe-fonts/source-serif-pro
+% Source Sans Pro: https://github.com/adobe-fonts/source-sans-pro
+% Source Code Pro: https://github.com/adobe-fonts/source-code-pro
+\setmainfont{Source Serif Pro}
+\setsansfont{Source Sans Pro}
+\setmonofont{Source Code Pro}
+
+% To use with pdflatex,
+% comment the fontspec package at the top
+%\usepackage{sourceserifpro}
+%\usepackage{sourcesanspro}
+%\usepackage{sourcecodepro}
+
+% set colours
+\setbeamercolor{itemize item}{fg=ExecusharesBlue}
+\setbeamercolor{enumerate item}{fg=ExecusharesBlue}
+\setbeamercolor{alerted text}{fg=ExecusharesBlue}
+\setbeamercolor{section in toc}{fg=ExecusharesBlack}
+
+\ifbeamer@pixelitem
+% make the itemize bullets pixelated >
+\setbeamertemplate{itemize item}{
+	\tikz{
+		\draw[fill=ExecusharesBlue,draw=none] (0, 0) rectangle(0.1, 0.1);
+		\draw[fill=ExecusharesBlue,draw=none] (0.1, 0.1) rectangle(0.2, 0.2);
+		\draw[fill=ExecusharesBlue,draw=none] (0, 0.2) rectangle(0.1, 0.3);
+	}
+}
+% make the subitems also pixelated >, but a little smaller and red
+\setbeamertemplate{itemize subitem}{
+	\tikz{
+		\draw[fill=ExecusharesRed,draw=none] (0, 0) rectangle(0.075, 0.075);
+		\draw[fill=ExecusharesRed,draw=none] (0.075, 0.075) rectangle(0.15, 0.15);
+		\draw[fill=ExecusharesRed,draw=none] (0, 0.15) rectangle(0.075, 0.225);
+	}
+}
+\fi
+
+% disable navigation
+\setbeamertemplate{navigation symbols}{}
+
+% custom draw the title page above
+\setbeamertemplate{title page}{}
+
+% again, manually draw the frame title above
+\setbeamertemplate{frametitle}{}
+
+% disable "Figure:" in the captions
+\setbeamertemplate{caption}{\tiny\insertcaption}
+\setbeamertemplate{caption label separator}{}
+
+% since I don't know a better way to do this, these are all switches
+% doing `\setcounter{showProgressBar}{0}` will turn the progress bar off (I turn it off for Appendix slides)
+% etc
+\newcounter{showProgressBar}
+\setcounter{showProgressBar}{1}
+\newcounter{showSlideNumbers}
+\setcounter{showSlideNumbers}{1}
+\newcounter{showSlideTotal}
+\setcounter{showSlideTotal}{1}
+
+% use \makeatletter for our progress bar definitions
+% progress bar idea from http://tex.stackexchange.com/a/59749/44221
+% slightly adapted for visual purposes here
+\makeatletter
+\newcount\progressbar@tmpcounta% auxiliary counter
+\newcount\progressbar@tmpcountb% auxiliary counter
+\newdimen\progressbar@pbwidth %progressbar width
+\newdimen\progressbar@tmpdim % auxiliary dimension
+
+\newdimen\slidewidth % auxiliary dimension
+\newdimen\slideheight % auxiliary dimension
+
+% make the progress bar go across the screen
+%\progressbar@pbwidth=12.8cm
+\progressbar@pbwidth=\the\paperwidth
+\slidewidth=\the\paperwidth
+\slideheight=\the\paperheight
+
+% use tikz to draw everything
+% it may not be the best, but it's easy to work with
+% and looks good
+% TODO: base title slide and contents slide on something other than slide numbers :/
+\setbeamertemplate{background}{
+	% deal with progress bar stuff
+	% (calculate where it should go)
+	\progressbar@tmpcounta=\insertframenumber
+	\progressbar@tmpcountb=\inserttotalframenumber
+	\progressbar@tmpdim=\progressbar@pbwidth
+	\divide\progressbar@tmpdim by 100
+	\multiply\progressbar@tmpdim by \progressbar@tmpcounta
+	\divide\progressbar@tmpdim by \progressbar@tmpcountb
+	\multiply\progressbar@tmpdim by 100
+
+	\begin{tikzpicture}
+		% set up the entire slide as the canvas
+		\useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+
+		% the background
+		\fill[color=ExecusharesWhite] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+
+		% separate the drawing based on if we're the first (title) slide or not
+		\ifnum\thepage=1\relax
+			% the title page
+			% draw the fills
+			\fill[color=ExecusharesRed] (0, 4cm) rectangle(\slidewidth,\slideheight);
+
+			% draw the actual text
+			\node[anchor=south,text width=\slidewidth-1cm,inner xsep=0.5cm, align=left] at (0.5\slidewidth,4cm) {\color{ExecusharesWhite}\Huge\textbf{\inserttitle}};
+			\node[anchor=north east,text width=\slidewidth-1cm, align=left] at (\slidewidth-0.4cm,4cm) {\color{ExecusharesBlack}\tiny\insertsubtitle};
+			\node at (0.5\slidewidth,2cm) {\color{ExecusharesBlack}\LARGE\insertauthor};
+
+			% add the date in the corner
+			\node[anchor=south east] at(\slidewidth,0cm) {\color{ExecusharesGrey}\tiny\insertdate};
+		\else
+			% NOT the title page
+			% title bar
+			\fill[color=ExecusharesRed] (0, \slideheight-1cm) rectangle(\slidewidth,\slideheight);
+
+			% swap the comment on these to add section titles to slide titles
+			%\node[anchor=north,text width=11.8cm,inner xsep=0.5cm,inner ysep=0.25cm] at (6.4cm,9.6cm) {\color{ExecusharesWhite}\Large\textbf{\insertsectionhead: \insertframetitle}};
+			\node[anchor=north,text width=\slidewidth-1cm,inner xsep=0.5cm,inner ysep=0.25cm] at (0.5\slidewidth,\slideheight) {\color{ExecusharesWhite}\huge\textbf{\insertframetitle}};
+			
+			% if we're showing a progress bar, show it
+			% (I disable the progress bar and slide numbers for the "Appendix" slides)
+			\ifnum \value{showProgressBar}>0\relax%
+				% the the progress bar icon in the middle of the screen
+				\draw[fill=ExecusharesGrey,draw=none] (0cm,0cm) rectangle(\slidewidth,0.25cm);
+				\draw[fill=ExecusharesRed,draw=none] (0cm,0cm) rectangle(\progressbar@tmpdim,0.25cm);
+
+				% bottom information
+				%\node[anchor=south west] at(0cm,0.25cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertsection};
+				% if slide numbers are active
+				\ifnum \value{showSlideNumbers}>0\relax%
+					% if slide totals are active
+					\ifnum \value{showSlideTotal}>0\relax%
+						% draw both slide number and slide total
+						\node[anchor=south east] at(\slidewidth,0.25cm) {\color{ExecusharesGrey}\small\insertframenumber/\inserttotalframenumber};
+					\else
+						% slide totals aren't active, don't draw them
+						\node[anchor=south east] at(\slidewidth,0.25cm) {\color{ExecusharesGrey}\small\insertframenumber};
+					\fi
+				\fi
+			% don't show the progress bar?
+			\else
+				% section title in the bottom left
+				\node[anchor=south west] at(0cm,0cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertsection};
+				% if we're showing slide numbers
+				\ifnum \value{showSlideNumbers}>0\relax%
+					% if slide totals are active
+					\ifnum \value{showSlideTotal}>0\relax%
+						% draw both slide number and slide total
+						\node[anchor=south east] at(\slidewidth,0cm) {\color{ExecusharesGrey}\tiny\insertframenumber/\inserttotalframenumber};
+					\else
+						% slide totals aren't active, don't draw them
+						\node[anchor=south east] at(\slidewidth,0cm) {\color{ExecusharesGrey}\tiny\insertframenumber};
+					\fi
+				\fi
+			\fi
+		\fi
+	\end{tikzpicture}
+}
+\makeatother
+
+% add section titles
+\AtBeginSection{\frame{\sectionpage}}
+\setbeamertemplate{section page}
+{
+	\begin{tikzpicture}
+		% set up the entire slide as the canvas
+		\useasboundingbox (0,0) rectangle(\slidewidth,\slideheight);
+		%\fill[color=ExecusharesWhite] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+		\fill[color=ExecusharesWhite] (-1cm, 2cm) rectangle (\slidewidth, \slideheight+0.1cm);
+		\fill[color=ExecusharesRed] (-1cm, 0.5\slideheight-1cm) rectangle(\slidewidth, 0.5\slideheight+1cm);
+		\node[text width=\the\paperwidth-1cm,align=center] at (0.4\slidewidth, 0.5\slideheight) {\color{ExecusharesWhite}\Huge\textbf{\insertsection}};
+	\end{tikzpicture}
+}

@@ -1,0 +1,89 @@
+\subsection{Introducción}
+ \begin{frame}\
+ \begin{definition}[Instancias positivas, negativas]
+ LLamamos:
+ \begin{itemize}
+  \item Instancias positivas a $Z^{+} = \{(x,y)\in Z: y=1\}$.
+  \item Instancias negativas a $Z^{-} = \{(x,y)\in Z: y=-1\}$.
+ \end{itemize}
+ Una notación equivalente se aplica a $S$, conjunto de entrenamiento. Además llamamos $\ppos = P(Z^{+})$ y $\pneg = P(Z^{-})$.
+ \end{definition}
+
+ \begin{definition}[Desbalanceo entre clases]
+  Decimos que un problema de clasificación binaria es desbalanceado (entre clases) si se verifica que tomando 
+  $\nneg = |S^{-}|$ y $\npos = |S^{+}|$, entonces $\npos < \nneg$.
+  
+  Llamamos ratio de desbalanceo a $r(S)=\frac{\npos}{\nneg}$. Normalmente $r(S) \ll 1$.
+ \end{definition}
+
+ Para ciertos conjuntos de datos, donde el número de instancias positivas con respecto a las negativas es muy pequeño, un clasificador podría simplemente
+ etiquetar todas las instancias como negativas, y obtener un error global pequeño, pero no acertaría en ninguna instancia
+ positiva. Si los datasets empleados representaran enfermedades, por ejemplo,
+ nos interesa encontrar mecanismos para disminuir el error sobre la clase positiva (la de las instancias correspondientes
+ a la enfermedad).
+\end{frame}
+
+\begin{frame}\frametitle{Tipos de desbalanceo}
+\begin{columns} 
+ \begin{column}{0.55\textwidth}
+  El desbalanceo puede ser:
+  
+  \begin{enumerate}[i]
+   \item \textbf{Intrínseco}, cuando $\ppos < \pneg$.
+
+   \item \textbf{Extrínseco}, si $\ppos \ge \pneg$ pero sin embargo para nuestro conjunto de entrenamiento $S$, 
+   tenemos que $\npos < \nneg$.
+  \end{enumerate}
+  
+  
+  Se dice que existe desbalanceo \textit{intra clases} cuando además la clase minoritaria está repartida en varias 
+  regiones no conexas, a saber $\spos \supset A_1, \ldots, A_m$ donde $|A_1| \le \ldots \le |A_m|$, con algún menor o igual estricto.
+  Esto dificulta aún más la correcta clasificación de dichas instancias, porque aparecen zonas con instancias positivas 
+  pobremente representadas. A estas zonas de baja representación las llamamos instancias raras.
+ \end{column}
+ 
+ \begin{column}{0.45\textwidth}
+  \img{../memoria/imgs/desbalanceo.png}{1.1}
+ \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}\frametitle{Aprendizaje con desbalanceo}
+\par\textbf{Técnicas de aprendizaje con desbalanceo}
+\begin{itemize}
+ \item \textbf{\textit{Oversampling/Undersampling}}. Consiste en tomar $E$ instancias clasificadas como positivas y entrenar con 
+ $S' = S\cup E$ o $S' = S\setminus E$.
+ 
+ Tanto el \textit{oversampling} como el \textit{undersampling} se realiza de manera que $r(S') > r(S)$. Se pueden usar además
+ técnicas de limpieza, para definir mejor los bordes de las zonas que conectan a ambas clases, de manera que mejoremos el error
+ en la clasificación.
+ 
+ \item \textbf{Aprendizaje \textit{cost sensitive}}. El \textit{framework} de aprendizaje \textit{cost sensitive} implica que no
+ a todas las instancias le asignamos el mismo error al aprender.
+\end{itemize}
+\medskip
+
+\par\textbf{Medidas de la bondad del aprendizaje}
+\begin{columns}
+ \begin{column}{0.5\textwidth}
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{C{2cm}|C{2cm}}
+    $VP$ & $FP$\\
+    \hline
+    $FN$ & $VN$\\
+    \end{tabular}
+    \caption{Matriz de confusión}
+  \end{table}
+ \end{column}
+ 
+ \begin{column}{0.5\textwidth}
+  \begin{definition}[Sensibilidad]
+   Se define la sensibilidad como $s = \frac{VP}{\npos}$ 
+  \end{definition}
+  
+  Hay otras medidas como el $F$-score, el $AUC$, \ldots
+ \end{column}
+\end{columns}
+\end{frame}
+

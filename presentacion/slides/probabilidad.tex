@@ -1,0 +1,126 @@
+\subsection{Introducción a la probabilidad}
+ \begin{frame}\frametitle{$\sigma$ álgebras, anillos y semianillos}
+  \begin{definition}
+   $\Sigma \subseteq 2^X$ es $\sigma$-álgebra de conjuntos sobre $X$ si se verifica:
+   
+   \begin{enumerate}[i]
+    \item $X \in \Sigma$
+    \item Es cerrada para complementarios: $A\in \Sigma$, entonces $A^c = X\setminus A \in \Sigma$
+    \item Es cerrada para uniones numerables: $\{A_n\}_{n\in\mathbb{N}} \subseteq \Sigma$, entonces 
+    $\underset{n \ge 1}{\bigcup} A_n \in \Sigma$
+   \end{enumerate}
+   
+   Si $\emptyset \in \Sigma$, es semianillo si:
+   \begin{enumerate}[i]
+    \item $A,B \in \Sigma$ entonces $A\cap B \in \Sigma$
+    \item $A,B \in \Sigma$ entonces existen $A_1 \ldots A_n \in \Sigma$ verificándose $A\setminus B = \sum_{i=1}^n A_i$
+   \end{enumerate}
+
+   y es anillo si cumple:
+   \begin{enumerate}[i]
+    \item $A,B \in R$ entonces $A\cup B \in \Sigma$
+    \item $A,B \in R$ entonces $A\setminus B \in \Sigma$
+   \end{enumerate}
+  \end{definition}
+
+  \begin{fact}
+  Toda $\sigma$-álgebra es anillo. Todo anillo es semianillo.
+  \end{fact}
+ \end{frame}
+ 
+ \begin{frame}\frametitle{Medidas, medidas exteriores, probabilidades}
+ \begin{definition}[Medida y medida exterior]
+  Sea $\mathcal{A} \subseteq 2^X$. Sea $\mu: \mathcal{A} \rightarrow [0, +\infty]$ con $\mu(\emptyset) = 0$. Entonces:
+  
+  \begin{itemize}
+   \item $\mu$ es medida si es $\sigma$-aditiva, esto es, dados $A_n \in \mathcal{A}$ con 
+   $\sum_{i=1}^n A_i \in \mathcal{A} \Rightarrow \mu\left(\sum_{i=n}^{+\infty} A_n \right)= \sum_{i=n}^{+\infty} \mu(A_n)$
+  
+   \item Si $\mathcal{A}=2^X$, $\mu$ es medida exterior sobre $X$ si:
+  
+    \begin{enumerate}[i]
+     \item Monotonía: $A\subseteq B$ entonces $\mu(A) \le \mu(B)$
+     \item $\sigma$-subaditividad: $\mu \left(\bigcup_{n=1}^{+\infty} A_n \right) \le \sum_{n=1}^{+\infty} \mu (A_n)$
+    \end{enumerate}
+  \end{itemize}
+ \end{definition}
+
+ \begin{definition}[Espacio de probabilidad]
+  Sea $(X, \Sigma, P)$, con $\Sigma$ $\sigma$-álgebra sobre $X$ y $P:\Sigma \rightarrow [0, +\infty]$ medida. 
+  Entonces lo llamamos espacio de probabilidad sii $P(\Sigma)\subseteq [0,1]$.
+ \end{definition}
+ 
+ \begin{definition}[Distribución de probabilidad]
+  Sea $(X, \Sigma, P)$ espacio de probabilidad. Llamamos a la tupla $\dist = (\Sigma,P)$ distribución sobre $X$. 
+  Si $\dist$ es distribución sobre $X$, lo notamos $x\sim \mathcal{D}$
+ \end{definition}
+ \end{frame}
+ 
+ \begin{frame}\frametitle{Teorema de extensión de Carathéodory}
+  \begin{definition}
+  $\Sigma(\mu^\ast) = \{A\subseteq X: \mu^\ast(T) = \mu^\ast(T\cap A) + \mu^\ast(T\cap A^c), \forall T\subseteq X\}$
+  \end{definition}
+  \begin{theorem}
+   Sea $\mu^\ast : 2^X \rightarrow [0, +\infty]$ medida exterior sobre $X$. Entonces $\Sigma(\mu^\ast)$
+   es una $\sigma$-álgebra sobre $X$ y $\mu^\ast_{|\Sigma(\mu^\ast)}$ es una medida sobre $\Sigma(\mu^\ast)$
+  \end{theorem}
+ 
+  \begin{theorem}[Teorema de extensión de Caratheodory]
+   Sea $S \subseteq 2^X$ un semianillo, $\mu:S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe
+   una medida $\overline{\mu}:\Sigma(S) \rightarrow [0,+\infty]$ verificando $\overline{\mu}_{|S} = \mu$
+   \label{th:caratheodory}
+  \end{theorem}
+ 
+ \begin{proof}
+  \begin{itemize}
+   \item LLamar $R=(S)$. Probar $\Sigma(S) = \Sigma(R)$.
+  
+   \item Si existiese $\overline{\mu}$ debería verificar, $\overline{\mu}(T) \le \sum_{n=1}^{+\infty} \overline{\mu}(A_n)$, 
+    con $T \subseteq \bigcup_{n\ge 1} A_n$.
+  
+   \item Definir $\mu^\ast(T):= \inf\left\{\sum_{n=1}^{+\infty} \mu(A_n): \bigcup_{n\ge 1} A_n \supseteq T,
+                   A_n\in R \quad \forall n\in\mathbb{N}\right\}$
+   \item Probar que $\mu^\ast$ es medida exterior sobre $X$ y usar el teorema anterior.
+  \end{itemize}
+ \end{proof}
+ \end{frame}  
+ 
+ \begin{frame}\frametitle{Espacio de probabilidad producto}
+  \begin{theorem}
+   Sean $(X_i, \Sigma_i, P_i)$ con $i=1,\ldots, n$ espacios de probabilidad. Entonces existe un espacio probabilidad
+   producto.
+   \[(X_1 \times \ldots \times X_n, \Sigma_1 \otimes \ldots \otimes \Sigma_n, P)\]
+   donde:
+   \begin{enumerate}[i]
+   \item $\Sigma_1 \otimes \ldots \otimes \Sigma_n = \Sigma\left(\{A_1 \times \ldots \times A_n: A_i\in \Sigma_i\}\right)$
+   \item $P(A_1 \times \ldots \times A_n) = \prod_{i=1}^n P_i(A_i)$, con $A_i\in \Sigma_i$ arbitrarios.
+  \end{enumerate}
+  \end{theorem}
+  
+  Se puede probar que el espacio probabilístico producto sólo hay uno, pero no usaremos este hecho, aunque conviene tenerlo
+  presente. Cuando tengamos $\dist_1 = \ldots = \dist_n$, llamaremos $\dist^n$ al único espacio de probabilidad producto.
+ \end{frame}
+ 
+ \begin{frame}\frametitle{Desigualdades de concentración}
+ \begin{lemma}[Desigualdad de Markov]
+  Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
+  \[
+    P[W \ge a] \le \frac{\expect(W)}{a}
+  \]
+  \label{ineq:markov}
+ \end{lemma}
+  
+  \begin{lemma}[Desigualdad de Hoeffding]
+   Sean $W_1, \ldots W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
+   $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\varepsilon > 0$ arbitrario:
+   \[
+     P\left[\left| \overline{W} - \expect(\overline{W}) \right| \ge \varepsilon \right] \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^m (b_i-a_i)^2}}
+   \]
+   
+   En el caso particular $a_i = a$ y $b_i = b$ para todo $i=1, \ldots, m$:
+   \[
+     P\left[\left| \overline{W} - \expect(\overline{W}) \right| \ge \varepsilon \right] \le 2e^{-2m \left(\frac{\varepsilon}{b-a}\right)^2}
+   \] 
+   \label{ineq:hoeffding}
+  \end{lemma}
+ \end{frame}

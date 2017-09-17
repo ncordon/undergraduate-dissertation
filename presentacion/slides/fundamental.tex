@@ -1,0 +1,100 @@
+\subsection{Aprendizaje uniforme}
+\begin{frame}\frametitle{Aprendizaje uniforme}
+ \begin{definition}[Clase de Glivenko-Cantelli]
+  $H$ es de Glivenko-Cantelli, respecto a un dominio $Z$, y a 
+  una función de pérdida $l$, si existe ${m_{H}^{CU}: ]0,1[^2 \rightarrow \mathbb{N}}$ 
+  verificando que para todo $0 < \delta, \varepsilon < 1$ y para toda distribución $\dist$ sobre $Z$, 
+  siendo $m \ge m_{H}^{CU}(\varepsilon, \delta)$, entonces:
+  \[
+    \mprob [\forall h\in H, |L_S(h) - L_{\dist}(h)| \le \varepsilon] \ge 1-\delta
+  \]
+ \end{definition}
+ 
+ \begin{fact}
+  Sea $H$ una clase de hipótesis finita, $Z$ un dominio y sea $l : H \times Z \rightarrow [a,b]$ una función de pérdida.
+  Entonces $H$ es de Glivenko-Cantelli respecto a $Z$ y $l$ con:
+  \[
+    m_{H}^{CU}(\varepsilon, \delta) \le \left\lceil \frac{log(2|H|/\delta)(b-a)^2}{2\varepsilon^2} \right\rceil
+  \]
+  
+  Deducimos que $H$ sería APAC cognoscible con:
+  \[
+    m_{H}( \varepsilon, \delta ) \le \left\lceil \frac{2 log(2|H|/\delta)(b-a)^2}{\varepsilon^2} \right\rceil
+  \]
+ \end{fact}
+\end{frame}
+
+\subsection{No Free Lunch}
+\begin{frame}\frametitle{Teorema de No Free Lunch}
+\begin{theorem}[No Free Lunch]
+ Sea $H = 2^X$, $A: \underset{m\in \mathbb{N}}{\bigcup} (X\times Y)^m \rightarrow 2^X$ un algoritmo. Dado $m \le \frac{|X|}{2}$:
+ \begin{enumerate}[i]
+ \item Existen $\dist$ sobre $X\times\{0,1\}$ y $f: X \rightarrow \{0,1\}$ con $L_{\dist}(f)=0$
+ \item $\mprob \left[ L_{\dist}(A(S)) > \frac{1}{8} \right] \ge \frac{1}{7}$
+ \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+ \begin{itemize}
+  \item Dado $X$ un dominio del que veo como mucho la mitad de instancias, el algoritmo fallará en al menos $\frac{1}{4}$ de los posibles etiquetados,
+  escogiendo una distribución $\dist$ uniforme. Conoce la etiqueta de la mitad (como mucho de ellas), pero para el resto de instancias ($\frac{1}{2}$ del total),
+  hay dos posibles, etiquetados para cada una, o ser $1$ o ser $0$, ya que $H=2^X$.
+  \item Probar $\mexpect [L_{\dist} (A(S))] \ge \frac{1}{4}$. Aplicar la desigualdad de Markov.
+ \end{itemize}
+\end{proof}
+
+\begin{corollary}
+ Sea $X$ un dominio con $|X| = \infty$, entonces $2^X$ no es PAC cognoscible.
+\end{corollary}
+\end{frame}
+
+\subsection{Teorema fundamental del PAC}
+\begin{frame}\frametitle{Fragmentación}
+ \begin{definition}
+  Sea $H\subseteq 2^X$, y $C \subseteq X$. Llamamos restricción de $H$ a $C$ a $H_{C} := \{h_{|C} : h\in H\}$
+
+  En notación conjuntista, existe biyección entre $H_C$ y $C_{H}$ donde $C_{H} := \{C_h : h\in H\} \subseteq \mathcal{P}(X)$
+  siendo $C_h := \{c\in C: h(c)=1\}$.
+ \end{definition}
+ 
+ \begin{definition}[Conjunto fragmentado]
+  Sea $H\subseteq 2^X$ y sea $A\subseteq X$. Decimos que $H$ fragmenta a $A$ si para toda función $g:A\rightarrow \{0,1\}$ 
+  existe $h\in H$ verificando $h_{|A} = g$.
+ \end{definition}
+ 
+ \begin{definition}[Dimensión VC]
+  Sea $H \subseteq 2^X$. Definimos su dimensión Vapnik-Chervonenkis, que abreviaremos dimensión VC, como
+  $VC(H) := \max \{|A| : A\subseteq X, A \textrm{ es fragmentado por } H\}$.
+ \end{definition}
+ 
+ \begin{corollary}
+  Sea $H \subseteq 2^X$. Si $VC(H) = \infty$, entonces $H$ no es PAC cognoscible.
+ \end{corollary}
+ 
+ \begin{definition}[Función de crecimiento]
+  Sea $H \subseteq 2^X$. Definimos como función de crecimiento de $H$ como 
+  $\Pi_{H}(m) := \max_{C \subseteq X, \,\, |C|=m} |H_C|$
+ \end{definition}
+\end{frame}
+
+\begin{frame}\frametitle{Teorema fundamental del aprendizaje PAC}
+ \begin{lemma}[Lema de Sauer-Shelah-Perles]
+  Sea $H \subseteq 2^X$ con $VC(H) \le d < \infty$. Entonces para $m\in \mathbb{N}$ verificando $d\le m$:
+  \[
+    \Pi_{H} (m) \le \sum_{i=0}^d \binom{m}{i} \le m^d + 1
+  \]
+ \end{lemma}
+ 
+ \begin{theorem}[Teorema fundamental de aprendizaje PAC]
+  Sea $H\subseteq 2^X$. Consideramos funciones de pérdida $0-1$. Entonces equivalen:
+  \begin{enumerate}[i]
+  \item \label{th:fundi} $H$ es de Glivenko-Cantelli.
+  \item \label{th:fundii} $H$ es APAC cognoscible por cuaquier algoritmo $ERM_H$.
+  \item \label{th:fundiii} $H$ es APAC cognoscible.
+  \item \label{th:fundiv} $H$ es PAC cognoscible.
+  \item \label{th:fundv} $H$ es PAC cognoscible por cualquier algoritmo $ERM_H$.
+  \item \label{th:fundvi} $VC (H) < \infty$.
+  \end{enumerate}
+ \end{theorem}
+\end{frame}
+
