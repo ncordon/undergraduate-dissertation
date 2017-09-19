@@ -1,31 +1,43 @@
 \subsection{Algoritmos implementados}
 \fontsize{8pt}{0}\selectfont
  \begin{frame}\frametitle{MWMOTE}
-   \begin{algorithmic}[1]
-     \REQUIRE $\spos = \{x_1, \ldots x_m\}$, clase minoritaria
-     \REQUIRE $\sneg = \{y_1, \ldots y_m\}$, clase mayoritaria
-     \REQUIRE $T$, número de instancias sintéticas deseado
-     \REQUIRE $k_{1}, k_{2}, k_{3}$, parámetros de KNN para filtrar ruido de $\spos$ y calcular fronteras.
-     \REQUIRE $\alpha$, umbral de tolerancia en la cercanía a la frontera
-     \REQUIRE $C$, ponderación cercanía a la frontera, $C_{clust}$, para determinar número de clústers
-     \STATE{Hacer $\spos_f = \spos - \{x\in \spos : NN^{k_1}(x) \cap \spos = \emptyset\}$}
-     \STATE{Calcular fronteras negativa $U = \underset{x\in \spos_f}{\bigcup} NN_{-}^{k_2}(x)$ y 
-     positiva $V = \underset{x\in U}{\bigcup} NN_{+}^{k_3}(x)$}
-     \STATE{Para cada $x\in V$, calcular $P(x) = \sum_{y\in U} I_{\alpha,C}(x,y)$}
-     \STATE{Normalizar para cada $x\in V$, $P(x) = \frac{P(x)}{\sum_{z\in V} P(z)}$}
-     \STATE{Calcular $T_{clust} = C_{clust} \cdot \frac{1}{|\spos_f|} \sum_{x\in \spos_f} \min_{y\in \spos_f, y\neq x} d(x,y)$}
-     \STATE{Calcular $L_1, \ldots L_M\subseteq \spos$ clústers para $\spos$, con umbral $T_{clust}$}
-     \FOR{$t=1, \ldots, T$}
-       \STATE{Escoger $x\in V$ de acuerdo a la probabilidad $P(x)$}
-       \STATE{Seleccionar $y\in L_k$ uniformemente donde $L_k \ni x$ ($L_k$ es el clúster de $x$)}
-       \STATE{Seleccionar $r$ en $[0,1]$ de manera uniforme}
-       \STATE{$S' = S'\cup \{x + r(y-x)\}$}
-     \ENDFOR
-     \RETURN{$S'$, ejemplos positivos sintéticos}
-   \end{algorithmic}
+  \vspace{2em}
+  \begin{algorithmic}[1]
+    \REQUIRE $\spos = \{x_1, \ldots x_m\}$, clase minoritaria
+    \REQUIRE $\sneg = \{y_1, \ldots y_m\}$, clase mayoritaria
+    \REQUIRE $T$, número de instancias sintéticas deseado
+    \REQUIRE $k_{1}, k_{2}, k_{3}$, parámetros de KNN para filtrar ruido de $\spos$ y calcular fronteras.
+    \REQUIRE $\alpha$, umbral de tolerancia en la cercanía a la frontera
+    \REQUIRE $C$, ponderación cercanía a la frontera, $C_{clust}$, para determinar número de clústers
+    \STATE{Hacer $\spos_f = \spos - \{x\in \spos : NN^{k_1}(x) \cap \spos = \emptyset\}$}
+    \STATE{Calcular fronteras negativa $U = \underset{x\in \spos_f}{\bigcup} NN_{-}^{k_2}(x)$ y 
+    positiva $V = \underset{x\in U}{\bigcup} NN_{+}^{k_3}(x)$}
+    \STATE{Para cada $x\in V$, calcular $P(x) = \sum_{y\in U} I_{\alpha,C}(x,y)$}
+    \STATE{Normalizar para cada $x\in V$, $P(x) = \frac{P(x)}{\sum_{z\in V} P(z)}$}
+    \STATE{Calcular $T_{clust} = C_{clust} \cdot \frac{1}{|\spos_f|} \sum_{x\in \spos_f} \min_{y\in \spos_f, y\neq x} d(x,y)$}
+    \STATE{Calcular $L_1, \ldots L_M\subseteq \spos$ clústers para $\spos$, con umbral $T_{clust}$}
+    \FOR{$t=1, \ldots, T$}
+      \STATE{Escoger $x\in V$ de acuerdo a la probabilidad $P(x)$}
+      \STATE{Seleccionar $y\in L_k$ uniformemente donde $L_k \ni x$ ($L_k$ es el clúster de $x$)}
+      \STATE{Seleccionar $r$ en $[0,1]$ de manera uniforme}
+      \STATE{$S' = S'\cup \{x + r(y-x)\}$}
+    \ENDFOR
+    \RETURN{$S'$, ejemplos positivos sintéticos}
+  \end{algorithmic}
  \end{frame}
 
+ \begin{frame}\frametitle{SMOTE vs MWMOTE}
+ \begin{center}
+   \begin{overprint}
+   \onslide<1> \vspace{2cm} \centering\includegraphics[scale=0.25]{imgs/smote.png}
+   \onslide<2> \vspace{1.12cm} \hspace{-0.65cm}\centering\includegraphics[scale=0.25]{imgs/smote-flaws.png}
+   \onslide<3> \vspace{1.12cm} \hspace{-0.65cm}\centering\includegraphics[scale=0.25]{imgs/mwmote-clusters.png}
+  \end{overprint}
+ \end{center}
+ \end{frame}
+ 
  \begin{frame}\frametitle{RACOG y wRACOG}
+ \vspace{2em}
  \begin{columns}
   \begin{column}{0.45\textwidth}
    \begin{algorithmic}[1]
@@ -74,7 +86,25 @@
  \end{columns}
  \end{frame}
 
+ \begin{frame}\frametitle{RACOG y wRACOG}
+  \vspace{2em}
+  \textbf{\large{Idea}}: Aproximar $P(W_1, \ldots, W_d)$ como producto de distribuciones marginales, es decir:
+  \[P(W_1, \ldots W_d) \approx \prod_{i=1}^d P(W_i \mid W_{n(i)})\]
+  donde cada $n(i) \in \{1, \ldots, d\}$.
+  \begin{columns}
+   \begin{column}{0.6\textwidth}
+    \img{imgs/chow-liu.png}{1}
+   \end{column}
+
+   \begin{column}{0.4\textwidth}
+    \img{../memoria/imgs/monte-carlo.png}{1}
+   \end{column}
+  \end{columns}
+ \end{frame}
+ 
+ 
  \begin{frame}\frametitle{RWO}
+  \vspace{2em}
   \begin{algorithmic}[1]
    \REQUIRE $S = \{x_i=(w_1^{(i)}, \ldots w_d^{(i)})\}_{i=1}^m$, ejemplos positivos
    \REQUIRE $T$, número de instancias sintéticas deseado
@@ -104,7 +134,7 @@
  \begin{frame}\frametitle{PDFOS}
   \begin{columns}
    \begin{column}{0.55\textwidth}
-    \img{../memoria/imgs/kernel-estimation.png}{1}
+    \imgcaption{../memoria/imgs/kernel-estimation.png}{Estimación de densidades, ejemplo extraído de Wikimedia Commons}{1}
    \end{column}
    
    \begin{column}{0.6\textwidth}
@@ -128,6 +158,7 @@
  \end{frame}
 
  \begin{frame}\frametitle{NEATER}
+  \vspace{2em}
   \begin{algorithmic}[1]
   \REQUIRE $S = \{z_1 = (x_1, y_1), \ldots z_n = (x_n, y_n)\}$, dataset original
   \REQUIRE $S' = \{\bar{z}_1=(\bar{x}_1, \bar{y}_1), \ldots \bar{z}_m=(\bar{x}_m, \bar{y}_m)\}$, ejemplos positivos

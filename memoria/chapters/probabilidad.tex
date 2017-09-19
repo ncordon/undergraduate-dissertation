@@ -59,7 +59,7 @@ a su unión disjunta, esto es $\bigcup_{i=1}^n A_i$ con $A_i \cap A_j = \emptyse
  \begin{enumerate}[i]
   \item $\emptyset \in S$
   \item $A,B \in S$ entonces $A\cap B \in S$
-  \item $A,B \in S$ entonces existen $A_1 \ldots A_n \in S$ verificándose $A\setminus B = \sum_{i=1}^n A_i$
+  \item $A,B \in S$ entonces existen $A_1, \ldots, A_n \in S$ verificándose $A\setminus B = \sum_{i=1}^n A_i$
  \end{enumerate}
 \end{definition}
 
@@ -591,7 +591,7 @@ Sea $W \ge 0$ una variable aleatoria. Entonces para todo $a > 0$ se verifica:
 
 
 \begin{lemma}[Desigualdad de Hoeffding]
- Sean $W_1, \ldots W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
+ Sean $W_1, \ldots, W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
  $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\varepsilon > 0$ arbitrario:
  \[
    P\left[\left| \overline{W} - \expect(\overline{W}) \right| \ge \varepsilon \right] \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^m (b_i-a_i)^2}}

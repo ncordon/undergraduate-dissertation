@@ -10,16 +10,16 @@
     $\underset{n \ge 1}{\bigcup} A_n \in \Sigma$
    \end{enumerate}
    
-   Si $\emptyset \in \Sigma$, es semianillo si:
-   \begin{enumerate}[i]
-    \item $A,B \in \Sigma$ entonces $A\cap B \in \Sigma$
-    \item $A,B \in \Sigma$ entonces existen $A_1 \ldots A_n \in \Sigma$ verificándose $A\setminus B = \sum_{i=1}^n A_i$
-   \end{enumerate}
-
-   y es anillo si cumple:
+   Si $\emptyset \in \Sigma$, es anillo si:
    \begin{enumerate}[i]
     \item $A,B \in R$ entonces $A\cup B \in \Sigma$
     \item $A,B \in R$ entonces $A\setminus B \in \Sigma$
+   \end{enumerate}
+
+   y es semianillo si cumple:
+   \begin{enumerate}[i]
+    \item $A,B \in \Sigma$ entonces $A\cap B \in \Sigma$
+    \item $A,B \in \Sigma$ entonces existen $A_1, \ldots, A_n \in \Sigma$ verificándose $A\setminus B = \sum_{i=1}^n A_i$
    \end{enumerate}
   \end{definition}
 
@@ -55,7 +55,7 @@
  
  \begin{definition}[Distribución de probabilidad]
   Sea $(X, \Sigma, P)$ espacio de probabilidad. Llamamos a la tupla $\dist = (\Sigma,P)$ distribución sobre $X$. 
-  Si $\dist$ es distribución sobre $X$, lo notamos $x\sim \mathcal{D}$
+  Si $\dist$ es distribución sobre $X$, lo notamos $x\sim \mathcal{D}$.
  \end{definition}
  \end{frame}
  
@@ -68,7 +68,7 @@
    es una $\sigma$-álgebra sobre $X$ y $\mu^\ast_{|\Sigma(\mu^\ast)}$ es una medida sobre $\Sigma(\mu^\ast)$
   \end{theorem}
  
-  \begin{theorem}[Teorema de extensión de Caratheodory]
+  \begin{theorem}[Teorema de extensión de Carathéodory]
    Sea $S \subseteq 2^X$ un semianillo, $\mu:S \rightarrow [0,+\infty]$ medida en $S$. Entonces existe
    una medida $\overline{\mu}:\Sigma(S) \rightarrow [0,+\infty]$ verificando $\overline{\mu}_{|S} = \mu$
    \label{th:caratheodory}
@@ -82,7 +82,7 @@
     con $T \subseteq \bigcup_{n\ge 1} A_n$.
   
    \item Definir $\mu^\ast(T):= \inf\left\{\sum_{n=1}^{+\infty} \mu(A_n): \bigcup_{n\ge 1} A_n \supseteq T,
-                   A_n\in R \quad \forall n\in\mathbb{N}\right\}$
+                   A_n\in R \quad \forall n\in\mathbb{N}\right\}$.
    \item Probar que $\mu^\ast$ es medida exterior sobre $X$ y usar el teorema anterior.
   \end{itemize}
  \end{proof}
@@ -101,7 +101,7 @@
   \end{theorem}
   
   Se puede probar que el espacio probabilístico producto sólo hay uno, pero no usaremos este hecho, aunque conviene tenerlo
-  presente. Cuando $\dist_1 = \ldots = \dist_n$, llamaremos $\dist^n$ al único espacio de probabilidad producto.
+  presente. Si $\dist = \dist_1 = \ldots = \dist_n$, llamaremos $\dist^n$ al único espacio de probabilidad producto.
  \end{frame}
  
  \begin{frame}\frametitle{Desigualdades de concentración}
@@ -114,7 +114,7 @@
  \end{lemma}
   
   \begin{lemma}[Desigualdad de Hoeffding]
-   Sean $W_1, \ldots W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
+   Sean $W_1, \ldots, W_m$ variables aleatorias i.i.d. (independiente e idénticamente distribuidas), tales que 
    $a_i \le W_i \le b_i$, y sea $\overline{W} = \frac{1}{m} \sum_{i=1}^m W_i$. Entonces dado $\varepsilon > 0$ arbitrario:
    \[
      P\left[\left| \overline{W} - \expect(\overline{W}) \right| \ge \varepsilon \right] \le 2e^{-2m^2 \frac{\varepsilon^2}{\sum_{i=1}^m (b_i-a_i)^2}}

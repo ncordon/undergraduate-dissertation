@@ -1,5 +1,5 @@
 \subsection{Introducción}
- \begin{frame}\
+ \begin{frame}\frametitle{Introducción}
  \begin{definition}[Instancias positivas, negativas]
  Llamamos:
  \begin{itemize}
@@ -51,8 +51,8 @@
 \begin{frame}\frametitle{Aprendizaje con desbalanceo}
 \par\textbf{Técnicas de aprendizaje con desbalanceo}
 \begin{itemize}
- \item \textbf{\textit{Oversampling/Undersampling}}. Consiste en tomar $E$ instancias clasificadas como positivas y entrenar con 
- $S' = S\cup E$ o $S' = S\setminus E$.
+ \item \textbf{\textit{Oversampling/Undersampling}}. Consiste en tomar $E$ instancias y entrenar con 
+ $S' = S\cup E$ ($E$ positivas) o $S' = S\setminus E$ ($E$ negativas) resp.
  
  Tanto el \textit{oversampling} como el \textit{undersampling} se realiza de manera que $r(S') > r(S)$. Se pueden usar además
  técnicas de limpieza, para definir mejor los bordes de las zonas que conectan a ambas clases, de manera que mejoremos el error
