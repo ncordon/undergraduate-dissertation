@@ -70,7 +70,7 @@ $x \notin NN_{+}^{k_3}(y)$, entonces $I_{\alpha,C}w(x,y) = 0$. Caso opuesto, se 
 \[
   f(x) = \left\{\begin{array}{ll} 
                 x &, x\le \alpha \\
-                C & \textrm{en otro caso}
+                \alpha & \textrm{en otro caso}
                \end{array}\right.,\qquad C_f(x,y) = \frac{C}{\alpha} \cdot f\left(\frac{d}{d(x,y)}\right)
 \]
 
@@ -81,7 +81,7 @@ objetivos de detección de instancias de MWMOTE se cumple al ponderar cada insta
 $\sum_{y\in U} I_{\alpha, C}(x,y)$.
 
 Por último queda explicar el algoritmo de \textit{clustering} que se usa: un algoritmo de \textit{clustering} jerárquico
-aglomerativo con enlace medio (esto es, se define $dist(L_i, L_j) = \frac{1}{|L_i||L_j|} \sum_{x\in L_i} \sum_{y\in L_j} d(x,y)$).
+aglomerativo con enlace medio (esto es, se define $dist(L_i, L_j) = \frac{1}{|L_i||L_j|} \sum_{x\in L_i} \sum_{y\in L_j} d(x,y)$.
 
 
 \begin{algorithm}[H]

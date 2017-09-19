@@ -1,5 +1,6 @@
 \subsection{Aprendizaje uniforme}
 \begin{frame}\frametitle{Aprendizaje uniforme}
+\vspace{1em}
  \begin{definition}[Clase de Glivenko-Cantelli]
   $H$ es de Glivenko-Cantelli, respecto a un dominio $Z$, y a 
   una función de pérdida $l$, si existe ${m_{H}^{CU}: ]0,1[^2 \rightarrow \mathbb{N}}$ 
@@ -10,6 +11,11 @@
   \]
  \end{definition}
  
+ \begin{theorem}
+ Sea $H$ una clase de hipótesis de Glivenko-Cantelli, respecto a $Z$ y función de pérdida $l$. 
+ Entonces es APAC cognoscible con cualquier algoritmo $ERM_H$.
+ \end{theorem}
+ 
  \begin{fact}
   Sea $H$ una clase de hipótesis finita, $Z$ un dominio y sea $l : H \times Z \rightarrow [a,b]$ una función de pérdida.
   Entonces $H$ es de Glivenko-Cantelli respecto a $Z$ y $l$ con:
@@ -17,10 +23,7 @@
     m_{H}^{CU}(\varepsilon, \delta) \le \left\lceil \frac{log(2|H|/\delta)(b-a)^2}{2\varepsilon^2} \right\rceil
   \]
   
-  Deducimos que $H$ sería APAC cognoscible con:
-  \[
-    m_{H}( \varepsilon, \delta ) \le \left\lceil \frac{2 log(2|H|/\delta)(b-a)^2}{\varepsilon^2} \right\rceil
-  \]
+  Deducimos que $H$ sería APAC cognoscible.
  \end{fact}
 \end{frame}
 

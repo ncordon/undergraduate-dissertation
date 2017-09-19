@@ -15,7 +15,7 @@ resto de jugadores por lo que tendremos:
  \end{array}
 \]
   
-Notaremos $s_{-i} = (s_1, \ldots, s_{i-1}, s_{i+1}, \ldots s_n)$ y $f_i(s_i, s_{-i})= f_i(s)$.
+Notaremos $s_{-i} = (s_1, \ldots, s_{i-1}, s_{i+1}, \ldots, s_n)$ y $f_i(s_i, s_{-i})= f_i(s)$.
 
 \begin{definition}
 Un equilibrio de Nash estratégico es una tupla $(s_1, \ldots s_n)$ que verifica $f_i(s_i, s_{-i}) \ge f_i(s'_{i}, s_{-i})$ 
@@ -26,7 +26,7 @@ Es decir, una estrategia de Nash maximiza la recompensa para todos los jugadores
 
 Tendremos probabilidades para escoger estrategias para cada jugador, esto es 
 $\delta_i \in \Delta_i = \{(\delta_i^{(1)}, \ldots, \delta_i^{(k_i)}) \in (R^{+})^k_i : \sum_{j=1}^{k_i} \delta_i^{(j)} = 1\}$. 
-Llamamos $\Delta_1 \times \ldots \Delta_n = \Delta$ y a $\delta = (\delta_1, \ldots, \delta_n) \in \Delta$ lo llamaremos perfil de estrategia. 
+Llamamos $\Delta_1 \times \ldots \times \Delta_n = \Delta$ y a $\delta = (\delta_1, \ldots, \delta_n) \in \Delta$ lo llamaremos perfil de estrategia. 
 Asociado a un perfil de estrategia $\delta$, notaremos a la recompensa total esperada para el jugador $i$-ésimo como:
 \[
   u_i(\delta) = \sum_{s\in S} \delta_i^{(s_i)} f_i(s)
@@ -36,7 +36,7 @@ A $u_i$ es la recompensa asociada al perfil de estrategia $\delta$ para el jugad
 $\delta_{-i} = (\delta_1, \ldots, \delta_{i-1}, \delta_{i+1}, \ldots, \delta_n)$, y $u_i(\delta_i, \delta_{-i})= u_i(\delta)$.
 
 \begin{definition}
-Un equilibrio probabilístico de Nash es un perfil de estrategia $x = (\delta_1, \ldots \delta_n)$ que verifica 
+Un equilibrio probabilístico de Nash es un perfil de estrategia $x = (\delta_1, \ldots, \delta_n)$ que verifica 
 $u_i(\delta_i, \delta_{-i}) \ge u_i(\delta'_{i}, \delta_{-i})$ para cualquier otra $\delta'\in \Delta$, para todo $i=1, \ldots, n$.
 \end{definition}
 
@@ -59,7 +59,7 @@ caso, hemos tomado $g(z) = \frac{1}{1+z^2}$, con $d$ la distancia euclídea.
 
 A cada paso se actualizarán los perfiles de estrategia de la clase minoritaria, donde para cada $x_i\in S'$ se hace: 
 \begin{align*}
-& \delta_i(0) = (0.5, 0.5)\\
+& \delta_i(0) = \left(\frac{1}{2}, \frac{1}{2}\right)\\
 & \delta_{i,1}(n+1) = \frac{\alpha + u_i((1,0))}{\alpha + u_i(\delta(n))} \delta_{i,1}(n)\\
 & \delta_{i,2}(n+1) = 1 - \delta_{i,1}(n+1)
 \end{align*}

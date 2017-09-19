@@ -3,22 +3,17 @@
 % \usefonttheme[onlymath]{serif}
 % \everymath{\displaystyle}
 \usetheme{Execushares}
+\input{config}
 \usefonttheme{professionalfonts}
-\addtobeamertemplate{block begin}{}{\justifying}
-\apptocmd{\frame}{}{\justifying}{}
-\apptocmd{\column}{}{\justifying}{}
-\let\oldenumerate=\enumerate  
-\renewenvironment{enumerate}{\justifying\oldenumerate}{\endlist}
-\let\olditem=\item% 
-\renewcommand{\item}{\olditem \justifying}
-
+%\mode<presentation>
 \makeatletter
   \def\tutor{Salvador García}
   \def\othertutor{Francisco Herrera}
   \def\universitybadge{../memoria/imgs/ugr.png}
+  \def\cclicense{../memoria/imgs/by-nc-sa.png}
   \def\theoryrepo{https://github.com/ncordon/tfg}
   \def\swrepo{https://github.com/ncordon/imbalance}
-  \def\ghlogo{./gh-logo.png}
+  \def\ghlogo{imgs/gh-logo.png}
 \makeatother
 
 \title{Aprendizaje PAC.\\ Clasificación no balanceada:\\ particularización a \textit{small disjuncts}}
@@ -57,7 +52,7 @@
   \input{desbalanceo}
   \input{rpackage}
   \input{experimentacion}
- 
+  
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % Conclusiones
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 

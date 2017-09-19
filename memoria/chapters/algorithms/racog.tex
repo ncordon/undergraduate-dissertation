@@ -12,7 +12,7 @@ cada instancia de:
 
 Si consiguiéramos aproximar $P(W_1, \ldots, W_d)$ como producto de distribuciones marginales, esto es, 
 $P(W_1, \ldots W_d) \approx \prod_{i=1}^d P(W_i \mid W_{n(i)})$ donde cada $n(i) \in \{1, \ldots, d\}$,
-entonces calcular dicha distribución sería menos costoso. Para expresar $P(W_1, \ldots W_d)$ como producto de marginales,
+entonces calcular dicha distribución sería menos costoso. Para expresar $P(W_1, \ldots, W_d)$ como producto de marginales,
 es decir, para decidir qué valor le damos a cada $n(i)$, se usa el algoritmo \ref{alg:chowliu} de Chow-Liu,
 que minimiza la distancia de Kullback-Leibler entre dos distribuciones. Esta distancia proporciona una medida de la 
 aproximación de una distribución de probabilidad $Q$ a la verdadera distribución $P$, usando teoría de la información. 
@@ -189,7 +189,7 @@ cuando se verifica un criterio sobre el conjunto de validación.
   \NEWLINE
   \WHILE{Desviación estándar de $\tau \ge \alpha$}
     \STATE{$S = \textrm{GibbsSampler}(S, P)$}
-    \STATE{$S_{misc} =$ instancias mal clasisicadas de $S$ clasificadas por $modelo$}
+    \STATE{$S_{misc} =$ instancias mal clasificadas de $S$ por $modelo$}
     \STATE{Actualizar nuevas instancias, $S' = S' \cup S_{misc}$}
     \STATE{Actualizar \textit{train}, $S_{train} = S_{train} \cup S_{misc}$}
     \STATE{Obtener $modelo$ con $wrapper$ y $S_{train}$}

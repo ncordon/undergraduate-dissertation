@@ -1,0 +1,162 @@
+\usepackage[spanish, es-lcroman]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{fix-cm}
+\usepackage{dsfont}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\definecolor{lightgray}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+\definecolor{midgray}{gray}{0.40}
+\usepackage{mdframed} % Add easy frames to paragraphs
+\usepackage{lipsum} % For dummy text
+\usepackage{xparse} % Add support for \NewDocumentEnvironment
+\newmdenv[ % Define mdframe settings and store as leftrule
+  linecolor=lightgray,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{leftrule}
+
+\addtobeamertemplate{block begin}{}{\justifying}
+\apptocmd{\frame}{}{\justifying}{}
+\apptocmd{\column}{}{\justifying}{}
+\let\oldenumerate=\enumerate  
+\renewenvironment{enumerate}{\justifying\oldenumerate}{\endlist}
+\let\olditem=\item% 
+\renewcommand{\item}{\olditem \justifying}
+
+
+% *************************************************************************************************************
+% Pseudocódigo de algoritmos
+% *************************************************************************************************************
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\floatname{algorithm}{Algoritmo}
+\renewcommand{\listalgorithmname}{Lista de algoritmos}
+\renewcommand{\algorithmicrequire}{\textbf{Entrada:}}
+\renewcommand{\algorithmicensure}{\textbf{Salida:}}
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Código}
+\definecolor{light-gray}{gray}{0.97}
+\lstset{
+  language=R,
+  literate={<-}{{\boldmath{$\gets$}}}1,
+  basicstyle=\small\linespread{1.3}\ttfamily,
+  commentstyle=\ttfamily\color{OliveGreen},
+  stringstyle=\color{Thistle},
+  numbers=left,
+  numberstyle=\scriptsize\ttfamily\color{RoyalBlue},
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{light-gray},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  %frame=single,
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false,
+  %title=\lstname,
+  escapeinside={},
+  keywordstyle={},
+  morekeywords={}
+}
+
+
+
+% *************************************************************************************************************
+% Entornos
+% *************************************************************************************************************
+\usepackage{tabularx}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{float}
+\usepackage{wrapfig}
+
+\NewDocumentEnvironment{example}{O{\textbf{Ejemplo:}}}
+{\begin{leftrule}\noindent\textcolor{black}{#1}\par}
+{\end{leftrule}}
+
+\NewDocumentEnvironment{counterex}{O{\textbf{Contraejemplo:}}}
+{\begin{leftrule}\noindent\textcolor{black}{#1}\par}
+{\end{leftrule}}
+% arg min
+\DeclareMathOperator*{\argmin}{arg\,\min }
+\DeclareMathOperator*{\argmax}{arg\,\max }
+
+% norma || ||
+\newcommand{\norm}[1]{||{#1}||}
+
+
+%\defaultfontfeatures{Ligatures=TeX}
+
+\addto\captionsspanish{%
+  \renewcommand{\proofname}%
+    {\textit{Sketch} de la prueba}%
+}
+
+\newcommand{\img}[2]{
+  \begin{center}
+  \includegraphics[width=#2\textwidth]{#1}
+  \end{center}
+}
+
+\newcommand{\imgcaption}[3]{
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=#3\textwidth]{#1}
+  \end{center}
+  
+  \caption[]{#2}
+\end{figure}
+}
+
+\theoremstyle{definition}
+
+\newtheorem{thm}{theorem}[section]
+\newtheorem{theorem}[thm]{Teorema}
+\newtheorem*{theorem*}{Teorema}
+\newtheorem{fact}[thm]{Proposición}
+\newtheorem*{fact*}{Proposición}
+\newtheorem{lemma}[thm]{Lema}
+\newtheorem*{lemma*}{Lema}
+\newtheorem{corollary}[thm]{Corolario}
+\newtheorem*{corollary*}{Corolario}
+\newtheorem{definition}[thm]{Definición}
+\newtheorem*{definition*}{Definición}
+\newtheorem{charact}[thm]{Caracterización}
+\newtheorem*{charact*}{Caracterización}
+
+\newtranslation[to=Spanish]{Fact}{Proposición}
+
+
+% *************************************************************************************************************
+% Matemáticas
+% *************************************************************************************************************
+\newcommand{\mprob}{\underset{S\sim \mathcal{D}^m}{P}}
+\newcommand{\dosmprob}{\underset{S\sim \mathcal{D}^{2m}}{P}}
+\newcommand{\munoprob}{\underset{S_1\sim \mathcal{D}^m}{P}}
+\newcommand{\mdosprob}{\underset{S_2\sim \mathcal{D}^m}{P}}
+\newcommand{\mmprob}{\underset{\begin{subarray}{c} 
+                                S_1 \sim \mathcal{D}^{m} \\ 
+                                S_2 \sim\mathcal{D}^m 
+                                \end{subarray}}{P}}
+\newcommand{\prob}{\underset{x\sim \mathcal{D}}{P}}
+\newcommand{\zprob}{\underset{z\sim \mathcal{D}}{P}}
+\newcommand{\dist}{\mathcal{D}}
+\newcommand{\expect}{\mathbb{E}}
+\newcommand{\zexpect}{\underset{z\sim \mathcal{D}}{\expect}}
+\newcommand{\mexpecti}[1]{\underset{S\sim \mathcal{D}_{#1}^m}{\mathbb{E}}}
+\newcommand{\mexpect}{\underset{S\sim \mathcal{D}^m}{\mathbb{E}}}
+\newcommand{\dosmexpect}{\underset{S\sim \mathcal{D}^{2m}}{\mathbb{E}}}
+\newcommand{\ppos}{P^{+}}
+\newcommand{\pneg}{P^{-}}
+\newcommand{\npos}{N^{+}}
+\newcommand{\nneg}{N^{-}}
+\newcommand{\spos}{S^{+}}
+\newcommand{\sneg}{S^{-}}
+\newcommand{\Hclass}{\lfloor H \rfloor_{\dist}}
+\newcommand{\algcomp}[1]{\mathcal{O}\left(#1\right)}
+
