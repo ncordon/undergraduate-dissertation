@@ -2,7 +2,7 @@
 Final career project on PAC learning math theory and imbalance preprocessing algorithms
 
 # Probably Approximately Correct Learning
-![Clases PAC](./memoria/imgs/clases-pac.png)
+![Clases PAC](./memoria/imgs/clases-pac-en.png)
 
 Written in spanish.
 
