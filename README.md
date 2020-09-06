@@ -1,10 +1,10 @@
 # tfg
-Final career project on PAC learning math theory and imbalance preprocessing algorithms
+Final degree project on PAC learning math theory and imbalance preprocessing algorithms
 
 # Probably Approximately Correct Learning
 ![Clases PAC](./memoria/imgs/clases-pac-en.png)
 
-Written in spanish.
+Written in Spanish.
 
 ## Useful resources on the topic
 
